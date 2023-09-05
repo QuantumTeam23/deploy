@@ -28,7 +28,7 @@ CREATE TABLE Estabelecimentos(
 	estabelecimento_nome_fantasia DESC100 null,
 	estabelecimento_cnpj_cpf VARCHAR(18) NOT null,
 	estabelecimento_logradouro DESC100 null,
-	estabelecimento_numero_logradouro VARCHAR(10),
+	estabelecimento_logradouro_numero VARCHAR(10),
 	estabelecimento_bairro DESC100 null,
         estabelecimento_cidade DESC100 null,
         estabelecimento_cep VARCHAR(10) null,
