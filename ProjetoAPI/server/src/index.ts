@@ -1,20 +1,20 @@
-const express = require('express')
-const bp = require('body-parser')
+const express = require('express');
+const bp = require('body-parser');
 const cors = require('cors');
 
-const app = express()
-const bcrypt = require("bcrypt")
-const port = 5001
+const app = express();
+const bcrypt = require("bcrypt");
+const port = 3001;
 
-app.use(bp.json())
-app.use(express.json())
-app.use(bp.urlencoded({ extended: true }))
+app.use(bp.json());
+app.use(express.json());
+app.use(bp.urlencoded({ extended: true }));
 app.use(cors());
 
 import { Pool, PoolClient } from "pg";
 
-app.get('/', function (req, res) {
-    res.send('Aplicação rodando')
+app.get('/', function (_, res) {
+    res.send('Aplicação rodando');
     console.log('Aplicação rodando');
 })
 
@@ -42,19 +42,19 @@ app.post('/login', login);
 //CONEXÃO BANCO
 const DB = new Pool({
     connectionString: "postgres://ajisntze:gNdLfQIQWZ2gcQjKM9HZYV4MhGQU_bya@silly.db.elephantsql.com/ajisntze"
-    // user: 'postgresql',
+    // user: 'postgres',       //user PostgreSQL padrão = postgres
     // host: 'localhost',
-    // database: 'API_4semestre',
-    // password: '1234',
-    // port: 3308
+    // database: 'your_database',
+    // password: 'your_password',
+    // port: 5432             //port PostgreSQL padrão = 5432
 });
 
 let connectionDB: PoolClient;
 
 DB.connect().then(conn => {
     connectionDB = conn;
-    app.listen(5001, () => {
-        console.log('Servidor inicializado');
+    app.listen(port, () => {
+        console.log(`Servidor inicializado em http://localhost:${port}/`);
     });
 });
 
@@ -147,7 +147,6 @@ async function cadastrarEstabelecimento(req, res) {
                     Estabelecimentos("estabelecimento_razao_social","estabelecimento_nome_fantasia","estabelecimento_cnpj_cpf","estabelecimento_logradouro", "estabelecimento_logradouro_numero","estabelecimento_bairro","estabelecimento_cidade","estabelecimento_estado","estabelecimento_cep", "estabelecimento_regiao","estabelecimento_telefone","estabelecimento_saldo","estabelecimento_volume_comercializado_mes","estabelecimento_email", "estabelecimento_tipo", "estabelecimento_senha")
                 VALUES ('${nome}','${nomefantasia}','${cnpj}','${logradouro}', '${logradouroNumero}','${bairro}','${cidade}','${estado}','${cep}','${regiao}','${telefone}','${saldo}','${volume}','${email}','${tipo}','${hashSenha}')
             `
-            const resultado = await connectionDB.query(SQL);
             console.log("Estabelecimento cadastrado com sucesso!");
             res.send({ msg: "Estabelecimento cadastrado com sucesso!" });
         } catch (error) {
@@ -186,7 +185,6 @@ async function editarEstabelecimento(req, res) {
             WHERE
                 estabelecimento_cnpj_cpf = '${cnpj}'
         `
-        const resultado = await connectionDB.query(SQL);
         console.log("Estabelecimento atualizado com sucesso!");
         res.send({ msg: "Estabelecimento atualizado com sucesso!" });
     } catch (error) {
@@ -217,7 +215,7 @@ async function deletarEstabelecimento(req, res) {
 }
 
 
-async function listAllEstabelecimento(req, res) {
+async function listAllEstabelecimento(_, res) {
     console.log("Requisição de listagem de estabelecimento recebida.");
     try {
 
@@ -277,7 +275,6 @@ async function cadastrarParceiro(req, res) {
                     Parceiros("parceiro_razao_social","parceiro_nome_fantasia","parceiro_cnpj_cpf","parceiro_logradouro", "parceiro_logradouro_numero","parceiro_bairro","parceiro_cidade","parceiro_estado","parceiro_cep", "parceiro_regiao","parceiro_telefone","parceiro_saldo","parceiro_cidades_atende","parceiro_data_inicio_operacao","parceiro_volume_coleta_mes","parceiro_email", "parceiro_tipo", "parceiro_senha")
                 VALUES ('${nome}','${nomefantasia}','${cnpj}','${logradouro}', '${logradouroNumero}','${bairro}','${cidade}','${estado}','${cep}','${regiao}','${telefone}','${saldo}', '${cidadeatendida}','${dataoperacao}','${volume}','${email}','${tipo}','${hashSenha}')
             `
-            const resultado = await connectionDB.query(SQL);
             console.log("Parceiro cadastrado com sucesso!");
             res.send({ msg: "Parceiro cadastrado com sucesso!" });
         } catch (error) {
@@ -318,7 +315,6 @@ async function editarParceiro(req, res) {
             WHERE
                 parceiro_cnpj_cpf = '${cnpj}'
         `
-        const resultado = await connectionDB.query(SQL);
         console.log("Parceiro atualizado com sucesso!");
         res.send({ msg: "Parceiro atualizado com sucesso!" });
     } catch (error) {
@@ -414,7 +410,6 @@ async function cadastrarAdministrador(req, res) {
                     Administradores("administrador_nome","administrador_email","administrador_senha")
                 VALUES ('${nome}','${email}','${hashSenha}')
             `
-            const resultado = await connectionDB.query(SQL);
             console.log("Administrador cadastrado com sucesso!");
             res.send({ msg: "Administrador cadastrado com sucesso!" });
         } catch (error) {
@@ -440,7 +435,6 @@ async function editarAdministrador(req, res) {
             WHERE
                 administrador_email = '${email}'
         `
-        const resultado = await connectionDB.query(SQL);
         console.log("Administrador atualizado com sucesso!");
         res.send({ msg: "Administrador atualizado com sucesso!" });
     } catch (error) {
