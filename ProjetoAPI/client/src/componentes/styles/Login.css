@@ -1,0 +1,148 @@
+* {
+    font-family: Montserrat, sans-serif, Arial;
+}
+
+.container-geral-login{
+    background-color: #ebebeb;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.container-janela-login{
+    width: 80vw;
+    height: 80vh;
+    display: flex;
+}
+
+.container-esquerda-login{
+    background: #136935;
+    width: 40vw;
+    height: 80vh;
+    display: flex;
+    align-items: left;
+    justify-content: left; 
+}
+
+.container-direita-login{
+    background: white;
+    width: 40vw;
+    height: 80vh;
+    align-items: right;
+    justify-content: right; 
+}
+
+.logo-login{
+    width: 40vw;
+    height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;  
+}
+
+* {
+    font-family: Montserrat, sans-serif, Arial;
+}
+
+.logo-login img {
+    width: 300px;
+    height: 300px;
+}
+
+.botao-login{
+    width: 40vw;
+    height: 10vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 3%;
+}
+
+.botao-login button {
+    background-color: #136935;
+    height: 50px;
+    width: 140px;
+    font-size: 22px;
+}
+
+.titulo-login{
+    width: 40vw;
+    height: 20vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.titulo-login h1{
+    color: #136935;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.8em;
+    font-weight: 555;
+}
+
+.subtitulo-login h3{
+    color: #136935;
+    margin-top: -5%;
+    text-align: center;
+    font-weight: 400;
+}
+
+.subtitulo-login p{
+    margin: 0;
+    text-align: center;
+}
+
+.campo-login-1{
+    text-align: left;
+    margin-top: 10%;
+    width: 38vw;    
+}
+
+.campo-login-2{
+    text-align: left;
+    margin-top: 10%;
+    width: 38vw;    
+}
+
+.form-control-login-1{
+    background-color: rgb(221, 255, 218) !important;
+    width: 50vw;
+    margin-bottom: -5%;
+}
+
+.form-control-login-2{
+    background-color: rgb(221, 255, 218) !important;
+    width: 50vw;
+}
+
+.esqueceu-senha-login{
+    text-decoration: none;
+    margin-top: 1%;
+    width: 39vw;
+    text-align: right;
+}
+
+.esqueceu-senha-login a{
+    text-decoration: none;
+    color: #136935;
+}
+
+.registro-login{
+    align-items: center;
+    text-align: center;
+    margin-top: -1%;
+}
+
+.registro-login a{
+    text-decoration: none;
+    color: #136935;
+}
+
+.registro-login p{
+    color: black;
+    font-weight: 400;
+}

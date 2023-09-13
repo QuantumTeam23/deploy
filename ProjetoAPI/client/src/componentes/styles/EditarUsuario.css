@@ -1,0 +1,116 @@
+* {
+    font-family: Montserrat, sans-serif, Arial;
+}
+
+.container-geral-editar-usuario{
+    background-color: #ebebeb;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.container-janela-editar-usuario{
+    width: 80vw;
+    height: 80vh;
+    display: flex;
+}
+
+.container-esquerda-editar-usuario{
+    background: #136935;
+    width: 40vw;
+    height: 80vh;
+    display: flex;
+    align-items: left;
+    justify-content: left; 
+}
+
+.container-direita-editar-usuario{
+    background: white;
+    width: 40vw;
+    height: 80vh;
+    align-items: right;
+    justify-content: right; 
+}
+
+.logo-editar-usuario{
+    width: 40vw;
+    height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;  
+}
+
+.logo-editar-usuario img {
+    width: 300px;
+    height: 300px;
+}
+
+.botao-editar-usuario{
+    width: 40vw;
+    height: 10vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 6%;
+}
+
+.botao-editar-usuario button {
+    background-color: #136935;
+    height: 50px;
+    width: 140px;
+    margin-bottom: -12%;
+    font-size: 22px;
+}
+
+.titulo-editar-usuario{
+    width: 40vw;
+    height: 20vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.titulo-editar-usuario h1{
+    color: #136935;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.8em;
+    font-weight: 555;
+}
+
+.campo-editar-usuario{
+    text-align: left;
+    margin-top: 1%;
+    margin-bottom: 2%;
+    width: 38vw;    
+}
+
+.form-control-editar-usuario{
+    background-color: rgb(221, 255, 218) !important;
+    width: 50vw;
+}
+
+.form-control-editar-usuario::placeholder {
+    font-size: 12px;
+    font-style: italic;
+    letter-spacing: 2px;
+}
+
+.registro-editar-usuario{
+    align-items: center;
+    text-align: center;
+    margin-top: -2%;
+}
+
+.registro-editar-usuario a{
+    text-decoration: none;
+    color: #136935;
+}
+
+.registro-editar-usuario p{
+    color: black;
+    font-weight: 400;
+}

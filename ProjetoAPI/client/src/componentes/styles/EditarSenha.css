@@ -1,0 +1,108 @@
+* {
+    font-family: Montserrat, sans-serif, Arial;
+}
+
+.container-geral-editarsenha{
+    background-color: #ebebeb;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.container-janela-editarsenha{
+    width: 80vw;
+    height: 80vh;
+    display: flex;
+}
+
+.container-esquerda-editarsenha{
+    background: #136935;
+    width: 40vw;
+    height: 80vh;
+    display: flex;
+    align-items: left;
+    justify-content: left; 
+}
+
+.container-direita-editarsenha{
+    background: white;
+    width: 40vw;
+    height: 80vh;
+    align-items: right;
+    justify-content: right; 
+}
+
+.logo-editarsenha{
+    width: 40vw;
+    height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;  
+}
+
+.logo-editarsenha img {
+    width: 300px;
+    height: 300px;
+}
+
+.botao-editarsenha{
+    width: 40vw;
+    height: 10vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 15%;
+}
+
+.botao-editarsenha button {
+    background-color: #136935;
+    height: 50px;
+    width: 140px;
+    font-size: 22px;
+}
+
+.titulo-editarsenha{
+    width: 40vw;
+    height: 20vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.titulo-editarsenha h1{
+    color: #136935;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.8em;
+    font-weight: 555;
+}
+
+.campo-editarsenha{
+    text-align: left;
+    margin-top: 8%;
+    width: 38vw;    
+}
+
+.form-control-editarsenha{
+    background-color: rgb(221, 255, 218) !important;
+    width: 50vw;
+}
+
+.volta-login-editarsenha{
+    align-items: center;
+    text-align: center;
+    margin-top: 0;
+}
+
+.volta-login-editarsenha a{
+    text-decoration: none;
+    color: #136935;
+}
+
+.volta-login-editarsenha p{
+    color: black;
+    font-weight: 400;
+}

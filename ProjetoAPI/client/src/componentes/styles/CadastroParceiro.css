@@ -1,0 +1,132 @@
+* {
+    font-family: Montserrat, sans-serif, Arial;
+}
+
+.container-geral-cadastro{
+    background-color: #ebebeb;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.container-janela-cadastro{
+    width: 80vw;
+    height: 80vh;
+    display: flex;
+}
+
+.container-esquerda-cadastro{
+    background: #136935;
+    width: 40vw;
+    height: 80vh;
+    display: flex;
+    align-items: left;
+    justify-content: left; 
+}
+
+.container-direita-cadastro{
+    background: white;
+    width: 40vw;
+    height: 80vh;
+    align-items: right;
+    justify-content: right; 
+}
+
+.logo-cadastro{
+    width: 40vw;
+    height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;  
+}
+
+.logo-cadastro img {
+    width: 300px;
+    height: 300px;
+}
+
+.botao-cadastro{
+    width: 40vw;
+    height: 10vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 4%;
+}
+
+.botao-cadastro button {
+    background-color: #136935;
+    height: 50px;
+    width: 140px;
+    font-size: 22px;
+}
+
+.titulo-cadastro{
+    width: 40vw;
+    height: 20vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.titulo-cadastro h1{
+    color: #136935;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.8em;
+    font-weight: 555;
+}
+
+.subtitulo-cadastro h3{
+    color: #136935;
+    margin-top: -5%;
+    text-align: center;
+    font-weight: 400;
+}
+
+.subtitulo-cadastro p{
+    margin: 0;
+    text-align: center;
+}
+
+.campo-cadastro{
+    text-align: left;
+    margin-top: 1%;
+    width: 38vw;    
+}
+
+.form-control-cadastro{
+    background-color: rgb(221, 255, 218) !important;
+    width: 50vw;
+}
+
+.esqueceu-senha-cadastro{
+    text-decoration: none;
+    margin-top: 1%;
+    width: 39vw;
+    text-align: right;
+}
+
+.esqueceu-senha-cadastro a{
+    text-decoration: none;
+    color: #136935;
+}
+
+.registro-cadastro{
+    align-items: center;
+    text-align: center;
+    margin-top: -1%;
+}
+
+.registro-cadastro a{
+    text-decoration: none;
+    color: #136935;
+}
+
+.registro-cadastro p{
+    color: black;
+    font-weight: 400;
+}
