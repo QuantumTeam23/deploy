@@ -2,7 +2,7 @@
     font-family: Montserrat, sans-serif, Arial;
 }
 
-.container-geral-cadastro{
+.container-geral-cadastro-parceiro{
     background-color: #ebebeb;
     width: 100vw;
     height: 100vh;
@@ -11,13 +11,13 @@
     justify-content: center;
 }
 
-.container-janela-cadastro{
+.container-janela-cadastro-parceiro{
     width: 80vw;
     height: 80vh;
     display: flex;
 }
 
-.container-esquerda-cadastro{
+.container-esquerda-cadastro-parceiro{
     background: #136935;
     width: 40vw;
     height: 80vh;
@@ -26,7 +26,7 @@
     justify-content: left; 
 }
 
-.container-direita-cadastro{
+.container-direita-cadastro-parceiro{
     background: white;
     width: 40vw;
     height: 80vh;
@@ -34,7 +34,45 @@
     justify-content: right; 
 }
 
-.logo-cadastro{
+@media (max-width: 360px) {
+    .logo-cadastro-parceiro{
+        width: 40vw;
+        height: 80vh;
+        display: none;
+        align-items: center;
+        justify-content: center;  
+    }
+
+    .container-esquerda-cadastro-parceiro{
+        background: #136935;
+        width: 40vw;
+        height: 80vh;
+        display: none;
+        align-items: left;
+        justify-content: left; 
+    }
+
+    .container-direita-cadastro-parceiro{
+        background: white;
+        width: 160vw;
+        height: 80vh;
+        align-items: right;
+        justify-content: right; 
+    }
+
+    .titulo-cadastro-mobile{
+        color: #136935;
+        display: none;
+        text-align: center;
+        justify-content: center;
+        font-size: 3vw;
+        font-weight: 555;
+        margin-bottom: 2%;
+        margin-left: 18vw;
+    }
+}
+
+.logo-cadastro-parceiro{
     width: 40vw;
     height: 80vh;
     display: flex;
@@ -42,36 +80,213 @@
     justify-content: center;  
 }
 
-.logo-cadastro img {
+.logo-cadastro-parceiroimg {
     width: 300px;
     height: 300px;
 }
 
-.botao-cadastro{
+.botao-cadastro-parceiro{
     width: 40vw;
     height: 10vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 4%;
+    margin-top: 1%;
 }
 
-.botao-cadastro button {
+.botao-cadastro-parceiro button {
     background-color: #136935;
-    height: 50px;
+    height: 40px;
     width: 140px;
-    font-size: 22px;
 }
 
-.titulo-cadastro{
+.titulo-cadastro-parceiro{
     width: 40vw;
-    height: 20vh;
+    height: 15vh;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+}
+
+.titulo-cadastro-parceiro h1{
+    color: #136935;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    font-size: 2.8em;
+    font-weight: 555;
+    margin-bottom: 2%;
+}
+
+.subtitulo-cadastro-parceiro h3{
+    color: #136935;
+    margin-top: -5%;
+    
+    text-align: center;
+    font-weight: 400;
+}
+
+.campo-cadastro-parceiro{
+    text-align: left;
+    margin-top: 1%;
+    margin-bottom: 2%;
+    width: 38vw;    
+}
+
+.fantasia-cadastro-parceiro{
+    text-align: left;
+    margin-top: 1%;
+    margin-bottom: 2%;
+    margin-right: 2%;
+    width: 34vw;    
+}
+.tipo-cadastro-parceiro{
+    text-align: left;
+    margin-top: 1%;
+    margin-bottom: 2%;
+    margin-right: 2%;
+    width: 12vw;    
+}
+
+.d-inline{
+    width: 38vw;  
+}
+.logradouro-cadastro-parceiro{
+    text-align: left;
+    margin-top: 1%;
+    margin-bottom: 2%;
+    margin-right: 2%;
+    width: 22vw;    
+}
+
+.numero-cadastro-parceiro{
+    text-align: left;
+    margin-top: 1%;
+    margin-bottom: 2%;
+    margin-right: 2%;
+    width: 5vw;    
+}
+.bairro-cadastro-parceiro{
+    text-align: left;
+    margin-top: 1%;
+    margin-bottom: 2%;
+    margin-right: 2%;
+    width: 10vw;    
+}
+.cep-cadastro-parceiro{
+    text-align: left;
+    margin-top: 1%;
+    margin-bottom: 2%;
+    margin-right: 2%;
+    width: 12vw;    
+}
+
+.form-control-cadastro-parceiro{
+    background-color: rgb(221, 255, 218) !important;
+    width: 50vw;
+}
+
+.registro-cadastro-parceiro{
+    align-items: center;
+    text-align: center;
+    margin-top: -1%;
+}
+
+.registro-cadastro-parceiro a{
+    text-decoration: none;
+    color: #136935;
+}
+
+.registro-cadastro-parceiro p{
+    color: black;
+    font-weight: 400;
+}
+
+.container-geral-user{
+    background-color: #ebebeb;
+    width: 100vw;
+    height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.titulo-cadastro h1{
+.container-janela-user{
+    width: 80vw;
+    height: 80vh;
+    display: flex;
+}
+
+.container-esquerda-user{
+    background: #136935;
+    width: 40vw;
+    height: 80vh;
+    display: flex;
+    align-items: left;
+    justify-content: left; 
+}
+
+.container-direita-user{
+    background: white;
+    width: 40vw;
+    height: 80vh;
+    align-items: right;
+    justify-content: right; 
+}
+
+.logo-user{
+    width: 40vw;
+    height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;  
+}
+
+.logo-user img {
+    width: 300px;
+    height: 300px;
+}
+
+.botao-usuario-user-1{
+    width: 40vw;
+    height: 10vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 15%;
+}
+
+.botao-usuario-user-2{
+    width: 40vw;
+    height: 10vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 0;
+}
+
+.botao-usuario-user-1 button {
+    background-color: #136935;
+    height: 50px;
+    width: 300px;
+}
+
+.botao-usuario-user-2 button {
+    background-color: #136935;
+    height: 50px;
+    width: 300px;
+}
+
+.titulo-user{
+    width: 40vw;
+    height: 15vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 5%;
+}
+
+.titulo-user h1{
     color: #136935;
     display: flex;
     align-items: center;
@@ -80,53 +295,34 @@
     font-weight: 555;
 }
 
-.subtitulo-cadastro h3{
+.subtitulo-user h3{
     color: #136935;
-    margin-top: -5%;
+    margin-top: -3%;
     text-align: center;
     font-weight: 400;
 }
 
-.subtitulo-cadastro p{
+.subtitulo-user p{
     margin: 0;
     text-align: center;
 }
 
-.campo-cadastro{
-    text-align: left;
-    margin-top: 1%;
-    width: 38vw;    
-}
-
-.form-control-cadastro{
-    background-color: rgb(221, 255, 218) !important;
-    width: 50vw;
-}
-
-.esqueceu-senha-cadastro{
-    text-decoration: none;
-    margin-top: 1%;
-    width: 39vw;
-    text-align: right;
-}
-
-.esqueceu-senha-cadastro a{
-    text-decoration: none;
-    color: #136935;
-}
-
-.registro-cadastro{
+.volta-cadastro-parceiro-user{
     align-items: center;
     text-align: center;
-    margin-top: -1%;
+    margin-top: 15%;
 }
 
-.registro-cadastro a{
+.volta-cadastro-parceiro-user a{
     text-decoration: none;
     color: #136935;
 }
 
-.registro-cadastro p{
+.volta-cadastro-parceiro-user p{
     color: black;
     font-weight: 400;
+}
+
+.h1{
+    margin-top: 2vh;
 }
