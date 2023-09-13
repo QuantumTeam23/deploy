@@ -1,4 +1,4 @@
-import './styles/Usuario.css';
+import '../styles/Usuario.css';
 import Button from 'react-bootstrap/Button';
 
 function Usuario() {

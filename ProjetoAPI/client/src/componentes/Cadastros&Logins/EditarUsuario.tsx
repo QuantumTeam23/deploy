@@ -1,4 +1,4 @@
-import './styles/EditarUsuario.css';
+import '../styles/EditarUsuario.css';
 import { Container, Form, FormControl, InputGroup } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 

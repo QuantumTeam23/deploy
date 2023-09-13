@@ -1,4 +1,4 @@
-import './styles/Login.css';
+import '../styles/Login.css';
 import { Container, Form, FormControl, InputGroup } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 

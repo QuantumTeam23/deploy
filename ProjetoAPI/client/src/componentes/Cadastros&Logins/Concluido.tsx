@@ -1,4 +1,4 @@
-import './styles/Concluido.css';
+import '../styles/Concluido.css';
 import { Container, Form, FormControl, InputGroup } from 'react-bootstrap';
 
 function Concluido() {

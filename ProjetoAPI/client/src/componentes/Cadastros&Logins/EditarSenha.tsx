@@ -1,4 +1,4 @@
-import './styles/EditarSenha.css';
+import '../styles/EditarSenha.css';
 import { Container, Form, FormControl, InputGroup } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 
