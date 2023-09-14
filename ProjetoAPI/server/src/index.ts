@@ -61,7 +61,7 @@ DB.connect().then(conn => {
 
 
 //Validação e Login no Sistema
-async function login (req, res) {
+async function login(req, res) {
     const { email } = req.body
     const { password } = req.body
 
@@ -77,7 +77,7 @@ async function login (req, res) {
         if (err) {
             console.log(err)
         }
-        
+
         if (result.rows.length === 1) {
             res.send({
                 msg: "Usuário logado com sucesso.",
@@ -87,8 +87,8 @@ async function login (req, res) {
             });
 
         } else {
-            res.send({msg: 'Email ou senha incorretos.'})
-                    
+            res.send({ msg: 'Email ou senha incorretos.' })
+
         }
     })
 }
@@ -117,19 +117,20 @@ async function existeEstabelecimento(cnpj) {
 
 async function cadastrarEstabelecimento(req, res) {
     console.log("Requisição de cadastro de estabelecimento recebida.");
-    const { nome, nomefantasia, cnpj, logradouro, logradouroNumero, bairro, cidade, estado, cep, regiao, telefone, saldo, volume, email, tipo, senha } = req.body;
+    const { razao_social, nome_fantasia, cnpj,  email,  senha } = req.body;
     console.log(req.body)
     const existeCNPJ = await existeEstabelecimento(cnpj);
     if (existeCNPJ) {
         res.status(409).send({ msg: "Já existe um estabelecimento com esse CNPJ/CPF." });
     } else {
         try {
-            const hashSenha = await bcrypt.hash(senha, 10) 
+            const hashSenha = await bcrypt.hash(senha, 10)
             const SQL = `
                 INSERT INTO
-                    Estabelecimentos("estabelecimento_razao_social","estabelecimento_nome_fantasia","estabelecimento_cnpj_cpf","estabelecimento_logradouro", "estabelecimento_logradouro_numero","estabelecimento_bairro","estabelecimento_cidade","estabelecimento_estado","estabelecimento_cep", "estabelecimento_regiao","estabelecimento_telefone","estabelecimento_saldo","estabelecimento_volume_comercializado_mes","estabelecimento_email", "estabelecimento_tipo", "estabelecimento_senha")
-                VALUES ('${nome}','${nomefantasia}','${cnpj}','${logradouro}', '${logradouroNumero}','${bairro}','${cidade}','${estado}','${cep}','${regiao}','${telefone}','${saldo}','${volume}','${email}','${tipo}','${hashSenha}')
+                    Estabelecimentos("estabelecimento_razao_social","estabelecimento_nome_fantasia","estabelecimento_cnpj_cpf","estabelecimento_email","estabelecimento_senha")
+                VALUES ('${razao_social}','${nome_fantasia}','${cnpj}','${email}','${hashSenha}')
             `
+            const resultado = await connectionDB.query(SQL);
             console.log("Estabelecimento cadastrado com sucesso!");
             res.send({ msg: "Estabelecimento cadastrado com sucesso!" });
         } catch (error) {
@@ -143,15 +144,15 @@ async function cadastrarEstabelecimento(req, res) {
 async function editarEstabelecimento(req, res) {
     console.log("Requisição de edição de estabelecimento recebida.");
     const cnpj = req.params.cnpj;
-    const { nome, nomefantasia, logradouro, logradouroNumero, bairro, cidade, estado, cep, regiao, telefone, saldo, volume, email, tipo, senha } = req.body;
+    const { razao_social, nome_fantasia, logradouro, logradouroNumero, bairro, cidade, estado, cep, regiao, telefone, saldo, volume, email, tipo, senha } = req.body;
     console.log(req.body);
     try {
         const SQL = `
             UPDATE 
                 Estabelecimentos 
             SET
-                "estabelecimento_razao_social" = '${nome}',
-                "estabelecimento_nome_fantasia" = '${nomefantasia}',
+                "estabelecimento_razao_social" = '${razao_social}',
+                "estabelecimento_nome_fantasia" = '${nome_fantasia}',
                 "estabelecimento_logradouro" = '${logradouro}',
                 "estabelecimento_logradouro_numero" = '${logradouroNumero}',
                 "estabelecimento_bairro" = '${bairro}',
@@ -245,24 +246,24 @@ async function existeParceiro(cnpj) {
 
 async function cadastrarParceiro(req, res) {
     console.log("Requisição de cadastro de parceiro recebida.");
-    const { nome, nomefantasia, cnpj, logradouro, logradouroNumero, bairro, cidade, estado, cep, regiao, telefone, saldo, cidadeatendida, dataoperacao, volume, email, tipo, senha } = req.body;
+    const { razao_social, cnpj,nome_fantasia, email, senha } = req.body;
     console.log(req.body)
     const existeCNPJ = await existeParceiro(cnpj);
     if (existeCNPJ) {
         res.status(409).send({ msg: "Já existe um parceiro com esse CNPJ/CPF." });
-    } else {
+    }  else {
         try {
-            const hashSenha = await bcrypt.hash(senha, 10) 
             const SQL = `
                 INSERT INTO
-                    Parceiros("parceiro_razao_social","parceiro_nome_fantasia","parceiro_cnpj_cpf","parceiro_logradouro", "parceiro_logradouro_numero","parceiro_bairro","parceiro_cidade","parceiro_estado","parceiro_cep", "parceiro_regiao","parceiro_telefone","parceiro_saldo","parceiro_cidades_atende","parceiro_data_inicio_operacao","parceiro_volume_coleta_mes","parceiro_email", "parceiro_tipo", "parceiro_senha")
-                VALUES ('${nome}','${nomefantasia}','${cnpj}','${logradouro}', '${logradouroNumero}','${bairro}','${cidade}','${estado}','${cep}','${regiao}','${telefone}','${saldo}', '${cidadeatendida}','${dataoperacao}','${volume}','${email}','${tipo}','${hashSenha}')
+                    Parceiros("parceiro_razao_social","parceiro_cnpj_cpf","parceiro_nome_fantasia","parceiro_email","parceiro_senha")
+                VALUES ('${razao_social}','${cnpj}','${nome_fantasia}','${email}','${senha}')
             `
+            const resultado = await connectionDB.query(SQL);
             console.log("Parceiro cadastrado com sucesso!");
             res.send({ msg: "Parceiro cadastrado com sucesso!" });
         } catch (error) {
-            console.error("Erro ao cadastrar estabelecimento:", error);
-            res.status(500).send({ msg: "Erro ao cadastrar estabelecimento." });
+            console.error("Erro ao cadastrar parceiro:", error);
+            res.status(500).send({ msg: "Erro ao cadastrar parceiro." });
         }
     }
 }
@@ -385,7 +386,7 @@ async function cadastrarAdministrador(req, res) {
     } else {
         try {
             //encriptar senha
-            const hashSenha = await bcrypt.hash(senha, 10) 
+            const hashSenha = await bcrypt.hash(senha, 10)
 
             //salvar no bd com a senha encriptada
             const SQL = `

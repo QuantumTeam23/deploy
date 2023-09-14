@@ -1,8 +1,101 @@
+import React, { useState, ChangeEvent } from 'react';
 import '../styles/EditarUsuario.css';
 import { Container, Form, FormControl, InputGroup } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
+import Alert from 'react-bootstrap/Alert';
+
+interface FormState {
+    razao_social: string;
+    nome_fantasia: string;
+    email: string;
+    senha: string;
+    cnpj: string;
+    showEmptyFieldsAlert: boolean;
+}
 
 function EditarUsuario() {
+    const [formState, setFormState] = useState<FormState>({
+        razao_social: '',
+        nome_fantasia: '',
+        email: '',
+        senha: '',
+        cnpj: '',
+        showEmptyFieldsAlert: false,
+    });
+
+    const { razao_social, nome_fantasia, email, senha, cnpj, showEmptyFieldsAlert } = formState;
+
+    const handleInputChange = (
+        event: ChangeEvent<HTMLInputElement>
+    ) => {
+        const { name, value } = event.target;
+        setFormState((prevState) => ({
+            ...prevState,
+            [name]: value,
+        }));
+    };
+
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+
+        if (razao_social === '' || nome_fantasia === '' || email === '' || senha === '' || cnpj === '') {
+            setFormState((prevState) => ({
+                ...prevState,
+                showEmptyFieldsAlert: true,
+            }));
+
+            setTimeout(() => {
+                setFormState((prevState) => ({
+                    ...prevState,
+                    showEmptyFieldsAlert: false,
+                }));
+            }, 5000);
+            return;
+        }
+
+        try {
+            const response = await fetch('http://localhost:3001/editParceiro/:cnpj', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    razao_social: razao_social,
+                    nome_fantasia: nome_fantasia,
+                    email: email,
+                    senha: senha,
+                    cnpj: cnpj,
+ 
+                }),
+            });
+
+            if (response.status === 200) {
+                console.log('Parceiro atualizado com sucesso!');
+                setFormState((prevState) => ({
+                    ...prevState,
+                    cadastrado: true,
+                }));
+                window.location.reload(); // Recarregar a página
+            } else if (response.status === 409) {
+                setFormState((prevState) => ({
+                    ...prevState,
+                    cnpjEmUso: true,
+                }));
+                setTimeout(() => {
+                    setFormState((prevState) => ({
+                        ...prevState,
+                        cnpjEmUso: false,
+                    }));
+                }, 5000);
+            } else {
+                console.error('Erro ao cadastrar parceiro:', response.statusText);
+            }
+        } catch (error) {
+            console.error('Erro ao cadastrar parceiro:', error);
+        }
+    };
+        console.log('Usuário editado com sucesso!');
+    
     return (
         <div className='container-geral-editar-usuario'>
             <div className="container-janela-editar-usuario">
@@ -17,14 +110,14 @@ function EditarUsuario() {
                     </div>
                     <Container>
                         <div className='campo-editar-usuario'>
-                            <Form.Group controlId='nome'>
+                            <Form.Group controlId='razao_social'>
                                 <Form.Label>Nome</Form.Label>
                                 <InputGroup >
                                     <FormControl
-                                        type='nome'
+                                        type='razao_social'
                                         required
                                         placeholder='Digite seu nome'
-                                        aria-label='nome'
+                                        aria-label='razao_social'
                                         aria-describedby='nome-addon'
                                         className='form-control-editar-usuario'
                                     />
@@ -77,6 +170,23 @@ function EditarUsuario() {
                                         placeholder='Digite seu senha'
                                         aria-label='senha'
                                         aria-describedby='senha-addon'
+                                        className='form-control-editar-usuario'
+                                    />
+                                </InputGroup>
+                            </Form.Group>
+                        </div>
+                    </Container>
+                    <Container>
+                        <div className='campo-editar-usuario'>
+                            <Form.Group controlId='cnpj'>
+                                <Form.Label>CNPJ</Form.Label>
+                                <InputGroup >
+                                    <FormControl
+                                        type='cnpj'
+                                        required
+                                        placeholder='Digite seu cnpj'
+                                        aria-label='cnpj'
+                                        aria-describedby='cnpj-addon'
                                         className='form-control-editar-usuario'
                                     />
                                 </InputGroup>

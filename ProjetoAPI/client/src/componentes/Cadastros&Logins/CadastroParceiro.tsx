@@ -1,159 +1,246 @@
 import '../styles/CadastroParceiro.css';
 import { Container, Form, FormControl, InputGroup } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
+import { useState, ChangeEvent } from 'react';
+import Alert from 'react-bootstrap/Alert';
 
+interface FormState {
+    razao_social: string;
+    nome_fantasia: string;
+    email: string;
+    senha: string;
+    cnpj: string;
+    showEmptyFieldsAlert: boolean;
+    cadastrado: boolean;
+    cnpjEmUso: boolean;
+}
 
 function CadastroParceiro() {
+    const [formState, setFormState] = useState<FormState>({
+        razao_social: '',
+        nome_fantasia: '',
+        email: '',
+        senha: '',
+        cnpj: '',
+        showEmptyFieldsAlert: false,
+        cadastrado: false,
+        cnpjEmUso: false,
+    });
+
+    const {
+        razao_social,
+        nome_fantasia,
+        email,
+        senha,
+        cnpj,
+        showEmptyFieldsAlert,
+        cadastrado,
+        cnpjEmUso,
+    } = formState;
+
+    const handleInputChange = (
+        event: ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    ) => {
+        const { name, value } = event.target;
+        setFormState((prevState) => ({
+            ...prevState,
+            [name]: value,
+        }));
+    };
+
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+
+        if (razao_social === '' || nome_fantasia === '' || email === '' || senha === '' || cnpj === '') {
+            setFormState((prevState) => ({
+                ...prevState,
+                showEmptyFieldsAlert: true,
+            }));
+
+            setTimeout(() => {
+                setFormState((prevState) => ({
+                    ...prevState,
+                    showEmptyFieldsAlert: false,
+                }));
+            }, 5000);
+            return;
+        }
+
+        try {
+            const response = await fetch('http://localhost:3001/addParceiro', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    razao_social: razao_social,
+                    nome_fantasia: nome_fantasia,
+                    email: email,
+                    senha: senha,
+                    cnpj: cnpj
+                }),
+            });
+
+            if (response.status === 200) {
+                console.log('Parceiro cadastrado com sucesso!');
+                setFormState((prevState) => ({
+                    ...prevState,
+                    cadastrado: true,
+                }));
+                window.location.reload(); // Recarregar a página
+            } else if (response.status === 409) {
+                setFormState((prevState) => ({
+                    ...prevState,
+                    cnpjEmUso: true,
+                }));
+                setTimeout(() => {
+                    setFormState((prevState) => ({
+                        ...prevState,
+                        cnpjEmUso: false,
+                    }));
+                }, 5000);
+            } else {
+                console.error('Erro ao cadastrar parceiro:', response.statusText);
+            }
+        } catch (error) {
+            console.error('Erro ao cadastrar parceiro:', error);
+        }
+    };
+
+    const isFormValid = () => {
+        return razao_social !== '' && nome_fantasia !== '' && email !== '' && senha !== '' && cnpj !=='';
+    };
+
     return (
-    <div >
-        <div className='container-geral-cadastro-parceiro'>
-            <div className="container-janela-cadastro-parceiro">
-                <div className='container-esquerda-cadastro-parceiro'>
-                    <span className='logo-cadastro-parceiro'><img src="logo-greenneat.png" alt="" /></span>
+        <div className='container-geral-cadastro'>
+            <div className="container-janela-cadastro">
+                <div className='container-esquerda-cadastro'>
+                    <span className='logo-cadastro'><img src="logo-greenneat.png" alt="" /></span>
                 </div>
-                <div className='container-direita-cadastro-parceiro'>
-                    <div className='titulo-cadastro-parceiro titulo-cadastro-mobile'>
-                        <span >
+                <div className='container-direita-cadastro'>
+                    <div>
+                        <span className='titulo-cadastro'>
                             <h1>Cadastro Parceiro</h1>
                         </span>
                     </div>
                     <Container>
-                        <div className='campo-cadastro-parceiro campos'>
+                        {showEmptyFieldsAlert && (
+                            <Alert variant="danger">Preencha todos os campos do formulário.</Alert>
+                        )}
+                        {cadastrado && (
+                            <Alert variant="success">Parceiro cadastrado com sucesso!!</Alert>
+                        )}
+                        {cnpjEmUso && (
+                            <Alert variant="danger">Já existe um parceiro com esse cnpj.</Alert>
+                        )}
+
+                        <div className='campo-cadastro-1'>
                             <Form.Group controlId='razao_social'>
-                                <Form.Label>Razão social/Nome</Form.Label>
-                                <InputGroup >
+                                <Form.Label>Razão Social</Form.Label>
+                                <InputGroup>
                                     <FormControl
                                         type='text'
+                                        name='razao_social'
                                         required
-                                        placeholder='Digite a Razão Social'
+                                        placeholder='Digite a razão social'
                                         aria-label='razao_social'
                                         aria-describedby='razao_social-addon'
-                                        className='form-control-cadastro-parceiro'
+                                        className='form-control-cadastro'
+                                        onChange={(event: ChangeEvent<HTMLInputElement>) => handleInputChange(event)}
+
                                     />
                                 </InputGroup>
                             </Form.Group>
                         </div>
-                    </Container>
-                    <Container style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        <div className='fantasia-cadastro-parceiro'>
+
+                        <div className='campo-cadastro'>
                             <Form.Group controlId='nome_fantasia'>
                                 <Form.Label>Nome Fantasia</Form.Label>
-                                <InputGroup >
+                                <InputGroup>
                                     <FormControl
                                         type='text'
+                                        name='nome_fantasia'
                                         required
-                                        placeholder='Digite o nome Fantasia'
+                                        placeholder='Digite o nome fantasia'
                                         aria-label='nome_fantasia'
                                         aria-describedby='nome_fantasia-addon'
-                                        className='form-control-cadastro-parceiro'
+                                        className='form-control-cadastro'
+                                        onChange={(event: ChangeEvent<HTMLInputElement>) => handleInputChange(event)}
+
                                     />
                                 </InputGroup>
                             </Form.Group>
                         </div>
-                        <div className="tipo-cadastro-parceiro">
-                        <Form.Label>Tipo</Form.Label>
-                            <Form.Select aria-label="Tipo Parceiro">
-                                <option>Selecione o tipo</option>
-                                <option value="1">Restaurante</option>
-                                <option value="2">Condomínio</option>
-                                <option value="3">Lanchonete</option>
-                                <option value="4">Shopping</option>
-                                <option value="5">Residência</option>
-                                <option value="6">Outros</option>
-                            </Form.Select> 
-                        </div>
-                    </Container>
-                    <Container>
-                        <div className='campo-cadastro-parceiro'>
+
+                        <div className='campo-cadastro'>
                             <Form.Group controlId='cnpj'>
-                                <Form.Label>CNPJ/CPF</Form.Label>
-                                <InputGroup >
+                                <Form.Label>CNPJ:</Form.Label>
+                                <InputGroup>
                                     <FormControl
                                         type='cnpj'
+                                        name='cnpj'
                                         required
-                                        placeholder='Digite o CNPJ'
+                                        placeholder='Digite o cnpj'
                                         aria-label='cnpj'
                                         aria-describedby='cnpj-addon'
-                                        className='form-control-cadastro-parceiro'
+                                        className='form-control-cadastro'
+                                        onChange={(event: ChangeEvent<HTMLInputElement>) => handleInputChange(event)}
+
+                                    />
+                                </InputGroup>
+                            </Form.Group>
+                        </div>
+
+                        <div className='campo-cadastro'>
+                            <Form.Group controlId='email'>
+                                <Form.Label>Email:</Form.Label>
+                                <InputGroup>
+                                    <FormControl
+                                        type='email'
+                                        name='email'
+                                        required
+                                        placeholder='Digite o email'
+                                        aria-label='email'
+                                        aria-describedby='email-addon'
+                                        className='form-control-cadastro'
+                                        onChange={(event: ChangeEvent<HTMLInputElement>) => handleInputChange(event)}
+
+                                    />
+                                </InputGroup>
+                            </Form.Group>
+                        </div>
+
+                        <div className='campo-cadastro'>
+                            <Form.Group controlId='senha'>
+                                <Form.Label>Senha:</Form.Label>
+                                <InputGroup>
+                                    <FormControl
+                                        type='password'
+                                        name='senha'
+                                        required
+                                        placeholder='Digite a senha'
+                                        aria-label='senha'
+                                        aria-describedby='senha-addon'
+                                        className='form-control-cadastro'
+                                        onChange={(event: ChangeEvent<HTMLInputElement>) => handleInputChange(event)}
+
                                     />
                                 </InputGroup>
                             </Form.Group>
                         </div>
                     </Container>
-                    <Container style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        <div className='logradouro-cadastro-parceiro'>
-                            <Form.Group controlId='logradouro'>
-                                <Form.Label>Logradouro</Form.Label>
-                                <InputGroup >
-                                    <FormControl
-                                        type='text'
-                                        required
-                                        placeholder='Digite o endereço'
-                                        aria-label='endereco'
-                                        aria-describedby='endereco-addon'
-                                        className='form-control-cadastro-parceiro'
-                                    />
-                                </InputGroup>
-                            </Form.Group>
-                        </div>
-                        <div className='numero-cadastro-parceiro '>
-                            <Form.Group controlId='numero'>
-                                <Form.Label>Número</Form.Label>
-                                <InputGroup >
-                                    <FormControl
-                                        type='text'
-                                        required
-                                        placeholder='Numero'
-                                        aria-label='numero'
-                                        aria-describedby='numero-addon'
-                                        className='form-control-cadastro-parceiro'
-                                    />
-                                </InputGroup>
-                            </Form.Group>
-                        </div>
-                        <div className='bairro-cadastro-parceiro '>
-                            <Form.Group controlId='cep'>
-                                <Form.Label>Bairro</Form.Label>
-                                <InputGroup >
-                                    <FormControl
-                                        type='text'
-                                        required
-                                        placeholder='bairro'
-                                        aria-label='bairro'
-                                        aria-describedby='bairro-addon'
-                                        className='form-control-cadastro-parceiro'
-                                    />
-                                </InputGroup>
-                            </Form.Group>
-                        </div>
-                    </Container>
-                    <Container style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        <div className='campo-cadastro-parceiro'>
-                            <Form.Group controlId='lcomplemento'>
-                                <Form.Label>Complemento</Form.Label>
-                                <InputGroup >
-                                    <FormControl
-                                        type='text'
-                                        required
-                                        placeholder='Digite o complemento'
-                                        aria-label='ecomplemento'
-                                        aria-describedby='ecomplemento-addon'
-                                        className='form-control-cadastro-parceiro'
-                                    />
-                                </InputGroup>
-                            </Form.Group>
-                        </div>
-                    </Container>
-                    <span className='botao-cadastro-parceiro'>
-                    <Button variant="success">Cadastrar</Button>{' '}
+                    <span className='botao-cadastro'>
+                        <Button variant="success" onClick={(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+                            event.preventDefault();
+                            handleSubmit(event as any);
+                        }}>Cadastrar</Button>{' '}
                     </span>
-                    <div className='registro-cadastro-parceiro'>
+                    <div className='registro-cadastro'>
                         <p>Voltar para a página de <a href="#">Login</a></p>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
     );
 }
 
