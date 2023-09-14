@@ -25,10 +25,7 @@ function Login() {
         console.log(data)
 
         if (data.msg === "Usuário logado com sucesso.") {
-            // // Armazene o token JWT no localStorage
-            // localStorage.setItem('token', data.token);
-            // // Redirecione para a página protegida
-            navigate('/cadastro-parceiro');
+            navigate('/cadastro-parceiro')
         }
         
     }

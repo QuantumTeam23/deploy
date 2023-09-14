@@ -60,8 +60,7 @@ DB.connect().then(conn => {
 });
 
 
-// const secretKey = '779568';
-
+//Validação e Login no Sistema
 async function login (req, res) {
     const { email } = req.body
     const { password } = req.body
@@ -87,37 +86,12 @@ async function login (req, res) {
                 idAdministrador: result.rows.values().next().value.administrador_id,
             });
 
-            // const token = jwt.sign({ email, role: 'parceiro' }, secretKey);
-            // res.json({ token });
-
         } else {
             res.send({msg: 'Email ou senha incorretos.'})
                     
         }
     })
 }
-
-// function verifyToken(req, res, next) {
-//     const token = req.headers['authorization'];
-  
-//     if (!token) {
-//       return res.status(403).json({ error: 'Token não fornecido' });
-//     }
-  
-//     jwt.verify(token, secretKey, (err, decoded) => {
-//       if (err) {
-//         return res.status(401).json({ error: 'Token inválido' });
-//       }
-//       req.user = decoded;
-//       next();
-//     });
-// }
-
-// app.get('/cadastro-parceiro', verifyToken, (req, res) => {
-//     res.json({ message: 'Este é um recurso protegido' });
-// });
-
-
 
 //CRUD ESTABELECIMENTO
 //Função para verificar se já tem cadastrado o cnpj
