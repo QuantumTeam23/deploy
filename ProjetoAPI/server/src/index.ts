@@ -1,6 +1,7 @@
 const express = require('express');
 const bp = require('body-parser');
 const cors = require('cors');
+const jwt = require('jsonwebtoken');
 
 const app = express();
 const bcrypt = require("bcrypt");
@@ -41,12 +42,12 @@ app.post('/login', login);
 
 //CONEXÃO BANCO
 const DB = new Pool({
-    connectionString: "postgres://ajisntze:gNdLfQIQWZ2gcQjKM9HZYV4MhGQU_bya@silly.db.elephantsql.com/ajisntze"
-    // user: 'postgres',       //user PostgreSQL padrão = postgres
-    // host: 'localhost',
-    // database: 'your_database',
-    // password: 'your_password',
-    // port: 5432             //port PostgreSQL padrão = 5432
+    // connectionString: "postgres://ajisntze:gNdLfQIQWZ2gcQjKM9HZYV4MhGQU_bya@silly.db.elephantsql.com/ajisntze"
+    user: 'postgres',       //user PostgreSQL padrão = postgres
+    host: 'localhost',
+    database: 'API',
+    password: 'General779568@',
+    port: 5432             //port PostgreSQL padrão = 5432
 });
 
 let connectionDB: PoolClient;
@@ -58,57 +59,65 @@ DB.connect().then(conn => {
     });
 });
 
-//método para login 
-async function login(req, res) {
-    const {email, senha} = req.body;
-    const SQL1 = await connectionDB.query(`
-    SELECT * FROM Administradores 
-    WHERE administrador_email = '${email}'
-    `);
-    const SQL2 = await connectionDB.query(`
-    SELECT * FROM Estabelecimentos 
-    WHERE estabelecimento_email = '${email}'
-    `);
-    const SQL3 = await connectionDB.query(`
-    SELECT * FROM Parceiros 
-    WHERE parceiro_email = '${email}'
-    `);
 
-    if (SQL1.rowCount == 0 && SQL2.rowCount == 0 && SQL3.rowCount == 0){
-        return res.status(400).send('Usuário não encontrado, verifique o e-mail fornecido')
-    }
-    if (SQL1.rowCount == 1){
-        try {
-            if(await bcrypt.compare(senha, SQL1.rows[0].administrador_senha)) {
-                res.send("Sucesso")
-            }else{
-                res.send("Acesso não autorizado")
-            }
-        } catch {
-            res.status(500).send()
+// const secretKey = '779568';
+
+async function login (req, res) {
+    const { email } = req.body
+    const { password } = req.body
+
+    let SQL = (`SELECT *, *, *
+    FROM parceiros 
+    FULL JOIN estabelecimentos ON parceiro_id = estabelecimento_id 
+    FULL JOIN administradores ON parceiro_id = administrador_id
+    WHERE parceiros.parceiro_email = '${email}' AND parceiros.parceiro_senha = '${password}'
+    OR estabelecimentos.estabelecimento_email = '${email}' AND estabelecimentos.estabelecimento_senha = '${password}'
+    OR administradores.administrador_email = '${email}' AND administradores.administrador_senha = '${password}'`)
+
+    DB.query(SQL, (err, result) => {
+        if (err) {
+            console.log(err)
         }
-    }else if(SQL2.rowCount == 1){
-        try {
-            if(await bcrypt.compare(senha, SQL2.rows[0].estabelecimento_senha)) {
-                res.send("Sucesso")
-            }else{
-                res.send("Acesso não autorizado")
-            }
-        } catch {
-            res.status(500).send()
+        
+        if (result.rows.length === 1) {
+            res.send({
+                msg: "Usuário logado com sucesso.",
+                idParceiro: result.rows.values().next().value.parceiro_id,
+                idEstabelecimento: result.rows.values().next().value.estabelecimento_id,
+                idAdministrador: result.rows.values().next().value.administrador_id,
+            });
+
+            // const token = jwt.sign({ email, role: 'parceiro' }, secretKey);
+            // res.json({ token });
+
+        } else {
+            res.send({msg: 'Email ou senha incorretos.'})
+                    
         }
-    }else if(SQL3.rowCount == 1){
-        try {
-            if(await bcrypt.compare(senha, SQL3.rows[0].parceiro_senha)) {
-                res.send("Sucesso")
-            }else{
-                res.send("Acesso não autorizado")
-            }
-        } catch {
-            res.status(500).send()
-        }
-    }
+    })
 }
+
+// function verifyToken(req, res, next) {
+//     const token = req.headers['authorization'];
+  
+//     if (!token) {
+//       return res.status(403).json({ error: 'Token não fornecido' });
+//     }
+  
+//     jwt.verify(token, secretKey, (err, decoded) => {
+//       if (err) {
+//         return res.status(401).json({ error: 'Token inválido' });
+//       }
+//       req.user = decoded;
+//       next();
+//     });
+// }
+
+// app.get('/cadastro-parceiro', verifyToken, (req, res) => {
+//     res.json({ message: 'Este é um recurso protegido' });
+// });
+
+
 
 //CRUD ESTABELECIMENTO
 //Função para verificar se já tem cadastrado o cnpj

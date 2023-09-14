@@ -1,8 +1,40 @@
+import { useState } from 'react';
 import '../styles/Login.css';
 import { Container, Form, FormControl, InputGroup } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
+import { useNavigate } from "react-router-dom";
 
 function Login() {
+    const [email, setEmail] = useState("" as any);
+    const [password, setPassword] = useState("" as any);
+    const navigate = useNavigate()
+    
+
+    const handleSubmit = async (event: any) => {
+        event.preventDefault()
+
+        const response = await fetch('http://localhost:3001/login', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email, password }),
+            
+        })
+        const data = await response.json()
+        console.log(data)
+
+        if (data.msg === "Usuário logado com sucesso.") {
+            // // Armazene o token JWT no localStorage
+            // localStorage.setItem('token', data.token);
+            // // Redirecione para a página protegida
+            navigate('/cadastro-parceiro');
+        }
+        
+    }
+
+
+
     return (
         <div className='container-geral-login'>
             <div className="container-janela-login">
@@ -30,6 +62,8 @@ function Login() {
                                         aria-label='E-mail'
                                         aria-describedby='email-addon'
                                         className='form-control-login-1'
+                                        value={email}
+                                        onChange={(event) => setEmail(event.target.value)}
                                     />
                                 </InputGroup>
                             </Form.Group>
@@ -47,6 +81,8 @@ function Login() {
                                         aria-label='Senha'
                                         aria-describedby='senha-addon'
                                         className='form-control-login-2'
+                                        value={password}
+                                        onChange={(event) => setPassword(event.target.value)}
                                     />
                                 </InputGroup>
                             </Form.Group>
@@ -56,7 +92,7 @@ function Login() {
                         <a href="#">Esqueceu a senha?</a>
                     </div>
                     <span className='botao-login'>
-                    <Button variant="success">Entrar</Button>{' '}
+                    <Button variant="success" onClick={handleSubmit}>Entrar</Button>{' '}
                     </span>
                     <div className='registro-login'>
                         <p>Ainda não tem conta? <a href="#">Registre-se</a></p>
