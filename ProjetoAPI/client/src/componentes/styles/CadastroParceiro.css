@@ -1,134 +1,90 @@
 * {
-    font-family: Montserrat, sans-serif, Arial;
+  font-family: Montserrat, sans-serif, Arial;
 }
 
-.container-geral-cadastro{
-    background-color: #ebebeb;
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.container-geral-cadastro-parceiro {
+  background-color: #ebebeb;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.container-janela-cadastro{
-    width: 80vw;
-    height: 80vh;
-    display: flex;
+.container-janela-cadastro-parceiro {
+  width: 90%;
+  max-width: 1200px;
+  display: flex;
+  justify-content: space-between;
 }
 
-.container-esquerda-cadastro{
-    background: #136935;
-    width: 40vw;
-    height: 80vh;
-    display: flex;
-    align-items: left;
-    justify-content: left; 
+.container-esquerda-cadastro-parceiro {
+  background: #136935;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.container-direita-cadastro{
-    background: white;
-    width: 40vw;
-    height: 80vh;
-    align-items: right;
-    justify-content: right; 
+.container-direita-cadastro-parceiro {
+  background: white;
+  flex: 1;
+  padding: 20px;
 }
 
-.logo-cadastro{
-    width: 40vw;
-    height: 80vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;  
+.logo-cadastro-parceiro img {
+  max-width: 100%;
+  height: auto;
 }
 
-.logo-cadastro img {
-    width: 300px;
-    height: 300px;
+.form-control-cadastro-parceiro {
+  background-color: rgb(221, 255, 218) !important;
+  width: 100%;
 }
 
-.botao-cadastro{
-    width: 40vw;
-    height: 10vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 3%;
+.botao-cadastro-parceiro {
+  display: flex;
+  justify-content: center;
+  margin-top: 4%;
 }
 
-.botao-cadastro button {
-    background-color: #136935;
-    height: 50px;
-    width: 140px;
-    font-size: 22px;
+.botao-cadastro-parceiro button {
+  background-color: #136935;
+  height: 50px;
+  width: 140px;
+  font-size: 22px;
 }
 
-.titulo-cadastro{
-    width: 40vw;
-    height: 20vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: -2%;
+.titulo-cadastro-parceiro h1 {
+  color: #136935;
+  text-align: center;
+  font-size: 2.8em;
+  font-weight: 555;
 }
 
-.titulo-cadastro h1{
-    color: #136935;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2.8em;
-    font-weight: 555;
+.registro-cadastro-parceiro {
+  text-align: center;
+  margin-top: 1%;
 }
 
-.subtitulo-cadastro h3{
-    color: #136935;
-    margin-top: -5%;
-    text-align: center;
-    font-weight: 400;
+.registro-cadastro-parceiro a {
+  text-decoration: none;
+  color: #136935;
 }
 
-.subtitulo-cadastro p{
-    margin: 0;
-    text-align: center;
+.registro-cadastro-parceiro p {
+  color: black;
+  font-weight: 400;
 }
 
-.campo-cadastro-1{
-    text-align: left;
-    margin-top: -3%;
-    width: 38vw;    
+.form-group-transition {
+  opacity: 1;
+  max-height: 2000px;
+  transition: opacity 0.3s ease-in, max-height 0.3s ease-in;
 }
 
-.campo-cadastro{
-    text-align: left;
-    margin-top: 2%;
-    width: 38vw;    
-}
-
-.form-control-cadastro{
-    background-color: rgb(221, 255, 218) !important;
-    width: 50vw;
-}
-
-.form-control-cadastro::placeholder {
-    font-size: 12px;
-    font-style: italic;
-    letter-spacing: 2px;
-    font-weight: 550;
-}
-
-.registro-cadastro{
-    align-items: center;
-    text-align: center;
-    margin-top: -2%;
-}
-
-.registro-cadastro a{
-    text-decoration: none;
-    color: #136935;
-}
-
-.registro-cadastro p{
-    color: black;
-    font-weight: 400;
+.form-group-transition.hidden {
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
 }

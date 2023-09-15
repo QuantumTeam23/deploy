@@ -2,7 +2,7 @@
     font-family: Montserrat, sans-serif, Arial;
 }
 
-.container-geral-user{
+.container-geral-user {
     background-color: #ebebeb;
     width: 100vw;
     height: 100vh;
@@ -11,116 +11,82 @@
     justify-content: center;
 }
 
-.container-janela-user{
-    width: 80vw;
-    height: 80vh;
+.container-janela-user {
+    width: 100vw;
+    max-width: 1200px;
     display: flex;
+    justify-content: space-between;
 }
 
-.container-esquerda-user{
+.container-esquerda-user {
     background: #136935;
-    width: 40vw;
-    height: 80vh;
-    display: flex;
-    align-items: left;
-    justify-content: left; 
-}
-
-.container-direita-user{
-    background: white;
-    width: 40vw;
-    height: 80vh;
-    align-items: right;
-    justify-content: right; 
-}
-
-.logo-user{
-    width: 40vw;
-    height: 80vh;
+    flex: 1;
     display: flex;
     align-items: center;
-    justify-content: center;  
+    justify-content: center;
+}
+
+.container-direita-user {
+    background: white;
+    flex: 1;
+    padding: 20px;
 }
 
 .logo-user img {
-    width: 300px;
-    height: 300px;
+    max-width: 100%;
+    height: auto;
 }
 
-.botao-usuario-user-1{
-    width: 40vw;
-    height: 10vh;
+.botao-usuario-user-1, .botao-usuario-user-2 {
     display: flex;
-    align-items: center;
     justify-content: center;
-    margin-top: 15%;
+    margin-top: 10%;
 }
 
-.botao-usuario-user-2{
-    width: 40vw;
-    height: 10vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 0;
-}
-
-.botao-usuario-user-1 button {
+.botao-usuario-user-1 button, .botao-usuario-user-2 button {
     background-color: #136935;
-    height: 50px;
+    height: 55px;
     width: 300px;
     font-size: 22px;
 }
 
-.botao-usuario-user-2 button {
-    background-color: #136935;
-    height: 50px;
-    width: 300px;
-    font-size: 22px;
+.titulo-user {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 20px;
 }
 
-.titulo-user{
-    width: 40vw;
-    height: 15vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 5%;
-}
-
-.titulo-user h1{
+.titulo-user h1 {
     color: #136935;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     font-size: 2.8em;
     font-weight: 555;
 }
 
-.subtitulo-user h3{
+.subtitulo-user h3 {
     color: #136935;
     margin-top: -3%;
     text-align: center;
     font-weight: 400;
 }
 
-.subtitulo-user p{
+.subtitulo-user p {
     margin: 0;
     text-align: center;
 }
 
-.volta-login-user{
-    align-items: center;
+.volta-login-user {
     text-align: center;
-    margin-top: 15%;
+    margin-top: 8%;
 }
 
-.volta-login-user a{
+.volta-login-user a {
     text-decoration: none;
     color: #136935;
 }
 
-.volta-login-user p{
+.volta-login-user p {
     color: black;
     font-weight: 400;
 }

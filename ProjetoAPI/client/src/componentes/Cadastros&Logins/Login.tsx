@@ -3,6 +3,7 @@ import '../styles/Login.css';
 import { Container, Form, FormControl, InputGroup } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import { useNavigate } from "react-router-dom";
+import { lightGreen } from '@mui/material/colors';
 
 function Login() {
     const [email, setEmail] = useState("" as any);
@@ -49,7 +50,7 @@ function Login() {
                     </div>
                     <Container>
                         <div className='campo-login-1'>
-                            <Form.Group controlId='email'>
+                            <Form.Group controlId='email' >
                                 <Form.Label>E-mail</Form.Label>
                                 <InputGroup >
                                     <FormControl
@@ -61,6 +62,7 @@ function Login() {
                                         className='form-control-login-1'
                                         value={email}
                                         onChange={(event) => setEmail(event.target.value)}
+                                        style={{backgroundColor: '#E2FFC9'}}
                                     />
                                 </InputGroup>
                             </Form.Group>
@@ -80,6 +82,7 @@ function Login() {
                                         className='form-control-login-2'
                                         value={password}
                                         onChange={(event) => setPassword(event.target.value)}
+                                        style={{backgroundColor: '#E2FFC9'}}
                                     />
                                 </InputGroup>
                             </Form.Group>
@@ -97,6 +100,7 @@ function Login() {
                 </div>
             </div>
         </div>
+
     );
 }
 
