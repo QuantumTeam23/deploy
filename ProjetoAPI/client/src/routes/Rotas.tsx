@@ -7,6 +7,15 @@ import Recuperacao from "../componentes/Cadastros&Logins/Recuperacao";
 import Token from "../componentes/Cadastros&Logins/Token"
 import Usuario from "../componentes/Cadastros&Logins/Usuario";
 import EditarSenha from "../componentes/Cadastros&Logins/EditarSenha";
+import PainelAdministrador from "../componentes/PainelAdmin/PainelAdminControlUser";
+import HistoricoTransacoes from "../componentes/PainelAdmin/PainelAdminHistTransacoes";
+import PainelParceiroColetas from '../componentes/PainelParceiro/PainelColetas';
+import PainelHistoricoCompra from "../componentes/PainelParceiro/PainelHistóricoCompra";
+import PainelSaldoCredito from "../componentes/PainelParceiro/PainelSaldoCredito";
+import PainelParceiroCarteiraEstab from "../componentes/PainelParceiro/PainelCarteiraEstab";
+import PainelEstabelecimentoHistorico from "../componentes/PainelEstabelecimento/PainelEstabelecimentoHistoricoCompras";
+import PainelEstabelecimentoExtrato from "../componentes/PainelEstabelecimento/PainelEstabelecimentoExtrato";
+
 
 function Rotas() {
     return (
@@ -20,6 +29,14 @@ function Rotas() {
                 <Route path="/usuario" element={<Usuario/>} />
                 <Route path="/editar-usuario" element={<EditarUsuario />} />
                 <Route path="/editar-senha" element={<EditarSenha />} />
+                <Route path="/painel-administrador-usuario" element={<PainelAdministrador />} />
+                <Route path="/painel-administrador-transacoes" element={<HistoricoTransacoes />} />
+                <Route path="/painel-parceiro-carteira-estabelecimento" element={<PainelParceiroCarteiraEstab/>} />
+                <Route path="/painel-parceiro-coleta" element={<PainelParceiroColetas/>} />
+                <Route path="/painel-parceiro-historico-compra" element={<PainelHistoricoCompra/>} />
+                <Route path="/painel-parceiro-saldo-credito" element={<PainelSaldoCredito/>} />
+                <Route path="/painel-estabelecimento-historico-compras" element={<PainelEstabelecimentoHistorico/>} />
+                <Route path="/painel-estabelecimento-extrato" element={<PainelEstabelecimentoExtrato/>} />
                 <Route path="/" element={<Navigate to={'/login'} />} />
                 <Route path="*" element={<h1>PÁGINA NÃO ENCONTRADA</h1>}/>
             </Routes>
