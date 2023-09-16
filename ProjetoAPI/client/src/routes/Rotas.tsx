@@ -1,6 +1,6 @@
 import { BrowserRouter, Navigate, Routes, Route } from "react-router-dom";
 import Login from "../componentes/Cadastros&Logins/Login";
-import EditarUsuario from "../componentes/Cadastros&Logins/EditarUsuario";
+import EditarUsuario from "../componentes/Edição/EditarUsuario";
 import CadastroEstabelecimento from "../componentes/Cadastros&Logins/CadastroEstabelecimento";
 import CadastroParceiro from "../componentes/Cadastros&Logins/CadastroParceiro";
 import Recuperacao from "../componentes/Cadastros&Logins/Recuperacao";

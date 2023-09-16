@@ -74,7 +74,7 @@ function Login() {
                                 <Form.Label>Senha</Form.Label>
                                 <InputGroup>
                                     <FormControl
-                                        type='senha'
+                                        type='password'
                                         required
                                         placeholder='Digite sua senha'
                                         aria-label='Senha'
