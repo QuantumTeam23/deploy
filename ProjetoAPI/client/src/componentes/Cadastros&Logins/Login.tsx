@@ -4,31 +4,92 @@ import { Container, Form, FormControl, InputGroup } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import { useNavigate } from "react-router-dom";
 import { lightGreen } from '@mui/material/colors';
+import Swal from "sweetalert2";
 
 function Login() {
     const [email, setEmail] = useState("" as any);
     const [password, setPassword] = useState("" as any);
     const navigate = useNavigate()
+
+    const validaCampos = () => {
+        let vazio = false
+    
+        if (email === "" || password === "") {
+          vazio = true
+          return vazio
+        }
+    }
+    
+    function msgValidaCampos() {
+        Swal.fire({
+            title: 'Alerta',
+            html: 'Preencha todos os campos.',
+            icon: 'warning',
+            confirmButtonColor: '#de940a'
+        })
+    }
     
 
     const handleSubmit = async (event: any) => {
         event.preventDefault()
 
-        const response = await fetch('http://localhost:3001/login', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ email, password }),
-            
-        })
-        const data = await response.json()
-        console.log(data)
-
-        if (data.msg === "Usuário logado com sucesso.") {
-            navigate('/cadastro-parceiro')
+        if (!validaCampos()) {
+            const response = await fetch('http://localhost:3001/login', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email, password }),
+                
+            })
+            const data = await response.json()
+            console.log(data)
+    
+            if (data.msg === "Usuário logado com sucesso." && data.idParceiro !== null) {
+                Swal.fire({
+                    title: "Sucesso",
+                    icon: 'success',
+                    text: 'Usuário autenticado com sucesso',
+                    confirmButtonColor: '#de940a'
+                })
+                setTimeout(() => {
+                    navigate('/painel-parceiro-historico-compra');
+                }, 1100);
+            }
+    
+            else if (data.msg === "Usuário logado com sucesso." && data.idEstabelecimento !== null) {
+                Swal.fire({
+                    title: "Sucesso",
+                    icon: 'success',
+                    text: 'Usuário autenticado com sucesso',
+                    confirmButtonColor: '#de940a'
+                })
+                setTimeout(() => {
+                    navigate('/painel-estabelecimento-historico-compras');
+                }, 1100);
+            }
+    
+            else if (data.msg === "Usuário logado com sucesso." && data.idAdministrador !== null) {
+                Swal.fire({
+                    title: "Sucesso",
+                    icon: 'success',
+                    text: 'Usuário autenticado com sucesso',
+                    confirmButtonColor: '#de940a'
+                })
+                setTimeout(() => {
+                    navigate('/painel-administrador-usuario');
+                }, 1100);
+            } else {
+                Swal.fire({
+                    title: "Erro",
+                    icon: 'error',
+                    text: 'Usuário não cadastrado no sistema.',
+                    confirmButtonColor: '#de940a'
+                })
+            }
+        } else {
+            msgValidaCampos()
         }
-        
     }
 
 

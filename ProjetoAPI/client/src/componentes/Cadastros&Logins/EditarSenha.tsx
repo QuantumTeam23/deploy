@@ -21,7 +21,7 @@ function EditarSenha() {
                                 <Form.Label>Nova senha</Form.Label>
                                 <InputGroup >
                                     <FormControl
-                                        type='senha'
+                                        type='password'
                                         required
                                         placeholder='Digite a sua nova senha'
                                         aria-label='Senha'
@@ -38,7 +38,7 @@ function EditarSenha() {
                                 <Form.Label>Repetir a senha</Form.Label>
                                 <InputGroup>
                                     <FormControl
-                                        type='senha'
+                                        type='password'
                                         required
                                         placeholder='Repita a sua nova senha'
                                         aria-label='Senha'
