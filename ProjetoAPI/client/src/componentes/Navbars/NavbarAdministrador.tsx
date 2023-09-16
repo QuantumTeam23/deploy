@@ -1,7 +1,4 @@
 import React from 'react';
-import MenuLateralAdministrador from './NavbarAdministradorMenuLateral';
-
-
 
 
 function NavbarAdministrador() {
@@ -12,9 +9,8 @@ function NavbarAdministrador() {
                     <img src={require('../Imagens/logoEmpresa.png')} alt="Imagem" className="img-fluid"  style={{ maxWidth: '100px', maxHeight: '60px' }}  /> 
                 </a>
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span style={{ display: 'flex', alignItems: 'center' }}><MenuLateralAdministrador /></span>
+                    <span className="navbar-toggler-icon"></span>
                 </button>
-
                 <div className="collapse navbar-collapse" id="navbarNav">
                     <ul className='navbar-nav mt-auto'>
                         <li className="nav-item">
@@ -26,10 +22,10 @@ function NavbarAdministrador() {
                             <a className="nav-link text-white" href="#">Processos</a>
                         </li>
                         <li className="nav-item" style={{ marginRight: '25px' }}>
-                            <a className="nav-link text-white" href="/painel-administrador-transacoes">Transações</a>
+                            <a className="nav-link text-white" href="#">Transações</a>
                         </li>
                         <li className="nav-item" style={{ marginRight: '25px' }}>
-                            <a className="nav-link text-white" href="/painel-administrador-usuario">Controle de Usuários</a>
+                            <a className="nav-link text-white" href="#">Controle de Usuários</a>
                         </li>
                         <li className="nav-item" style={{ marginRight: '5px' }}>
                             <img src={require('../Imagens/user.png')} alt="Imagem" className="img-fluid"  style={{ maxWidth: '100px', maxHeight: '40px' }}  /> 
@@ -42,4 +38,3 @@ function NavbarAdministrador() {
 }
 
 export default NavbarAdministrador;
-

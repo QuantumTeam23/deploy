@@ -1,5 +1,4 @@
 import React from 'react';
-import MenuLateralEstabelecimento from './NavbarEstabelecimentoMenuLateral';
 
 
 function NavbarEstabelecimento() {
@@ -10,7 +9,7 @@ function NavbarEstabelecimento() {
                     <img src={require('../Imagens/logoEmpresa.png')} alt="Imagem" className="img-fluid"  style={{ maxWidth: '100px', maxHeight: '60px' }}  /> 
                 </a>
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span style={{ display: 'flex', alignItems: 'center' }}><MenuLateralEstabelecimento /></span>
+                    <span className="navbar-toggler-icon"></span>
                 </button>
                 <div className="collapse navbar-collapse" id="navbarNav">
                     <ul className='navbar-nav mt-auto'>
@@ -19,11 +18,12 @@ function NavbarEstabelecimento() {
                         </li>
                     </ul>
                     <ul className="navbar-nav ms-auto">
+
                         <li className="nav-item">
-                            <a className="nav-link text-white" href="/painel-estabelecimento-extrato" style={{ marginRight: '25px'}}>Extrato e Saldo de Crédito </a>
+                            <a className="nav-link text-white" href="#" style={{ marginRight: '25px'}}>Extrato e Saldo de Crédito </a>
                         </li>
                         <li className="nav-item" style={{ marginRight: '25px' }}>
-                            <a className="nav-link text-white" href="/painel-estabelecimento-historico-compras">Histórico de Compra</a>
+                            <a className="nav-link text-white" href="#">Histórico de Compra</a>
                         </li>
                         <li className="nav-item" style={{ marginRight: '5px' }}>
                             <img src={require('../Imagens/user.png')} alt="Imagem" className="img-fluid"  style={{ maxWidth: '100px', maxHeight: '40px' }}  /> 
