@@ -1,4 +1,5 @@
 import React from 'react';
+import MenuLateralParceiro from './NavbarParceiroMenuLateral';
 
 
 function NavbarParceiro() {
@@ -9,7 +10,7 @@ function NavbarParceiro() {
                     <img src={require('../Imagens/logoEmpresa.png')} alt="Imagem" className="img-fluid"  style={{ maxWidth: '100px', maxHeight: '60px' }}  /> 
                 </a>
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span className="navbar-toggler-icon"></span>
+                    <span style={{ display: 'flex', alignItems: 'center' }}><MenuLateralParceiro /></span>
                 </button>
                 <div className="collapse navbar-collapse" id="navbarNav">
                     <ul className='navbar-nav mt-auto'>
@@ -20,16 +21,16 @@ function NavbarParceiro() {
                     <ul className="navbar-nav ms-auto">
 
                         <li className="nav-item">
-                            <a className="nav-link text-white" href="#" style={{ marginRight: '25px'}}>Histórico </a>
+                            <a className="nav-link text-white" href="/painel-parceiro-historico-compra" style={{ marginRight: '25px'}}>Histórico </a>
                         </li>
                         <li className="nav-item" style={{ marginRight: '25px' }}>
-                            <a className="nav-link text-white" href="#">Carteira</a>
+                            <a className="nav-link text-white" href="/painel-parceiro-carteira-estabelecimento">Carteira</a>
                         </li>
                         <li className="nav-item" style={{ marginRight: '25px' }}>
-                            <a className="nav-link text-white" href="#">Coletas</a>
+                            <a className="nav-link text-white" href="/painel-parceiro-coleta">Coletas</a>
                         </li>
                         <li className="nav-item" style={{ marginRight: '25px' }}>
-                            <a className="nav-link text-white" href="#">Transações</a>
+                            <a className="nav-link text-white" href="/painel-parceiro-saldo-credito">Transações</a>
                         </li>
                         <li className="nav-item" style={{ marginRight: '5px' }}>
                             <img src={require('../Imagens/user.png')} alt="Imagem" className="img-fluid"  style={{ maxWidth: '100px', maxHeight: '40px' }}  /> 

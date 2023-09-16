@@ -105,6 +105,9 @@ function Token() {
                     <span className='botao-token'>
                         <Button variant="success" onClick={handleSubmit}>Confirmar</Button>{' '}
                     </span>
+                    <span className='botao-reenviar-token'>
+                        <Button variant="secundary">Reenviar token</Button>{' '}
+                    </span>
                     <div className='volta-login-token'>
                         <p>Voltar para a página de <a href="/login">Login</a></p>
                     </div>
