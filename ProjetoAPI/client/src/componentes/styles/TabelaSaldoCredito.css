@@ -1,4 +1,3 @@
-/* CSS do Tabelas.tsx */
 table {
   width: 100%;
   border-collapse: collapse;
@@ -28,36 +27,35 @@ tfoot td {
   min-height: 2.2vh; 
 }
 
-th:nth-child(1), td:nth-child(1) {
-  width: 20%;
-}
+@media screen and (max-height: 200px) {
+  tbody td {
+    padding: 0.2vh 0.5vw; 
+  }
+  table {
+    margin-bottom: 10px; 
+  }
 
-th:nth-child(2), td:nth-child(2) {
-  width: 20%;
-}
+  th:nth-child(1), td:nth-child(1) {
+    width: 100%; 
+  }
 
-th:nth-child(3), td:nth-child(3) {
-  width: 20%;
-}
+  th:nth-child(2), td:nth-child(2) {
+    display: none; 
+  }
 
-th:nth-child(4), td:nth-child(4) {
-  width: 10%;
-}
+  th:nth-child(3), td:nth-child(3) {
+    display: none;
+  }
 
-th:nth-child(5), td:nth-child(5) {
-  width: 10%;
-}
+  th:nth-child(4), td:nth-child(4) {
+    width: 100%; 
+  }
 
-th:nth-child(6), td:nth-child(6) {
-  width: 20%;
-}
+  th:nth-child(5), td:nth-child(5) {
+    display: none; 
+  }
 
-.tabelasContainer {
-  display: flex;
-  justify-content: space-between;
-}
-
-.tabelaContainer {
-  flex-basis: calc(50% - 10px); /* Dividir o espaço igualmente com um pequeno espaço entre as tabelas */
-  margin-right: 10px; /* Espaço entre as tabelas */
+  th:nth-child(6), td:nth-child(6) {
+    display: none; 
+  }
 }

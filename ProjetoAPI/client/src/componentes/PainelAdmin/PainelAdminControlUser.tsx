@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styles from './PainelAdmin.module.css';
+import styles from '../styles/PainelAdmin.module.css';
 import BarraPesquisa from './BarraPesquisa';
 import AdicionarUsuario from './AcoesUsuario';
 import AdicionarUsuarioPopup from './AcoesUsuarioPopup';
@@ -7,7 +7,7 @@ import NavbarAdministrador from '../Navbars/NavbarAdministrador';
 import Footer from '../Footer/Footer';
 import TabelasControlUser from './TabelasControlUser';
 
-export default function PainelAdmin() {
+export default function PainelAdminControlUser() {
   const [popupOpen, setPopupOpen] = useState(false);
 
   const handleOpenPopup = () => {

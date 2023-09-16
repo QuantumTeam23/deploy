@@ -1,8 +1,37 @@
 import DeleteIcon from '@mui/icons-material/Delete';
 import Button from '@mui/material/Button';
-import styles from './TabelaColetas.css';
+import styles from '../styles/TabelaColetas.css';
+import { useState } from 'react';
+import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
+import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 
 export function TabelaCreditoContratado() {
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 9;
+
+  const data = Array.from({ length: 18 }, (_, index) => ({
+    valor: `Valor ${index + 1}`,
+    quantidade: `Quantidade ${index + 1}`,
+    data: `Data ${index + 1}`,
+  }));
+
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+
+  const currentData = data.slice(startIndex, endIndex);
+
+  const handlePrevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const handleNextPage = () => {
+    if (endIndex < data.length) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
   return (
     <>
       <table className={styles.table}>
@@ -14,19 +43,40 @@ export function TabelaCreditoContratado() {
           </tr>
         </thead>
         <tbody>
-          {/* Linhas do corpo */}
-          {Array.from({ length: 9 }, (_, index) => (
-            /* coloquei 9 linhas, como exemplo*/
+          {currentData.map((item, index) => (
             <tr key={index}>
-              <td>Valor {index + 1}</td>
-              <td>Quuantidade {index + 1}</td>
-              <td>Data {index + 1}</td>
+              <td>{item.valor}</td>
+              <td>{item.quantidade}</td>
+              <td>{item.data}</td>
             </tr>
           ))}
         </tbody>
         <tfoot>
           <tr>
-            <td colSpan={6}>‎ </td>
+            <td colSpan={3} style={{ textAlign: 'center' }}>
+              <Button
+                startIcon={<KeyboardArrowLeftIcon />}
+                disabled={currentPage === 1}
+                onClick={handlePrevPage}
+                style={{
+                  color: currentPage !== 1 ? 'lightblue' : 'lightgray',
+                  fontWeight: currentPage !== 1 ? 'bold' : 'normal',
+                }}
+              >
+                Anterior
+              </Button>
+              <Button
+                endIcon={<KeyboardArrowRightIcon />}
+                disabled={endIndex >= data.length}
+                onClick={handleNextPage}
+                style={{
+                  color: endIndex < data.length ? 'lightblue' : 'lightgray',
+                  fontWeight: endIndex < data.length ? 'bold' : 'normal',
+                }}
+              >
+                Próxima
+              </Button>
+            </td>
           </tr>
         </tfoot>
       </table>
@@ -35,6 +85,33 @@ export function TabelaCreditoContratado() {
 }
 
 export function TabelaCreditoCedido() {
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 9;
+
+  const data = Array.from({ length: 18 }, (_, index) => ({
+    item: `Item ${index + 1}`,
+    valor: `Valor ${index + 1}`,
+    quantidade: `Quantidade ${index + 1}`,
+    data: `0${index + 1}/09/2023`,
+  }));
+
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+
+  const currentData = data.slice(startIndex, endIndex);
+
+  const handlePrevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const handleNextPage = () => {
+    if (endIndex < data.length) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
   return (
     <>
       <table className={styles.table}>
@@ -47,23 +124,48 @@ export function TabelaCreditoCedido() {
           </tr>
         </thead>
         <tbody>
-          {/* Linhas do corpo */}
-          {Array.from({ length: 9 }, (_, index) => (
-            /* coloquei 9 linhas, como exemplo*/
+          {currentData.map((item, index) => (
             <tr key={index}>
-              <td>Item {index + 1}</td>
-              <td>Valor {index + 1}</td>
-              <td>Endereço {index + 1}</td>
-              <td>0{index + 1}/09/2023</td>
+              <td>{item.item}</td>
+              <td>{item.valor}</td>
+              <td>{item.quantidade}</td>
+              <td>{item.data}</td>
             </tr>
           ))}
         </tbody>
         <tfoot>
           <tr>
-            <td colSpan={6}>‎ </td>
+            <td colSpan={4} style={{ textAlign: 'center' }}>
+              <Button
+                startIcon={<KeyboardArrowLeftIcon />}
+                disabled={currentPage === 1}
+                onClick={handlePrevPage}
+                style={{
+                  color: currentPage !== 1 ? 'lightblue' : 'lightgray',
+                  fontWeight: currentPage !== 1 ? 'bold' : 'normal',
+                }}
+              >
+                Anterior
+              </Button>
+              <Button
+                endIcon={<KeyboardArrowRightIcon />}
+                disabled={endIndex >= data.length}
+                onClick={handleNextPage}
+                style={{
+                  color: endIndex < data.length ? 'lightblue' : 'lightgray',
+                  fontWeight: endIndex < data.length ? 'bold' : 'normal',
+                }}
+              >
+                Próxima
+              </Button>
+            </td>
           </tr>
         </tfoot>
       </table>
+      <p>ㅤ</p>
+      <p>ㅤ</p>
+      <p>ㅤ</p>
+      <p>ㅤ</p>
     </>
   );
 }

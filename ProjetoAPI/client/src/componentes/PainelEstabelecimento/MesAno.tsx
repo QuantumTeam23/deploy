@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
-import styles from './PainelEstabelecimento.module.css';
+import styles from '../styles/PainelEstabelecimento.module.css';
 
 export default function MesAno() {
   const [mesAno, setMesAno] = useState('');

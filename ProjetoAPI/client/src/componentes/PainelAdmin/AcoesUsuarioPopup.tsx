@@ -6,7 +6,7 @@ import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import styles from './PainelAdmin.module.css';
+import styles from '../styles/PainelAdmin.module.css';
 import DeleteIcon from '@mui/icons-material/Delete'; 
 
 

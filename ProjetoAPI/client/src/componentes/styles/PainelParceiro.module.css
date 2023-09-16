@@ -1,6 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
 
-
 /* Conteúdo geral da página */
 * {
   margin: 0;
@@ -17,8 +16,8 @@ body {
 h1, h2{
   font-weight:800;
   color: rgb(14, 56, 14);
-  text-align: left; /* Alinha o texto à esquerda */
-  margin-right: auto; /* Move o título para o lado esquerdo */
+  text-align: left;
+  margin-right: auto;
 }
 
 .containerConteudo {
@@ -35,7 +34,6 @@ h1, h2{
   justify-content: flex-start;
 }
 
-
 /* CSS do componente da BarraPesquisa.tsx */
 .barraPesquisa {
   width: 100%;
@@ -46,15 +44,27 @@ h1, h2{
 }
 
 .barraPesquisa input[type="text"] {
-  /* Estilos específicos para o campo de texto da barra de pesquisa */
   width: auto;
-  padding: 8px; /* Aumente o preenchimento para 8px ou ajuste conforme desejado */
-  margin: 0; /* Redefina as margens para evitar afetar o posicionamento */
-  border: none; /* Remova a borda para uma aparência mais limpa */
-  font-size: 16px; /* Tamanho da fonte para a barra de pesquisa */
-  font-weight: normal; /* Pode ser alterado conforme necessário */
-  background: none; /* Remova o plano de fundo para que a barra de pesquisa seja transparente */
-  color: #000; /* Cor do texto */
+  padding: 8px;
+  margin: 0;
+  border: none;
+  font-size: 16px;
+  font-weight: normal;
+  background: none;
+  color: #000;
+}
+
+/* Estilos para telas menores, como dispositivos móveis */
+@media screen and (max-width: 768px) {
+  .barraPesquisa {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .barraPesquisa input[type="text"] {
+    width: 100%;
+    margin-bottom: 10px;
+  }
 }
 
 /* Estilização dos outros campos de texto e seleção, incluindo rótulos */
@@ -79,8 +89,6 @@ select + label {
   display: block;
 }
 
-
-
 .content {
   display: flex;
   flex-direction: column;
@@ -93,7 +101,7 @@ select + label {
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  margin-bottom: 20px; /* Ajuste o espaçamento conforme necessário */
+  margin-bottom: 20px;
 }
 
 .headerActions {
@@ -102,19 +110,18 @@ select + label {
 }
 
 /* CSS do componente da AdicionarUsuarioPopup.tsx */
-
 form {
-  margin-top: 20px; /* Ajuste a quantidade de espaço conforme necessário */
+  margin-top: 20px;
 }
 
 input[type="text"],
 select {
   width: 100%;
-  padding: 10px; /* Adicione algum preenchimento para melhorar a aparência */
-  margin-bottom: 10px; /* Espaçamento inferior entre os elementos */
-  border: 1px solid #ccc; /* Adicione uma borda para separar os elementos */
-  border-radius: 5px; /* Cantos arredondados para um visual mais atraente */
-  font-size: 16px; /* Ajuste o tamanho da fonte conforme necessário */
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
 }
 
 .emailInput {
@@ -135,36 +142,42 @@ select {
   font-size: 16px;
 }
 
-
-
-
-/* Estilo para os rótulos */
 label {
   font-weight: bold;
 }
 
-/* Estilo para os rótulos dos campos de seleção */
 select + label {
-  margin-top: 10px; /* Espaçamento superior para separar os rótulos das caixas de seleção */
-  display: block; /* Coloca os rótulos em uma nova linha */
+  margin-top: 10px;
+  display: block;
 }
 
 .tabelasContainer {
   display: flex;
   justify-content: space-between;
-  margin: 20px auto; /* Ajuste a margem superior e inferior conforme necessário */
-  margin-bottom: 100px; /* Adicione uma margem inferior para acomodar o footer */
+  margin: 20px auto;
+  margin-bottom: 100px;
 }
 
 .tabelaContainer {
-  flex-basis: calc(50% - 10px); /* Dividir o espaço igualmente com um pequeno espaço entre as tabelas */
-  margin-right: 10px; /* Espaço entre as tabelas */
+  flex-basis: calc(50% - 10px);
+  margin-right: 10px;
 }
 
+.componenteData {
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
+}
 
+.menuIcon {
+  color: #f3f3f3;
+}
 
+.componenteData .MuiInputBase-input {
+  font-size: 14px;
+  color: #333;
+}
 
-
-
-
-
+.espaco{
+  margin-bottom: 30vh;
+}

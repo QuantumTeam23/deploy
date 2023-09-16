@@ -1,6 +1,6 @@
 // HistoricoTransacoes.tsx
 import React, { useState } from 'react';
-import styles from './PainelAdmin.module.css';
+import styles from '../styles/PainelAdmin.module.css';
 import BarraPesquisa from './BarraPesquisa';
 import Tabelas2 from './TabelasHistTransacoes';
 import NavbarAdministrador from '../Navbars/NavbarAdministrador';
@@ -21,7 +21,7 @@ function HistoricoTransacoes() {
       </div>
       <Tabelas2 />
     </div>
-    <Footer />
+    <Footer/>
     </>
   );
 }

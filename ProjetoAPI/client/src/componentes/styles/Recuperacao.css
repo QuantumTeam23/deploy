@@ -2,7 +2,7 @@
     font-family: Montserrat, sans-serif, Arial;
 }
 
-.container-geral-recuperacao {
+.container-geral-recuperacao{
     background-color: #ebebeb;
     width: 100vw;
     height: 100vh;
@@ -11,41 +11,49 @@
     justify-content: center;
 }
 
-.container-janela-recuperacao {
-    width: 100vw;
-    max-width: 1200px;
+.container-janela-recuperacao{
+    width: 80vw;
+    height: 80vh;
     display: flex;
-    justify-content: space-between;
 }
 
-.container-esquerda-recuperacao {
+.container-esquerda-recuperacao{
     background: #136935;
-    flex: 1;
+    width: 40vw;
+    height: 80vh;
+    display: flex;
+    align-items: left;
+    justify-content: left; 
+}
+
+.container-direita-recuperacao{
+    background: white;
+    width: 40vw;
+    height: 80vh;
+    align-items: right;
+    justify-content: right; 
+}
+
+.logo-recuperacao{
+    width: 40vw;
+    height: 80vh;
     display: flex;
     align-items: center;
-    justify-content: center;
-}
-
-.container-direita-recuperacao {
-    background: white;
-    flex: 1;
-    padding: 20px;
+    justify-content: center;  
 }
 
 .logo-recuperacao img {
-    max-width: 100%;
-    height: auto;
+    width: 300px;
+    height: 300px;
 }
 
-.form-control-recuperacao {
-    background-color: rgb(221, 255, 218) !important;
-    width: 100%;
-}
-
-.botao-recuperacao {
+.botao-recuperacao{
+    width: 40vw;
+    height: 10vh;
     display: flex;
+    align-items: center;
     justify-content: center;
-    margin-top: 3%;
+    margin-top: 20%;
 }
 
 .botao-recuperacao button {
@@ -55,36 +63,46 @@
     font-size: 22px;
 }
 
-.titulo-recuperacao h1 {
+.titulo-recuperacao{
+    width: 40vw;
+    height: 20vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.titulo-recuperacao h1{
     color: #136935;
-    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-size: 2.8em;
     font-weight: 555;
 }
 
-.campo-recuperacao {
+.campo-recuperacao{
     text-align: left;
     margin-top: 15%;
-    width: 100%;
-    max-width: 50vw;
+    width: 38vw;    
 }
 
-.form-control-recuperacao {
+.form-control-recuperacao{
     background-color: rgb(221, 255, 218) !important;
-    width: 100%;
+    width: 50vw;
 }
 
-.volta-login-recuperacao {
+.volta-login-recuperacao{
+    align-items: center;
     text-align: center;
-    margin-top: 1%;
+    margin-top: -1%;
 }
 
-.volta-login-recuperacao a {
+.volta-login-recuperacao a{
     text-decoration: none;
     color: #136935;
 }
 
-.volta-login-recuperacao p {
+.volta-login-recuperacao p{
     color: black;
     font-weight: 400;
 }

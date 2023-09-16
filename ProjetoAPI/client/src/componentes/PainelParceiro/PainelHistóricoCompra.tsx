@@ -1,4 +1,4 @@
-import styles from './PainelParceiro.module.css';
+import styles from '../styles/PainelParceiro.module.css';
 import MenuLateral from './MenuLateral';
 import TabelaHistoricoCompra from './TabelaHistoricoCompra';
 import MesAno from './MesAno';

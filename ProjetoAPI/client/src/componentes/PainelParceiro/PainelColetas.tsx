@@ -1,4 +1,4 @@
-import styles from './PainelParceiro.module.css';
+import styles from '../styles/PainelParceiro.module.css';
 import BarraPesquisa from './BarraPesquisa';
 import TabelaColeta from './TabelaColeta';
 import { DataFim, DataInicio } from './DataFiltro';
@@ -13,12 +13,14 @@ export default function PainelParceiroColetas() {
     <NavbarParceiro />
     <div className={styles.containerConteudo}>
       <div className={styles.topContent}>
-        <div className={styles.headerActions}>
+              <h2>Coletas</h2>
+      <div className={styles.headerActions}>
           Estabelecimento:  <BarraPesquisa />
-          Data de: <DataInicio/> até <DataFim />
         </div>
+        </div>
+      <div className={styles.headerActions}>
+        Data de: <DataInicio/> até <DataFim />
       </div>
-      <h2>Coletas</h2>
       <TabelaColeta />
     </div>
     <Footer />

@@ -1,4 +1,4 @@
-import styles from './PainelEstabelecimento.module.css';
+import styles from '../styles/PainelEstabelecimento.module.css';
 import MesAno from './MesAno';
 import TabelaSaldoCreditoExtrato from './TabelaSaldoCreditoExtrato';
 import NavbarEstabelecimento from '../Navbars/NavbarEstabelecimento';

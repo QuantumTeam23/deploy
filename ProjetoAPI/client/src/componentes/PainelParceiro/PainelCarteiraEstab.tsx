@@ -1,4 +1,4 @@
-import styles from './PainelParceiro.module.css';
+import styles from '../styles/PainelParceiro.module.css';
 import BarraPesquisa from './BarraPesquisa';
 import TabelaSaldoCredito from './TabelaCarteiraEstab';
 import Footer from '../Footer/Footer';

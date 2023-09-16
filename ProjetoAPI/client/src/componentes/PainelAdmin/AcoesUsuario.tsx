@@ -3,7 +3,7 @@ import IconButton from '@mui/material/IconButton';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete'; // Importe o ícone que deseja usar
 import EditIcon from '@mui/icons-material/Edit';
-import styles from './PainelAdmin.module.css';
+import styles from '../styles/PainelAdmin.module.css';
 
 
 export default function AdicionarUsuario({ onClick }) { // Adicione a propriedade onClick

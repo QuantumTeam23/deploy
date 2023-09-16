@@ -1,7 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
 
-
-/* Conteúdo geral da página */
 * {
   margin: 0;
   padding: 0;
@@ -17,7 +15,7 @@ body {
 h1, h2{
   font-weight:800;
   color: rgb(14, 56, 14);
-  text-align: left; 
+  text-align: left;
   margin-right: auto;
 }
 
@@ -35,26 +33,6 @@ h1, h2{
   justify-content: flex-start;
 }
 
-.barraPesquisa {
-  width: 100%;
-  height: 6px;
-  margin-left: 6px;
-  display: flex;
-  align-items: center;
-}
-
-.barraPesquisa input[type="text"] {
-  width: auto;
-  padding: 8px; /* Aumente o preenchimento para 8px ou ajuste conforme desejado */
-  margin: 0; /* Redefina as margens para evitar afetar o posicionamento */
-  border: none; /* Remova a borda para uma aparência mais limpa */
-  font-size: 16px; /* Tamanho da fonte para a barra de pesquisa */
-  font-weight: normal; /* Pode ser alterado conforme necessário */
-  background: none; /* Remova o plano de fundo para que a barra de pesquisa seja transparente */
-  color: #000; /* Cor do texto */
-}
-
-/* Estilização dos outros campos de texto e seleção, incluindo rótulos */
 input[type="text"],
 select {
   width: 100%;
@@ -65,12 +43,10 @@ select {
   font-size: 16px;
 }
 
-/* Estilo para os rótulos */
 label {
   font-weight: bold;
 }
 
-/* Estilo para os rótulos dos campos de seleção */
 select + label {
   margin-top: 10px;
   display: block;
@@ -88,7 +64,38 @@ select + label {
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  margin-bottom: 20px; /* Ajuste o espaçamento conforme necessário */
+  margin-bottom: 20px;
+}
+
+.barraPesquisa {
+  width: 100%;
+  height: 6px;
+  margin-left: 6px;
+  display: flex;
+  align-items: center;
+}
+
+.barraPesquisa input[type="text"] {
+  width: auto;
+  padding: 8px;
+  margin: 0;
+  border: none;
+  font-size: 16px;
+  font-weight: normal;
+  background: none;
+  color: #000;
+}
+
+@media screen and (max-width: 768px) {
+  .barraPesquisa {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .barraPesquisa input[type="text"] {
+    width: 100%;
+    margin-bottom: 10px;
+  }
 }
 
 .headerActions {
@@ -96,20 +103,18 @@ select + label {
   align-items: center;
 }
 
-/* CSS do componente da AdicionarUsuarioPopup.tsx */
-
 form {
-  margin-top: 20px; /* Ajuste a quantidade de espaço conforme necessário */
+  margin-top: 20px;
 }
 
 input[type="text"],
 select {
   width: 100%;
-  padding: 10px; /* Adicione algum preenchimento para melhorar a aparência */
-  margin-bottom: 10px; /* Espaçamento inferior entre os elementos */
-  border: 1px solid #ccc; /* Adicione uma borda para separar os elementos */
-  border-radius: 5px; /* Cantos arredondados para um visual mais atraente */
-  font-size: 16px; /* Ajuste o tamanho da fonte conforme necessário */
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
 }
 
 .emailInput {
@@ -129,21 +134,3 @@ select {
   border-radius: 5px;
   font-size: 16px;
 }
-
-/* Estilo para os rótulos */
-label {
-  font-weight: bold;
-}
-
-/* Estilo para os rótulos dos campos de seleção */
-select + label {
-  margin-top: 10px; /* Espaçamento superior para separar os rótulos das caixas de seleção */
-  display: block; /* Coloca os rótulos em uma nova linha */
-}
-
-
-
-
-
-
-

@@ -2,7 +2,7 @@ import React from 'react';
 import TextField from '@mui/material/TextField';
 import InputAdornment from '@mui/material/InputAdornment';
 import SearchIcon from '@mui/icons-material/Search';
-import styles from './PainelAdmin.module.css';
+import styles from '../styles/PainelAdmin.module.css';
 
 export default function BarraPesquisa() {
   return (

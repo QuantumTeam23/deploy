@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './PainelParceiro.module.css';
+import styles from '../styles/PainelParceiro.module.css';
 import MesAno from './MesAno';
 import { TabelaCreditoCedido, TabelaCreditoContratado } from './TabelaSaldoCredito';
 import Footer from '../Footer/Footer';
