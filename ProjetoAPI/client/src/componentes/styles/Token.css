@@ -55,6 +55,16 @@
     font-size: 22px;
 }
 
+.botao-reenviar-token {
+    display: flex;
+    justify-content: center;
+}
+
+.botao-reenviar-token button {
+    font-size: 15px;
+    color: #136935;
+}
+
 .titulo-token h1 {
     color: #136935;
     text-align: center;

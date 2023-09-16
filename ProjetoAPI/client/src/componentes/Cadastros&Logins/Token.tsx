@@ -35,6 +35,9 @@ function Token() {
                     <span className='botao-token'>
                         <Button variant="success">Confirmar</Button>{' '}
                     </span>
+                    <span className='botao-reenviar-token'>
+                        <Button variant="secundary">Reenviar token</Button>{' '}
+                    </span>
                     <div className='volta-login-token'>
                         <p>Voltar para a página de <a href="#">Login</a></p>
                     </div>
