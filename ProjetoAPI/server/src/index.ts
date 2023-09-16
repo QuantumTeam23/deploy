@@ -117,7 +117,7 @@ async function existeEstabelecimento(cnpj) {
 
 async function cadastrarEstabelecimento(req, res) {
     console.log("Requisição de cadastro de estabelecimento recebida.");
-    const { razao_social, nome_fantasia, cnpj,  email,  senha } = req.body;
+    const { razao_social, nome_fantasia, cnpj, logradouro, logradouroNumero, bairro, cidade, estado, cep, regiao, telefone, volume, email, tipo, senha } = req.body;
     console.log(req.body)
     const existeCNPJ = await existeEstabelecimento(cnpj);
     if (existeCNPJ) {
@@ -127,8 +127,8 @@ async function cadastrarEstabelecimento(req, res) {
             const hashSenha = await bcrypt.hash(senha, 10)
             const SQL = `
                 INSERT INTO
-                    Estabelecimentos("estabelecimento_razao_social","estabelecimento_nome_fantasia","estabelecimento_cnpj_cpf","estabelecimento_email","estabelecimento_senha")
-                VALUES ('${razao_social}','${nome_fantasia}','${cnpj}','${email}','${hashSenha}')
+                    Estabelecimentos("estabelecimento_razao_social","estabelecimento_nome_fantasia","estabelecimento_cnpj_cpf","estabelecimento_logradouro", "estabelecimento_logradouro_numero","estabelecimento_bairro","estabelecimento_cidade","estabelecimento_estado","estabelecimento_cep", "estabelecimento_regiao","estabelecimento_telefone","estabelecimento_volume_comercializado_mes","estabelecimento_email", "estabelecimento_tipo", "estabelecimento_senha")
+                VALUES ('${razao_social}','${nome_fantasia}','${cnpj}','${logradouro}', '${logradouroNumero}','${bairro}','${cidade}','${estado}','${cep}','${regiao}','${telefone}','${volume}','${email}','${tipo}','${senha}')
             `
             const resultado = await connectionDB.query(SQL);
             console.log("Estabelecimento cadastrado com sucesso!");
@@ -246,7 +246,7 @@ async function existeParceiro(cnpj) {
 
 async function cadastrarParceiro(req, res) {
     console.log("Requisição de cadastro de parceiro recebida.");
-    const { razao_social, cnpj,nome_fantasia, email, senha } = req.body;
+    const { razao_social, nome_fantasia, cnpj, logradouro, logradouroNumero, bairro, cidade, estado, cep, regiao, telefone, saldo, cidadeatendida, dataoperacao, volume, email, tipo, senha } = req.body;
     console.log(req.body)
     const existeCNPJ = await existeParceiro(cnpj);
     if (existeCNPJ) {
@@ -255,8 +255,8 @@ async function cadastrarParceiro(req, res) {
         try {
             const SQL = `
                 INSERT INTO
-                    Parceiros("parceiro_razao_social","parceiro_cnpj_cpf","parceiro_nome_fantasia","parceiro_email","parceiro_senha")
-                VALUES ('${razao_social}','${cnpj}','${nome_fantasia}','${email}','${senha}')
+                    Parceiros("parceiro_razao_social","parceiro_nome_fantasia","parceiro_cnpj_cpf","parceiro_logradouro", "parceiro_logradouro_numero","parceiro_bairro","parceiro_cidade","parceiro_estado","parceiro_cep", "parceiro_regiao","parceiro_telefone","parceiro_volume_coleta_mes","parceiro_email", "parceiro_tipo", "parceiro_senha")
+                VALUES ('${razao_social}','${nome_fantasia}','${cnpj}','${logradouro}', '${logradouroNumero}','${bairro}','${cidade}','${estado}','${cep}','${regiao}','${telefone}','${volume}','${email}','${tipo}','${senha}')
             `
             const resultado = await connectionDB.query(SQL);
             console.log("Parceiro cadastrado com sucesso!");
