@@ -2,6 +2,8 @@ const express = require('express');
 const bp = require('body-parser');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
+const shortid = require('shortid');
+const nodemailer = require('nodemailer');
 
 const app = express();
 const bcrypt = require("bcrypt");
@@ -36,6 +38,10 @@ app.post('/addAdministrador', cadastrarAdministrador);
 app.put('/editAdministrador/:email', editarAdministrador);
 app.delete('/deleteAdministrador/:email', deletarAdministrador);
 app.get('/listAdministrador', listAllAdministrador);
+
+//FUNCIONALIDADES
+app.post('/enviarToken', enviarToken);
+app.put('/editSenha/:email', editarSenha);
 
 //LOGIN
 app.post('/login', login);
@@ -251,7 +257,7 @@ async function cadastrarParceiro(req, res) {
     const existeCNPJ = await existeParceiro(cnpj);
     if (existeCNPJ) {
         res.status(409).send({ msg: "Já existe um parceiro com esse CNPJ/CPF." });
-    }  else {
+    } else {
         try {
             const SQL = `
                 INSERT INTO
@@ -470,3 +476,121 @@ async function listAllAdministrador(req, res) {
     }
 }
 //CRUD ADMINISTRADORES
+
+//ENVIAR TOKEN
+async function enviarToken(req, res) {
+    process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0"; // Desabilitar a verificação do certificado
+    const { email } = req.body;
+    shortid.characters('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ@#');
+    const token = shortid.generate().substring(0, 6);
+    const transporter = nodemailer.createTransport({
+        host: "smtp-mail.outlook.com",
+        port: 587,
+        secure: false,
+        auth: {
+            user: "quantumteam23@outlook.com",
+            pass: "quantumteam2023"
+        }
+    });
+
+    transporter.sendMail({
+        from: 'quantumteam23@outlook.com',
+        to: email,
+        subject: 'Seu Token',
+        html: `Seu token é: <b>${token}</b>`
+    });
+
+    res.send({ msg: "Sucesso", token: token });
+}
+
+
+async function emailEstabelecimento(email) {
+    const res = await connectionDB.query(`
+        SELECT
+            *
+        FROM
+            Estabelecimentos
+        WHERE
+            estabelecimento_email  = '${email}'
+    `);
+
+    var response = false
+    res.rows.forEach(estabelecimento => {
+        if (estabelecimento.estabelecimento_email === email) {
+            console.log("Email estabelecimento")
+            response = true
+        }
+    });
+    return response
+}
+
+async function emailParceiro(email) {
+    const res = await connectionDB.query(`
+        SELECT
+            *
+        FROM
+            Parceiros
+        WHERE
+            parceiro_email  = '${email}'
+    `);
+
+    var response = false
+    res.rows.forEach(parceiro => {
+        if (parceiro.parceiro_email === email) {
+            console.log("Email parceiro")
+            response = true
+        }
+    });
+    return response
+}
+
+async function editarSenha(req, res) {
+    console.log("Requisição de edição de senha recebida.");
+    const email = req.params.email;
+    const editarEstab = await emailEstabelecimento(email);
+    const editarParc = await emailParceiro(email);
+    if (editarParc) {
+        console.log("Requisição de edição de senha do parceiro recebida.");
+
+        const { senha } = req.body;
+        console.log(req.body);
+        try {
+            const SQL = `
+            UPDATE 
+                Parceiros 
+            SET
+                "parceiro_senha" = '${senha}'
+            WHERE
+                parceiro_email = '${email}'
+            `;
+            await connectionDB.query(SQL); // Execute a consulta SQL
+            console.log("Senha do parceiro atualizado com sucesso!");
+            res.send({ msg: "Senha do parceiro atualizado com sucesso!" });
+        } catch (error) {
+            console.error("Erro ao editar parceiro:", error);
+            res.status(500).send({ msg: "Erro ao editar parceiro." });
+        }
+    } else if (editarEstab) {
+        const { senha } = req.body;
+        console.log(req.body);
+        try {
+            const SQL = `
+                UPDATE 
+                    Estabelecimentos 
+                SET
+                    "estabelecimento_senha" = '${senha}'
+                WHERE
+                    estabelecimento_email = '${email}'
+            `;
+            await connectionDB.query(SQL); // Execute a consulta SQL
+            console.log("Senha do estabelecimento atualizado com sucesso!");
+            res.send({ msg: "Senha do estabelecimento atualizado com sucesso!" });
+        } catch (error) {
+            console.error("Erro ao editar estabelecimento:", error);
+            res.status(500).send({ msg: "Erro ao editar estabelecimento." });
+        }
+    } else {
+        console.error("Email não encontrado:");
+        res.status(500).send({ msg: "Email não encontrado." })
+    }
+}

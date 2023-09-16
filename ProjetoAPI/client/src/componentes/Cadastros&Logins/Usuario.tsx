@@ -1,5 +1,6 @@
 import '../styles/Usuario.css';
 import Button from 'react-bootstrap/Button';
+import { Link } from 'react-router-dom';
 
 function Usuario() {
     return (
@@ -18,13 +19,17 @@ function Usuario() {
                         <h3>Selecione o tipo de usuário</h3>
                     </div>
                     <span className='botao-usuario-user-1'>
-                        <Button variant="success">Parceiro Greenneat</Button>{' '}
+                        <Link to="/cadastro-parceiro">
+                            <Button variant="success">Parceiro Greenneat</Button>
+                        </Link>
                     </span>
                     <span className='botao-usuario-user-2'>
-                        <Button variant="success">Estabelecimento</Button>{' '}
+                        <Link to="/cadastro-estabelecimento">
+                            <Button variant="success">Estabelecimento</Button>
+                        </Link>
                     </span>
                     <div className='volta-login-user'>
-                        <p>Voltar para a página de <a href="#">Login</a></p>
+                        <p>Voltar para a página de <a href="/login">Login</a></p>
                     </div>
                 </div>
             </div>

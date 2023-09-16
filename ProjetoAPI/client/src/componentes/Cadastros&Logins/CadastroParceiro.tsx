@@ -363,7 +363,7 @@ function CadastroParceiro() {
             </div>
           </div>
           <div className='registro-cadastro-parceiro'>
-            <p>Voltar para a página de <a href='#'>Login</a></p>
+            <p>Voltar para a página de <a href='/login'>Login</a></p>
           </div>
         </div>
       </div>

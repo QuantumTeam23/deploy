@@ -89,13 +89,13 @@ function Login() {
                         </div>
                     </Container>
                     <div className='esqueceu-senha-login'>
-                        <a href="#">Esqueceu a senha?</a>
+                        <a href="/recuperacao">Esqueceu a senha?</a>
                     </div>
                     <span className='botao-login'>
                     <Button variant="success" onClick={handleSubmit}>Entrar</Button>{' '}
                     </span>
                     <div className='registro-login'>
-                        <p>Ainda não tem conta? <a href="#">Registre-se</a></p>
+                        <p>Ainda não tem conta? <a href="/usuario">Registre-se</a></p>
                     </div>
                 </div>
             </div>
