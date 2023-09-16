@@ -126,7 +126,7 @@ function EditarUsuario() {
                                     <FormControl
                                         type='password'
                                         required
-                                        placeholder='Digite seu Senha'
+                                        placeholder='Digite sua Senha'
                                         aria-label='senha'
                                         aria-describedby='senha-addon'
                                         className='form-control-editar-usuario'
