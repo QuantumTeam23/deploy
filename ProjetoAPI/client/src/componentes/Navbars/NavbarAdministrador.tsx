@@ -1,9 +1,6 @@
 import React from 'react';
 import MenuLateralAdministrador from './NavbarAdministradorMenuLateral';
 
-
-
-
 function NavbarAdministrador() {
     return (
         <nav className="navbar navbar-expand-lg navbar-light" style={{ backgroundColor: '#136935' }}>
@@ -31,8 +28,13 @@ function NavbarAdministrador() {
                         <li className="nav-item" style={{ marginRight: '25px' }}>
                             <a className="nav-link text-white" href="/painel-administrador-usuario">Controle de Usuários</a>
                         </li>
-                        <li className="nav-item" style={{ marginRight: '5px' }}>
+                        <li className="nav-item" style={{ marginRight: '10px' }}>
                             <img src={require('../Imagens/user.png')} alt="Imagem" className="img-fluid"  style={{ maxWidth: '100px', maxHeight: '40px' }}  /> 
+                        </li>
+                        <li className="nav-item" style={{ marginRight: '10px' }}>
+                            <a href="#">
+                                <img src={require('../Imagens/icone-sair.png')} alt="Imagem" className="img-fluid" style={{ maxWidth: '100px', maxHeight: '40px' }} />
+                            </a>
                         </li>
                     </ul>
                 </div>
@@ -42,4 +44,3 @@ function NavbarAdministrador() {
 }
 
 export default NavbarAdministrador;
-
