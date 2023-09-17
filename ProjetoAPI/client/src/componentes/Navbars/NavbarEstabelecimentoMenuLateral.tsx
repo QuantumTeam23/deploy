@@ -50,6 +50,9 @@ const MenuLateralEstabelecimento: React.FC = () => {
             <ListItemButton onClick={fecharMenu} component={Link} to="/painel-estabelecimento-extrato">
               <ListItemText primary="Extrato" />
             </ListItemButton>
+            <ListItemButton onClick={fecharMenu} component={Link} to="#">
+              <ListItemText primary="Sair" />
+            </ListItemButton>
           </List>
         </div>
       </Drawer>
