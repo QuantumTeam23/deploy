@@ -72,7 +72,7 @@ function Recuperacao() {
                 
                 setTimeout(() => {
                     window.location.href = "/token";
-                }, 2000);
+                }, 1100);
             } else {
                 console.error('Erro ao cadastrar parceiro:', response.statusText);
             }

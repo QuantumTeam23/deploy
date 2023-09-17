@@ -8,9 +8,12 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 
 const MenuLateralParceiro: React.FC = () => {
   const [menuAberto, setMenuAberto] = React.useState(false);
+  const navigate = useNavigate();
 
   const abrirMenu = () => {
     setMenuAberto(true);
@@ -19,6 +22,29 @@ const MenuLateralParceiro: React.FC = () => {
   const fecharMenu = () => {
     setMenuAberto(false);
   };
+
+  const handleSair = () => {
+    fecharMenu()
+    Swal.fire({
+      title: 'Você tem certeza que deseja sair?',
+      text: 'Isso irá desconectar você da sua conta.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#FFD700',
+      cancelButtonColor: 'red',
+      confirmButtonText: '<span style="color: white;">Sair</span>', // Estilizando o texto do botão Sair
+      cancelButtonText: '<span style="color: white;">Cancelar</span>', // Estilizando o texto do botão Cancelar
+      customClass: {
+        confirmButton: 'custom-confirm-button',
+        cancelButton: 'custom-cancel-button',
+      },
+    }).then((result) => {
+      if (result.isConfirmed) {
+        localStorage.clear()
+        navigate('/login')
+      }
+    });
+  }
 
   return (
     <>
@@ -56,7 +82,7 @@ const MenuLateralParceiro: React.FC = () => {
             <ListItemButton onClick={fecharMenu} component={Link} to="/painel-parceiro-saldo-credito">
               <ListItemText primary="Saldo de Crédito" />
             </ListItemButton>
-            <ListItemButton onClick={fecharMenu} component={Link} to="#">
+            <ListItemButton onClick={handleSair} component={Link} to="#">
               <ListItemText primary="Sair" />
             </ListItemButton>
           </List>

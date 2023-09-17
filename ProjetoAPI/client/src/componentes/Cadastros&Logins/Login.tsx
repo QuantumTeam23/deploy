@@ -3,7 +3,6 @@ import '../styles/Login.css';
 import { Container, Form, FormControl, InputGroup } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import { useNavigate } from "react-router-dom";
-import { lightGreen } from '@mui/material/colors';
 import Swal from "sweetalert2";
 
 function Login() {
@@ -55,6 +54,7 @@ function Login() {
                 setTimeout(() => {
                     navigate('/painel-parceiro-historico-compra');
                 }, 1100);
+                localStorage.setItem('tipo', 'ComumParceiro')
             }
     
             else if (data.msg === "Usuário logado com sucesso." && data.idEstabelecimento !== null) {
@@ -67,6 +67,7 @@ function Login() {
                 setTimeout(() => {
                     navigate('/painel-estabelecimento-historico-compras');
                 }, 1100);
+                localStorage.setItem('tipo', 'ComumEstabelecimento')
             }
     
             else if (data.msg === "Usuário logado com sucesso." && data.idAdministrador !== null) {
@@ -79,6 +80,7 @@ function Login() {
                 setTimeout(() => {
                     navigate('/painel-administrador-usuario');
                 }, 1100);
+                localStorage.setItem('tipo', 'Administrador')
             } else {
                 Swal.fire({
                     title: "Erro",

@@ -32,6 +32,7 @@ function EditarSenha() {
     };
 
     const handleSubmit = async () => {
+
         setFormData((prevState) => ({
             ...prevState,
             diferente: false, // Reseta o estado diferente para false
@@ -79,6 +80,8 @@ function EditarSenha() {
                 setTimeout(() => {
                     window.location.href = "/login";
                 }, 2000);
+
+                localStorage.clear()
             } else {
                 const data = await response.json();
                 alert(`Erro ao alterar a senha: ${data.msg}`);

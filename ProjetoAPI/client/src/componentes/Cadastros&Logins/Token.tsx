@@ -53,6 +53,8 @@ function Token() {
             setTimeout(() => {
                 window.location.href = "/editar-senha";
             }, 2000);
+
+            localStorage.setItem('validacao', 'Validado')
         } else {
             setFormDataToken((prevState) => ({
                 ...prevState,
