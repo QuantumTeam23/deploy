@@ -117,11 +117,8 @@ function EditarSenha() {
                                 <InputGroup >
                                     <FormControl
                                         type='password'
-<<<<<<< HEAD
                                         name ='novaSenha'
                                         onChange={handleInputChange}
-=======
->>>>>>> 787fc18af4dd4a7f2a349e08bf7999c9956b1107
                                         required
                                         placeholder='Digite a sua nova senha'
                                         aria-label='Senha'
@@ -139,10 +136,7 @@ function EditarSenha() {
                                 <InputGroup>
                                     <FormControl
                                         type='password'
-<<<<<<< HEAD
                                         name = 'repetirSenha'
-=======
->>>>>>> 787fc18af4dd4a7f2a349e08bf7999c9956b1107
                                         required
                                         onChange={handleInputChange}
                                         placeholder='Repita a sua nova senha'
