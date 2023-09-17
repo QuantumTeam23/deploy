@@ -21,11 +21,6 @@ export default function PainelEstabelecimentoExtrato() {
 
       <div className={styles.containerConteudo}>
         <div className={styles.topContent}>
-          <div className={styles.headerActions}>
-            <MesAno />
-          </div>
-        </div>
-        <div className={styles.topContent}>
         <h1>
             Saldo de crédito: {' '}
             <span className={styles.saldoValue}>
@@ -42,6 +37,12 @@ export default function PainelEstabelecimentoExtrato() {
               
             </span>
           </h1>
+        </div>
+        <h2>Extrato</h2>
+        <div className={styles.topContent}>
+          <div className={styles.headerActions}>
+            <MesAno />
+          </div>
         </div>
         <TabelaSaldoCreditoExtrato />
       </div>
