@@ -35,6 +35,11 @@ function NavbarParceiro() {
                         <li className="nav-item" style={{ marginRight: '5px' }}>
                             <img src={require('../Imagens/user.png')} alt="Imagem" className="img-fluid"  style={{ maxWidth: '100px', maxHeight: '40px' }}  /> 
                         </li>
+                        <li className="nav-item" style={{ marginRight: '10px' }}>
+                            <a href="#">
+                                <img src={require('../Imagens/icone-sair.png')} alt="Imagem" className="img-fluid" style={{ maxWidth: '100px', maxHeight: '40px' }} />
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>
