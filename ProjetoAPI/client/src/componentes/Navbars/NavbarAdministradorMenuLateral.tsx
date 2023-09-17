@@ -50,6 +50,9 @@ const MenuLateralAdministrador: React.FC = () => {
             <ListItemButton onClick={fecharMenu} component={Link} to="/painel-administrador-transacoes">
               <ListItemText primary="Histórico de Transações" />
             </ListItemButton>
+            <ListItemButton onClick={fecharMenu} component={Link} to="#">
+              <ListItemText primary="Sair" />
+            </ListItemButton>
           </List>
         </div>
       </Drawer>
