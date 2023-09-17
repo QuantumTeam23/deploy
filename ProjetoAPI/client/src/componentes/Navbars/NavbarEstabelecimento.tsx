@@ -1,43 +1,66 @@
 import React from 'react';
-import MenuLateralEstabelecimento from './NavbarEstabelecimentoMenuLateral';
+import { Link } from 'react-router-dom';
+import IconButton from '@mui/material/IconButton';
+import MenuIcon from '@mui/icons-material/Menu';
+import Drawer from '@mui/material/Drawer';
+import List from '@mui/material/List';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemText from '@mui/material/ListItemText';
+import Divider from '@mui/material/Divider';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+
+const MenuLateralEstabelecimento: React.FC = () => {
+  const [menuAberto, setMenuAberto] = React.useState(false);
+
+  const abrirMenu = () => {
+    setMenuAberto(true);
+  };
+
+  const fecharMenu = () => {
+    setMenuAberto(false);
+  };
+
+  return (
+    <>
+      <IconButton
+        color="inherit"
+        aria-label="Abrir menu"
+        edge="start"
+        onClick={abrirMenu}
+        style={{
+          borderRadius: '12px', // Adicionando bordas arredondadas
+          padding: '8px', 
+          width: '48px', // Ajustando a largura
+          height: '48px', // Ajustando a altura
+        }}
+      >
+        <MenuIcon style={{ fontSize: '28px' }} /> {/* Ajustando o tamanho do ícone */}
+      </IconButton>
+      <Drawer open={menuAberto} onClose={fecharMenu} anchor="right">
+        <div style={{ width: '250px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '16px' }}>
+            <AccountCircleIcon style={{ fontSize: '64px' }} />
+            <h2>Conta</h2>
+          </div>
+          <Divider />
+          <List>
+            <ListItemButton onClick={fecharMenu} component={Link} to="/painel-estabelecimento-historico-compras">
+              <ListItemText primary="Histórico de Compras" />
+            </ListItemButton>
+            <ListItemButton onClick={fecharMenu} component={Link} to="/painel-estabelecimento-extrato">
+              <ListItemText primary="Extrato" />
+            </ListItemButton>
+            <ListItemButton onClick={fecharMenu} component={Link} to="#">
+              <ListItemText primary="Sair" />
+            </ListItemButton>
+          </List>
+        </div>
+      </Drawer>
+    </>
+  );
+};
 
 
-function NavbarEstabelecimento() {
-    return (
-        <nav className="navbar navbar-expand-lg navbar-light" style={{ backgroundColor: '#136935' }}>
-            <div className="container" style={{ maxWidth: '80%', marginLeft: 'auto', marginRight: 'auto' }}>
-                <a href="#" className="navbar-brand">
-                    <img src={require('../Imagens/logoEmpresa.png')} alt="Imagem" className="img-fluid"  style={{ maxWidth: '100px', maxHeight: '60px' }}  /> 
-                </a>
-                <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span style={{ display: 'flex', alignItems: 'center' }}><MenuLateralEstabelecimento /></span>
-                </button>
-                <div className="collapse navbar-collapse" id="navbarNav">
-                    <ul className='navbar-nav mt-auto'>
-                        <li className="nav-item">
-                            <a className="nav-link text-white" href="#" style={{ marginLeft: '200px', marginRight: '200px', fontSize: '35px'}}>Painel do Estabelecimento </a>
-                        </li>
-                    </ul>
-                    <ul className="navbar-nav ms-auto">
-                        <li className="nav-item">
-                            <a className="nav-link text-white" href="/painel-estabelecimento-extrato" style={{ marginRight: '25px'}}>Extrato e Saldo de Crédito </a>
-                        </li>
-                        <li className="nav-item" style={{ marginRight: '25px' }}>
-                            <a className="nav-link text-white" href="/painel-estabelecimento-historico-compras">Histórico de Compra</a>
-                        </li>
-                        <li className="nav-item" style={{ marginRight: '5px' }}>
-                            <img src={require('../Imagens/user.png')} alt="Imagem" className="img-fluid"  style={{ maxWidth: '100px', maxHeight: '40px' }}  /> 
-                        </li>
-                        <li className="nav-item" style={{ marginRight: '10px' }}>
-                            <a href="#">
-                                <img src={require('../Imagens/icone-sair.png')} alt="Imagem" className="img-fluid" style={{ maxWidth: '100px', maxHeight: '40px' }} />
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    );
-}
 
-export default NavbarEstabelecimento;
+
+export default MenuLateralEstabelecimento;
