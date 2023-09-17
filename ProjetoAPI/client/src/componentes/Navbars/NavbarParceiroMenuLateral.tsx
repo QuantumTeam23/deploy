@@ -56,6 +56,9 @@ const MenuLateralParceiro: React.FC = () => {
             <ListItemButton onClick={fecharMenu} component={Link} to="/painel-parceiro-saldo-credito">
               <ListItemText primary="Saldo de Crédito" />
             </ListItemButton>
+            <ListItemButton onClick={fecharMenu} component={Link} to="#">
+              <ListItemText primary="Sair" />
+            </ListItemButton>
           </List>
         </div>
       </Drawer>
