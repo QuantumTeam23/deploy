@@ -1,65 +1,57 @@
 import '../styles/Token.css';
-import { Container, Form, FormControl, InputGroup } from 'react-bootstrap';
+import { Alert, Container, Form, FormControl, InputGroup } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
-import React, { ChangeEvent, useState } from 'react';
-import Alert from 'react-bootstrap/Alert';
-
-interface FormDataToken {
-    token: string;
-    showEmptyFieldsAlert: boolean;
-    valido: boolean;
-}
+import React, { useState } from 'react';
 
 function Token() {
-    const [formDataToken, setFormDataToken] = useState<FormDataToken>({
-        token: '',
-        showEmptyFieldsAlert: false,
-        valido: false,
-    });
+    const [token, setToken] = useState('');
+    const [showSuccessAlert, setShowSuccessAlert] = useState(false);
+    const [showErrorAlert, setShowErrorAlert] = useState(false);
+    const [showEmptyFieldAlert, setShowEmptyFieldAlert] = useState(false);
+    const [alertText, setAlertText] = useState('');
 
-    const { token, showEmptyFieldsAlert, valido } = formDataToken;
-
-    const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-        const { value } = event.target;
-        setFormDataToken((prevState) => ({
-            ...prevState,
-            token: value,
-        }));
-    };
-
-    const handleSubmit = () => {
-        if (token === '') {
-            setFormDataToken((prevState) => ({
-                ...prevState,
-                showEmptyFieldsAlert: true,
-            }));
-
-            setTimeout(() => {
-                setFormDataToken((prevState) => ({
-                    ...prevState,
-                    showEmptyFieldsAlert: false,
-                }));
-            }, 5000);
-            return;
+    const validaCampos = () => {
+        let vazio = false
+    
+        if (token === "") {
+          vazio = true
+          return vazio
         }
-        const tokenArmazenado = localStorage.getItem('token');
+    }
+    
 
-        if (tokenArmazenado === token) {
-            setFormDataToken((prevState) => ({
-                ...prevState,
-                valido: true,
-            }));
+    const handleSubmit = async (event: any) => {
+        
+        if (!validaCampos()) {
+            event.preventDefault()
+            try {
+                const response = await fetch('http://localhost:3001/VerificarToken', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ token }),
+                });
+    
+                if (response.ok) {
+                    setAlertText('Token válido.')
+                    setShowSuccessAlert(true);
 
-            setTimeout(() => {
-                window.location.href = "/editar-senha";
-            }, 2000);
-
-            localStorage.setItem('validacao', 'Validado')
+                    setTimeout(() => {
+                        window.location.href = "/editar-senha";
+                    }, 1100);
+        
+                    localStorage.setItem('validacao', 'Validado');
+                } if (response.status === 401) {
+                    setAlertText('Token inválido ou expirado.');
+                    setShowErrorAlert(true);
+                }
+            } catch (error) {
+                console.error('Erro ao verificar o token:', error);
+            }
         } else {
-            setFormDataToken((prevState) => ({
-                ...prevState,
-                valido: false,
-            }));
+            setAlertText('Preencha o campo.');
+            setShowErrorAlert(true);
         }
     };
 
@@ -76,16 +68,23 @@ function Token() {
                         </span>
                     </div>
                     <Container>
-                        {showEmptyFieldsAlert && (
-                            <Alert variant="danger">Preencha o campo do formulário.</Alert>
-                        )}
-                        {valido && (
-                            <Alert variant="success">Token válido</Alert>
-                        )}
-                        {token && !valido && (
-                            <Alert variant="danger">Token inválido</Alert>
+                    {showSuccessAlert && (
+                        <Alert variant="success" onClose={() => setShowSuccessAlert(false)} dismissible>
+                            <p>{alertText}</p>
+                        </Alert>
                         )}
 
+                        {showErrorAlert && (
+                        <Alert variant="danger" onClose={() => setShowErrorAlert(false)} dismissible>
+                            <p>{alertText}</p>
+                        </Alert>
+                        )}
+
+                        {showEmptyFieldAlert && (
+                        <Alert variant="warning" onClose={() => setShowEmptyFieldAlert(false)} dismissible>
+                            <p>{alertText}</p>
+                        </Alert>
+                        )}
                         <div className='campo-token'>
                             <Form.Group controlId='email'>
                                 <Form.Label>Insira o TOKEN</Form.Label>
@@ -93,12 +92,12 @@ function Token() {
                                     <FormControl
                                         type='text'
                                         value={token}
-                                        onChange={handleInputChange}
                                         required
                                         placeholder='Digite seu TOKEN'
                                         aria-label='Token'
                                         aria-describedby='email-addon'
                                         className='form-control-token'
+                                        onChange={(e) => setToken(e.target.value)}
                                     />
                                 </InputGroup>
                             </Form.Group>
@@ -113,7 +112,6 @@ function Token() {
                     <div className='volta-login-token'>
                         <p>Voltar para a página de <a href="/login">Login</a></p>
                     </div>
-
                 </div>
             </div>
         </div>

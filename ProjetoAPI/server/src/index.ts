@@ -2,7 +2,6 @@ const express = require('express');
 const bp = require('body-parser');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
-const shortid = require('shortid');
 const nodemailer = require('nodemailer');
 
 const app = express();
@@ -42,18 +41,19 @@ app.get('/listAdministrador', listAllAdministrador);
 //FUNCIONALIDADES
 app.post('/enviarToken', enviarToken);
 app.put('/editSenha/:email', editarSenha);
+app.post('/VerificarToken', verificarToken);
 
 //LOGIN
 app.post('/login', login);
 
 //CONEXÃO BANCO
 const DB = new Pool({
-    // connectionString: "postgres://ajisntze:gNdLfQIQWZ2gcQjKM9HZYV4MhGQU_bya@silly.db.elephantsql.com/ajisntze"
-    user: 'postgres',       //user PostgreSQL padrão = postgres
-    host: 'localhost',
-    database: 'API',
-    password: 'General779568@',
-    port: 5432             //port PostgreSQL padrão = 5432
+    connectionString: "postgres://ajisntze:gNdLfQIQWZ2gcQjKM9HZYV4MhGQU_bya@silly.db.elephantsql.com/ajisntze"
+    // user: 'postgres',       //user PostgreSQL padrão = postgres
+    // host: 'localhost',
+    // database: 'API',
+    // password: '',
+    // port: 5432             //port PostgreSQL padrão = 5432
 });
 
 let connectionDB: PoolClient;
@@ -65,6 +65,7 @@ DB.connect().then(conn => {
     });
 });
 
+const jwtSecret = '779568';
 
 //Validação e Login no Sistema
 async function login(req, res) {
@@ -479,10 +480,10 @@ async function listAllAdministrador(req, res) {
 
 //ENVIAR TOKEN
 async function enviarToken(req, res) {
-    process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0"; // Desabilitar a verificação do certificado
     const { email } = req.body;
-    shortid.characters('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ@#');
-    const token = shortid.generate().substring(0, 6);
+
+    const token = jwt.sign({ email }, jwtSecret, { expiresIn: '1h' });
+
     const transporter = nodemailer.createTransport({
         host: "smtp-mail.outlook.com",
         port: 587,
@@ -500,8 +501,27 @@ async function enviarToken(req, res) {
         html: `Seu token é: <b>${token}</b>`
     });
 
-    res.send({ msg: "Sucesso", token: token });
+    res.send({ msg: "Sucesso"});
 }
+
+const tokensRevogados = new Set();
+
+async function verificarToken(req, res) {
+    const { token } = req.body;
+
+    try {
+        if (tokensRevogados.has(token)) {
+            return res.status(401).json({ message: 'Token já foi usado.' });
+        }
+        // Comparando token digitado com token gerado pela Secret Key
+        jwt.verify(token, jwtSecret);
+        tokensRevogados.add(token);
+
+        res.status(200).json({ message: 'Token válido.' });
+    } catch (error) {
+        res.status(401).json({ message: 'Token inválido ou expirado.' });
+    }
+};
 
 
 async function emailEstabelecimento(email) {

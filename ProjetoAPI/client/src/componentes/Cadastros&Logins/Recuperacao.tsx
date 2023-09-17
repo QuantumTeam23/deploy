@@ -63,7 +63,6 @@ function Recuperacao() {
                 console.log('Token enviado com sucesso!', token);
 
                 localStorage.setItem('email', email);
-                localStorage.setItem('token', token);
                 setFormDataRec((prevState) => ({
                     ...prevState,
                     enviado: true,
