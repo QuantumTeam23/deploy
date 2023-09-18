@@ -484,7 +484,6 @@ async function listAllAdministrador(req, res) {
 //ENVIAR TOKEN
 async function enviarToken(req, res) {
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
-    console.log("Requisição de enviar token recebida.");
     const { email } = req.body;
 
     const token = jwt.sign({ email }, jwtSecret, { expiresIn: '1h' });
