@@ -42,6 +42,7 @@ app.get('/listAdministrador', listAllAdministrador);
 app.post('/enviarToken', enviarToken);
 app.put('/editSenha/:email', editarSenha);
 app.post('/VerificarToken', verificarToken);
+app.get('/read-by-id-to-edit/:id', SelectToEdit);
 
 //LOGIN
 app.post('/login', login);
@@ -495,13 +496,36 @@ async function enviarToken(req, res) {
     });
 
     transporter.sendMail({
-        from: 'quantumteam23@outlook.com',
+        from: 'Quantum Team',
         to: email,
         subject: 'Seu Token',
         html: `Seu token é: <b>${token}</b>`
     });
 
     res.send({ msg: "Sucesso"});
+}
+
+async function SelectToEdit(req, res) {
+    const id = req.params.id
+    let SQL = "SELECT parceiro_email, parceiro_senha, parceiro_logradouro, parceiro_logradouro_numero, parceiro_bairro, parceiro_cidade, parceiro_estado, parceiro_cep, parceiro_regiao FROM parceiros WHERE parceiro_ID = '"+id+"'"
+
+    DB.query(SQL, (err, result) => {
+        if (err) {
+            res.send(err)
+        } else {
+            res.send({
+                email: result.rows.values().next().value.parceiro_email,
+                senha: result.rows.values().next().value.parceiro_senha,
+                logradouro: result.rows.values().next().value.parceiro_logradouro,
+                logradouroNumero: result.rows.values().next().value.parceiro_logradouro_numero,
+                bairro: result.rows.values().next().value.parceiro_bairro,
+                cidade: result.rows.values().next().value.parceiro_cidade,
+                estado: result.rows.values().next().value.parceiro_estado,
+                cep: result.rows.values().next().value.parceiro_cep,
+                regiao: result.rows.values().next().value.parceiro_regiao,
+            })
+        }
+    })
 }
 
 const tokensRevogados = new Set();

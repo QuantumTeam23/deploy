@@ -42,7 +42,6 @@ function Login() {
                 
             })
             const data = await response.json()
-            console.log(data)
     
             if (data.msg === "Usuário logado com sucesso." && data.idParceiro !== null) {
                 Swal.fire({
@@ -55,6 +54,7 @@ function Login() {
                     navigate('/painel-parceiro-historico-compra');
                 }, 1100);
                 localStorage.setItem('tipo', 'ComumParceiro')
+                localStorage.setItem('idParceiro', data.idParceiro)
             }
     
             else if (data.msg === "Usuário logado com sucesso." && data.idEstabelecimento !== null) {
@@ -68,6 +68,7 @@ function Login() {
                     navigate('/painel-estabelecimento-historico-compras');
                 }, 1100);
                 localStorage.setItem('tipo', 'ComumEstabelecimento')
+                localStorage.setItem('idEstabelecimento', data.idEstabelecimento)
             }
     
             else if (data.msg === "Usuário logado com sucesso." && data.idAdministrador !== null) {
@@ -81,6 +82,7 @@ function Login() {
                     navigate('/painel-administrador-usuario');
                 }, 1100);
                 localStorage.setItem('tipo', 'Administrador')
+                localStorage.setItem('idAdministrador', data.idAdministrador)
             } else {
                 Swal.fire({
                     title: "Erro",
