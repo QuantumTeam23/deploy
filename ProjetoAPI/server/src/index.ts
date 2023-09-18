@@ -38,6 +38,9 @@ app.put('/editAdministrador/:email', editarAdministrador);
 app.delete('/deleteAdministrador/:email', deletarAdministrador);
 app.get('/listAdministrador', listAllAdministrador);
 
+//LISTAR USUARIOS (nome, tipo e id)
+app.get('/listarusuarios', getUsers);
+
 //FUNCIONALIDADES
 app.post('/enviarToken', enviarToken);
 app.put('/editSenha/:email', editarSenha);
@@ -652,3 +655,57 @@ async function editarSenha(req, res) {
     }
 }
 //EDITAR SENHA
+
+
+//função para retornar nome e tipo de todos os usuarios
+async function getUsers(req, res) {
+    try{
+        const SQL1 = `
+    SELECT 
+        administrador_nome, administrador_id
+    FROM 
+        Administradores
+    `
+        const SQL2 = `
+    SELECT
+        estabelecimento_razao_social, estabelecimento_id
+    FROM 
+        estabelecimentos
+    `
+        const SQL3 = `
+    SELECT
+        parceiro_razao_social, parceiro_id
+    FROM
+        parceiros
+    `
+        const adms = await connectionDB.query(SQL1);
+        const estabelecimentos = await connectionDB.query(SQL2);
+        const parceiros = await connectionDB.query(SQL3);
+        console.log("Dados recuperados com sucesso");
+
+        const users = new Array;
+        for(let i=0; i<= adms.rowCount; i++){
+            if(typeof(adms.rows[i]) !== "undefined"){
+                users.push({nome: adms.rows[i].administrador_nome, tipo: "Administrador", id: adms.rows[i].administrador_id})
+            }             
+        }
+        for(let i=0; i<= parceiros.rowCount; i++){
+            if(typeof(parceiros.rows[i]) !== "undefined"){
+                users.push({nome: parceiros.rows[i].parceiro_razao_social, tipo: "Parceiro", id: parceiros.rows[i].parceiro_id})
+            }             
+        }
+        for(let i=0; i<= estabelecimentos.rowCount; i++){
+            if(typeof(estabelecimentos.rows[i]) !== "undefined"){
+                users.push({nome: estabelecimentos.rows[i].estabelecimento_razao_social, tipo: "Estabelecimento", id: estabelecimentos.rows[i].estabelecimento_id})
+            }             
+        }
+        
+        res.send(users); 
+    } catch (error) {
+        console.error("Erro ao listar usuários", error);
+        res.status(500).send({ msg: "Erro ao listar usuários" });
+    }
+
+}
+
+    
