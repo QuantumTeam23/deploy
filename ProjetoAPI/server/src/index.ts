@@ -510,7 +510,7 @@ async function enviarToken(req, res) {
 }
 
 async function SelectToEdit(req, res) {
-    const id = req.params.id
+    const id = req.params.id;
     let SQL = "SELECT parceiro_email, parceiro_senha, parceiro_logradouro, parceiro_logradouro_numero, parceiro_bairro, parceiro_cidade, parceiro_estado, parceiro_cep, parceiro_regiao FROM parceiros WHERE parceiro_ID = '"+id+"'"
 
     DB.query(SQL, (err, result) => {
