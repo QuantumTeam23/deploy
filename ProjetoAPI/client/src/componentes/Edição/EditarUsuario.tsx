@@ -1,101 +1,52 @@
-import React, { useState, ChangeEvent } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import '../styles/EditarUsuario.css';
-import { Container, Form, FormControl, InputGroup } from 'react-bootstrap';
+import { Form, FormControl, InputGroup } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
-import Alert from 'react-bootstrap/Alert';
-
-interface FormState {
-    razao_social: string;
-    nome_fantasia: string;
-    email: string;
-    senha: string;
-    cnpj: string;
-    showEmptyFieldsAlert: boolean;
-}
+import { useNavigate } from 'react-router-dom';
 
 function EditarUsuario() {
-    const [formState, setFormState] = useState<FormState>({
-        razao_social: '',
-        nome_fantasia: '',
+    const navigate = useNavigate()
+    const [userData, setUserData] = useState({
         email: '',
         senha: '',
-        cnpj: '',
-        showEmptyFieldsAlert: false,
+        logradouro: '',
+        logradouroNumero: '',
+        bairro: '',
+        cidade: '',
+        estado: '',
+        cep: '',
+        regiao: '',
     });
 
-    const { razao_social, nome_fantasia, email, senha, cnpj, showEmptyFieldsAlert } = formState;
+    useEffect(() => {
+        // Recupere os dados do localStorage quando o componente for montado
+        const userDataFromLocalStorage = localStorage.getItem('parceiroData');
+        if (userDataFromLocalStorage !== null) {
+            try {
+                const parsedData = JSON.parse(userDataFromLocalStorage);
+                setUserData(parsedData);
+            } catch (error) {   
+                // Se ocorrer um erro de análise JSON, você pode lidar com ele aqui.
+                console.error('Erro ao analisar os dados do localStorage:', error);
+            }
+        }
+    }, [userData]);
 
-    const handleInputChange = (
-        event: ChangeEvent<HTMLInputElement>
-    ) => {
-        const { name, value } = event.target;
-        setFormState((prevState) => ({
-            ...prevState,
-            [name]: value,
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { id, value } = e.target;
+        setUserData((prevData) => ({
+            ...prevData,
+            [id]: value,
         }));
     };
 
-    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
+    const handleBack = () => {
+        setTimeout(() => {
+            navigate('/painel-parceiro-historico-compra');
+        }, 500);
+        localStorage.removeItem('parceiroData')
+    }
 
-        if (razao_social === '' || nome_fantasia === '' || email === '' || senha === '' || cnpj === '') {
-            setFormState((prevState) => ({
-                ...prevState,
-                showEmptyFieldsAlert: true,
-            }));
-
-            setTimeout(() => {
-                setFormState((prevState) => ({
-                    ...prevState,
-                    showEmptyFieldsAlert: false,
-                }));
-            }, 5000);
-            return;
-        }
-
-        try {
-            const response = await fetch('http://localhost:3001/editParceiro/:cnpj', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    razao_social: razao_social,
-                    nome_fantasia: nome_fantasia,
-                    email: email,
-                    senha: senha,
-                    cnpj: cnpj,
- 
-                }),
-            });
-
-            if (response.status === 200) {
-                console.log('Parceiro atualizado com sucesso!');
-                setFormState((prevState) => ({
-                    ...prevState,
-                    cadastrado: true,
-                }));
-                window.location.reload(); // Recarregar a página
-            } else if (response.status === 409) {
-                setFormState((prevState) => ({
-                    ...prevState,
-                    cnpjEmUso: true,
-                }));
-                setTimeout(() => {
-                    setFormState((prevState) => ({
-                        ...prevState,
-                        cnpjEmUso: false,
-                    }));
-                }, 5000);
-            } else {
-                console.error('Erro ao cadastrar parceiro:', response.statusText);
-            }
-        } catch (error) {
-            console.error('Erro ao cadastrar parceiro:', error);
-        }
-    };
-        console.log('Usuário editado com sucesso!');
-    
     return (
         <div className='container-geral-editar-usuario'>
             <div className="container-janela-editar-usuario">
@@ -115,6 +66,8 @@ function EditarUsuario() {
                                         aria-label='email'
                                         aria-describedby='email-addon'
                                         className='form-control-editar-usuario'
+                                        defaultValue = {userData.email}
+                                        onChange={handleInputChange}    
                                     />
                                 </InputGroup>
                             </Form.Group>
@@ -130,6 +83,8 @@ function EditarUsuario() {
                                         aria-label='senha'
                                         aria-describedby='senha-addon'
                                         className='form-control-editar-usuario'
+                                        defaultValue = {userData.senha}
+                                        onChange={handleInputChange}  
                                     />
                                 </InputGroup>
                             </Form.Group>
@@ -145,6 +100,8 @@ function EditarUsuario() {
                                         aria-label='logradouro'
                                         aria-describedby='logradouro-addon'
                                         className='form-control-editar-usuario'
+                                        defaultValue = {userData.logradouro}
+                                        onChange={handleInputChange}  
                                     />
                                 </InputGroup>
                             </Form.Group>
@@ -160,6 +117,8 @@ function EditarUsuario() {
                                         aria-label='numero'
                                         aria-describedby='numero-addon'
                                         className='form-control-editar-usuario'
+                                        defaultValue = {userData.logradouroNumero}
+                                        onChange={handleInputChange}  
                                     />
                                 </InputGroup>
                             </Form.Group>
@@ -175,6 +134,8 @@ function EditarUsuario() {
                                         aria-label='bairro'
                                         aria-describedby='bairro-addon'
                                         className='form-control-editar-usuario'
+                                        defaultValue = {userData.bairro}
+                                        onChange={handleInputChange}  
                                     />
                                 </InputGroup>
                             </Form.Group>
@@ -190,6 +151,8 @@ function EditarUsuario() {
                                         aria-label='cidade'
                                         aria-describedby='cidade-addon'
                                         className='form-control-editar-usuario'
+                                        defaultValue = {userData.cidade}
+                                        onChange={handleInputChange}  
                                     />
                                 </InputGroup>
                             </Form.Group>
@@ -205,6 +168,8 @@ function EditarUsuario() {
                                         aria-label='estado'
                                         aria-describedby='estado-addon'
                                         className='form-control-editar-usuario'
+                                        defaultValue = {userData.estado}
+                                        onChange={handleInputChange}  
                                     />
                                 </InputGroup>
                             </Form.Group>
@@ -220,6 +185,8 @@ function EditarUsuario() {
                                         aria-label='cep'
                                         aria-describedby='cep-addon'
                                         className='form-control-editar-usuario'
+                                        defaultValue = {userData.cep}
+                                        onChange={handleInputChange}  
                                     />
                                 </InputGroup>
                             </Form.Group>
@@ -235,13 +202,15 @@ function EditarUsuario() {
                                         aria-label='regiao'
                                         aria-describedby='regiao-addon'
                                         className='form-control-editar-usuario'
+                                        defaultValue = {userData.regiao}
+                                        onChange={handleInputChange}  
                                     />
                                 </InputGroup>
                             </Form.Group>
                         </div>
                     </div>
                     <div className='botoes-editar-usuario'>
-                        <Button variant="danger">Cancelar</Button>
+                        <Button variant="danger" onClick={handleBack}>Cancelar</Button>
                         <Button variant="success">Editar</Button>
                     </div>
                 </div>
