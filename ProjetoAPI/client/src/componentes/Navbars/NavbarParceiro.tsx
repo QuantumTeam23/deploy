@@ -28,6 +28,28 @@ function NavbarParceiro() {
           }
         });
       }
+
+      const handleClick = () => {
+        const id = localStorage.getItem('idParceiro'); // Substitua pelo ID correto do parceiro
+        fetch(`http://localhost:3001/read-by-id-to-edit/${id}`)
+          .then(response => {
+            if (!response.ok) {
+              throw new Error(`Erro na solicitação: ${response.status}`);
+            }
+            return response.json();
+          })
+          .then(data => {
+            setTimeout(() => {
+              navigate('/editar-usuario');
+          }, 1100);
+            localStorage.setItem('parceiroData', JSON.stringify(data));
+    
+          })
+          .catch(error => {
+            console.error('Erro ao buscar dados do parceiro:', error);
+          });
+      };
+
     return (
         <nav className="navbar navbar-expand-lg navbar-light" style={{ backgroundColor: '#136935' }}>
             <div className="container" style={{ maxWidth: '80%', marginLeft: 'auto', marginRight: 'auto' }}>
@@ -59,6 +81,11 @@ function NavbarParceiro() {
                         </li>
                         <li className="nav-item" style={{ marginRight: '5px' }}>
                             <img src={require('../Imagens/user.png')} alt="Imagem" className="img-fluid"  style={{ maxWidth: '100px', maxHeight: '40px' }}  /> 
+                        </li>
+                        <li className="nav-item" style={{ marginRight: '10px' }}>
+                            <a href="#">
+                                <img src={require('../Imagens/icone-editar.png')} alt="Editar" className="img-fluid" style={{ maxWidth: '100px', maxHeight: '40px' }} onClick={handleClick}/>
+                            </a>                       
                         </li>
                         <li className="nav-item" style={{ marginRight: '10px' }}>
                             <a href="#">
