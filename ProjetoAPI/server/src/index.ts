@@ -49,7 +49,7 @@ app.post('/login', login);
 
 //CONEXÃO BANCO
 const DB = new Pool({
-    connectionString: "postgres://ajisntze:gNdLfQIQWZ2gcQjKM9HZYV4MhGQU_bya@silly.db.elephantsql.com/ajisntze"
+    connectionString: "postgres://roafmeki:5lQ4tpGBlpol7c4O3VWcHVCKaSYS2Y9B@silly.db.elephantsql.com/roafmeki"
     // user: 'postgres',       //user PostgreSQL padrão = postgres
     // host: 'localhost',
     // database: 'API',
@@ -402,6 +402,7 @@ async function cadastrarAdministrador(req, res) {
                     Administradores("administrador_nome","administrador_email","administrador_senha")
                 VALUES ('${nome}','${email}','${hashSenha}')
             `
+            await connectionDB.query(SQL); 
             console.log("Administrador cadastrado com sucesso!");
             res.send({ msg: "Administrador cadastrado com sucesso!" });
         } catch (error) {
@@ -427,6 +428,7 @@ async function editarAdministrador(req, res) {
             WHERE
                 administrador_email = '${email}'
         `
+        await connectionDB.query(SQL); 
         console.log("Administrador atualizado com sucesso!");
         res.send({ msg: "Administrador atualizado com sucesso!" });
     } catch (error) {
@@ -481,6 +483,8 @@ async function listAllAdministrador(req, res) {
 
 //ENVIAR TOKEN
 async function enviarToken(req, res) {
+    process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+    console.log("Requisição de enviar token recebida.");
     const { email } = req.body;
 
     const token = jwt.sign({ email }, jwtSecret, { expiresIn: '1h' });
@@ -529,15 +533,18 @@ async function SelectToEdit(req, res) {
 }
 
 const tokensRevogados = new Set();
+//ENVIAR TOKEN
 
+//VALIDAR TOKEN
 async function verificarToken(req, res) {
+    console.log("Requisição de verificação de token recebida.");
     const { token } = req.body;
 
     try {
         if (tokensRevogados.has(token)) {
             return res.status(401).json({ message: 'Token já foi usado.' });
         }
-        // Comparando token digitado com token gerado pela Secret Key
+        
         jwt.verify(token, jwtSecret);
         tokensRevogados.add(token);
 
@@ -546,9 +553,11 @@ async function verificarToken(req, res) {
         res.status(401).json({ message: 'Token inválido ou expirado.' });
     }
 };
+//VALIDAR TOKEN
 
-
+//PROCURAR EMAIL
 async function emailEstabelecimento(email) {
+    console.log("Requisição de procura email estabelecimento recebida.");
     const res = await connectionDB.query(`
         SELECT
             *
@@ -569,6 +578,7 @@ async function emailEstabelecimento(email) {
 }
 
 async function emailParceiro(email) {
+    console.log("Requisição de procura email parceiro recebida.");
     const res = await connectionDB.query(`
         SELECT
             *
@@ -588,7 +598,11 @@ async function emailParceiro(email) {
     return response
 }
 
+//PROCURAR EMAIL
+
+//EDITAR SENHA
 async function editarSenha(req, res) {
+    console.log("Requisição de troca de senha recebida.");
     console.log("Requisição de edição de senha recebida.");
     const email = req.params.email;
     const editarEstab = await emailEstabelecimento(email);
@@ -607,7 +621,7 @@ async function editarSenha(req, res) {
             WHERE
                 parceiro_email = '${email}'
             `;
-            await connectionDB.query(SQL); // Execute a consulta SQL
+            await connectionDB.query(SQL); 
             console.log("Senha do parceiro atualizado com sucesso!");
             res.send({ msg: "Senha do parceiro atualizado com sucesso!" });
         } catch (error) {
@@ -626,7 +640,7 @@ async function editarSenha(req, res) {
                 WHERE
                     estabelecimento_email = '${email}'
             `;
-            await connectionDB.query(SQL); // Execute a consulta SQL
+            await connectionDB.query(SQL); 
             console.log("Senha do estabelecimento atualizado com sucesso!");
             res.send({ msg: "Senha do estabelecimento atualizado com sucesso!" });
         } catch (error) {
@@ -638,3 +652,4 @@ async function editarSenha(req, res) {
         res.status(500).send({ msg: "Email não encontrado." })
     }
 }
+//EDITAR SENHA
