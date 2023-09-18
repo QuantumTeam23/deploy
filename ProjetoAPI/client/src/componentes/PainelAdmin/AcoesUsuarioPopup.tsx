@@ -250,86 +250,86 @@ export default function AdicionarUsuarioPopup({ open, onClose }: { open: boolean
   };
 //antes das alterações novamente - só lembra que esta
 
-const isFormValidParc = (formData: FormDataUserParc) => {
-  const {
-    parceiro_razao_social,
-    parceiro_nome_fantasia,
-    parceiro_email,
-    parceiro_senha,
-    parceiro_cnpj,
-    parceiro_logradouro,
-    parceiro_logradouroNumero,
-    parceiro_bairro,
-    parceiro_cidade,
-    parceiro_estado,
-    parceiro_cep,
-    parceiro_regiao,
-    parceiro_telefone,
-    parceiro_volume,
-    parceiro_tipo,
-  } = formData;
-  if (tabValue === 0) {
-    return (
-      parceiro_razao_social === '' ||
-      parceiro_nome_fantasia === '' ||
-      parceiro_email === '' ||
-      parceiro_senha === '' ||
-      parceiro_cnpj === '' ||
-      parceiro_logradouro === '' ||
-      parceiro_logradouroNumero === '' ||
-      parceiro_bairro === '' ||
-      parceiro_cidade === '' ||
-      parceiro_estado === '' ||
-      parceiro_cep === '' ||
-      parceiro_regiao === '' ||
-      parceiro_tipo === '' ||
-      parceiro_volume === '' ||
-      parceiro_telefone === ''
-    );
-  }
-  return true;
+  const isFormValidParc = (formData: FormDataUserParc) => {
+    const {
+      parceiro_razao_social,
+      parceiro_nome_fantasia,
+      parceiro_email,
+      parceiro_senha,
+      parceiro_cnpj,
+      parceiro_logradouro,
+      parceiro_logradouroNumero,
+      parceiro_bairro,
+      parceiro_cidade,
+      parceiro_estado,
+      parceiro_cep,
+      parceiro_regiao,
+      parceiro_telefone,
+      parceiro_volume,
+      parceiro_tipo,
+    } = formData;
+    if (tabValue === 0) {
+      return (
+        parceiro_razao_social === '' &&
+        parceiro_nome_fantasia === '' &&
+        parceiro_email === '' &&
+        parceiro_senha === '' &&
+        parceiro_cnpj === '' &&
+        parceiro_logradouro === '' &&
+        parceiro_logradouroNumero === '' &&
+        parceiro_bairro === '' &&
+        parceiro_cidade === '' &&
+        parceiro_estado === '' &&
+        parceiro_cep === '' &&
+        parceiro_regiao === '' &&
+        parceiro_tipo === '' &&
+        parceiro_volume === '' &&
+        parceiro_telefone === ''
+      );
+    }
+    return true;
 
-};
+  };
 
-const isFormValidEstab = (formData: FormDataUserEstab) => {
-  const {
-    estabelecimento_razao_social,
-    estabelecimento_nome_fantasia,
-    estabelecimento_email,
-    estabelecimento_senha,
-    estabelecimento_cnpj,
-    estabelecimento_logradouro,
-    estabelecimento_logradouroNumero,
-    estabelecimento_bairro,
-    estabelecimento_cidade,
-    estabelecimento_estado,
-    estabelecimento_cep,
-    estabelecimento_regiao,
-    estabelecimento_tipo,
-    estabelecimento_volume,
-    estabelecimento_telefone,
-  } = formData;
-  if (tabValue === 1) {
-    return (
-      estabelecimento_razao_social === '' ||
-      estabelecimento_nome_fantasia === '' ||
-      estabelecimento_email === '' ||
-      estabelecimento_senha === '' ||
-      estabelecimento_cnpj === '' ||
-      estabelecimento_logradouro === '' ||
-      estabelecimento_logradouroNumero === '' ||
-      estabelecimento_bairro === '' ||
-      estabelecimento_cidade === '' ||
-      estabelecimento_estado === '' ||
-      estabelecimento_cep === '' ||
-      estabelecimento_regiao === '' ||
-      estabelecimento_tipo === '' ||
-      estabelecimento_volume === '' ||
-      estabelecimento_telefone === ''
-    );
-  }
-  return true;
-};
+  const isFormValidEstab = (formData: FormDataUserEstab) => {
+    const {
+      estabelecimento_razao_social,
+      estabelecimento_nome_fantasia,
+      estabelecimento_email,
+      estabelecimento_senha,
+      estabelecimento_cnpj,
+      estabelecimento_logradouro,
+      estabelecimento_logradouroNumero,
+      estabelecimento_bairro,
+      estabelecimento_cidade,
+      estabelecimento_estado,
+      estabelecimento_cep,
+      estabelecimento_regiao,
+      estabelecimento_tipo,
+      estabelecimento_volume,
+      estabelecimento_telefone,
+    } = formData;
+    if (tabValue === 1) {
+      return (
+        estabelecimento_razao_social === '' &&
+        estabelecimento_nome_fantasia === '' &&
+        estabelecimento_email === '' &&
+        estabelecimento_senha === '' &&
+        estabelecimento_cnpj === '' &&
+        estabelecimento_logradouro === '' &&
+        estabelecimento_logradouroNumero === '' &&
+        estabelecimento_bairro === '' &&
+        estabelecimento_cidade === '' &&
+        estabelecimento_estado === '' &&
+        estabelecimento_cep === '' &&
+        estabelecimento_regiao === '' &&
+        estabelecimento_tipo === '' &&
+        estabelecimento_volume === '' &&
+        estabelecimento_telefone === ''
+      );
+    }
+    return true;
+  };
 
 
 
