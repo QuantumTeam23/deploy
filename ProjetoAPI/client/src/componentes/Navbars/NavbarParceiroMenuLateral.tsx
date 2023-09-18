@@ -10,6 +10,7 @@ import Divider from '@mui/material/Divider';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
+import EditarUsuario from '../Edição/EditarUsuario';
 
 const MenuLateralParceiro: React.FC = () => {
   const [menuAberto, setMenuAberto] = React.useState(false);
@@ -46,6 +47,28 @@ const MenuLateralParceiro: React.FC = () => {
     });
   }
 
+  const handleClick = () => {
+    const id = localStorage.getItem('idParceiro'); // Substitua pelo ID correto do parceiro
+    fetch(`http://localhost:3001/read-by-id-to-edit/${id}`)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`Erro na solicitação: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(data => {
+        setTimeout(() => {
+          navigate('/editar-usuario');
+      }, 1100);
+        localStorage.setItem('parceiroData', JSON.stringify(data));
+
+      })
+      .catch(error => {
+        console.error('Erro ao buscar dados do parceiro:', error);
+      });
+  };
+
+  
   return (
     <>
       <IconButton
@@ -64,11 +87,23 @@ const MenuLateralParceiro: React.FC = () => {
       </IconButton>
       <Drawer open={menuAberto} onClose={fecharMenu} anchor="right">
         <div style={{ width: '250px' }}>
+
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '16px' }}>
-            <AccountCircleIcon style={{ fontSize: '64px' }} />
-            <h2>Conta</h2>
+          <h2>Conta</h2>
+          <AccountCircleIcon style={{ fontSize: '64px' }} />
           </div>
+            <List>
+              <ListItemButton onClick={handleClick} component={Link} to="#">
+                <ListItemText primary="Editar Perfil" />
+              </ListItemButton>
+            <ListItemButton onClick={handleSair} component={Link} to="#">
+              <ListItemText primary="Sair da conta" />
+            </ListItemButton>
+            </List>
           <Divider />
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '16px' }}>
+          <h2>Menu</h2>
+          </div>
           <List>
             <ListItemButton onClick={fecharMenu} component={Link} to="/painel-parceiro-carteira-estabelecimento">
               <ListItemText primary="Carteira de Estabelecimentos" />
@@ -81,9 +116,6 @@ const MenuLateralParceiro: React.FC = () => {
             </ListItemButton>
             <ListItemButton onClick={fecharMenu} component={Link} to="/painel-parceiro-saldo-credito">
               <ListItemText primary="Saldo de Crédito" />
-            </ListItemButton>
-            <ListItemButton onClick={handleSair} component={Link} to="#">
-              <ListItemText primary="Sair" />
             </ListItemButton>
           </List>
         </div>
