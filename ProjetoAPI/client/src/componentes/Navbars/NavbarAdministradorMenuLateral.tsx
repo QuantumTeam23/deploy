@@ -46,6 +46,27 @@ const MenuLateralAdministrador: React.FC = () => {
     });
   }
 
+  const handleClick = () => {
+    const id = localStorage.getItem('idAdministrador'); 
+    fetch(`http://localhost:3001/read-by-id-to-edit/${id}`)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`Erro na solicitação: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(data => {
+        setTimeout(() => {
+          navigate('/editar-usuario');
+      }, 1100);
+        localStorage.setItem('administradorData', JSON.stringify(data));
+
+      })
+      .catch(error => {
+        console.error('Erro ao buscar dados do administrador:', error);
+      });
+  };
+
   return (
     <>
       <IconButton
@@ -55,7 +76,7 @@ const MenuLateralAdministrador: React.FC = () => {
         onClick={abrirMenu}
         style={{
           borderRadius: '12px', // Adicionando bordas arredondadas
-          padding: '8px', 
+          padding: '8px',
           width: '48px', // Ajustando a largura
           height: '48px', // Ajustando a altura
         }}
@@ -64,11 +85,23 @@ const MenuLateralAdministrador: React.FC = () => {
       </IconButton>
       <Drawer open={menuAberto} onClose={fecharMenu} anchor="right">
         <div style={{ width: '250px' }}>
+
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '16px' }}>
-            <AccountCircleIcon style={{ fontSize: '64px' }} />
             <h2>Conta</h2>
+            <AccountCircleIcon style={{ fontSize: '64px' }} />
           </div>
+          <List>
+            <ListItemButton onClick={handleClick} component={Link} to="#">
+              <ListItemText primary="Editar Perfil" />
+            </ListItemButton>
+            <ListItemButton onClick={handleSair} component={Link} to="#">
+              <ListItemText primary="Sair da conta" />
+            </ListItemButton>
+          </List>
           <Divider />
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '16px' }}>
+            <h2>Menu</h2>
+          </div>
           <List>
             <ListItemButton onClick={fecharMenu} component={Link} to="/painel-administrador-usuario">
               <ListItemText primary="Controle de Usuário" />
