@@ -2,7 +2,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import Button from '@mui/material/Button';
 import styles from '../styles/TabelaControlUser.module.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { EditarUsuarioPopup, RemoverUsuarioPopup } from './AcoesUsuarioPopup';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
@@ -29,15 +29,32 @@ export default function TabelasControlUser() {
     setRemoverUsuarioPopupOpen(false);
   };
 
+  const [user, setUser] = useState([]);
+  useEffect(() => {
+    fetch("http://localhost:3001/listarusuarios", {
+      method: "GET",
+       headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setUser(data)
+      })
+      .catch((error) => console.log(error));
+  }, []);
+
+  /*
   const data = Array.from({ length: 18 }, (_, index) => ({
     nome: `Nome ${index + 1}`,
     tipo: `Tipo ${index + 1}`,
-  }));
+  }));   */
+  
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
 
-  const currentData = data.slice(startIndex, endIndex);
+  const currentData = user.slice(startIndex, endIndex);
 
   const handlePrevPage = () => {
     if (currentPage > 1) {
@@ -46,7 +63,7 @@ export default function TabelasControlUser() {
   };
 
   const handleNextPage = () => {
-    if (endIndex < data.length) {
+    if (endIndex < user.length) {
       setCurrentPage(currentPage + 1);
     }
   };
@@ -62,7 +79,7 @@ export default function TabelasControlUser() {
           </tr>
         </thead>
         <tbody>
-          {currentData.map((item, index) => (
+          {currentData.map((item: any, index: any) => (
             <tr key={index}>
               <td>{item.nome}</td>
               <td>{item.tipo}</td>
@@ -105,11 +122,11 @@ export default function TabelasControlUser() {
               </Button>
               <Button
                 endIcon={<KeyboardArrowRightIcon />}
-                disabled={endIndex >= data.length}
+                disabled={endIndex >= user.length}
                 onClick={handleNextPage}
                 style={{
-                  color: endIndex < data.length ? 'lightblue' : 'lightgray',
-                  fontWeight: endIndex < data.length ? 'bold' : 'normal',
+                  color: endIndex < user.length ? 'lightblue' : 'lightgray',
+                  fontWeight: endIndex < user.length ? 'bold' : 'normal',
                 }}
               >
                 Próxima
