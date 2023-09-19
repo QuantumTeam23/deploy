@@ -55,7 +55,7 @@ app.post('/login', login);
 
 //CONEXÃO BANCO
 const DB = new Pool({
-    connectionString: "postgres://roafmeki:5lQ4tpGBlpol7c4O3VWcHVCKaSYS2Y9B@silly.db.elephantsql.com/roafmeki"
+    connectionString: "postgres://zxadcyoz:TohEOG3EH78dNejAGHO18wQoNXDWauFo@silly.db.elephantsql.com/zxadcyoz"
     // user: 'postgres',       //user PostgreSQL padrão = postgres
     // host: 'localhost',
     // database: 'API',
