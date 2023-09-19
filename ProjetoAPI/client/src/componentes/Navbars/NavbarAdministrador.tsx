@@ -79,11 +79,6 @@ function NavbarAdministrador() {
                         </li>
                         <li className="nav-item" style={{ marginRight: '10px' }}>
                             <a href="#">
-                                <img src={require('../Imagens/icone-editar.png')} alt="Editar" className="img-fluid" style={{ maxWidth: '100px', maxHeight: '40px' }} onClick={handleClick}/>
-                            </a>                       
-                        </li>
-                        <li className="nav-item" style={{ marginRight: '10px' }}>
-                            <a href="#">
                                 <img src={require('../Imagens/icone-sair.png')} alt="Imagem" className="img-fluid" style={{ maxWidth: '100px', maxHeight: '40px' }} onClick={handleSair}/>
                             </a>
                         </li>

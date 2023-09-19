@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../styles/EditarUsuario.css';
 import { Form, FormControl, InputGroup } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
@@ -6,11 +6,11 @@ import { useNavigate } from 'react-router-dom';
 
 function EditarUsuario() {
     const navigate = useNavigate()
-    const [userData, setUserData] = useState({
+    const [usuarioDados, setUsuarioDados] = useState({
         email: '',
         senha: '',
         logradouro: '',
-        logradouroNumero: '',
+        numero: '',
         bairro: '',
         cidade: '',
         estado: '',
@@ -19,33 +19,96 @@ function EditarUsuario() {
     });
 
     useEffect(() => {
-        // Recupere os dados do localStorage quando o componente for montado
-        const userDataFromLocalStorage = localStorage.getItem('parceiroData');
-        if (userDataFromLocalStorage !== null) {
+        const DadosParceiro = localStorage.getItem('parceiroData');
+        const DadosEstabelecimento = localStorage.getItem('estabelecimentoData');
+        if (DadosParceiro !== null) {
             try {
-                const parsedData = JSON.parse(userDataFromLocalStorage);
-                setUserData(parsedData);
+                const parsedData = JSON.parse(DadosParceiro);
+                setUsuarioDados(parsedData);
             } catch (error) {   
-                // Se ocorrer um erro de análise JSON, você pode lidar com ele aqui.
+                console.error('Erro ao analisar os dados do localStorage:', error);
+            }
+        } else if (DadosEstabelecimento !== null) {
+            try {
+                const parsedData = JSON.parse(DadosEstabelecimento);
+                setUsuarioDados(parsedData);
+            } catch (error) {   
                 console.error('Erro ao analisar os dados do localStorage:', error);
             }
         }
-    }, [userData]);
+    }, []);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { id, value } = e.target;
-        setUserData((prevData) => ({
+        setUsuarioDados((prevData) => ({
             ...prevData,
             [id]: value,
         }));
     };
 
     const handleBack = () => {
-        setTimeout(() => {
-            navigate('/painel-parceiro-historico-compra');
-        }, 500);
-        localStorage.removeItem('parceiroData')
+
+        if (localStorage.getItem('idParceiro') !== null) {
+            setTimeout(() => {
+                navigate('/painel-parceiro-historico-compra');
+            }, 500);
+            localStorage.removeItem('parceiroData')
+        } else {
+            setTimeout(() => {
+                navigate('/painel-estabelecimento-historico-compras');
+            }, 100);
+            localStorage.removeItem('estabelecimentoData')
+        } 
     }
+
+    const handleEdit = () => {
+        const idParceiro = localStorage.getItem('idParceiro')
+        const idEstabelecimento = localStorage.getItem('idEstabelecimento')
+
+        if (idParceiro !== null) {
+            fetch(`http://localhost:3001/editar-usuario-comum-parceiro/${idParceiro}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({usuarioDados}),
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Erro ao editar dados');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Dados editados com sucesso:', data);
+            })
+            .catch(error => {
+                console.error('Erro ao editar dados:', error);
+            });
+        } else {
+            fetch(`http://localhost:3001/editar-usuario-comum-estabelecimento/${idEstabelecimento}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({usuarioDados}),
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Erro ao editar dados');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Dados editados com sucesso:', data);
+            })
+            .catch(error => {
+                console.error('Erro ao editar dados:', error);
+            });
+        }
+
+    };
+    
 
     return (
         <div className='container-geral-editar-usuario'>
@@ -66,8 +129,8 @@ function EditarUsuario() {
                                         aria-label='email'
                                         aria-describedby='email-addon'
                                         className='form-control-editar-usuario'
-                                        defaultValue = {userData.email}
-                                        onChange={handleInputChange}    
+                                        defaultValue = {usuarioDados.email}
+                                        onChange={handleInputChange}
                                     />
                                 </InputGroup>
                             </Form.Group>
@@ -83,7 +146,7 @@ function EditarUsuario() {
                                         aria-label='senha'
                                         aria-describedby='senha-addon'
                                         className='form-control-editar-usuario'
-                                        defaultValue = {userData.senha}
+                                        defaultValue = {usuarioDados.senha}
                                         onChange={handleInputChange}  
                                     />
                                 </InputGroup>
@@ -100,7 +163,7 @@ function EditarUsuario() {
                                         aria-label='logradouro'
                                         aria-describedby='logradouro-addon'
                                         className='form-control-editar-usuario'
-                                        defaultValue = {userData.logradouro}
+                                        defaultValue = {usuarioDados.logradouro}
                                         onChange={handleInputChange}  
                                     />
                                 </InputGroup>
@@ -117,7 +180,7 @@ function EditarUsuario() {
                                         aria-label='numero'
                                         aria-describedby='numero-addon'
                                         className='form-control-editar-usuario'
-                                        defaultValue = {userData.logradouroNumero}
+                                        defaultValue = {usuarioDados.numero}
                                         onChange={handleInputChange}  
                                     />
                                 </InputGroup>
@@ -134,7 +197,7 @@ function EditarUsuario() {
                                         aria-label='bairro'
                                         aria-describedby='bairro-addon'
                                         className='form-control-editar-usuario'
-                                        defaultValue = {userData.bairro}
+                                        defaultValue = {usuarioDados.bairro}
                                         onChange={handleInputChange}  
                                     />
                                 </InputGroup>
@@ -151,7 +214,7 @@ function EditarUsuario() {
                                         aria-label='cidade'
                                         aria-describedby='cidade-addon'
                                         className='form-control-editar-usuario'
-                                        defaultValue = {userData.cidade}
+                                        defaultValue = {usuarioDados.cidade}
                                         onChange={handleInputChange}  
                                     />
                                 </InputGroup>
@@ -168,7 +231,7 @@ function EditarUsuario() {
                                         aria-label='estado'
                                         aria-describedby='estado-addon'
                                         className='form-control-editar-usuario'
-                                        defaultValue = {userData.estado}
+                                        defaultValue = {usuarioDados.estado}
                                         onChange={handleInputChange}  
                                     />
                                 </InputGroup>
@@ -185,7 +248,7 @@ function EditarUsuario() {
                                         aria-label='cep'
                                         aria-describedby='cep-addon'
                                         className='form-control-editar-usuario'
-                                        defaultValue = {userData.cep}
+                                        defaultValue = {usuarioDados.cep}
                                         onChange={handleInputChange}  
                                     />
                                 </InputGroup>
@@ -202,7 +265,7 @@ function EditarUsuario() {
                                         aria-label='regiao'
                                         aria-describedby='regiao-addon'
                                         className='form-control-editar-usuario'
-                                        defaultValue = {userData.regiao}
+                                        defaultValue = {usuarioDados.regiao}
                                         onChange={handleInputChange}  
                                     />
                                 </InputGroup>
@@ -211,7 +274,7 @@ function EditarUsuario() {
                     </div>
                     <div className='botoes-editar-usuario'>
                         <Button variant="danger" onClick={handleBack}>Cancelar</Button>
-                        <Button variant="success">Editar</Button>
+                        <Button variant="success" onClick={handleEdit}>Editar</Button>
                     </div>
                 </div>
             </div>

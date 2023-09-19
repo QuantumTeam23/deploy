@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent } from 'react';
+import React, { useState, ChangeEvent, useEffect } from 'react';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
@@ -723,9 +723,115 @@ const isFormValidEstab = (formData: FormDataUserEstab) => {
 }
 
 export function EditarUsuarioPopup({ open, onClose }: { open: boolean, onClose: () => void }) {
+  const [usuarioDados, setUsuarioDados] = useState({
+      email: '',
+      senha: '',
+      logradouro: '',
+      numero: '',
+      bairro: '',
+      cidade: '',
+      estado: '',
+      cep: '',
+      regiao: '',
+  });
   const handleClose = () => {
     onClose();
   };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { id, value } = e.target;
+    setUsuarioDados((prevData) => ({
+        ...prevData,
+        [id]: value,
+    }));
+  };
+
+  useEffect(() => {
+    if (open) {
+      const DadosParceiro = localStorage.getItem('ParceiroData');
+      const DadosEstabelecimento = localStorage.getItem('EstabelecimentoData');
+      if (DadosParceiro) {
+        try {
+          const parsedData = JSON.parse(DadosParceiro);
+          setUsuarioDados(parsedData);
+        } catch (error) {
+          console.error('Erro ao analisar os dados do localStorage:', error);
+        }
+      } else if (DadosEstabelecimento) {
+        try {
+          const parsedData = JSON.parse(DadosEstabelecimento);
+          setUsuarioDados(parsedData);
+        } catch (error) {
+          console.error('Erro ao analisar os dados do localStorage:', error);
+        }
+      }
+    }
+  }, [open]);
+
+  useEffect(() => {
+    if (!open) {
+      setUsuarioDados({
+        email: '',
+        senha: '',
+        logradouro: '',
+        numero: '',
+        bairro: '',
+        cidade: '',
+        estado: '',
+        cep: '',
+        regiao: '',
+      });
+    }
+  }, [open]);
+
+
+  const handleEdit = () => {
+    const tipoUsuario = localStorage.getItem('tipoEdit')
+    const razaoSocial = localStorage.getItem('nomeEdit')
+
+    if (tipoUsuario === "Parceiro") {
+        fetch(`http://localhost:3001/editar-usuario-comum-parceiro-by-admin/${razaoSocial}/${tipoUsuario}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({usuarioDados}),
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erro ao editar dados');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Dados editados com sucesso:', data);
+        })
+        .catch(error => {
+            console.error('Erro ao editar dados:', error);
+        });
+    } else if (tipoUsuario === 'Estabelecimento') {
+        fetch(`http://localhost:3001/editar-usuario-comum-parceiro-by-admin/${razaoSocial}/${tipoUsuario}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({usuarioDados}),
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erro ao editar dados');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Dados editados com sucesso:', data);
+        })
+        .catch(error => {
+            console.error('Erro ao editar dados:', error);
+        });
+    }
+    onClose();
+};
 
   return (
     <Dialog
@@ -737,23 +843,44 @@ export function EditarUsuarioPopup({ open, onClose }: { open: boolean, onClose: 
       <DialogTitle>Editar Usuário</DialogTitle>
       <DialogContent>
         <div>
-          <label>Endereço:</label>
-          <input type="text" id="endereco" />
-        </div>
-        <div>
           <label>Email:</label>
-          <input type="email" id="email" className={styles.emailInput} />
+          <input type="email" id="email" className={styles.emailInput} defaultValue={usuarioDados.email} onChange={handleInputChange} />
         </div>
         <div>
           <label>Senha:</label>
-          <input type="password" id="senha" className={styles.passwordInput} />
+          <input type="password" id="senha" className={styles.passwordInput} defaultValue={usuarioDados.senha} onChange={handleInputChange} />
         </div>
+        <div>
+          <label>Logradouro:</label>
+          <input type="text" id="logradouro" defaultValue={usuarioDados.logradouro} onChange={handleInputChange} />
+        </div>
+        <div>
+          <label>Número:</label>
+          <input type="text" id="numero" defaultValue={usuarioDados.numero} onChange={handleInputChange}/>
+        </div>
+        <div>
+          <label>Bairro:</label>
+          <input type="text" id="bairro" defaultValue={usuarioDados.bairro} onChange={handleInputChange}/>
+        </div>
+        <div>
+          <label>Cidade:</label>
+          <input type="text" id="cidade" defaultValue={usuarioDados.cidade} onChange={handleInputChange}/>
+        </div>
+        <div>
+          <label>Estado:</label>
+          <input type="text" id="estado" defaultValue={usuarioDados.estado} onChange={handleInputChange}/>
+        </div>
+        <div>
+          <label>CEP:</label>
+          <input type="text" id="cep" defaultValue={usuarioDados.cep} onChange={handleInputChange}/>
+        </div>
+
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose} color="primary">
           Cancelar
         </Button>
-        <Button onClick={handleClose} color="primary">
+        <Button onClick={handleEdit} color="primary">
           Salvar
         </Button>
       </DialogActions>

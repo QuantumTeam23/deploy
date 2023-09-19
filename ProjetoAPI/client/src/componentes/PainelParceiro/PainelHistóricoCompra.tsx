@@ -6,7 +6,6 @@ import NavbarParceiro from '../Navbars/NavbarParceiro';
 import { useNavigate } from 'react-router-dom';
 
 export default function PainelHistoricoCompra() {
-  const navigate = useNavigate()
 
   return (
     <>

@@ -13,21 +13,69 @@ export default function TabelasControlUser() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 9;
 
-  const handleEditarUsuarioClick = () => {
-    setEditarUsuarioPopupOpen(true);
+  const handleEditarUsuarioClick = (item: any) => {
+
+      const razaoSocial = item.nome
+      const tipo = item.tipo
+      localStorage.setItem('nomeEdit', razaoSocial)
+      localStorage.setItem('tipoEdit', tipo)
+
+      if (tipo === 'Parceiro') {
+
+        fetch(`http://localhost:3001/read-by-id-to-edit-admin/${razaoSocial}/${tipo}`)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`Erro na solicitação: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then(data => {
+          localStorage.setItem('ParceiroData', JSON.stringify(data));
+  
+        })
+        .catch(error => {
+          console.error('Erro ao buscar dados do estabelecimento:', error);
+        });
+      } else if (tipo === 'Estabelecimento') {
+
+        fetch(`http://localhost:3001/read-by-id-to-edit-admin/${razaoSocial}/${tipo}`)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`Erro na solicitação: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then(data => {
+          localStorage.setItem('EstabelecimentoData', JSON.stringify(data));
+  
+        })
+        .catch(error => {
+          console.error('Erro ao buscar dados do estabelecimento:', error);
+        });
+      }
+      setTimeout(() => {
+        setEditarUsuarioPopupOpen(true);
+    }, 500);
+    
   };
+
 
   const handleRemoverUsuarioClick = () => {
     setRemoverUsuarioPopupOpen(true);
   };
 
   const handleCloseEditarUsuarioPopup = () => {
+    localStorage.removeItem('EstabelecimentoData')
+    localStorage.removeItem('ParceiroData')
+    localStorage.removeItem('nomeEdit')
+    localStorage.removeItem('tipoEdit')
     setEditarUsuarioPopupOpen(false);
   };
 
   const handleCloseRemoverUsuarioPopup = () => {
     setRemoverUsuarioPopupOpen(false);
   };
+
 
   const [user, setUser] = useState([]);
   useEffect(() => {
@@ -43,13 +91,6 @@ export default function TabelasControlUser() {
       })
       .catch((error) => console.log(error));
   }, []);
-
-  /*
-  const data = Array.from({ length: 18 }, (_, index) => ({
-    nome: `Nome ${index + 1}`,
-    tipo: `Tipo ${index + 1}`,
-  }));   */
-  
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
@@ -89,7 +130,9 @@ export default function TabelasControlUser() {
                     variant="contained"
                     color="primary"
                     startIcon={<EditIcon style={{ fontSize: 28 }} />}
-                    onClick={handleEditarUsuarioClick}
+                    onClick={() => {
+                      handleEditarUsuarioClick(item)
+                    }}
                   />
                 </div>
               </td>
@@ -99,7 +142,7 @@ export default function TabelasControlUser() {
                     variant="contained"
                     color="secondary"
                     startIcon={<DeleteIcon style={{ fontSize: 28 }} />}
-                    onClick={handleRemoverUsuarioClick}
+                    onClick={() => handleEditarUsuarioClick(item.idParceiro)}
                   />
                 </div>
               </td>
@@ -140,7 +183,7 @@ export default function TabelasControlUser() {
       <p>ㅤ</p>
       <p>ㅤ</p>
 
-      <EditarUsuarioPopup open={editarUsuarioPopupOpen} onClose={handleCloseEditarUsuarioPopup} />
+      <EditarUsuarioPopup open={editarUsuarioPopupOpen} onClose={handleCloseEditarUsuarioPopup}/>
       <RemoverUsuarioPopup open={removerUsuarioPopupOpen} onClose={handleCloseRemoverUsuarioPopup} nomeContato={`Nome de Exemplo`} />
     </>
   );

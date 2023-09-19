@@ -22,30 +22,32 @@ app.get('/', function (_, res) {
 
 //ESTABELECIMENTO
 app.post('/addEstabelecimento', cadastrarEstabelecimento);
-app.put('/editEstabelecimento/:cnpj', editarEstabelecimento);
+app.put('/editar-usuario-comum-estabelecimento/:idEstabelecimento', editarEstabelecimento);
 app.delete('/deletEstabelecimento/:cnpj', deletarEstabelecimento);
 app.get('/listEstabelecimento', listAllEstabelecimento);
 
 //PARCEIRO
 app.post('/addParceiro', cadastrarParceiro);
-app.put('/editParceiro/:cnpj', editarParceiro);
+app.put('/editar-usuario-comum-parceiro/:idParceiro', editarParceiro);
 app.delete('/deletParceiro/:cnpj', deletarParceiro);
-app.get('/listParceiro', listAllParceiro);
 
 //ADMINISTRADOR
 app.post('/addAdministrador', cadastrarAdministrador);
 app.put('/editAdministrador/:email', editarAdministrador);
 app.delete('/deleteAdministrador/:email', deletarAdministrador);
 app.get('/listAdministrador', listAllAdministrador);
+app.get('/read-by-id-to-edit-admin/:razaoSocial/:tipo', SelectToEditAdmin)
+app.put('/editar-usuario-comum-parceiro-by-admin/:razaoSocial/:tipoUsuario', editarAdmin)
+app.get('/verifica-email/:emailEDIT', verificaEmail)
 
 //LISTAR USUARIOS (nome, tipo e id)
 app.get('/listarusuarios', getUsers);
 
 //FUNCIONALIDADES
 app.post('/enviarToken', enviarToken);
-app.put('/editSenha/:email', editarSenha);
 app.post('/VerificarToken', verificarToken);
-app.get('/read-by-id-to-edit/:id', SelectToEdit);
+app.get('/read-by-id-to-edit/:id/:tipo', SelectToEdit);
+app.put('/editSenhaRec/:email', editarSenhaRec);
 
 //LOGIN
 app.post('/login', login);
@@ -152,40 +154,34 @@ async function cadastrarEstabelecimento(req, res) {
 }
 
 
-async function editarEstabelecimento(req, res) {
-    console.log("Requisição de edição de estabelecimento recebida.");
-    const cnpj = req.params.cnpj;
-    const { razao_social, nome_fantasia, logradouro, logradouroNumero, bairro, cidade, estado, cep, regiao, telefone, saldo, volume, email, tipo, senha } = req.body;
-    console.log(req.body);
-    try {
-        const SQL = `
-            UPDATE 
-                Estabelecimentos 
-            SET
-                "estabelecimento_razao_social" = '${razao_social}',
-                "estabelecimento_nome_fantasia" = '${nome_fantasia}',
-                "estabelecimento_logradouro" = '${logradouro}',
-                "estabelecimento_logradouro_numero" = '${logradouroNumero}',
-                "estabelecimento_bairro" = '${bairro}',
-                "estabelecimento_cidade" = '${cidade}',
-                "estabelecimento_estado" = '${estado}',
-                "estabelecimento_cep" = '${cep}',
-                "estabelecimento_regiao" = '${regiao}',
-                "estabelecimento_telefone" = '${telefone}',
-                "estabelecimento_saldo" = '${saldo}',
-                "estabelecimento_volume_comercializado_mes" = '${volume}',
-                "estabelecimento_email" = '${email}',
-                "estabelecimento_tipo" = '${tipo}',
-                "estabelecimento_senha" = '${senha}'
-            WHERE
-                estabelecimento_cnpj_cpf = '${cnpj}'
-        `
-        console.log("Estabelecimento atualizado com sucesso!");
-        res.send({ msg: "Estabelecimento atualizado com sucesso!" });
-    } catch (error) {
-        console.error("Erro ao editar estabelecimento:", error);
-        res.status(500).send({ msg: "Erro ao editar estabelecimento." });
-    }
+async function editarEstabelecimento (req, res) {
+    const idEstabelecimento = req.params.idEstabelecimento
+    const { usuarioDados } = req.body
+
+    const SQL = `
+    UPDATE 
+        Estabelecimentos 
+    SET
+        estabelecimento_email = '${usuarioDados.email}',
+        estabelecimento_senha = '${usuarioDados.senha}',
+        estabelecimento_logradouro = '${usuarioDados.logradouro}',
+        estabelecimento_logradouro_numero = '${usuarioDados.numero}',
+        estabelecimento_bairro = '${usuarioDados.bairro}',
+        estabelecimento_cidade = '${usuarioDados.cidade}',
+        estabelecimento_estado = '${usuarioDados.estado}',
+        estabelecimento_cep = '${usuarioDados.cep}',
+        estabelecimento_regiao = '${usuarioDados.regiao}'
+    WHERE
+    estabelecimento_id = '${idEstabelecimento}'
+`
+
+    DB.query(SQL, (err, _) => {
+        if (err) {
+            console.log(err)
+        } else {
+            console.log('Editado!')
+        }
+    })
 }
 
 
@@ -280,43 +276,139 @@ async function cadastrarParceiro(req, res) {
 }
 
 
-async function editarParceiro(req, res) {
-    console.log("Requisição de edição de estabelecimento recebida.");
-    const cnpj = req.params.cnpj;
-    const { nome, nomefantasia, logradouro, logradouroNumero, bairro, cidade, estado, cep, regiao, telefone, saldo, cidadeatendida, dataoperacao, volume, email, tipo, senha } = req.body;
-    console.log(req.body);
-    try {
-        const SQL = `
-            UPDATE 
-                Parceiros 
-            SET
-                "parceiro_razao_social" = '${nome}',
-                "parceiro_nome_fantasia" = '${nomefantasia}',
-                "parceiro_logradouro" = '${logradouro}',
-                "parceiro_logradouro_numero" = '${logradouroNumero}',
-                "parceiro_bairro" = '${bairro}',
-                "parceiro_cidade" = '${cidade}',
-                "parceiro_estado" = '${estado}',
-                "parceiro_cep" = '${cep}',
-                "parceiro_regiao" = '${regiao}',
-                "parceiro_telefone" = '${telefone}',
-                "parceiro_saldo" = '${saldo}',
-                "parceiro_cidades_atende" = '${cidadeatendida}',
-                "parceiro_data_inicio_operacao" = '${dataoperacao}',
-                "parceiro_volume_coleta_mes" = '${volume}',
-                "parceiro_email" = '${email}',
-                "parceiro_tipo" = '${tipo}',
-                "parceiro_senha" = '${senha}'
-            WHERE
-                parceiro_cnpj_cpf = '${cnpj}'
-        `
-        console.log("Parceiro atualizado com sucesso!");
-        res.send({ msg: "Parceiro atualizado com sucesso!" });
-    } catch (error) {
-        console.error("Erro ao editar parceiro:", error);
-        res.status(500).send({ msg: "Erro ao editar parceiro." });
-    }
+async function editarParceiro (req, res) {
+    const idParceiro = req.params.idParceiro
+    const { usuarioDados } = req.body
+    
+
+    const SQL = `
+    UPDATE 
+        Parceiros 
+    SET
+        parceiro_email = '${usuarioDados.email}',
+        parceiro_senha = '${usuarioDados.senha}',
+        parceiro_logradouro = '${usuarioDados.logradouro}',
+        parceiro_logradouro_numero = '${usuarioDados.numero}',
+        parceiro_bairro = '${usuarioDados.bairro}',
+        parceiro_cidade = '${usuarioDados.cidade}',
+        parceiro_estado = '${usuarioDados.estado}',
+        parceiro_cep = '${usuarioDados.cep}',
+        parceiro_regiao = '${usuarioDados.regiao}'
+    WHERE
+        parceiro_id = '${idParceiro}'
+`
+
+    DB.query(SQL, (err, _) => {
+        if (err) {
+            console.log(err)
+        } else {
+            console.log('Editado!')
+        }
+    })
 }
+
+async function editarAdmin (req, res) {
+    const razaoSocial = req.params.razaoSocial
+    const tipoUsuario = req.params.tipoUsuario
+    const { usuarioDados } = req.body
+    
+    if (tipoUsuario === 'Parceiro') {
+        const SQL = `
+        UPDATE 
+            Parceiros 
+        SET
+            parceiro_email = '${usuarioDados.email}',
+            parceiro_senha = '${usuarioDados.senha}',
+            parceiro_logradouro = '${usuarioDados.logradouro}',
+            parceiro_logradouro_numero = '${usuarioDados.numero}',
+            parceiro_bairro = '${usuarioDados.bairro}',
+            parceiro_cidade = '${usuarioDados.cidade}',
+            parceiro_estado = '${usuarioDados.estado}',
+            parceiro_cep = '${usuarioDados.cep}',
+            parceiro_regiao = '${usuarioDados.regiao}'
+        WHERE
+            parceiro_razao_social = '${razaoSocial}'
+    `
+        DB.query(SQL, (err, _) => {
+            if (err) {
+                console.log(err)
+            } else {
+                console.log('Editado!')
+            }
+        })
+    } else if (tipoUsuario === 'Estabelecimento') {
+        const SQL = `
+        UPDATE 
+            Estabelecimentos 
+        SET
+            estabelecimento_email = '${usuarioDados.email}',
+            estabelecimento_senha = '${usuarioDados.senha}',
+            estabelecimento_logradouro = '${usuarioDados.logradouro}',
+            estabelecimento_logradouro_numero = '${usuarioDados.numero}',
+            estabelecimento_bairro = '${usuarioDados.bairro}',
+            estabelecimento_cidade = '${usuarioDados.cidade}',
+            estabelecimento_estado = '${usuarioDados.estado}',
+            estabelecimento_cep = '${usuarioDados.cep}',
+            estabelecimento_regiao = '${usuarioDados.regiao}'
+        WHERE
+        estabelecimento_razao_social = '${razaoSocial}'
+    `
+    
+        DB.query(SQL, (err, _) => {
+            if (err) {
+                console.log(err)
+            } else {
+                console.log('Editado!')
+            }
+        })
+    }
+
+
+}
+
+async function editarSenhaRec (req, res) {
+    const email = req.params.email
+    const tipoUsuario = req.params.tipoUsuario
+    const senha = req.body
+    
+    if (tipoUsuario === 'Parceiro') {
+        const SQL = `
+        UPDATE 
+            Parceiros 
+        SET
+            parceiro_senha = '${senha.senha}',
+        WHERE
+            parceiro_email = '${email}'
+    `
+        DB.query(SQL, (err, _) => {
+            if (err) {
+                console.log(err)
+            } else {
+                console.log('Editado!')
+            }
+        })
+    } else if (tipoUsuario === 'Estabelecimento') {
+        const SQL = `
+        UPDATE 
+            Estabelecimentos 
+        SET
+            estabelecimento_senha = '${senha.senha}',
+        WHERE
+        estabelecimento_email = '${email}'
+    `
+    
+        DB.query(SQL, (err, _) => {
+            if (err) {
+                console.log(err)
+            } else {
+                console.log('Editado!')
+            }
+        })
+    }
+
+
+}
+
 
 
 async function deletarParceiro(req, res) {
@@ -337,29 +429,6 @@ async function deletarParceiro(req, res) {
     } catch (error) {
         console.error("Erro ao excluir parceiro:", error);
         res.status(500).send({ msg: "Erro ao excluir parceiro." });
-    }
-}
-
-
-async function listAllParceiro(req, res) {
-    console.log("Requisição de listagem de parceiro recebida.");
-    try {
-
-        const SQL = `
-    SELECT 
-        *
-    FROM 
-        Parceiros
-    ORDER BY
-        parceiro_id 
-    `
-        //Order by é para quando fazer a edição do parceiro, ele permanecer na mesma posição ao invés de ir pro final da lista
-        const resultado = await connectionDB.query(SQL);
-        console.log("Parceiro listado com sucesso!");
-        res.send(resultado.rows);
-    } catch (error) {
-        console.error("Erro ao listar parceiro:", error);
-        res.status(500).send({ msg: "Erro ao listar parceiro." });
     }
 }
 
@@ -491,47 +560,118 @@ async function enviarToken(req, res) {
 
     const token = jwt.sign({ email }, jwtSecret, { expiresIn: '1h' });
 
-    const transporter = nodemailer.createTransport({
-        host: "smtp-mail.outlook.com",
-        port: 587,
-        secure: false,
-        auth: {
-            user: "quantumteam23@outlook.com",
-            pass: "quantumteam2023"
-        }
-    });
+    // const transporter = nodemailer.createTransport({
+    //     host: "smtp-mail.outlook.com",
+    //     port: 587,
+    //     secure: false,
+    //     auth: {
+    //         user: "quantumteam23@outlook.com",
+    //         pass: "quantumteam2023"
+    //     }
+    // });
 
-    transporter.sendMail({
-        from: 'Quantum Team',
-        to: email,
-        subject: 'Seu Token',
-        html: `Seu token é: <b>${token}</b>`
-    });
+    // transporter.sendMail({
+    //     from: 'quantumteam23@outlook.com',
+    //     to: email,
+    //     subject: 'Seu Token',
+    //     html: `Seu token é: <b>${token}</b>`
+    // });
 
     res.send({ msg: "Sucesso"});
 }
 
 async function SelectToEdit(req, res) {
     const id = req.params.id;
-    let SQL = "SELECT parceiro_email, parceiro_senha, parceiro_logradouro, parceiro_logradouro_numero, parceiro_bairro, parceiro_cidade, parceiro_estado, parceiro_cep, parceiro_regiao FROM parceiros WHERE parceiro_ID = '"+id+"'"
+    const tipo = req.params.tipo
 
-    DB.query(SQL, (err, result) => {
-        if (err) {
-            res.send(err)
-        } else {
-            res.send({
-                email: result.rows.values().next().value.parceiro_email,
-                senha: result.rows.values().next().value.parceiro_senha,
-                logradouro: result.rows.values().next().value.parceiro_logradouro,
-                logradouroNumero: result.rows.values().next().value.parceiro_logradouro_numero,
-                bairro: result.rows.values().next().value.parceiro_bairro,
-                cidade: result.rows.values().next().value.parceiro_cidade,
-                estado: result.rows.values().next().value.parceiro_estado,
-                cep: result.rows.values().next().value.parceiro_cep,
-                regiao: result.rows.values().next().value.parceiro_regiao,
-            })
-        }
-    })
+    if (tipo ==='ComumParceiro') {
+        let SQL = "SELECT parceiro_email, parceiro_senha, parceiro_logradouro, parceiro_logradouro_numero, parceiro_bairro, parceiro_cidade, parceiro_estado, parceiro_cep, parceiro_regiao FROM parceiros WHERE parceiro_ID = '"+id+"'"
+
+        DB.query(SQL, (err, result) => {
+            if (err) {
+                res.send(err)
+            } else {
+                res.send({
+                    email: result.rows.values().next().value.parceiro_email,
+                    senha: result.rows.values().next().value.parceiro_senha,
+                    logradouro: result.rows.values().next().value.parceiro_logradouro,
+                    numero: result.rows.values().next().value.parceiro_logradouro_numero,
+                    bairro: result.rows.values().next().value.parceiro_bairro,
+                    cidade: result.rows.values().next().value.parceiro_cidade,
+                    estado: result.rows.values().next().value.parceiro_estado,
+                    cep: result.rows.values().next().value.parceiro_cep,
+                    regiao: result.rows.values().next().value.parceiro_regiao,
+                })
+            }
+        })
+    } else if (tipo === 'ComumEstabelecimento') {
+        let SQL2 = "SELECT estabelecimento_email, estabelecimento_senha, estabelecimento_logradouro, estabelecimento_logradouro_numero, estabelecimento_bairro, estabelecimento_cidade, estabelecimento_estado, estabelecimento_cep, estabelecimento_regiao FROM estabelecimentos WHERE estabelecimento_ID = '"+id+"'"
+
+        DB.query(SQL2, (err, result) => {
+            if (err) {
+                res.send(err)
+            } else {
+                res.send({
+                    email: result.rows.values().next().value.estabelecimento_email,
+                    senha: result.rows.values().next().value.estabelecimento_senha,
+                    logradouro: result.rows.values().next().value.estabelecimento_logradouro,
+                    numero: result.rows.values().next().value.estabelecimento_logradouro_numero,
+                    bairro: result.rows.values().next().value.estabelecimento_bairro,
+                    cidade: result.rows.values().next().value.estabelecimento_cidade,
+                    estado: result.rows.values().next().value.estabelecimento_estado,
+                    cep: result.rows.values().next().value.estabelecimento_cep,
+                    regiao: result.rows.values().next().value.estabelecimento_regiao,
+                })
+            }
+        })
+    }
+}
+
+async function SelectToEditAdmin(req, res) {
+    const razaoSocial = req.params.razaoSocial;
+    const tipo = req.params.tipo;
+
+    if (tipo ==='Parceiro') {
+        let SQL = "SELECT parceiro_email, parceiro_senha, parceiro_logradouro, parceiro_logradouro_numero, parceiro_bairro, parceiro_cidade, parceiro_estado, parceiro_cep, parceiro_regiao FROM parceiros WHERE parceiro_razao_social = '"+razaoSocial+"'"
+
+        DB.query(SQL, (err, result) => {
+            if (err) {
+                res.send(err)
+            } else {
+                res.send({
+                    email: result.rows.values().next().value.parceiro_email,
+                    senha: result.rows.values().next().value.parceiro_senha,
+                    logradouro: result.rows.values().next().value.parceiro_logradouro,
+                    numero: result.rows.values().next().value.parceiro_logradouro_numero,
+                    bairro: result.rows.values().next().value.parceiro_bairro,
+                    cidade: result.rows.values().next().value.parceiro_cidade,
+                    estado: result.rows.values().next().value.parceiro_estado,
+                    cep: result.rows.values().next().value.parceiro_cep,
+                    regiao: result.rows.values().next().value.parceiro_regiao,
+                })
+            }
+        })
+    } else if (tipo === 'Estabelecimento') {
+        let SQL2 = "SELECT estabelecimento_email, estabelecimento_senha, estabelecimento_logradouro, estabelecimento_logradouro_numero, estabelecimento_bairro, estabelecimento_cidade, estabelecimento_estado, estabelecimento_cep, estabelecimento_regiao FROM estabelecimentos WHERE estabelecimento_razao_social = '"+razaoSocial+"'"
+
+        DB.query(SQL2, (err, result) => {
+            if (err) {
+                res.send(err)
+            } else {
+                res.send({
+                    email: result.rows.values().next().value.estabelecimento_email,
+                    senha: result.rows.values().next().value.estabelecimento_senha,
+                    logradouro: result.rows.values().next().value.estabelecimento_logradouro,
+                    numero: result.rows.values().next().value.estabelecimento_logradouro_numero,
+                    bairro: result.rows.values().next().value.estabelecimento_bairro,
+                    cidade: result.rows.values().next().value.estabelecimento_cidade,
+                    estado: result.rows.values().next().value.estabelecimento_estado,
+                    cep: result.rows.values().next().value.estabelecimento_cep,
+                    regiao: result.rows.values().next().value.estabelecimento_regiao,
+                })
+            }
+        })
+    }
 }
 
 const tokensRevogados = new Set();
@@ -579,83 +719,26 @@ async function emailEstabelecimento(email) {
     return response
 }
 
-async function emailParceiro(email) {
-    console.log("Requisição de procura email parceiro recebida.");
-    const res = await connectionDB.query(`
-        SELECT
-            *
-        FROM
-            Parceiros
-        WHERE
-            parceiro_email  = '${email}'
-    `);
-
-    var response = false
-    res.rows.forEach(parceiro => {
-        if (parceiro.parceiro_email === email) {
-            console.log("Email parceiro")
-            response = true
-        }
-    });
-    return response
-}
-
-//PROCURAR EMAIL
-
-//EDITAR SENHA
-async function editarSenha(req, res) {
-    console.log("Requisição de troca de senha recebida.");
-    console.log("Requisição de edição de senha recebida.");
-    const email = req.params.email;
-    const editarEstab = await emailEstabelecimento(email);
-    const editarParc = await emailParceiro(email);
-    if (editarParc) {
-        console.log("Requisição de edição de senha do parceiro recebida.");
-
-        const { senha } = req.body;
-        console.log(req.body);
-        try {
-            const SQL = `
-            UPDATE 
-                Parceiros 
-            SET
-                "parceiro_senha" = '${senha}'
-            WHERE
-                parceiro_email = '${email}'
-            `;
-            await connectionDB.query(SQL); 
-            console.log("Senha do parceiro atualizado com sucesso!");
-            res.send({ msg: "Senha do parceiro atualizado com sucesso!" });
-        } catch (error) {
-            console.error("Erro ao editar parceiro:", error);
-            res.status(500).send({ msg: "Erro ao editar parceiro." });
-        }
-    } else if (editarEstab) {
-        const { senha } = req.body;
-        console.log(req.body);
-        try {
-            const SQL = `
-                UPDATE 
-                    Estabelecimentos 
-                SET
-                    "estabelecimento_senha" = '${senha}'
-                WHERE
-                    estabelecimento_email = '${email}'
-            `;
-            await connectionDB.query(SQL); 
-            console.log("Senha do estabelecimento atualizado com sucesso!");
-            res.send({ msg: "Senha do estabelecimento atualizado com sucesso!" });
-        } catch (error) {
-            console.error("Erro ao editar estabelecimento:", error);
-            res.status(500).send({ msg: "Erro ao editar estabelecimento." });
-        }
-    } else {
-        console.error("Email não encontrado:");
-        res.status(500).send({ msg: "Email não encontrado." })
+async function verificaEmail(req, res) {
+    const  emailEDIT  = req.params.emailEDIT;
+  
+    try {
+      const query = `SELECT COUNT(*) AS count FROM parceiros WHERE parceiro_email = '${emailEDIT}';`;
+        DB.query(query, (err, result) => {
+            if (err) {
+                res.send(err)
+            } else {
+                res.send({
+                    count: result.rows.values().next().value.count
+                })
+            }
+        })
+    } catch (error) {
+      console.error('Erro ao verificar o email:', error);
+      res.status(500).json({ error: 'Erro ao verificar o email' });
     }
-}
-//EDITAR SENHA
-
+  };
+// PROCURAR EMAIL
 
 //função para retornar nome e tipo de todos os usuarios
 async function getUsers(req, res) {

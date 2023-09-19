@@ -32,6 +32,23 @@ function Recuperacao() {
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+
+        const emailEDIT = localStorage.getItem('email')
+
+        fetch(`http://localhost:3001/verifica-email/${emailEDIT}`)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`Erro na solicitação: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then(data => {
+          localStorage.setItem('parceiroData', JSON.stringify(data));
+        })
+        .catch(error => {
+          console.error('Erro ao buscar dados do parceiro:', error);
+        });
+
         if (email === '') {
             setFormDataRec((prevState) => ({
                 ...prevState,
@@ -71,7 +88,7 @@ function Recuperacao() {
                 
                 setTimeout(() => {
                     window.location.href = "/token";
-                }, 1100);
+                }, 100);
             } else {
                 console.error('Erro ao cadastrar parceiro:', response.statusText);
             }
