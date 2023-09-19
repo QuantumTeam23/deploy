@@ -25,6 +25,7 @@ app.post('/addEstabelecimento', cadastrarEstabelecimento);
 app.put('/editar-usuario-comum-estabelecimento/:idEstabelecimento', editarEstabelecimento);
 app.delete('/deletEstabelecimento/:cnpj', deletarEstabelecimento);
 app.get('/listEstabelecimento', listAllEstabelecimento);
+app.get('/Estabelecimento/:idEstabelecimento', getEstabelecimentoById);
 
 //PARCEIRO
 app.post('/addParceiro', cadastrarParceiro);
@@ -41,7 +42,7 @@ app.put('/editar-usuario-comum-parceiro-by-admin/:razaoSocial/:tipoUsuario', edi
 app.get('/verifica-email/:emailEDIT', verificaEmail)
 
 //LISTAR USUARIOS (nome, tipo e id)
-app.get('/listarusuarios', getUsers);
+app.get('/listarusuarios', getUsers); 
 
 //FUNCIONALIDADES
 app.post('/enviarToken', enviarToken);
@@ -225,6 +226,26 @@ async function listAllEstabelecimento(_, res) {
     } catch (error) {
         console.error("Erro ao listar estabelecimento:", error);
         res.status(500).send({ msg: "Erro ao listar estabelecimento." });
+    }
+}
+
+async function getEstabelecimentoById(req, res){
+    console.log("requisição de busca de estabelecimento por id recebida");
+    const id = req.params.idEstabelecimento;
+    try {
+
+        const SQL1 = `
+            SELECT * FROM
+                Estabelecimentos
+            WHERE
+                estabelecimento_id = '${id}'
+        `
+        const resultado = await connectionDB.query(SQL1);
+        console.log("Estabelecimento encontrado com sucesso!");
+        res.send(resultado.rows);
+    } catch (error) {
+        console.error("Erro ao buscar estabelecimento:", error);
+        res.status(500).send({ msg: "Erro ao buscar estabelecimento." });
     }
 }
 //CRUD ESTABELECIMENTO
@@ -791,4 +812,4 @@ async function getUsers(req, res) {
 
 }
 
-    
+
