@@ -13,83 +13,43 @@ interface FormDataEditarSenha {
 }
 
 function EditarSenha() {
-    const [formData, setFormData] = useState<FormDataEditarSenha>({
-        novaSenha: '',
-        repetirSenha: '',
-        showEmptyFieldsAlert: false,
-        alterado: false,
-        diferente: false,
+    const [usuarioDados, setUsuarioDados] = useState({
+        senha: '',
     });
 
-    const handleInputChange = (
-        event: ChangeEvent<HTMLInputElement>
-    ) => {
-        const { name, value } = event.target;
-        setFormData((prevState) => ({
-            ...prevState,
-            [name]: value,
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { id, value } = e.target;
+        setUsuarioDados((prevData) => ({
+            ...prevData,
+            [id]: value,
         }));
     };
 
-    const handleSubmit = async () => {
+    const handleEdit = () => {
+        const idUser = localStorage.getItem('idUser')
+        const tipo = localStorage.getItem('tipo')
 
-        setFormData((prevState) => ({
-            ...prevState,
-            diferente: false, // Reseta o estado diferente para false
-        }));
-        if (formData.novaSenha !== formData.repetirSenha) {
-            setFormData((prevState) => ({
-                ...prevState,
-                diferente: true, // Define o estado diferente como true se as senhas não coincidirem
-            }));
-            return;
-        }
-
-        if (!formData.novaSenha || !formData.repetirSenha) {
-            setFormData((prevState) => ({
-                ...prevState,
-                showEmptyFieldsAlert: true,
-            }));
-            return;
-        }
-
-        const email = localStorage.getItem('email');
-
-        if (!email) {
-            alert('Email não encontrado no localStorage.');
-            return;
-        }
-
-        try {
-            const response = await fetch(`http://localhost:3001/editSenha/${email}`, {
+            fetch(`http://localhost:3001/editSenhaRec/${idUser}/${tipo}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({
-                    senha: formData.novaSenha,
-                }),
+                body: JSON.stringify({usuarioDados}),
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Erro ao editar dados');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Dados editados com sucesso:', data);
+            })
+            .catch(error => {
+                console.error('Erro ao editar dados:', error);
             });
+        localStorage.clear()
 
-            if (response.status === 200) {
-                setFormData((prevState) => ({
-                    ...prevState,
-                    alterado: true,
-                }));
-
-                setTimeout(() => {
-                    window.location.href = "/login";
-                }, 2000);
-
-                localStorage.clear()
-            } else {
-                const data = await response.json();
-                alert(`Erro ao alterar a senha: ${data.msg}`);
-            }
-        } catch (error) {
-            console.error('Erro ao fazer a requisição:', error);
-            alert('Erro ao fazer a requisição.');
-        }
     };
 
     return (
@@ -105,15 +65,7 @@ function EditarSenha() {
                         </span>
                     </div>
                     <Container>
-                        {formData.showEmptyFieldsAlert && (
-                            <Alert variant="danger">Preencha o campo do formulário.</Alert>
-                        )}
-                        {formData.alterado && (
-                            <Alert variant="success">Senha alterada com sucesso!</Alert>
-                        )}
-                        {formData.diferente && (
-                            <Alert variant="danger">Senhas não coincidem!</Alert>
-                        )}
+
                         <div className='campo-editarsenha'>
                             <Form.Group controlId='senha'>
                                 <Form.Label>Nova senha</Form.Label>
@@ -152,7 +104,7 @@ function EditarSenha() {
                         </div>
                     </Container>
                     <span className='botao-editarsenha'>
-                        <Button variant="success" onClick={handleSubmit}>Confirmar</Button>{' '}
+                        <Button variant="success" onClick={handleEdit}>Confirmar</Button>{' '}
                     </span>
                     <div className='volta-login-editarsenha'>
                         <p>Voltar para a página de <a href="/login">Login</a></p>

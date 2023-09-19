@@ -48,7 +48,7 @@ app.get('/listarusuarios', getUsers);
 app.post('/enviarToken', enviarToken);
 app.post('/VerificarToken', verificarToken);
 app.get('/read-by-id-to-edit/:id/:tipo', SelectToEdit);
-app.put('/editSenhaRec/:email', editarSenhaRec);
+app.put('/editSenhaRec/:idUser/:tipo', editarSenhaRec);
 
 //LOGIN
 app.post('/login', login);
@@ -184,6 +184,7 @@ async function editarEstabelecimento (req, res) {
         }
     })
 }
+
 
 
 async function deletarEstabelecimento(req, res) {
@@ -382,24 +383,43 @@ async function editarAdmin (req, res) {
                 console.log('Editado!')
             }
         })
+    } else if (tipoUsuario === 'Administrador') {
+        const SQL = `
+        UPDATE 
+            Administradores 
+        SET
+            administrador_email = '${usuarioDados.email}',
+            administrador_senha = '${usuarioDados.senha}',
+        WHERE
+        administrador_nome = '${razaoSocial}'
+    `
+    
+        DB.query(SQL, (err, _) => {
+            if (err) {
+                console.log(err)
+            } else {
+                console.log('Editado!')
+            }
+        })
     }
 
 
 }
 
-async function editarSenhaRec (req, res) {
-    const email = req.params.email
-    const tipoUsuario = req.params.tipoUsuario
-    const senha = req.body
+async function editarSenhaRec (req, _) {
+    const idUser = req.params.idUser
+    const tipo = req.params.tipo
+    const {usuarioDados} = req.body
+    console.log(usuarioDados.senha)
     
-    if (tipoUsuario === 'Parceiro') {
+    if (tipo === 'Parceiro') {
         const SQL = `
         UPDATE 
             Parceiros 
         SET
-            parceiro_senha = '${senha.senha}',
+            parceiro_senha = '${usuarioDados.senha}'
         WHERE
-            parceiro_email = '${email}'
+            parceiro_id = '${idUser}'
     `
         DB.query(SQL, (err, _) => {
             if (err) {
@@ -408,14 +428,14 @@ async function editarSenhaRec (req, res) {
                 console.log('Editado!')
             }
         })
-    } else if (tipoUsuario === 'Estabelecimento') {
+    } else if (tipo === 'Estabelecimento') {
         const SQL = `
         UPDATE 
             Estabelecimentos 
         SET
-            estabelecimento_senha = '${senha.senha}',
+            estabelecimento_senha = '${usuarioDados.senha}'
         WHERE
-        estabelecimento_email = '${email}'
+        estabelecimento_id = '${idUser}'
     `
     
         DB.query(SQL, (err, _) => {
@@ -580,7 +600,7 @@ async function enviarToken(req, res) {
     const { email } = req.body;
 
     const token = jwt.sign({ email }, jwtSecret, { expiresIn: '1h' });
-
+    console.log(token)
     // const transporter = nodemailer.createTransport({
     //     host: "smtp-mail.outlook.com",
     //     port: 587,
@@ -719,46 +739,30 @@ async function verificarToken(req, res) {
 //VALIDAR TOKEN
 
 //PROCURAR EMAIL
-async function emailEstabelecimento(email) {
-    console.log("Requisição de procura email estabelecimento recebida.");
-    const res = await connectionDB.query(`
-        SELECT
-            *
-        FROM
-            Estabelecimentos
-        WHERE
-            estabelecimento_email  = '${email}'
-    `);
-
-    var response = false
-    res.rows.forEach(estabelecimento => {
-        if (estabelecimento.estabelecimento_email === email) {
-            console.log("Email estabelecimento")
-            response = true
-        }
-    });
-    return response
-}
-
 async function verificaEmail(req, res) {
-    const  emailEDIT  = req.params.emailEDIT;
-  
-    try {
-      const query = `SELECT COUNT(*) AS count FROM parceiros WHERE parceiro_email = '${emailEDIT}';`;
-        DB.query(query, (err, result) => {
-            if (err) {
-                res.send(err)
-            } else {
-                res.send({
-                    count: result.rows.values().next().value.count
-                })
-            }
-        })
-    } catch (error) {
-      console.error('Erro ao verificar o email:', error);
-      res.status(500).json({ error: 'Erro ao verificar o email' });
-    }
-  };
+    const emailEDIT = req.params.emailEDIT;
+    console.log(emailEDIT)
+
+    let SQL = (`SELECT parceiro_id, estabelecimento_id
+    FROM parceiros 
+    FULL JOIN estabelecimentos ON parceiro_id = estabelecimento_id 
+    WHERE parceiros.parceiro_email = '${emailEDIT}'
+    OR estabelecimentos.estabelecimento_email = '${emailEDIT}'`)
+
+    DB.query(SQL, (err, result) => {
+        if (err) {
+            console.log(err)
+        }
+
+        if (result.rows.length === 1) {
+            res.send({
+                idParceiro: result.rows.values().next().value.parceiro_id,
+                idEstabelecimento: result.rows.values().next().value.estabelecimento_id,
+            });
+
+        }
+    })
+};
 // PROCURAR EMAIL
 
 //função para retornar nome e tipo de todos os usuarios
@@ -811,5 +815,3 @@ async function getUsers(req, res) {
     }
 
 }
-
-

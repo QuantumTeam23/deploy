@@ -24,6 +24,29 @@ function Token() {
         
         if (!validaCampos()) {
             event.preventDefault()
+
+            const emailEDIT = localStorage.getItem('email')
+
+            fetch(`http://localhost:3001/verifica-email/${emailEDIT}`)
+            .then(response => {
+              if (!response.ok) {
+                throw new Error(`Erro na solicitação: ${response.status}`);
+              }
+              return response.json();
+            })
+            .then(data => {
+              if (data.idParceiro !== null) {
+                localStorage.setItem('idUser', data.idParceiro);
+                localStorage.setItem('tipo', 'Parceiro')
+              } else if (data.idEstabelecimento !== null) {
+                localStorage.setItem('idUser', data.idEstabelecimento);
+                localStorage.setItem('tipo', 'Estabelecimento')
+              }
+            })
+            .catch(error => {
+              console.error('Erro ao buscar dados do parceiro:', error);
+            });
+
             try {
                 const response = await fetch('http://localhost:3001/VerificarToken', {
                     method: 'POST',
