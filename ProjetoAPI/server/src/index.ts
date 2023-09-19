@@ -23,23 +23,19 @@ app.get('/', function (_, res) {
 //ESTABELECIMENTO
 app.post('/addEstabelecimento', cadastrarEstabelecimento);
 app.put('/editar-usuario-comum-estabelecimento/:idEstabelecimento', editarEstabelecimento);
-app.delete('/deletEstabelecimento/:cnpj', deletarEstabelecimento);
 app.get('/listEstabelecimento', listAllEstabelecimento);
 app.get('/Estabelecimento/:idEstabelecimento', getEstabelecimentoById);
 
 //PARCEIRO
 app.post('/addParceiro', cadastrarParceiro);
 app.put('/editar-usuario-comum-parceiro/:idParceiro', editarParceiro);
-app.delete('/deletParceiro/:cnpj', deletarParceiro);
 
 //ADMINISTRADOR
-app.post('/addAdministrador', cadastrarAdministrador);
-app.put('/editAdministrador/:email', editarAdministrador);
-app.delete('/deleteAdministrador/:email', deletarAdministrador);
 app.get('/listAdministrador', listAllAdministrador);
 app.get('/read-by-id-to-edit-admin/:razaoSocial/:tipo', SelectToEditAdmin)
 app.put('/editar-usuario-comum-parceiro-by-admin/:razaoSocial/:tipoUsuario', editarAdmin)
 app.get('/verifica-email/:emailEDIT', verificaEmail)
+app.delete('/deletar-users/:razaoSocial/:tipoUsuario', DeletarUsers)
 
 //LISTAR USUARIOS (nome, tipo e id)
 app.get('/listarusuarios', getUsers); 
@@ -130,9 +126,7 @@ async function existeEstabelecimento(cnpj) {
 }
 
 async function cadastrarEstabelecimento(req, res) {
-    console.log("Requisição de cadastro de estabelecimento recebida.");
     const { razao_social, nome_fantasia, cnpj, logradouro, logradouroNumero, bairro, cidade, estado, cep, regiao, telefone, volume, email, tipo, senha } = req.body;
-    console.log(req.body)
     const existeCNPJ = await existeEstabelecimento(cnpj);
     if (existeCNPJ) {
         res.status(409).send({ msg: "Já existe um estabelecimento com esse CNPJ/CPF." });
@@ -145,12 +139,45 @@ async function cadastrarEstabelecimento(req, res) {
                 VALUES ('${razao_social}','${nome_fantasia}','${cnpj}','${logradouro}', '${logradouroNumero}','${bairro}','${cidade}','${estado}','${cep}','${regiao}','${telefone}','${volume}','${email}','${tipo}','${senha}')
             `
             const resultado = await connectionDB.query(SQL);
-            console.log("Estabelecimento cadastrado com sucesso!");
             res.send({ msg: "Estabelecimento cadastrado com sucesso!" });
         } catch (error) {
             console.error("Erro ao cadastrar estabelecimento:", error);
             res.status(500).send({ msg: "Erro ao cadastrar estabelecimento." });
         }
+    }
+}
+
+async function DeletarUsers (req, res) {
+    const razaoSocial = req.params.razaoSocial
+    const tipoUsuario = req.params.tipoUsuario
+
+    if (tipoUsuario === 'Parceiro') {
+        let SQL = `DELETE FROM Parceiros WHERE parceiro_razao_social = '${razaoSocial}'`;
+        DB.query(SQL, (err, result) => {
+          if (err) {
+            console.log(err)
+          }else {
+            console.log('Deletado')
+          }
+        })
+    } else if (tipoUsuario === 'Estabelecimento') {
+        let SQL = `DELETE FROM Estabelecimentos WHERE estabelecimento_razao_social = '${razaoSocial}'`;
+        DB.query(SQL, (err, result) => {
+          if (err) {
+            console.log(err)
+          }else {
+            console.log('Deletado')
+          }
+        })
+    } else if (tipoUsuario === 'Administrador') {
+        let SQL = `DELETE FROM Administradores WHERE administrador_nome = '${razaoSocial}'`;
+        DB.query(SQL, (err, result) => {
+          if (err) {
+            console.log(err)
+          }else {
+            console.log('Deletado')
+          }
+        })
     }
 }
 
@@ -186,28 +213,6 @@ async function editarEstabelecimento (req, res) {
 }
 
 
-
-async function deletarEstabelecimento(req, res) {
-    console.log("Requisição de exclusão de estabelecimento recebida.");
-    const cnpj = req.params.cnpj;
-    try {
-
-        const SQL1 = `
-            DELETE FROM
-                Estabelecimentos
-            WHERE
-                estabelecimento_cnpj_cpf = '${cnpj}'
-        `
-        await connectionDB.query(SQL1);
-        console.log("Estabelecimento excluído com sucesso!");
-        res.send({ msg: "Estabelecimento excluído com sucesso!" });
-    } catch (error) {
-        console.error("Erro ao excluir estabelecimento:", error);
-        res.status(500).send({ msg: "Erro ao excluir estabelecimento." });
-    }
-}
-
-
 async function listAllEstabelecimento(_, res) {
     console.log("Requisição de listagem de estabelecimento recebida.");
     try {
@@ -222,7 +227,6 @@ async function listAllEstabelecimento(_, res) {
     `
         //Order by é para quando fazer a edição do estabelecimento, ele permanecer na mesma posição ao invés de ir pro final da lista
         const resultado = await connectionDB.query(SQL);
-        console.log("Estabelecimento listado com sucesso!");
         res.send(resultado.rows);
     } catch (error) {
         console.error("Erro ao listar estabelecimento:", error);
@@ -231,7 +235,6 @@ async function listAllEstabelecimento(_, res) {
 }
 
 async function getEstabelecimentoById(req, res){
-    console.log("requisição de busca de estabelecimento por id recebida");
     const id = req.params.idEstabelecimento;
     try {
 
@@ -242,7 +245,6 @@ async function getEstabelecimentoById(req, res){
                 estabelecimento_id = '${id}'
         `
         const resultado = await connectionDB.query(SQL1);
-        console.log("Estabelecimento encontrado com sucesso!");
         res.send(resultado.rows);
     } catch (error) {
         console.error("Erro ao buscar estabelecimento:", error);
@@ -274,9 +276,7 @@ async function existeParceiro(cnpj) {
 }
 
 async function cadastrarParceiro(req, res) {
-    console.log("Requisição de cadastro de parceiro recebida.");
     const { razao_social, nome_fantasia, cnpj, logradouro, logradouroNumero, bairro, cidade, estado, cep, regiao, telefone, saldo, cidadeatendida, dataoperacao, volume, email, tipo, senha } = req.body;
-    console.log(req.body)
     const existeCNPJ = await existeParceiro(cnpj);
     if (existeCNPJ) {
         res.status(409).send({ msg: "Já existe um parceiro com esse CNPJ/CPF." });
@@ -389,7 +389,7 @@ async function editarAdmin (req, res) {
             Administradores 
         SET
             administrador_email = '${usuarioDados.email}',
-            administrador_senha = '${usuarioDados.senha}',
+            administrador_senha = '${usuarioDados.senha}'
         WHERE
         administrador_nome = '${razaoSocial}'
     `
@@ -410,7 +410,6 @@ async function editarSenhaRec (req, _) {
     const idUser = req.params.idUser
     const tipo = req.params.tipo
     const {usuarioDados} = req.body
-    console.log(usuarioDados.senha)
     
     if (tipo === 'Parceiro') {
         const SQL = `
@@ -450,29 +449,6 @@ async function editarSenhaRec (req, _) {
 
 }
 
-
-
-async function deletarParceiro(req, res) {
-    console.log("Requisição de exclusão de parceiro recebida.");
-    const cnpj = req.params.cnpj;
-    try {
-
-        const SQL1 = `
-            DELETE FROM
-                Parceiros
-            WHERE
-                parceiro_cnpj_cpf = '${cnpj}'
-        `
-        await connectionDB.query(SQL1);
-
-        console.log("Parceiro excluído com sucesso!");
-        res.send({ msg: "Parceiro excluído com sucesso!" });
-    } catch (error) {
-        console.error("Erro ao excluir parceiro:", error);
-        res.status(500).send({ msg: "Erro ao excluir parceiro." });
-    }
-}
-
 //CRUD PARCEIROS
 
 //CRUD ADMINISTRADOR
@@ -496,81 +472,6 @@ async function existeAdministrador(email) {
     });
     return response
 }
-
-async function cadastrarAdministrador(req, res) {
-    console.log("Requisição de cadastro de administrador recebida.");
-    const { nome, email, senha } = req.body;
-    //console.log(req.body)
-    const existeEmail = await existeAdministrador(email);
-    if (existeEmail) {
-        res.status(409).send({ msg: "Já existe um usuário cadastrado com esse e-mail" });
-    } else {
-        try {
-            //encriptar senha
-            const hashSenha = await bcrypt.hash(senha, 10)
-
-            //salvar no bd com a senha encriptada
-            const SQL = `
-                INSERT INTO
-                    Administradores("administrador_nome","administrador_email","administrador_senha")
-                VALUES ('${nome}','${email}','${hashSenha}')
-            `
-            await connectionDB.query(SQL); 
-            console.log("Administrador cadastrado com sucesso!");
-            res.send({ msg: "Administrador cadastrado com sucesso!" });
-        } catch (error) {
-            console.error("Erro ao cadastrar Administrador:", error);
-            res.status(500).send({ msg: "Erro ao cadastrar administrador." });
-        }
-    }
-}
-
-
-async function editarAdministrador(req, res) {
-    console.log("Requisição de edição de administrador recebida.");
-    const email = req.params.email;
-    const { nome, senha } = req.body;
-    console.log(req.body);
-    try {
-        const SQL = `
-            UPDATE 
-                Administradores
-            SET
-                "administrador_nome" = '${nome}',
-                "administrador_senha" = '${senha}'
-            WHERE
-                administrador_email = '${email}'
-        `
-        await connectionDB.query(SQL); 
-        console.log("Administrador atualizado com sucesso!");
-        res.send({ msg: "Administrador atualizado com sucesso!" });
-    } catch (error) {
-        console.error("Erro ao editar administrador:", error);
-        res.status(500).send({ msg: "Erro ao editar administrador." });
-    }
-}
-
-
-async function deletarAdministrador(req, res) {
-    console.log("Requisição de exclusão de administrador recebida.");
-    const email = req.params.email;
-    try {
-
-        const SQL1 = `
-            DELETE FROM
-                Administradores
-            WHERE
-                administrador_email = '${email}'
-        `
-        await connectionDB.query(SQL1);
-        console.log("Cadastro excluído com sucesso!");
-        res.send({ msg: "Cadastro excluído com sucesso!" });
-    } catch (error) {
-        console.error("Erro ao excluir administrador:", error);
-        res.status(500).send({ msg: "Erro ao excluir administrador." });
-    }
-}
-
 
 async function listAllAdministrador(req, res) {
     console.log("Requisição de listagem de administradores recebida.");
@@ -601,22 +502,23 @@ async function enviarToken(req, res) {
 
     const token = jwt.sign({ email }, jwtSecret, { expiresIn: '1h' });
     console.log(token)
-    // const transporter = nodemailer.createTransport({
-    //     host: "smtp-mail.outlook.com",
-    //     port: 587,
-    //     secure: false,
-    //     auth: {
-    //         user: "quantumteam23@outlook.com",
-    //         pass: "quantumteam2023"
-    //     }
-    // });
 
-    // transporter.sendMail({
-    //     from: 'quantumteam23@outlook.com',
-    //     to: email,
-    //     subject: 'Seu Token',
-    //     html: `Seu token é: <b>${token}</b>`
-    // });
+    const transporter = nodemailer.createTransport({
+        host: "smtp-mail.outlook.com",
+        port: 587,
+        secure: false,
+        auth: {
+            user: "quantumteam23@outlook.com",
+            pass: "quantumteam2023"
+        }
+    });
+
+    transporter.sendMail({
+        from: 'quantumteam23@outlook.com',
+        to: email,
+        subject: 'Seu Token',
+        html: `Seu token é: <b>${token}</b>`
+    });
 
     res.send({ msg: "Sucesso"});
 }
@@ -712,6 +614,19 @@ async function SelectToEditAdmin(req, res) {
                 })
             }
         })
+    } else if (tipo === 'Administrador') {
+        let SQL2 = "SELECT administrador_email, administrador_senha FROM administradores WHERE administrador_nome = '"+razaoSocial+"'"
+
+        DB.query(SQL2, (err, result) => {
+            if (err) {
+                res.send(err)
+            } else {
+                res.send({
+                    email: result.rows.values().next().value.administrador_email,
+                    senha: result.rows.values().next().value.administrador_senha,
+                })
+            }
+        })
     }
 }
 
@@ -720,7 +635,6 @@ const tokensRevogados = new Set();
 
 //VALIDAR TOKEN
 async function verificarToken(req, res) {
-    console.log("Requisição de verificação de token recebida.");
     const { token } = req.body;
 
     try {
@@ -741,7 +655,6 @@ async function verificarToken(req, res) {
 //PROCURAR EMAIL
 async function verificaEmail(req, res) {
     const emailEDIT = req.params.emailEDIT;
-    console.log(emailEDIT)
 
     let SQL = (`SELECT parceiro_id, estabelecimento_id
     FROM parceiros 
@@ -789,7 +702,6 @@ async function getUsers(req, res) {
         const adms = await connectionDB.query(SQL1);
         const estabelecimentos = await connectionDB.query(SQL2);
         const parceiros = await connectionDB.query(SQL3);
-        console.log("Dados recuperados com sucesso");
 
         const users = new Array;
         for(let i=0; i<= adms.rowCount; i++){

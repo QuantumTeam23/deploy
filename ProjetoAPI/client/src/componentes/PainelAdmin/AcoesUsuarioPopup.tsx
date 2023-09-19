@@ -868,14 +868,75 @@ export function EditarUsuarioPopup({ open, onClose }: { open: boolean, onClose: 
   );
 }
 
-export function RemoverUsuarioPopup({ open, onClose, nomeContato }: { open: boolean, onClose: () => void, nomeContato: string }) {
+export function EditarUsuarioAdminPopup({ open, onClose }: { open: boolean, onClose: () => void }) {
+  const [usuarioDados, setUsuarioDados] = useState({
+      email: '',
+      senha: '',
+  });
   const handleClose = () => {
     onClose();
   };
 
-  const handleRemover = () => {
-    // Lógica para confirmar a remoção do usuário
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { id, value } = e.target;
+    setUsuarioDados((prevData) => ({
+        ...prevData,
+        [id]: value,
+    }));
   };
+
+  useEffect(() => {
+    if (open) {
+      const DadosAdministrador = localStorage.getItem('AdministradorData');
+
+      if (DadosAdministrador) {
+        try {
+          const parsedData = JSON.parse(DadosAdministrador);
+          setUsuarioDados(parsedData);
+        } catch (error) {
+          console.error('Erro ao analisar os dados do localStorage:', error);
+        }
+      }
+    }
+  }, [open]);
+
+  useEffect(() => {
+    if (!open) {
+      setUsuarioDados({
+        email: '',
+        senha: '',
+      });
+    }
+  }, [open]);
+
+
+  const handleEdit = () => {
+    const tipoUsuario = localStorage.getItem('tipoEdit')
+    const razaoSocial = localStorage.getItem('nomeEdit')
+
+    if (tipoUsuario === "Administrador") {
+        fetch(`http://localhost:3001/editar-usuario-comum-parceiro-by-admin/${razaoSocial}/${tipoUsuario}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({usuarioDados}),
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erro ao editar dados');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Dados editados com sucesso:', data);
+        })
+        .catch(error => {
+            console.error('Erro ao editar dados:', error);
+        });
+    }
+    onClose();
+};
 
   return (
     <Dialog
@@ -884,18 +945,23 @@ export function RemoverUsuarioPopup({ open, onClose, nomeContato }: { open: bool
       fullWidth
       maxWidth="md"
     >
-      <DialogTitle>Remover Usuário</DialogTitle>
+      <DialogTitle>Editar Usuário</DialogTitle>
       <DialogContent>
-        <h1>Confirma a exclusão de {nomeContato}?</h1>
-        <DeleteIcon fontSize="large" color="secondary" />
-        <p>Esta ação é irreversível. Tem certeza de que deseja continuar?</p>
+        <div>
+          <label>Email:</label>
+          <input type="email" id="email" className={styles.emailInput} defaultValue={usuarioDados.email} onChange={handleInputChange} />
+        </div>
+        <div>
+          <label>Senha:</label>
+          <input type="password" id="senha" className={styles.passwordInput} defaultValue={usuarioDados.senha} onChange={handleInputChange} />
+        </div>
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose} color="primary">
           Cancelar
         </Button>
-        <Button onClick={handleRemover} color="secondary">
-          Confirmar
+        <Button onClick={handleEdit} color="primary">
+          Salvar
         </Button>
       </DialogActions>
     </Dialog>
