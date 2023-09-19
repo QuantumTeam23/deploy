@@ -24,7 +24,6 @@ interface FormDataUserParc {
   parceiro_cep: string;
   parceiro_regiao: string;
   parceiro_telefone: string;
-  parceiro_volume: string;
   parceiro_tipo: string;
   showEmptyFieldsAlertParc: boolean;
   cadastradoParc: boolean;
@@ -88,7 +87,6 @@ export default function AdicionarUsuarioPopup({ open, onClose }: { open: boolean
     parceiro_cep: '',
     parceiro_regiao: '',
     parceiro_telefone: '',
-    parceiro_volume: '',
     parceiro_tipo: '',
     showEmptyFieldsAlertParc: false,
     cadastradoParc: false,
@@ -116,71 +114,72 @@ export default function AdicionarUsuarioPopup({ open, onClose }: { open: boolean
   const handleSubmitParc = async () => {
     if (isFormValidParc(formDataUserParc)) {
       setFormDataUserParc({ ...formDataUserParc, showEmptyFieldsAlertParc: true });
-      return;
-    }
-    try {
-      const response = await fetch('http://localhost:3001/addParceiro', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          razao_social: formDataUserParc.parceiro_razao_social,
-          nome_fantasia: formDataUserParc.parceiro_nome_fantasia,
-          email: formDataUserParc.parceiro_email,
-          senha: formDataUserParc.parceiro_senha,
-          cnpj: formDataUserParc.parceiro_cnpj,
-          logradouro: formDataUserParc.parceiro_logradouro,
-          logradouroNumero: formDataUserParc.parceiro_logradouroNumero,
-          bairro: formDataUserParc.parceiro_bairro,
-          cidade: formDataUserParc.parceiro_cidade,
-          estado: formDataUserParc.parceiro_estado,
-          cep: formDataUserParc.parceiro_cep,
-          regiao: formDataUserParc.parceiro_regiao,
-          telefone: formDataUserParc.parceiro_telefone,
-          volume: formDataUserParc.parceiro_volume,
-          tipo: formDataUserParc.parceiro_tipo,
-        }),
-      });
+      return
+    } else {
+      try {
+        const response = await fetch('http://localhost:3001/addParceiro', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            razao_social: formDataUserParc.parceiro_razao_social,
+            nome_fantasia: formDataUserParc.parceiro_nome_fantasia,
+            email: formDataUserParc.parceiro_email,
+            senha: formDataUserParc.parceiro_senha,
+            cnpj: formDataUserParc.parceiro_cnpj,
+            logradouro: formDataUserParc.parceiro_logradouro,
+            logradouroNumero: formDataUserParc.parceiro_logradouroNumero,
+            bairro: formDataUserParc.parceiro_bairro,
+            cidade: formDataUserParc.parceiro_cidade,
+            estado: formDataUserParc.parceiro_estado,
+            cep: formDataUserParc.parceiro_cep,
+            regiao: formDataUserParc.parceiro_regiao,
+            telefone: formDataUserParc.parceiro_telefone,
+            tipo: formDataUserParc.parceiro_tipo,
+          }),
+        });
 
-      if (response.status === 200) {
-        console.log('Parceiro cadastrado com sucesso!');
-        setFormDataUserParc((prevState) => ({
-          ...prevState,
-          cadastradoParc: true,
-        }));
-        setTimeout(() => {
+        if (response.status === 200) {
+          console.log('Parceiro cadastrado com sucesso!');
           setFormDataUserParc((prevState) => ({
             ...prevState,
-            cadastradoParc: false,
+            cadastradoParc: true,
           }));
-        }, 10000);
+          setTimeout(() => {
+            setFormDataUserParc((prevState) => ({
+              ...prevState,
+              cadastradoParc: false,
+            }));
+          }, 10000);
 
-        window.location.reload();
-      } else if (response.status === 409) {
-        console.log('Existe um parceiro com esse CNPJ.');
-        setFormDataUserParc({ ...formDataUserParc, cnpjEmUsoParc: true });
-        console.log('cnpjEmUso:', formDataUserParc.cnpjEmUsoParc);
-        setTimeout(() => {
-          setFormDataUserParc((prevState) => ({
-            ...prevState,
-            cnpjEmUsoParc: false,
-          }));
-        }, 5000);
-      } else {
-        console.error('Erro ao cadastrar parceiro:', response.statusText);
+          window.location.reload();
+        } else if (response.status === 409) {
+          console.log('Existe um parceiro com esse CNPJ.');
+          setFormDataUserParc({ ...formDataUserParc, cnpjEmUsoParc: true });
+          console.log('cnpjEmUso:', formDataUserParc.cnpjEmUsoParc);
+          setTimeout(() => {
+            setFormDataUserParc((prevState) => ({
+              ...prevState,
+              cnpjEmUsoParc: false,
+            }));
+          }, 5000);
+        } else {
+          console.error('Erro ao cadastrar parceiro:', response.statusText);
+        }
+      } catch (error) {
+        console.error('Erro ao cadastrar parceiro:', error);
       }
-    } catch (error) {
-      console.error('Erro ao cadastrar parceiro:', error);
     }
+
 
     console.log('Formulário enviado:', formDataUserParc);
   };
 
   const handleSubmitEstab = async () => {
-    if (isFormValidEstab(formDataUserEstab)) {
+    if (isFormValidEstab()) {
       setFormDataUserEstab({ ...formDataUserEstab, showEmptyFieldsAlertEstab: true });
-      return;
+      return
     }
     try {
       const response = await fetch('http://localhost:3001/addEstabelecimento', {
@@ -221,6 +220,7 @@ export default function AdicionarUsuarioPopup({ open, onClose }: { open: boolean
         }, 10000);
 
         window.location.reload();
+        
       } else if (response.status === 409) {
         console.log('Existe um estabelecimento com esse CNPJ.');
         setFormDataUserEstab({ ...formDataUserEstab, cnpjEmUsoEstab: true });
@@ -248,8 +248,7 @@ export default function AdicionarUsuarioPopup({ open, onClose }: { open: boolean
       handleSubmitEstab();
     }
   };
-//antes das alterações novamente - só lembra que esta
-
+  
   const isFormValidParc = (formData: FormDataUserParc) => {
     const {
       parceiro_razao_social,
@@ -265,70 +264,51 @@ export default function AdicionarUsuarioPopup({ open, onClose }: { open: boolean
       parceiro_cep,
       parceiro_regiao,
       parceiro_telefone,
-      parceiro_volume,
       parceiro_tipo,
     } = formData;
-    if (tabValue === 0) {
-      return (
-        parceiro_razao_social === '' &&
-        parceiro_nome_fantasia === '' &&
-        parceiro_email === '' &&
-        parceiro_senha === '' &&
-        parceiro_cnpj === '' &&
-        parceiro_logradouro === '' &&
-        parceiro_logradouroNumero === '' &&
-        parceiro_bairro === '' &&
-        parceiro_cidade === '' &&
-        parceiro_estado === '' &&
-        parceiro_cep === '' &&
-        parceiro_regiao === '' &&
-        parceiro_tipo === '' &&
-        parceiro_volume === '' &&
-        parceiro_telefone === ''
-      );
+    console.log(formData);
+    if (parceiro_razao_social === '' ||
+      parceiro_nome_fantasia === '' ||
+      parceiro_cnpj === '' ||
+      parceiro_email === '' ||
+      parceiro_senha === '' ||
+      parceiro_cep === '' ||
+      parceiro_logradouro === '' ||
+      parceiro_logradouroNumero === '' ||
+      parceiro_bairro === '' ||
+      parceiro_cidade === '' ||
+      parceiro_estado === '' ||
+      parceiro_regiao === '' ||
+      parceiro_telefone === '' ||
+      parceiro_tipo === ''
+    ) {
+      return true
+    } else {
+      return false
     }
-    return true;
-
   };
 
-  const isFormValidEstab = (formData: FormDataUserEstab) => {
-    const {
-      estabelecimento_razao_social,
-      estabelecimento_nome_fantasia,
-      estabelecimento_email,
-      estabelecimento_senha,
-      estabelecimento_cnpj,
-      estabelecimento_logradouro,
-      estabelecimento_logradouroNumero,
-      estabelecimento_bairro,
-      estabelecimento_cidade,
-      estabelecimento_estado,
-      estabelecimento_cep,
-      estabelecimento_regiao,
-      estabelecimento_tipo,
-      estabelecimento_volume,
-      estabelecimento_telefone,
-    } = formData;
-    if (tabValue === 1) {
-      return (
-        estabelecimento_razao_social === '' &&
-        estabelecimento_nome_fantasia === '' &&
-        estabelecimento_email === '' &&
-        estabelecimento_senha === '' &&
-        estabelecimento_cnpj === '' &&
-        estabelecimento_logradouro === '' &&
-        estabelecimento_logradouroNumero === '' &&
-        estabelecimento_bairro === '' &&
-        estabelecimento_cidade === '' &&
-        estabelecimento_estado === '' &&
-        estabelecimento_cep === '' &&
-        estabelecimento_regiao === '' &&
-        estabelecimento_tipo === '' &&
-        estabelecimento_volume === '' &&
-        estabelecimento_telefone === ''
-      );
+
+  const isFormValidEstab = () => {
+    let vazio = true
+    if (formDataUserEstab.estabelecimento_razao_social === '' ||
+      formDataUserEstab.estabelecimento_nome_fantasia === '' ||
+      formDataUserEstab.estabelecimento_email === '' ||
+      formDataUserEstab.estabelecimento_senha === '' ||
+      formDataUserEstab.estabelecimento_cnpj === '' ||
+      formDataUserEstab.estabelecimento_logradouro === '' ||
+      formDataUserEstab.estabelecimento_logradouroNumero === '' ||
+      formDataUserEstab.estabelecimento_bairro === '' ||
+      formDataUserEstab.estabelecimento_cidade === '' ||
+      formDataUserEstab.estabelecimento_estado === '' ||
+      formDataUserEstab.estabelecimento_cep === '' ||
+      formDataUserEstab.estabelecimento_regiao === '' ||
+      formDataUserEstab.estabelecimento_tipo === '' ||
+      formDataUserEstab.estabelecimento_volume === '' ||
+      formDataUserEstab.estabelecimento_telefone === '') {
     }
-    return true;
+    vazio = false
+    return vazio;
   };
 
 
