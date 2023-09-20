@@ -145,7 +145,7 @@ export default function AdicionarUsuarioPopup({ open, onClose }: { open: boolean
         email,
       }),
     });
-  
+
     if (emailCheckResponse.status === 409) {
       console.log('Email já está em uso.');
       setEmailInUse(true);
@@ -154,7 +154,7 @@ export default function AdicionarUsuarioPopup({ open, onClose }: { open: boolean
       }, 5000);
       return;
     }
-    
+
     else {
       try {
         const response = await fetch('http://localhost:3001/addParceiro', {
@@ -204,7 +204,7 @@ export default function AdicionarUsuarioPopup({ open, onClose }: { open: boolean
 
     console.log('Formulário enviado:', formDataUserParc);
   };
-  
+
 
   const handleSubmitEstab = async () => {
     if (isFormValidEstab(formDataUserEstab)) {
@@ -222,7 +222,7 @@ export default function AdicionarUsuarioPopup({ open, onClose }: { open: boolean
         email,
       }),
     });
-  
+
     if (emailCheckResponse.status === 409) {
       console.log('Email já está em uso.');
       setEmailInUse(true);
@@ -286,7 +286,7 @@ export default function AdicionarUsuarioPopup({ open, onClose }: { open: boolean
       handleSubmitEstab();
     }
   };
-  
+
   const isFormValidParc = (formData: FormDataUserParc) => {
     const {
       parceiro_razao_social,
@@ -765,15 +765,15 @@ export default function AdicionarUsuarioPopup({ open, onClose }: { open: boolean
 
 export function EditarUsuarioPopup({ open, onClose }: { open: boolean, onClose: () => void }) {
   const [usuarioDados, setUsuarioDados] = useState({
-      email: '',
-      senha: '',
-      logradouro: '',
-      numero: '',
-      bairro: '',
-      cidade: '',
-      estado: '',
-      cep: '',
-      regiao: '',
+    email: '',
+    senha: '',
+    logradouro: '',
+    numero: '',
+    bairro: '',
+    cidade: '',
+    estado: '',
+    cep: '',
+    regiao: '',
   });
   const handleClose = () => {
     onClose();
@@ -782,8 +782,8 @@ export function EditarUsuarioPopup({ open, onClose }: { open: boolean, onClose: 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
     setUsuarioDados((prevData) => ({
-        ...prevData,
-        [id]: value,
+      ...prevData,
+      [id]: value,
     }));
   };
 
@@ -831,48 +831,56 @@ export function EditarUsuarioPopup({ open, onClose }: { open: boolean, onClose: 
     const razaoSocial = localStorage.getItem('nomeEdit')
 
     if (tipoUsuario === "Parceiro") {
-        fetch(`http://localhost:3001/editar-usuario-comum-parceiro-by-admin/${razaoSocial}/${tipoUsuario}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({usuarioDados}),
-        })
+      fetch(`http://localhost:3001/editar-usuario-comum-parceiro-by-admin/${razaoSocial}/${tipoUsuario}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ usuarioDados }),
+      })
         .then(response => {
-            if (!response.ok) {
-                throw new Error('Erro ao editar dados');
-            }
-            return response.json();
+          if (!response.ok) {
+            throw new Error('Erro ao editar dados');
+          }
+          return response.json();
         })
         .then(data => {
-            console.log('Dados editados com sucesso:', data);
+          console.log('Dados editados com sucesso:', data);
         })
         .catch(error => {
-            console.error('Erro ao editar dados:', error);
+          console.error('Erro ao editar dados:', error);
         });
     } else if (tipoUsuario === 'Estabelecimento') {
-        fetch(`http://localhost:3001/editar-usuario-comum-parceiro-by-admin/${razaoSocial}/${tipoUsuario}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({usuarioDados}),
-        })
+      fetch(`http://localhost:3001/editar-usuario-comum-parceiro-by-admin/${razaoSocial}/${tipoUsuario}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ usuarioDados }),
+      })
         .then(response => {
-            if (!response.ok) {
-                throw new Error('Erro ao editar dados');
-            }
-            return response.json();
+          if (!response.ok) {
+            throw new Error('Erro ao editar dados');
+          }
+          return response.json();
         })
         .then(data => {
-            console.log('Dados editados com sucesso:', data);
+          console.log('Dados editados com sucesso:', data);
         })
         .catch(error => {
-            console.error('Erro ao editar dados:', error);
+          console.error('Erro ao editar dados:', error);
         });
     }
-    onClose();
-};
+
+    Swal.fire({
+      icon: 'success',
+      title: 'Informações alteradas com sucesso!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        onClose();
+      }
+    });
+  };
 
   return (
     <Dialog
@@ -897,23 +905,23 @@ export function EditarUsuarioPopup({ open, onClose }: { open: boolean, onClose: 
         </div>
         <div>
           <label>Número:</label>
-          <input type="text" id="numero" defaultValue={usuarioDados.numero} onChange={handleInputChange}/>
+          <input type="text" id="numero" defaultValue={usuarioDados.numero} onChange={handleInputChange} />
         </div>
         <div>
           <label>Bairro:</label>
-          <input type="text" id="bairro" defaultValue={usuarioDados.bairro} onChange={handleInputChange}/>
+          <input type="text" id="bairro" defaultValue={usuarioDados.bairro} onChange={handleInputChange} />
         </div>
         <div>
           <label>Cidade:</label>
-          <input type="text" id="cidade" defaultValue={usuarioDados.cidade} onChange={handleInputChange}/>
+          <input type="text" id="cidade" defaultValue={usuarioDados.cidade} onChange={handleInputChange} />
         </div>
         <div>
           <label>Estado:</label>
-          <input type="text" id="estado" defaultValue={usuarioDados.estado} onChange={handleInputChange}/>
+          <input type="text" id="estado" defaultValue={usuarioDados.estado} onChange={handleInputChange} />
         </div>
         <div>
           <label>CEP:</label>
-          <input type="text" id="cep" defaultValue={usuarioDados.cep} onChange={handleInputChange}/>
+          <input type="text" id="cep" defaultValue={usuarioDados.cep} onChange={handleInputChange} />
         </div>
 
       </DialogContent>
@@ -931,8 +939,8 @@ export function EditarUsuarioPopup({ open, onClose }: { open: boolean, onClose: 
 
 export function EditarUsuarioAdminPopup({ open, onClose }: { open: boolean, onClose: () => void }) {
   const [usuarioDados, setUsuarioDados] = useState({
-      email: '',
-      senha: '',
+    email: '',
+    senha: '',
   });
   const handleClose = () => {
     onClose();
@@ -941,8 +949,8 @@ export function EditarUsuarioAdminPopup({ open, onClose }: { open: boolean, onCl
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
     setUsuarioDados((prevData) => ({
-        ...prevData,
-        [id]: value,
+      ...prevData,
+      [id]: value,
     }));
   };
 
@@ -976,28 +984,28 @@ export function EditarUsuarioAdminPopup({ open, onClose }: { open: boolean, onCl
     const razaoSocial = localStorage.getItem('nomeEdit')
 
     if (tipoUsuario === "Administrador") {
-        fetch(`http://localhost:3001/editar-usuario-comum-parceiro-by-admin/${razaoSocial}/${tipoUsuario}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({usuarioDados}),
-        })
+      fetch(`http://localhost:3001/editar-usuario-comum-parceiro-by-admin/${razaoSocial}/${tipoUsuario}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ usuarioDados }),
+      })
         .then(response => {
-            if (!response.ok) {
-                throw new Error('Erro ao editar dados');
-            }
-            return response.json();
+          if (!response.ok) {
+            throw new Error('Erro ao editar dados');
+          }
+          return response.json();
         })
         .then(data => {
-            console.log('Dados editados com sucesso:', data);
+          console.log('Dados editados com sucesso:', data);
         })
         .catch(error => {
-            console.error('Erro ao editar dados:', error);
+          console.error('Erro ao editar dados:', error);
         });
     }
     onClose();
-};
+  };
 
   return (
     <Dialog
