@@ -9,6 +9,7 @@ import Tab from '@mui/material/Tab';
 import styles from '../styles/PainelAdmin.module.css';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Alert from 'react-bootstrap/Alert';
+import Swal from "sweetalert2";
 
 interface FormDataUserParc {
   parceiro_razao_social: string;
@@ -53,6 +54,7 @@ interface FormDataUserEstab {
 
 export default function AdicionarUsuarioPopup({ open, onClose }: { open: boolean, onClose: () => void }) {
   const [tabValue, setTabValue] = useState(0);
+  const [emailInUse, setEmailInUse] = useState(false);
   const [formDataUserEstab, setFormDataUserEstab] = useState<FormDataUserEstab>({
     estabelecimento_razao_social: '',
     estabelecimento_nome_fantasia: '',
@@ -111,11 +113,49 @@ export default function AdicionarUsuarioPopup({ open, onClose }: { open: boolean
     setFormDataUserEstab((prevState) => ({ ...prevState, [name]: value }));
   };
 
+  const msgSucessoPost = () => {
+    Swal.fire({
+      title: "Sucesso",
+      html: "Cadastrado realizado com sucesso.",
+      icon: "success",
+      showConfirmButton: true,
+      confirmButtonColor: '#de940a',
+      customClass: {
+        container: 'swal-container',
+      },
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.location.reload();
+      }
+    });
+  }
+
   const handleSubmitParc = async () => {
     if (isFormValidParc(formDataUserParc)) {
       setFormDataUserParc({ ...formDataUserParc, showEmptyFieldsAlertParc: true });
       return
-    } else {
+    }
+    const email = formDataUserParc.parceiro_email
+    const emailCheckResponse = await fetch('http://localhost:3001/checkEmailParceiro', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email,
+      }),
+    });
+  
+    if (emailCheckResponse.status === 409) {
+      console.log('Email já está em uso.');
+      setEmailInUse(true);
+      setTimeout(() => {
+        setEmailInUse(false);
+      }, 5000);
+      return;
+    }
+    
+    else {
       try {
         const response = await fetch('http://localhost:3001/addParceiro', {
           method: 'POST',
@@ -141,19 +181,8 @@ export default function AdicionarUsuarioPopup({ open, onClose }: { open: boolean
         });
 
         if (response.status === 200) {
-          console.log('Parceiro cadastrado com sucesso!');
-          setFormDataUserParc((prevState) => ({
-            ...prevState,
-            cadastradoParc: true,
-          }));
-          setTimeout(() => {
-            setFormDataUserParc((prevState) => ({
-              ...prevState,
-              cadastradoParc: false,
-            }));
-          }, 10000);
-
-          window.location.reload();
+          handleClose()
+          msgSucessoPost()
         } else if (response.status === 409) {
           console.log('Existe um parceiro com esse CNPJ.');
           setFormDataUserParc({ ...formDataUserParc, cnpjEmUsoParc: true });
@@ -175,12 +204,34 @@ export default function AdicionarUsuarioPopup({ open, onClose }: { open: boolean
 
     console.log('Formulário enviado:', formDataUserParc);
   };
+  
 
   const handleSubmitEstab = async () => {
     if (isFormValidEstab(formDataUserEstab)) {
       setFormDataUserEstab({ ...formDataUserEstab, showEmptyFieldsAlertEstab: true });
       return
     }
+
+    const email = formDataUserEstab.estabelecimento_email
+    const emailCheckResponse = await fetch('http://localhost:3001/checkEmailEstabelecimento', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email,
+      }),
+    });
+  
+    if (emailCheckResponse.status === 409) {
+      console.log('Email já está em uso.');
+      setEmailInUse(true);
+      setTimeout(() => {
+        setEmailInUse(false);
+      }, 5000);
+      return;
+    }
+
     try {
       const response = await fetch('http://localhost:3001/addEstabelecimento', {
         method: 'POST',
@@ -206,20 +257,8 @@ export default function AdicionarUsuarioPopup({ open, onClose }: { open: boolean
       });
 
       if (response.status === 200) {
-        console.log('Estabelecimento cadastrado com sucesso!');
-        setFormDataUserEstab((prevState) => ({
-          ...prevState,
-          cadastradoEstab: true,
-        }));
-        setTimeout(() => {
-          setFormDataUserEstab((prevState) => ({
-            ...prevState,
-            cadastradoEstab: false,
-          }));
-        }, 10000);
-
-        window.location.reload();
-        
+        handleClose()
+        msgSucessoPost()
       } else if (response.status === 409) {
         console.log('Existe um estabelecimento com esse CNPJ.');
         setFormDataUserEstab({ ...formDataUserEstab, cnpjEmUsoEstab: true });
@@ -367,6 +406,9 @@ export default function AdicionarUsuarioPopup({ open, onClose }: { open: boolean
               )}
               {formDataUserParc.cnpjEmUsoParc && (
                 <Alert variant="danger">Já existe um parceiro com esse cnpj.</Alert>
+              )}
+              {emailInUse && (
+                <Alert variant="danger">Já existe um usuário com esse email.</Alert>
               )}
               <label>Razão Social/Nome do Responsável:</label>
               <input type="text" id="parceiro_razao_social"
@@ -540,6 +582,9 @@ export default function AdicionarUsuarioPopup({ open, onClose }: { open: boolean
               )}
               {formDataUserEstab.cnpjEmUsoEstab && (
                 <Alert variant="danger">Já existe um parceiro com esse cnpj.</Alert>
+              )}
+              {emailInUse && (
+                <Alert variant="danger">Já existe um usuário com esse email.</Alert>
               )}
               <label>Razão Social/Nome do Responsável:</label>
               <input

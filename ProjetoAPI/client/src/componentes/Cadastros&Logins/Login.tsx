@@ -10,29 +10,15 @@ function Login() {
     const [password, setPassword] = useState("" as any);
     const navigate = useNavigate()
 
-    let inputPass = document.querySelector('#campo-senha') as HTMLAnchorElement;
-    let btnShowPass = document.querySelector('i')!;
-
-    function mostrarSenha() {
-        if (inputPass?.type === 'password') {
-            inputPass.setAttribute('type', 'text')
-            btnShowPass?.classList.replace('bi-eye', 'bi-eye-slash')
-        }
-        else {
-            inputPass?.setAttribute('type', 'password')
-            btnShowPass?.classList.replace('bi-eye-slash', 'bi-eye')
-        }
-    }
-
     const validaCampos = () => {
         let vazio = false
-
+    
         if (email === "" || password === "") {
-            vazio = true
-            return vazio
+          vazio = true
+          return vazio
         }
     }
-
+    
     function msgValidaCampos() {
         Swal.fire({
             title: 'Alerta',
@@ -41,7 +27,7 @@ function Login() {
             confirmButtonColor: '#de940a'
         })
     }
-
+    
 
     const handleSubmit = async (event: any) => {
         event.preventDefault()
@@ -50,13 +36,13 @@ function Login() {
             const response = await fetch('http://localhost:3001/login', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
+                  'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ email, password }),
-
+                
             })
             const data = await response.json()
-
+    
             if (data.msg === "Usuário logado com sucesso." && data.idParceiro !== null) {
                 Swal.fire({
                     title: "Sucesso",
@@ -70,7 +56,7 @@ function Login() {
                 localStorage.setItem('tipo', 'ComumParceiro')
                 localStorage.setItem('idParceiro', data.idParceiro)
             }
-
+    
             else if (data.msg === "Usuário logado com sucesso." && data.idEstabelecimento !== null) {
                 Swal.fire({
                     title: "Sucesso",
@@ -84,7 +70,7 @@ function Login() {
                 localStorage.setItem('tipo', 'ComumEstabelecimento')
                 localStorage.setItem('idEstabelecimento', data.idEstabelecimento)
             }
-
+    
             else if (data.msg === "Usuário logado com sucesso." && data.idAdministrador !== null) {
                 Swal.fire({
                     title: "Sucesso",
@@ -141,7 +127,7 @@ function Login() {
                                         className='form-control-login-1'
                                         value={email}
                                         onChange={(event) => setEmail(event.target.value)}
-                                        style={{ backgroundColor: '#E2FFC9' }}
+                                        style={{backgroundColor: '#E2FFC9'}}
                                     />
                                 </InputGroup>
                             </Form.Group>
@@ -151,7 +137,7 @@ function Login() {
                         <div className='campo-login-2'>
                             <Form.Group controlId='senha'>
                                 <Form.Label>Senha</Form.Label>
-                                <InputGroup className='grupo-campo-senha'>
+                                <InputGroup>
                                     <FormControl
                                         type='password'
                                         required
@@ -159,12 +145,10 @@ function Login() {
                                         aria-label='Senha'
                                         aria-describedby='senha-addon'
                                         className='form-control-login-2'
-                                        id='campo-senha'
                                         value={password}
                                         onChange={(event) => setPassword(event.target.value)}
-                                        style={{ backgroundColor: '#E2FFC9' }}
+                                        style={{backgroundColor: '#E2FFC9'}}
                                     />
-                                    <i className='bi bi-eye' id='botao-senha' onClick={(event) => mostrarSenha()}></i>
                                 </InputGroup>
                             </Form.Group>
                         </div>
@@ -173,7 +157,7 @@ function Login() {
                         <a href="/recuperacao">Esqueceu a senha?</a>
                     </div>
                     <span className='botao-login'>
-                        <Button variant="success" onClick={handleSubmit}>Entrar</Button>{' '}
+                    <Button variant="success" onClick={handleSubmit}>Entrar</Button>{' '}
                     </span>
                     <div className='registro-login'>
                         <p>Ainda não tem conta? <a href="/usuario">Registre-se</a></p>
