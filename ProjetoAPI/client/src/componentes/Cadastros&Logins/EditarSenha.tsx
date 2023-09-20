@@ -3,6 +3,8 @@ import React, { ChangeEvent, useState } from 'react';
 import { Container, Form, FormControl, InputGroup } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
+import Swal from 'sweetalert2';
+
 
 interface FormDataEditarSenha {
     novaSenha: string;
@@ -10,6 +12,7 @@ interface FormDataEditarSenha {
     showEmptyFieldsAlert: boolean;
     alterado: boolean;
     diferente: boolean;
+
 }
 
 const handleLogout = () => {
@@ -19,6 +22,10 @@ const handleLogout = () => {
 function EditarSenha() {
     const [usuarioDados, setUsuarioDados] = useState({
         senha: '',
+        repetirSenha: '',
+        showEmptyFieldsAlert: false,
+        alterado: false,
+        diferente: false
     });
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -33,13 +40,44 @@ function EditarSenha() {
         const idUser = localStorage.getItem('idUser')
         const tipo = localStorage.getItem('tipo')
 
-            fetch(`http://localhost:3001/editSenhaRec/${idUser}/${tipo}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({usuarioDados}),
-            })
+        if (usuarioDados.senha === '' || usuarioDados.repetirSenha === '') {
+            setUsuarioDados((prevState) => ({
+                ...prevState,
+                showEmptyFieldsAlert: true,
+            }));
+            setTimeout(() => {
+                setUsuarioDados((prevState) => ({
+                    ...prevState,
+                    showEmptyFieldsAlert: false,
+                }));
+            }, 3000);
+
+            return;
+        }
+
+        if (usuarioDados.senha !== usuarioDados.repetirSenha) {
+            setUsuarioDados((prevState) => ({
+                ...prevState,
+                diferente: true,
+            }));
+            setTimeout(() => {
+                setUsuarioDados((prevState) => ({
+                    ...prevState,
+                    diferente: false,
+                }));
+            }, 3000);
+            console.log(usuarioDados.senha)
+            console.log(usuarioDados.repetirSenha)
+            return;
+        }
+
+        fetch(`http://localhost:3001/editSenhaRec/${idUser}/${tipo}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ usuarioDados }),
+        })
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Erro ao editar dados');
@@ -48,11 +86,25 @@ function EditarSenha() {
             })
             .then(data => {
                 console.log('Dados editados com sucesso:', data);
+                console.log(data);
+                console.log('Dados editados com sucesso:', data);
+                setUsuarioDados((prevState) => ({
+                    ...prevState,
+                    alterado: true,
+                }));
             })
             .catch(error => {
                 console.error('Erro ao editar dados:', error);
             });
         localStorage.clear()
+        Swal.fire({
+            icon: 'success',
+            title: 'Senha alterada com sucesso!',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = '/login';
+            }
+        });
 
     };
 
@@ -69,14 +121,22 @@ function EditarSenha() {
                         </span>
                     </div>
                     <Container>
-
+                        {usuarioDados.showEmptyFieldsAlert && (
+                            <Alert variant="danger">Preencha o campo do formulário.</Alert>
+                        )}
+                        {usuarioDados.alterado && (
+                            <Alert variant="success">Senha alterada com sucesso!</Alert>
+                        )}
+                        {usuarioDados.diferente && (
+                            <Alert variant="danger">Senhas não coincidem!</Alert>
+                        )}
                         <div className='campo-editarsenha'>
                             <Form.Group controlId='senha'>
                                 <Form.Label>Nova senha</Form.Label>
                                 <InputGroup >
                                     <FormControl
                                         type='password'
-                                        name ='novaSenha'
+                                        name='novaSenha'
                                         onChange={handleInputChange}
                                         required
                                         placeholder='Digite a sua nova senha'
@@ -90,12 +150,12 @@ function EditarSenha() {
                     </Container>
                     <Container>
                         <div className='campo-editarsenha'>
-                            <Form.Group controlId='senha'>
+                            <Form.Group controlId='repetirSenha'>
                                 <Form.Label>Repetir a senha</Form.Label>
                                 <InputGroup>
                                     <FormControl
                                         type='password'
-                                        name = 'repetirSenha'
+                                        name='repetirSenha'
                                         required
                                         onChange={handleInputChange}
                                         placeholder='Repita a sua nova senha'
