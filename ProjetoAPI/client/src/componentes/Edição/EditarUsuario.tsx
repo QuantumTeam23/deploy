@@ -18,6 +18,20 @@ function EditarUsuario() {
         regiao: '',
     });
 
+    let inputPass = document.querySelector('#campo-senha') as HTMLAnchorElement;
+    let btnShowPass = document.querySelector('i')!;
+
+    function mostrarSenha() {
+        if (inputPass?.type === 'password') {
+            inputPass.setAttribute('type', 'text')
+            btnShowPass?.classList.replace('bi-eye', 'bi-eye-slash')
+        }
+        else {
+            inputPass?.setAttribute('type', 'password')
+            btnShowPass?.classList.replace('bi-eye-slash', 'bi-eye')
+        }
+    }
+
     useEffect(() => {
         const DadosParceiro = localStorage.getItem('parceiroData');
         const DadosEstabelecimento = localStorage.getItem('estabelecimentoData');
@@ -138,7 +152,7 @@ function EditarUsuario() {
                         <div className='campo-editar-usuario'>
                             <Form.Group controlId='senha'>
                                 <Form.Label>Senha</Form.Label>
-                                <InputGroup>
+                                <InputGroup className='grupo-campo-senha'>
                                     <FormControl
                                         type='password'
                                         required
@@ -146,9 +160,11 @@ function EditarUsuario() {
                                         aria-label='senha'
                                         aria-describedby='senha-addon'
                                         className='form-control-editar-usuario'
+                                        id='campo-senha'
                                         defaultValue = {usuarioDados.senha}
                                         onChange={handleInputChange}  
                                     />
+                                    <i className='bi bi-eye' id='botao-senha' onClick={(event) => mostrarSenha()}></i>
                                 </InputGroup>
                             </Form.Group>
                         </div>
