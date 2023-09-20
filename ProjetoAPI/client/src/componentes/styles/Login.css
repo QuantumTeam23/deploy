@@ -1,3 +1,5 @@
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css");
+
 * {
     font-family: Montserrat, sans-serif, Arial;
 }
@@ -96,4 +98,27 @@
 .registro-login p{
     color: black;
     font-weight: 400;
+}
+
+.form-control-login-2 {
+    background-color: null;
+}
+
+.grupo-campo-senha {
+    position: relative;
+    height: 40px; /* Defina a altura desejada */
+}
+
+
+input[type="text"] {
+    height: 100%; /* Altura igual à altura do pai */
+}
+
+i {
+    font-size: 20px;
+    cursor: pointer;
+    position: absolute;
+    right: 1%;
+    top: 50%;
+    transform: translateY(-50%);
 }
