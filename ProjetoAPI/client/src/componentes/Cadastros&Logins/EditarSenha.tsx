@@ -12,6 +12,10 @@ interface FormDataEditarSenha {
     diferente: boolean;
 }
 
+const handleLogout = () => {
+    localStorage.clear();
+};
+
 function EditarSenha() {
     const [usuarioDados, setUsuarioDados] = useState({
         senha: '',
@@ -107,7 +111,7 @@ function EditarSenha() {
                         <Button variant="success" onClick={handleEdit}>Confirmar</Button>{' '}
                     </span>
                     <div className='volta-login-editarsenha'>
-                        <p>Voltar para a página de <a href="/login">Login</a></p>
+                        <p>Voltar para a página de <a href="/login" onClick={handleLogout}>Login</a></p>
                     </div>
                 </div>
             </div>

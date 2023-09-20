@@ -3,7 +3,6 @@ import React, { ChangeEvent, useState } from 'react';
 import { Container, Form, FormControl, InputGroup } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
-import { Link } from 'react-router-dom';
 
 interface FormDataRec {
     email: string;

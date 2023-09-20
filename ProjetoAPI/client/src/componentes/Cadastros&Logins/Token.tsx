@@ -18,7 +18,36 @@ function Token() {
           return vazio
         }
     }
-    
+
+    const handleLogout = () => {
+        localStorage.clear();
+    };
+
+
+    const handleReenviarToken = async () => {
+        try {
+            const email = localStorage.getItem('email')
+            const response = await fetch('http://localhost:3001/enviarToken', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    email: email,
+                }),
+            });
+
+            if ((await response).status === 200) {
+                const responseData = await response.json();
+                const { token } = responseData; 
+                console.log('Token Reenviado com sucesso!', token);
+            } else {
+                console.error('Erro ao cadastrar parceiro:', response.statusText);
+            }
+        } catch (error) {
+            console.error('Erro ao cadastrar parceiro:', error);
+        }
+    }
 
     const handleSubmit = async (event: any) => {
         
@@ -130,10 +159,10 @@ function Token() {
                         <Button variant="success" onClick={handleSubmit}>Confirmar</Button>{' '}
                     </span>
                     <span className='botao-reenviar-token'>
-                        <Button variant="secundary">Reenviar token</Button>{' '}
+                        <Button variant="secundary" onClick={handleReenviarToken}>Reenviar token</Button>{' '}
                     </span>
                     <div className='volta-login-token'>
-                        <p>Voltar para a página de <a href="/login">Login</a></p>
+                        <p>Voltar para a página de <a href="/login" onClick={handleLogout}>Login</a></p>
                     </div>
                 </div>
             </div>

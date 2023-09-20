@@ -51,12 +51,12 @@ app.post('/login', login);
 
 //CONEXÃO BANCO
 const DB = new Pool({
-    connectionString: "postgres://zxadcyoz:TohEOG3EH78dNejAGHO18wQoNXDWauFo@silly.db.elephantsql.com/zxadcyoz"
-    // user: 'postgres',       //user PostgreSQL padrão = postgres
-    // host: 'localhost',
-    // database: 'API',
-    // password: '',
-    // port: 5432             //port PostgreSQL padrão = 5432
+    // connectionString: "postgres://zxadcyoz:TohEOG3EH78dNejAGHO18wQoNXDWauFo@silly.db.elephantsql.com/zxadcyoz"
+    user: 'postgres',       //user PostgreSQL padrão = postgres
+    host: 'localhost',
+    database: 'API',
+    password: 'General779568@',
+    port: 5432             //port PostgreSQL padrão = 5432
 });
 
 let connectionDB: PoolClient;
@@ -495,32 +495,67 @@ async function listAllAdministrador(req, res) {
 }
 //CRUD ADMINISTRADORES
 
-//ENVIAR TOKEN
+const tokensAtivos = new Map();
+
+// ENVIAR TOKEN
 async function enviarToken(req, res) {
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
     const { email } = req.body;
 
+    if (tokensAtivos.has(email)) {
+        const tokenAnterior = tokensAtivos.get(email);
+        tokensRevogados.add(tokenAnterior);
+    }
+
     const token = jwt.sign({ email }, jwtSecret, { expiresIn: '1h' });
-    console.log(token)
+    console.log(token);
+
+    tokensAtivos.set(email, token);
 
     const transporter = nodemailer.createTransport({
         host: "smtp-mail.outlook.com",
         port: 587,
         secure: false,
         auth: {
-            user: "quantumteam23@outlook.com",
+            user: "equipe.quantum@outlook.com",
             pass: "quantumteam2023"
         }
     });
 
     transporter.sendMail({
-        from: 'quantumteam23@outlook.com',
+        from: 'equipe.quantum@outlook.com',
         to: email,
         subject: 'Seu Token',
         html: `Seu token é: <b>${token}</b>`
     });
 
-    res.send({ msg: "Sucesso"});
+    res.send({ msg: "Sucesso" });
+}
+
+const tokensRevogados = new Set();
+
+// VALIDAR TOKEN
+async function verificarToken(req, res) {
+    const { token } = req.body;
+
+    try {
+        if (tokensRevogados.has(token)) {
+            return res.status(401).json({ message: 'Token já foi usado.' });
+        }
+
+        const decoded = jwt.verify(token, jwtSecret);
+        const email = decoded.email;
+
+        if (tokensAtivos.get(email) !== token) {
+            return res.status(401).json({ message: 'Token inválido ou expirado.' });
+        }
+
+        tokensRevogados.add(token);
+
+        res.status(200).json({ message: 'Token válido.' });
+    } catch (error) {
+        res.status(401).json({ message: 'Token inválido ou expirado.' });
+    }
 }
 
 async function SelectToEdit(req, res) {
@@ -629,28 +664,6 @@ async function SelectToEditAdmin(req, res) {
         })
     }
 }
-
-const tokensRevogados = new Set();
-//ENVIAR TOKEN
-
-//VALIDAR TOKEN
-async function verificarToken(req, res) {
-    const { token } = req.body;
-
-    try {
-        if (tokensRevogados.has(token)) {
-            return res.status(401).json({ message: 'Token já foi usado.' });
-        }
-        
-        jwt.verify(token, jwtSecret);
-        tokensRevogados.add(token);
-
-        res.status(200).json({ message: 'Token válido.' });
-    } catch (error) {
-        res.status(401).json({ message: 'Token inválido ou expirado.' });
-    }
-};
-//VALIDAR TOKEN
 
 //PROCURAR EMAIL
 async function verificaEmail(req, res) {
