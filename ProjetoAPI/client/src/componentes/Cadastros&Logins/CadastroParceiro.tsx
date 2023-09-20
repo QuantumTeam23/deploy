@@ -1,7 +1,7 @@
 import '../styles/CadastroParceiro.css';
 import { Form, FormControl } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import Alert from 'react-bootstrap/Alert';
 
 
@@ -72,6 +72,7 @@ function CadastroParceiro() {
 
   const fieldsPerStep = 5;
   const [showFields, setShowFields] = useState(true);
+  
 
   const fieldMappings: Record<string, string> = {
     'campo-0': 'razao_social',
@@ -93,9 +94,14 @@ function CadastroParceiro() {
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    const fieldName = fieldMappings[name] || name; 
-    setFormData({ ...formData, [fieldName]: value });
-  }
+    const fieldName = fieldMappings[name] || name;
+
+    setFormData((prevState) => ({ ...prevState, [fieldName]: value }));
+  };
+
+  useEffect(() => {
+    localStorage.setItem('formData', JSON.stringify(formData));
+  }, [formData]);
 
 
   const handleNextStep = () => {
@@ -108,6 +114,16 @@ function CadastroParceiro() {
     }
     else {
       console.log('Formulário enviado:', formData);
+    }
+  };
+
+  const handlePreviousStep = () => {
+    if (step > 1) {
+      setStep(step - 1);
+      setShowFields(false);
+      setTimeout(() => {
+        setShowFields(true);
+      }, 250);
     }
   };
   
@@ -153,7 +169,6 @@ function CadastroParceiro() {
             cadastrado: false,
           }));
         }, 10000);
-  
         window.location.reload();
       }  else if (response.status === 409) {
         console.log('Existe um parceiro com esse CNPJ.');
@@ -181,6 +196,10 @@ function CadastroParceiro() {
       && regiao !== '' && tipo !== '' && volume !== '';
   };
 
+  const handleLogout = () => {
+    localStorage.clear();
+  };
+
   const renderInputs = () => {
     const startIndex = (step - 1) * fieldsPerStep;
     const endIndex = Math.min(startIndex + fieldsPerStep, 15);
@@ -190,81 +209,99 @@ function CadastroParceiro() {
       let label = '';
       let placeholder = '';
       let name = '';
+      let type = '';
+      let value;
 
       switch (i) {
         case 0:
           label = 'Razão Social/Nome do responsável';
           placeholder = 'Digite a Razão Social/Nome do responsável';
           name = 'razao_social';
+          value = formData.razao_social || '';
           break;
         case 1:
           label = 'Nome Fantasia';
           placeholder = 'Digite o Nome Fantasia';
           name = 'nome_fantasia';
+          value = formData.nome_fantasia || '';
           break;
         case 2:
           label = 'Email';
           placeholder = 'Digite o Email';
           name = 'email';
+          value = formData.email || '';
           break;
         case 3:
           label = 'Senha';
           placeholder = 'Digite a Senha';
           name = 'senha';
+          type = 'password';
+          value = formData.senha || '';
           break;
         case 4:
           label = 'CNPJ/CPF';
           placeholder = 'Digite o CNPJ/CPF';
           name = 'cnpj';
+          value = formData.cnpj || '';
           break;
         case 5:
           label = 'Logradouro';
           placeholder = 'Digite o Logradouro';
           name = 'logradouro';
+          value = formData.logradouro || '';
           break;
         case 6:
           label = 'Número';
           placeholder = 'Digite o Número';
           name = 'logradouroNumero';
+          value = formData.logradouroNumero || '';
           break;
         case 7:
           label = 'Bairro';
           placeholder = 'Digite o Bairro';
           name = 'bairro';
+          value = formData.bairro || '';
           break;
         case 8:
           label = 'Cidade';
           placeholder = 'Digite a Cidade';
           name = 'cidade';
+          value = formData.cidade || '';
           break;
         case 9:
           label = 'Estado';
           placeholder = 'Digite o Estado';
           name = 'estado';
+          value = formData.estado || '';
           break;
         case 10:
           label = 'CEP';
           placeholder = 'Digite o CEP';
           name = 'cep';
+          value = formData.cep || '';
           break;
         case 11:
           label = 'Região';
           placeholder = 'Digite a Região';
           name = 'regiao';
+          value = formData.regiao || '';
           break;
         case 12:
           label = 'Telefone';
           placeholder = 'Digite o Telefone';
           name = 'telefone';
+          value = formData.telefone || '';
           break;
         case 13:
           label = 'Tipo';
           name = 'tipo';
+          value = formData.tipo || '';
           break;
         case 14:
           label = 'Volume Coletado no Mês';
           placeholder = 'Digite o Volume em Litros';
           name = 'volume';
+          value = formData.volume || '';
           break;
         default:
           break;
@@ -280,6 +317,7 @@ function CadastroParceiro() {
               required
               className='form-control-cadastro-parceiro'
               onChange={handleInputChange}
+              value={value}
             >
               <option value=''>Selecione o tipo</option>
               <option value='Restaurantes'>Restaurantes</option>
@@ -298,12 +336,13 @@ function CadastroParceiro() {
           <Form.Group key={i} controlId={`campo-${i}`}>
             <Form.Label>{label}</Form.Label>
             <FormControl
-              type='text'
+              type={type}
               name={`campo-${i}`}
               required
               placeholder={placeholder}
               className='form-control-cadastro-parceiro'
               onChange={handleInputChange}
+              value={value}
 
             />
           </Form.Group>
@@ -344,26 +383,37 @@ function CadastroParceiro() {
           <div className='campo-cadastro-parceiro'>
             {renderInputs()}
             <div className='botao-cadastro-parceiro'>
-              {step * fieldsPerStep < 15 ? (
-                <Button variant='success' onClick={handleNextStep}>
-                  Continuar
-                </Button>
-              ) : (
-                <Button
-                  style={{ fontSize: 18 }}
-                  variant='success'
-                  onClick={(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-                    event.preventDefault();
-                    handleSubmit();
-                  }}
-                >CADASTRAR
-                </Button>
-
-              )}
+            {step > 1 ? (
+              <Button
+                variant='primary'
+                onClick={handlePreviousStep}
+              >
+                Voltar
+              </Button>
+            ) : null}
+            {step * fieldsPerStep < 15 ? (
+              <Button
+                variant='success'
+                onClick={handleNextStep}
+              >
+                Continuar
+              </Button>
+            ) : (
+              <Button
+                style={{ fontSize: 18 }}
+                variant='success'
+                onClick={(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+                  event.preventDefault();
+                  handleSubmit();
+                }}
+              >
+                CADASTRAR
+              </Button>
+            )}
             </div>
           </div>
           <div className='registro-cadastro-parceiro'>
-            <p>Voltar para a página de <a href='/login'>Login</a></p>
+            <p>Voltar para a página de <a href='/login' onClick={handleLogout}>Login</a></p>
           </div>
         </div>
       </div>

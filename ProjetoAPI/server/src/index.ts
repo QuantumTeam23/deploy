@@ -51,12 +51,12 @@ app.post('/login', login);
 
 //CONEXÃO BANCO
 const DB = new Pool({
-    // connectionString: "postgres://zxadcyoz:TohEOG3EH78dNejAGHO18wQoNXDWauFo@silly.db.elephantsql.com/zxadcyoz"
-    user: 'postgres',       //user PostgreSQL padrão = postgres
-    host: 'localhost',
-    database: 'API',
-    password: 'General779568@',
-    port: 5432             //port PostgreSQL padrão = 5432
+    connectionString: "postgres://zxadcyoz:TohEOG3EH78dNejAGHO18wQoNXDWauFo@silly.db.elephantsql.com/zxadcyoz"
+    // user: 'postgres',       //user PostgreSQL padrão = postgres
+    // host: 'localhost',
+    // database: 'API',
+    // password: '',
+    // port: 5432             //port PostgreSQL padrão = 5432
 });
 
 let connectionDB: PoolClient;
@@ -102,6 +102,7 @@ async function login(req, res) {
         }
     })
 }
+
 
 //CRUD ESTABELECIMENTO
 //Função para verificar se já tem cadastrado o cnpj
