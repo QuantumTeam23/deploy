@@ -103,6 +103,80 @@ async function login(req, res) {
     })
 }
 
+async function checkEmailParceiro(email) {
+    const client = await DB.connect(); // Acquire a client from the pool
+  
+    try {
+      const result = await client.query(`SELECT * FROM parceiros WHERE parceiro_email = '${email}'`);
+  
+      if (result.rows.length > 0) {
+        // Email is already in use
+        return true;
+      } else {
+        // Email is available
+        return false;
+      }
+    } catch (error) {
+      console.error('Error checking email:', error);
+      throw error;
+    } finally {
+      client.release(); // Release the client back to the pool
+    }
+  }
+  
+  app.post('/checkEmailParceiro', async (req, res) => {
+    const { email } = req.body;
+    try {
+      const emailInUse = await checkEmailParceiro(email);
+  
+      if (emailInUse) {
+        res.status(409).json({ message: 'Email already in use' });
+      } else {
+        res.status(200).json({ message: 'Email available' });
+      }
+    } catch (error) {
+      console.error('Error checking email:', error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  });
+
+  async function checkEmailEstabelecimento(email) {
+    const client = await DB.connect(); // Acquire a client from the pool
+  
+    try {
+      const result = await client.query(`SELECT * FROM estabelecimentos WHERE estabelecimento_email = '${email}'`);
+  
+      if (result.rows.length > 0) {
+        // Email is already in use
+        return true;
+      } else {
+        // Email is available
+        return false;
+      }
+    } catch (error) {
+      console.error('Error checking email:', error);
+      throw error;
+    } finally {
+      client.release(); // Release the client back to the pool
+    }
+  }
+  
+  app.post('/checkEmailEstabelecimento', async (req, res) => {
+    const { email } = req.body;
+    try {
+      const emailInUse = await checkEmailEstabelecimento(email);
+  
+      if (emailInUse) {
+        res.status(409).json({ message: 'Email already in use' });
+      } else {
+        res.status(200).json({ message: 'Email available' });
+      }
+    } catch (error) {
+      console.error('Error checking email:', error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  });
+
 
 //CRUD ESTABELECIMENTO
 //Função para verificar se já tem cadastrado o cnpj

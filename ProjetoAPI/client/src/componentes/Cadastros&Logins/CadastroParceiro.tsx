@@ -3,6 +3,8 @@ import { Form, FormControl } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import { ChangeEvent, useEffect, useState } from 'react';
 import Alert from 'react-bootstrap/Alert';
+import Swal from "sweetalert2";
+import { useNavigate } from 'react-router-dom';
 
 
 interface FormData {
@@ -66,12 +68,15 @@ function CadastroParceiro() {
     tipo,
     volume,
     showEmptyFieldsAlert,
-    cadastrado,
     cnpjEmUso,
   } = formData;
 
   const fieldsPerStep = 5;
   const [showFields, setShowFields] = useState(true);
+  const [emptyFields, setEmptyFields] = useState<string[]>([]);
+  const [emailInUse, setEmailInUse] = useState(false);
+  const navigate = useNavigate()
+
   
 
   const fieldMappings: Record<string, string> = {
@@ -117,6 +122,26 @@ function CadastroParceiro() {
     }
   };
 
+  type FormDataKey = keyof FormData;
+
+  const isStepFormValid = () => {
+    const startIndex = (step - 1) * fieldsPerStep;
+    const endIndex = Math.min(startIndex + fieldsPerStep, 15);
+
+    const emptyFieldsInStep: string[] = [];
+
+    for (let i = startIndex; i < endIndex; i++) {
+      const fieldName = fieldMappings[`campo-${i}`] as FormDataKey;
+      if (!formData[fieldName]) {
+        emptyFieldsInStep.push(fieldName);
+      }
+    }
+
+    setEmptyFields(emptyFieldsInStep);
+
+    return emptyFieldsInStep.length === 0;
+  }
+
   const handlePreviousStep = () => {
     if (step > 1) {
       setStep(step - 1);
@@ -130,8 +155,29 @@ function CadastroParceiro() {
   const handleSubmit = async () => {
     if (!isFormValid()) {
       setFormData({ ...formData, showEmptyFieldsAlert: true });
-      return; 
+      return;
     }
+  
+
+    const emailCheckResponse = await fetch('http://localhost:3001/checkEmailParceiro', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email,
+      }),
+    });
+  
+    if (emailCheckResponse.status === 409) {
+      console.log('Email já está em uso.');
+      setEmailInUse(true);
+      setTimeout(() => {
+        setEmailInUse(false);
+      }, 5000);
+      return;
+    }
+  
     try {
       const response = await fetch('http://localhost:3001/addParceiro', {
         method: 'POST',
@@ -156,24 +202,19 @@ function CadastroParceiro() {
           volume,
         }),
       });
-
+  
       if (response.status === 200) {
-        console.log('Parceiro cadastrado com sucesso!');
-        setFormData((prevState) => ({
-          ...prevState,
-          cadastrado: true,
-        }));
-        setTimeout(() => {
-          setFormData((prevState) => ({
-            ...prevState,
-            cadastrado: false,
-          }));
-        }, 10000);
-        window.location.reload();
-      }  else if (response.status === 409) {
+        Swal.fire({
+          title: 'Sucesso',
+          html: 'Cadastrado realizado com sucesso.',
+          icon: 'success',
+          showConfirmButton: true,
+          confirmButtonText: "Ir para Login",
+          confirmButtonColor: '#de940a'
+        }).then(() => (navigate('/login')))
+      } else if (response.status === 409) {
         console.log('Existe um parceiro com esse CNPJ.');
         setFormData({ ...formData, cnpjEmUso: true });
-        console.log('cnpjEmUso:', formData.cnpjEmUso);
         setTimeout(() => {
           setFormData((prevState) => ({
             ...prevState,
@@ -186,14 +227,29 @@ function CadastroParceiro() {
     } catch (error) {
       console.error('Erro ao cadastrar parceiro:', error);
     }
-
+  
     console.log('Formulário enviado:', formData);
   };
+  
 
 
   const isFormValid = () => {
-    return razao_social !== '' && nome_fantasia !== '' && email !== '' && senha !== '' && cnpj !== '' && logradouro !== '' && logradouroNumero !== '' && bairro !== '' && cidade !== '' && estado !== '' && cep !== ''
-      && regiao !== '' && tipo !== '' && volume !== '';
+    return (
+      razao_social !== '' &&
+      nome_fantasia !== '' &&
+      email !== '' &&
+      senha !== '' &&
+      cnpj !== '' &&
+      logradouro !== '' &&
+      logradouroNumero !== '' &&
+      bairro !== '' &&
+      cidade !== '' &&
+      estado !== '' &&
+      cep !== '' &&
+      regiao !== '' &&
+      tipo !== '' &&
+      volume !== ''
+    );
   };
 
   const handleLogout = () => {
@@ -229,6 +285,7 @@ function CadastroParceiro() {
           label = 'Email';
           placeholder = 'Digite o Email';
           name = 'email';
+          type = 'email';
           value = formData.email || '';
           break;
         case 3:
@@ -366,14 +423,19 @@ function CadastroParceiro() {
           </span>
         </div>
         <div className='container-direita-cadastro-parceiro'>
-          {showEmptyFieldsAlert && (
-            <Alert variant="danger">Preencha todos os campos do formulário.</Alert>
+        {emptyFields.length > 0 && (
+            <Alert variant="danger">
+              Preencha todos os campos para prosseguir.
+            </Alert>
           )}
-          {cadastrado && (
-            <Alert variant="success">Parceiro cadastrado com sucesso!!</Alert>
+          {showEmptyFieldsAlert && (
+            <Alert variant="danger">Preencha todos os campos para finalizar o cadastro.</Alert>
           )}
           {cnpjEmUso && (
             <Alert variant="danger">Já existe um parceiro com esse cnpj.</Alert>
+          )}
+          {emailInUse && (
+            <Alert variant="danger">Já existe um usuário com esse email.</Alert>
           )}
           <div>
             <span className='titulo-cadastro-parceiro'>
@@ -394,7 +456,12 @@ function CadastroParceiro() {
             {step * fieldsPerStep < 15 ? (
               <Button
                 variant='success'
-                onClick={handleNextStep}
+                onClick={() => {
+                  if (isStepFormValid()) {
+                    handleNextStep();
+                  }
+                }}
+                
               >
                 Continuar
               </Button>

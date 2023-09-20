@@ -3,6 +3,8 @@ import { Form, FormControl,  } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import { ChangeEvent, useEffect, useState,  } from 'react';
 import Alert from 'react-bootstrap/Alert';
+import { useNavigate } from 'react-router-dom';
+import Swal from "sweetalert2";
 
 interface FormDataEstab {
 
@@ -30,6 +32,7 @@ interface FormDataEstab {
 
 function CadastroEstabelecimento() {
     const [step, setStep] = useState(1);
+    const [emptyFields, setEmptyFields] = useState<string[]>([]);
     const [formDataEstab, setFormDataEstab] = useState<FormDataEstab>({
       razao_social: '',
       nome_fantasia: '',
@@ -68,13 +71,14 @@ function CadastroEstabelecimento() {
       tipo,
       volume,
       showEmptyFieldsAlert,
-      cadastrado,
       cnpjEmUso,
     } = formDataEstab;
   
   
     const fieldsPerStep = 5;
     const [showFields, setShowFields] = useState(true);
+    const navigate = useNavigate()
+    const [emailInUse, setEmailInUse] = useState(false);
     const fieldMappings: Record<string, string> = {
       'campo-0': 'razao_social',
       'campo-1': 'nome_fantasia',
@@ -107,6 +111,26 @@ function CadastroEstabelecimento() {
     const handleLogout = () => {
       localStorage.clear();
     };
+
+    type FormDataKey = keyof FormDataEstab;
+
+    const isStepFormValid = () => {
+      const startIndex = (step - 1) * fieldsPerStep;
+      const endIndex = Math.min(startIndex + fieldsPerStep, 15);
+  
+      const emptyFieldsInStep: string[] = [];
+  
+      for (let i = startIndex; i < endIndex; i++) {
+        const fieldName = fieldMappings[`campo-${i}`] as FormDataKey;
+        if (!formDataEstab[fieldName]) {
+          emptyFieldsInStep.push(fieldName);
+        }
+      }
+  
+      setEmptyFields(emptyFieldsInStep);
+  
+      return emptyFieldsInStep.length === 0;
+    }
     
     const handleNextStep = () => {
         if (step * fieldsPerStep < 15) {
@@ -136,6 +160,25 @@ function CadastroEstabelecimento() {
         setFormDataEstab({ ...formDataEstab, showEmptyFieldsAlert: true });
         return; 
       }
+
+      const emailCheckResponse = await fetch('http://localhost:3001/checkEmailEstabelecimento', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email,
+        }),
+      });
+    
+      if (emailCheckResponse.status === 409) {
+        console.log('Email já está em uso.');
+        setEmailInUse(true);
+        setTimeout(() => {
+          setEmailInUse(false);
+        }, 5000);
+        return;
+      }
       try {
         const response = await fetch('http://localhost:3001/addEstabelecimento', {
           method: 'POST',
@@ -162,18 +205,14 @@ function CadastroEstabelecimento() {
         });
   
         if (response.status === 200) {
-          console.log('Estabelecimento cadastrado com sucesso!');
-          setFormDataEstab((prevState) => ({
-            ...prevState,
-            cadastrado: true,
-          }));
-          setTimeout(() => {
-            setFormDataEstab((prevState) => ({
-              ...prevState,
-              cadastrado: false,
-            }));
-          }, 10000);
-          window.location.reload();
+          Swal.fire({
+            title: 'Sucesso',
+            html: 'Cadastro realizado com sucesso.',
+            icon: 'success',
+            showConfirmButton: true,
+            confirmButtonText: "Ir para Login",
+            confirmButtonColor: '#de940a'
+          }).then(() => (navigate('/login')))
         }  else if (response.status === 409) {
           console.log('Existe um estabelecimento com esse CNPJ.');
           setFormDataEstab({ ...formDataEstab, cnpjEmUso: true });
@@ -195,8 +234,22 @@ function CadastroEstabelecimento() {
     };
 
     const isFormValid = () => {
-      return razao_social !== '' && nome_fantasia !== '' && email !== '' && senha !== '' && cnpj !== '' && logradouro !== '' && logradouroNumero !== '' && bairro !== '' && cidade !== '' && estado !== '' && cep !== ''
-        && regiao !== '' && tipo !== '' && volume !== '';
+      return (
+        razao_social !== '' &&
+        nome_fantasia !== '' &&
+        email !== '' &&
+        senha !== '' &&
+        cnpj !== '' &&
+        logradouro !== '' &&
+        logradouroNumero !== '' &&
+        bairro !== '' &&
+        cidade !== '' &&
+        estado !== '' &&
+        cep !== '' &&
+        regiao !== '' &&
+        tipo !== '' &&
+        volume !== ''
+      );
     };
   
     const renderInputs = () => {
@@ -227,6 +280,7 @@ function CadastroEstabelecimento() {
             label = 'Email';
             placeholder = 'Digite o Email';
             name = 'email';
+            type = 'email';
             value = formDataEstab.email || '';
             break;
           case 3:
@@ -363,15 +417,19 @@ function CadastroEstabelecimento() {
             </span>
           </div>
           <div className='container-direita-cadastro-estabelecimento'>
-            
-          {showEmptyFieldsAlert && (
-            <Alert variant="danger">Preencha todos os campos do formulário.</Alert>
+          {emptyFields.length > 0 && (
+            <Alert variant="danger">
+              Preencha todos os campos para prosseguir.
+            </Alert>
           )}
-          {cadastrado && (
-            <Alert variant="success">Parceiro cadastrado com sucesso!!</Alert>
+          {showEmptyFieldsAlert && (
+            <Alert variant="danger">Preencha todos os campos para finalizar o cadastro</Alert>
           )}
           {cnpjEmUso && (
             <Alert variant="danger">Já existe um parceiro com esse cnpj.</Alert>
+          )}
+          {emailInUse && (
+            <Alert variant="danger">Já existe um usuário com esse email.</Alert>
           )}<div>
               <span className='titulo-cadastro-estabelecimento'>
                 <h1>Cadastro Estabelecimento</h1>
@@ -392,7 +450,11 @@ function CadastroEstabelecimento() {
             {step * fieldsPerStep < 15 ? (
               <Button
                 variant='success'
-                onClick={handleNextStep}
+                onClick={() => {
+                  if (isStepFormValid()) {
+                    handleNextStep();
+                  }
+                }}
               >
                 Continuar
               </Button>
