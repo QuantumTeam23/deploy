@@ -3,6 +3,7 @@ import '../styles/EditarUsuario.css';
 import { Form, FormControl, InputGroup } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 function EditarUsuario() {
     const navigate = useNavigate()
@@ -39,14 +40,14 @@ function EditarUsuario() {
             try {
                 const parsedData = JSON.parse(DadosParceiro);
                 setUsuarioDados(parsedData);
-            } catch (error) {   
+            } catch (error) {
                 console.error('Erro ao analisar os dados do localStorage:', error);
             }
         } else if (DadosEstabelecimento !== null) {
             try {
                 const parsedData = JSON.parse(DadosEstabelecimento);
                 setUsuarioDados(parsedData);
-            } catch (error) {   
+            } catch (error) {
                 console.error('Erro ao analisar os dados do localStorage:', error);
             }
         }
@@ -72,7 +73,7 @@ function EditarUsuario() {
                 navigate('/painel-estabelecimento-historico-compras');
             }, 100);
             localStorage.removeItem('estabelecimentoData')
-        } 
+        }
     }
 
     const handleEdit = () => {
@@ -85,44 +86,52 @@ function EditarUsuario() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({usuarioDados}),
+                body: JSON.stringify({ usuarioDados }),
             })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Erro ao editar dados');
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log('Dados editados com sucesso:', data);
-            })
-            .catch(error => {
-                console.error('Erro ao editar dados:', error);
-            });
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Erro ao editar dados');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Dados editados com sucesso:', data);
+                })
+                .catch(error => {
+                    console.error('Erro ao editar dados:', error);
+                });
         } else {
             fetch(`http://localhost:3001/editar-usuario-comum-estabelecimento/${idEstabelecimento}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({usuarioDados}),
+                body: JSON.stringify({ usuarioDados }),
             })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Erro ao editar dados');
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log('Dados editados com sucesso:', data);
-            })
-            .catch(error => {
-                console.error('Erro ao editar dados:', error);
-            });
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Erro ao editar dados');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Dados editados com sucesso:', data);
+                })
+                .catch(error => {
+                    console.error('Erro ao editar dados:', error);
+                });
         }
 
+        Swal.fire({
+            icon: 'success',
+            title: 'Informações alteradas com sucesso!',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.reload();
+            }
+        });
     };
-    
+
 
     return (
         <div className='container-geral-editar-usuario'>
@@ -143,7 +152,7 @@ function EditarUsuario() {
                                         aria-label='email'
                                         aria-describedby='email-addon'
                                         className='form-control-editar-usuario'
-                                        defaultValue = {usuarioDados.email}
+                                        defaultValue={usuarioDados.email}
                                         onChange={handleInputChange}
                                     />
                                 </InputGroup>
@@ -161,8 +170,8 @@ function EditarUsuario() {
                                         aria-describedby='senha-addon'
                                         className='form-control-editar-usuario'
                                         id='campo-senha'
-                                        defaultValue = {usuarioDados.senha}
-                                        onChange={handleInputChange}  
+                                        defaultValue={usuarioDados.senha}
+                                        onChange={handleInputChange}
                                     />
                                     <i className='bi bi-eye' id='botao-senha' onClick={(event) => mostrarSenha()}></i>
                                 </InputGroup>
@@ -179,8 +188,8 @@ function EditarUsuario() {
                                         aria-label='logradouro'
                                         aria-describedby='logradouro-addon'
                                         className='form-control-editar-usuario'
-                                        defaultValue = {usuarioDados.logradouro}
-                                        onChange={handleInputChange}  
+                                        defaultValue={usuarioDados.logradouro}
+                                        onChange={handleInputChange}
                                     />
                                 </InputGroup>
                             </Form.Group>
@@ -196,8 +205,8 @@ function EditarUsuario() {
                                         aria-label='numero'
                                         aria-describedby='numero-addon'
                                         className='form-control-editar-usuario'
-                                        defaultValue = {usuarioDados.numero}
-                                        onChange={handleInputChange}  
+                                        defaultValue={usuarioDados.numero}
+                                        onChange={handleInputChange}
                                     />
                                 </InputGroup>
                             </Form.Group>
@@ -213,8 +222,8 @@ function EditarUsuario() {
                                         aria-label='bairro'
                                         aria-describedby='bairro-addon'
                                         className='form-control-editar-usuario'
-                                        defaultValue = {usuarioDados.bairro}
-                                        onChange={handleInputChange}  
+                                        defaultValue={usuarioDados.bairro}
+                                        onChange={handleInputChange}
                                     />
                                 </InputGroup>
                             </Form.Group>
@@ -230,8 +239,8 @@ function EditarUsuario() {
                                         aria-label='cidade'
                                         aria-describedby='cidade-addon'
                                         className='form-control-editar-usuario'
-                                        defaultValue = {usuarioDados.cidade}
-                                        onChange={handleInputChange}  
+                                        defaultValue={usuarioDados.cidade}
+                                        onChange={handleInputChange}
                                     />
                                 </InputGroup>
                             </Form.Group>
@@ -247,8 +256,8 @@ function EditarUsuario() {
                                         aria-label='estado'
                                         aria-describedby='estado-addon'
                                         className='form-control-editar-usuario'
-                                        defaultValue = {usuarioDados.estado}
-                                        onChange={handleInputChange}  
+                                        defaultValue={usuarioDados.estado}
+                                        onChange={handleInputChange}
                                     />
                                 </InputGroup>
                             </Form.Group>
@@ -264,8 +273,8 @@ function EditarUsuario() {
                                         aria-label='cep'
                                         aria-describedby='cep-addon'
                                         className='form-control-editar-usuario'
-                                        defaultValue = {usuarioDados.cep}
-                                        onChange={handleInputChange}  
+                                        defaultValue={usuarioDados.cep}
+                                        onChange={handleInputChange}
                                     />
                                 </InputGroup>
                             </Form.Group>
@@ -281,8 +290,8 @@ function EditarUsuario() {
                                         aria-label='regiao'
                                         aria-describedby='regiao-addon'
                                         className='form-control-editar-usuario'
-                                        defaultValue = {usuarioDados.regiao}
-                                        onChange={handleInputChange}  
+                                        defaultValue={usuarioDados.regiao}
+                                        onChange={handleInputChange}
                                     />
                                 </InputGroup>
                             </Form.Group>
