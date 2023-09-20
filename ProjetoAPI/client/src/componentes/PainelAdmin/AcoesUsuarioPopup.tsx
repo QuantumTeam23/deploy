@@ -177,7 +177,7 @@ export default function AdicionarUsuarioPopup({ open, onClose }: { open: boolean
   };
 
   const handleSubmitEstab = async () => {
-    if (isFormValidEstab()) {
+    if (isFormValidEstab(formDataUserEstab)) {
       setFormDataUserEstab({ ...formDataUserEstab, showEmptyFieldsAlertEstab: true });
       return
     }
@@ -201,7 +201,6 @@ export default function AdicionarUsuarioPopup({ open, onClose }: { open: boolean
           cep: formDataUserEstab.estabelecimento_cep,
           regiao: formDataUserEstab.estabelecimento_regiao,
           telefone: formDataUserEstab.estabelecimento_telefone,
-          volume: formDataUserEstab.estabelecimento_volume,
           tipo: formDataUserEstab.estabelecimento_tipo,
         }),
       });
@@ -289,26 +288,43 @@ export default function AdicionarUsuarioPopup({ open, onClose }: { open: boolean
   };
 
 
-  const isFormValidEstab = () => {
-    let vazio = true
-    if (formDataUserEstab.estabelecimento_razao_social === '' ||
-      formDataUserEstab.estabelecimento_nome_fantasia === '' ||
-      formDataUserEstab.estabelecimento_email === '' ||
-      formDataUserEstab.estabelecimento_senha === '' ||
-      formDataUserEstab.estabelecimento_cnpj === '' ||
-      formDataUserEstab.estabelecimento_logradouro === '' ||
-      formDataUserEstab.estabelecimento_logradouroNumero === '' ||
-      formDataUserEstab.estabelecimento_bairro === '' ||
-      formDataUserEstab.estabelecimento_cidade === '' ||
-      formDataUserEstab.estabelecimento_estado === '' ||
-      formDataUserEstab.estabelecimento_cep === '' ||
-      formDataUserEstab.estabelecimento_regiao === '' ||
-      formDataUserEstab.estabelecimento_tipo === '' ||
-      formDataUserEstab.estabelecimento_volume === '' ||
-      formDataUserEstab.estabelecimento_telefone === '') {
+  const isFormValidEstab = (formData: FormDataUserEstab) => {
+    const {
+      estabelecimento_razao_social,
+      estabelecimento_nome_fantasia,
+      estabelecimento_email,
+      estabelecimento_senha,
+      estabelecimento_cnpj,
+      estabelecimento_logradouro,
+      estabelecimento_logradouroNumero,
+      estabelecimento_bairro,
+      estabelecimento_cidade,
+      estabelecimento_estado,
+      estabelecimento_cep,
+      estabelecimento_regiao,
+      estabelecimento_telefone,
+      estabelecimento_tipo,
+    } = formData;
+    console.log(formData);
+    if (estabelecimento_razao_social === '' ||
+      estabelecimento_nome_fantasia === '' ||
+      estabelecimento_cnpj === '' ||
+      estabelecimento_email === '' ||
+      estabelecimento_senha === '' ||
+      estabelecimento_cep === '' ||
+      estabelecimento_logradouro === '' ||
+      estabelecimento_logradouroNumero === '' ||
+      estabelecimento_bairro === '' ||
+      estabelecimento_cidade === '' ||
+      estabelecimento_estado === '' ||
+      estabelecimento_regiao === '' ||
+      estabelecimento_telefone === '' ||
+      estabelecimento_tipo === ''
+    ) {
+      return true
+    } else {
+      return false
     }
-    vazio = false
-    return vazio;
   };
 
 
