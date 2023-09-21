@@ -43,7 +43,7 @@ function Login() {
             })
             const data = await response.json()
     
-            if (data.msg === "Usuário logado com sucesso." && data.idParceiro !== null) {
+            if (data.msg === "Parceiro logado com sucesso." && data.idParceiro !== null) {
                 Swal.fire({
                     title: "Sucesso",
                     icon: 'success',
@@ -57,7 +57,7 @@ function Login() {
                 localStorage.setItem('idParceiro', data.idParceiro)
             }
     
-            else if (data.msg === "Usuário logado com sucesso." && data.idEstabelecimento !== null) {
+            else if (data.msg === "Estabelecimento logado com sucesso." && data.idEstabelecimento !== null) {
                 Swal.fire({
                     title: "Sucesso",
                     icon: 'success',
@@ -71,7 +71,7 @@ function Login() {
                 localStorage.setItem('idEstabelecimento', data.idEstabelecimento)
             }
     
-            else if (data.msg === "Usuário logado com sucesso." && data.idAdministrador !== null) {
+            else if (data.msg === "Administrador logado com sucesso." && data.idAdministrador !== null) {
                 Swal.fire({
                     title: "Sucesso",
                     icon: 'success',
@@ -87,7 +87,7 @@ function Login() {
                 Swal.fire({
                     title: "Erro",
                     icon: 'error',
-                    text: 'Usuário não cadastrado no sistema.',
+                    text: 'Email ou senha incorretos',
                     confirmButtonColor: '#de940a'
                 })
             }

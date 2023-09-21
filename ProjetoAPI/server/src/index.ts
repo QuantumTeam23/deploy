@@ -47,7 +47,7 @@ app.get('/read-by-id-to-edit/:id/:tipo', SelectToEdit);
 app.put('/editSenhaRec/:idUser/:tipo', editarSenhaRec);
 
 //LOGIN
-app.post('/login', login);
+app.post('/login', login2);
 
 //CONEXÃO BANCO
 const DB = new Pool({
@@ -71,6 +71,77 @@ DB.connect().then(conn => {
 const jwtSecret = '779568';
 
 //Validação e Login no Sistema
+
+
+async function login2(req, res) {
+    const { email } = req.body;
+    const {password } = req.body;
+
+    try{
+        const SQL1 = `
+    SELECT 
+        *
+    FROM  
+        Administradores
+    WHERE 
+        administrador_email = '${email}'
+    `
+        const SQL2 = `
+    SELECT
+        *
+    FROM 
+        Estabelecimentos
+    WHERE
+        estabelecimento_email = '${email}'
+    `
+        const SQL3 = `
+    SELECT
+        *
+    FROM
+        Parceiros
+    WHERE
+        parceiro_email = '${email}'
+    `
+        const adms = await connectionDB.query(SQL1);
+        const estabelecimentos = await connectionDB.query(SQL2);
+        const parceiros = await connectionDB.query(SQL3);
+
+        if(adms.rowCount === 1) {
+            if(await bcrypt.compare(password, adms.rows[0].administrador_senha)){
+                res.send({
+                    msg: "Administrador logado com sucesso.",
+                    idAdministrador: adms.rows[0].administrador_id,
+                })
+            }else{
+                res.send({msg: "Senha incorreta" })
+            }
+        }else if(estabelecimentos.rowCount === 1) {
+            if(await bcrypt.compare(password, estabelecimentos.rows[0].estabelecimento_senha)){
+                res.send({
+                    msg: "Estabelecimento logado com sucesso.",
+                    idEstabelecimento: estabelecimentos.rows[0].estabelecimento_id,
+                })
+            }else{
+                res.send({msg: "Senha incorreta" })
+            }
+        }else if(parceiros.rowCount === 1) {
+            if(await bcrypt.compare(password, parceiros.rows[0].parceiro_senha)){
+                res.send({
+                    msg: "Parceiro logado com sucesso.",
+                    idEstabelecimento: parceiros.rows[0].parceiro_id,
+                })
+            }else{
+                res.send({msg: "Senha incorreta" })
+            }
+        }        
+    } catch (error) {
+        console.error("Erro", error);
+        res.status(500).send({ msg: "Usuário não encontrado" });
+    }
+
+
+}
+/*
 async function login(req, res) {
     const { email } = req.body
     const { password } = req.body
@@ -79,30 +150,34 @@ async function login(req, res) {
     FROM parceiros 
     FULL JOIN estabelecimentos ON parceiro_id = estabelecimento_id 
     FULL JOIN administradores ON parceiro_id = administrador_id
-    WHERE parceiros.parceiro_email = '${email}' AND parceiros.parceiro_senha = '${password}'
-    OR estabelecimentos.estabelecimento_email = '${email}' AND estabelecimentos.estabelecimento_senha = '${password}'
-    OR administradores.administrador_email = '${email}' AND administradores.administrador_senha = '${password}'`)
-
-    DB.query(SQL, (err, result) => {
+    WHERE parceiros.parceiro_email = '${email}' 
+    OR estabelecimentos.estabelecimento_email = '${email}'
+    OR administradores.administrador_email = '${email}' `)
+    
+    DB.query(SQL, async (err, result) => {
         if (err) {
             console.log(err)
         }
 
         if (result.rows.length === 1) {
-            res.send({
-                msg: "Usuário logado com sucesso.",
-                idParceiro: result.rows.values().next().value.parceiro_id,
-                idEstabelecimento: result.rows.values().next().value.estabelecimento_id,
-                idAdministrador: result.rows.values().next().value.administrador_id,
-            });
-
+            //aqui ja tem um usuario selecionado
+            //tenta comparar as 3 senhas - NÃO PODE
+            console.log(result.rows[0])
+            if(await bcrypt.compare(password, result.rows[0].administrador_senha) || await bcrypt.compare(password, result.rows[0].estabelecimento_senha) || await bcrypt.compare(password, result.rows[0].parceiro_senha)){
+                res.send({
+                    msg: "Usuário logado com sucesso",
+                    idAdministrador: result.rows.values().next().value.administrador_id,
+                    idEstabelecimento: result.rows.values().next().value.estabelecimento_id,
+                    idParceiro: result.rows.values().next().value.parceiro_id,
+                })
+            }
         } else {
             res.send({ msg: 'Email ou senha incorretos.' })
 
         }
     })
 }
-
+*/
 async function checkEmailParceiro(email) {
     const client = await DB.connect(); // Acquire a client from the pool
   
@@ -207,11 +282,11 @@ async function cadastrarEstabelecimento(req, res) {
         res.status(409).send({ msg: "Já existe um estabelecimento com esse CNPJ/CPF." });
     } else {
         try {
-            const hashSenha = await bcrypt.hash(senha, 10)
+            const hashSenha = await bcrypt.hash(senha, 10);
             const SQL = `
                 INSERT INTO
                     Estabelecimentos("estabelecimento_razao_social","estabelecimento_nome_fantasia","estabelecimento_cnpj_cpf","estabelecimento_logradouro", "estabelecimento_logradouro_numero","estabelecimento_bairro","estabelecimento_cidade","estabelecimento_estado","estabelecimento_cep", "estabelecimento_regiao","estabelecimento_telefone","estabelecimento_volume_comercializado_mes","estabelecimento_email", "estabelecimento_tipo", "estabelecimento_senha")
-                VALUES ('${razao_social}','${nome_fantasia}','${cnpj}','${logradouro}', '${logradouroNumero}','${bairro}','${cidade}','${estado}','${cep}','${regiao}','${telefone}','${volume}','${email}','${tipo}','${senha}')
+                VALUES ('${razao_social}','${nome_fantasia}','${cnpj}','${logradouro}', '${logradouroNumero}','${bairro}','${cidade}','${estado}','${cep}','${regiao}','${telefone}','${volume}','${email}','${tipo}','${hashSenha}')
             `
             const resultado = await connectionDB.query(SQL);
             res.send({ msg: "Estabelecimento cadastrado com sucesso!" });
@@ -260,13 +335,14 @@ async function DeletarUsers (req, res) {
 async function editarEstabelecimento (req, res) {
     const idEstabelecimento = req.params.idEstabelecimento
     const { usuarioDados } = req.body
+    const hashSenha = await bcrypt.hash(usuarioDados.senha, 10);
 
     const SQL = `
     UPDATE 
         Estabelecimentos 
     SET
         estabelecimento_email = '${usuarioDados.email}',
-        estabelecimento_senha = '${usuarioDados.senha}',
+        estabelecimento_senha = '${hashSenha}',
         estabelecimento_logradouro = '${usuarioDados.logradouro}',
         estabelecimento_logradouro_numero = '${usuarioDados.numero}',
         estabelecimento_bairro = '${usuarioDados.bairro}',
@@ -353,6 +429,7 @@ async function existeParceiro(cnpj) {
 async function cadastrarParceiro(req, res) {
     const { razao_social, nome_fantasia, cnpj, logradouro, logradouroNumero, bairro, cidade, estado, cep, regiao, telefone, saldo, cidadeatendida, dataoperacao, volume, email, tipo, senha } = req.body;
     const existeCNPJ = await existeParceiro(cnpj);
+    const hashSenha = await bcrypt.hash(senha, 10);
     if (existeCNPJ) {
         res.status(409).send({ msg: "Já existe um parceiro com esse CNPJ/CPF." });
     } else {
@@ -360,7 +437,7 @@ async function cadastrarParceiro(req, res) {
             const SQL = `
                 INSERT INTO
                     Parceiros("parceiro_razao_social","parceiro_nome_fantasia","parceiro_cnpj_cpf","parceiro_logradouro", "parceiro_logradouro_numero","parceiro_bairro","parceiro_cidade","parceiro_estado","parceiro_cep", "parceiro_regiao","parceiro_telefone","parceiro_volume_coleta_mes","parceiro_email", "parceiro_tipo", "parceiro_senha")
-                VALUES ('${razao_social}','${nome_fantasia}','${cnpj}','${logradouro}', '${logradouroNumero}','${bairro}','${cidade}','${estado}','${cep}','${regiao}','${telefone}','${volume}','${email}','${tipo}','${senha}')
+                VALUES ('${razao_social}','${nome_fantasia}','${cnpj}','${logradouro}', '${logradouroNumero}','${bairro}','${cidade}','${estado}','${cep}','${regiao}','${telefone}','${volume}','${email}','${tipo}','${hashSenha}')
             `
             const resultado = await connectionDB.query(SQL);
             console.log("Parceiro cadastrado com sucesso!");
@@ -376,14 +453,14 @@ async function cadastrarParceiro(req, res) {
 async function editarParceiro (req, res) {
     const idParceiro = req.params.idParceiro
     const { usuarioDados } = req.body
-    
+    const hashSenha = await bcrypt.hash(usuarioDados.senha, 10);
 
     const SQL = `
     UPDATE 
         Parceiros 
     SET
         parceiro_email = '${usuarioDados.email}',
-        parceiro_senha = '${usuarioDados.senha}',
+        parceiro_senha = '${hashSenha}',
         parceiro_logradouro = '${usuarioDados.logradouro}',
         parceiro_logradouro_numero = '${usuarioDados.numero}',
         parceiro_bairro = '${usuarioDados.bairro}',
@@ -408,6 +485,7 @@ async function editarAdmin (req, res) {
     const razaoSocial = req.params.razaoSocial
     const tipoUsuario = req.params.tipoUsuario
     const { usuarioDados } = req.body
+    const hashSenha = await bcrypt.hash(usuarioDados.senha, 10);
     
     if (tipoUsuario === 'Parceiro') {
         const SQL = `
@@ -415,7 +493,7 @@ async function editarAdmin (req, res) {
             Parceiros 
         SET
             parceiro_email = '${usuarioDados.email}',
-            parceiro_senha = '${usuarioDados.senha}',
+            parceiro_senha = '${hashSenha}',
             parceiro_logradouro = '${usuarioDados.logradouro}',
             parceiro_logradouro_numero = '${usuarioDados.numero}',
             parceiro_bairro = '${usuarioDados.bairro}',
@@ -439,7 +517,7 @@ async function editarAdmin (req, res) {
             Estabelecimentos 
         SET
             estabelecimento_email = '${usuarioDados.email}',
-            estabelecimento_senha = '${usuarioDados.senha}',
+            estabelecimento_senha = '${hashSenha}',
             estabelecimento_logradouro = '${usuarioDados.logradouro}',
             estabelecimento_logradouro_numero = '${usuarioDados.numero}',
             estabelecimento_bairro = '${usuarioDados.bairro}',
@@ -464,7 +542,7 @@ async function editarAdmin (req, res) {
             Administradores 
         SET
             administrador_email = '${usuarioDados.email}',
-            administrador_senha = '${usuarioDados.senha}'
+            administrador_senha = '${hashSenha}'
         WHERE
         administrador_nome = '${razaoSocial}'
     `
@@ -485,13 +563,14 @@ async function editarSenhaRec (req, _) {
     const idUser = req.params.idUser
     const tipo = req.params.tipo
     const {usuarioDados} = req.body
+    const hashSenha = await bcrypt.hash(usuarioDados.senha, 10);
     
     if (tipo === 'Parceiro') {
         const SQL = `
         UPDATE 
             Parceiros 
         SET
-            parceiro_senha = '${usuarioDados.senha}'
+            parceiro_senha = '${hashSenha}'
         WHERE
             parceiro_id = '${idUser}'
     `
@@ -507,7 +586,7 @@ async function editarSenhaRec (req, _) {
         UPDATE 
             Estabelecimentos 
         SET
-            estabelecimento_senha = '${usuarioDados.senha}'
+            estabelecimento_senha = '${hashSenha}'
         WHERE
         estabelecimento_id = '${idUser}'
     `
