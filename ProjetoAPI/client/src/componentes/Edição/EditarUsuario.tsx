@@ -2,11 +2,14 @@ import React, { useEffect, useState } from 'react';
 import '../styles/EditarUsuario.css';
 import { Form, FormControl, InputGroup } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
+import eyeIconOpen from '../Imagens/close.png';
+import eyeIconClose from '../Imagens/open.png';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 
 function EditarUsuario() {
     const navigate = useNavigate()
+    const [showPassword, setShowPassword] = useState(false);
     const [usuarioDados, setUsuarioDados] = useState({
         email: '',
         senha: '',
@@ -17,21 +20,9 @@ function EditarUsuario() {
         estado: '',
         cep: '',
         regiao: '',
+        cidadesAtende: ''
     });
-
-    let inputPass = document.querySelector('#campo-senha') as HTMLAnchorElement;
-    let btnShowPass = document.querySelector('i')!;
-
-    function mostrarSenha() {
-        if (inputPass?.type === 'password') {
-            inputPass.setAttribute('type', 'text')
-            btnShowPass?.classList.replace('bi-eye', 'bi-eye-slash')
-        }
-        else {
-            inputPass?.setAttribute('type', 'password')
-            btnShowPass?.classList.replace('bi-eye-slash', 'bi-eye')
-        }
-    }
+    
 
     useEffect(() => {
         const DadosParceiro = localStorage.getItem('parceiroData');
@@ -71,9 +62,30 @@ function EditarUsuario() {
         } else {
             setTimeout(() => {
                 navigate('/painel-estabelecimento-historico-compras');
-            }, 100);
+            }, 50);
             localStorage.removeItem('estabelecimentoData')
         }
+    }
+
+    const msgSucessoPost = () => {
+        Swal.fire({
+          title: "Sucesso",
+          html: "Informações alteradas com sucesso.",
+          icon: "success",
+          showConfirmButton: true,
+          confirmButtonColor: '#de940a',
+          customClass: {
+            container: 'swal-container',
+          },
+        })
+    }
+
+    const backEdit = () => {
+        navigate('/painel-parceiro-historico-compra')
+    }
+
+    const backEditEstab = () => {
+        navigate('/painel-estabelecimento-historico-compras')
     }
 
     const handleEdit = () => {
@@ -100,7 +112,11 @@ function EditarUsuario() {
                 .catch(error => {
                     console.error('Erro ao editar dados:', error);
                 });
-        } else {
+
+                backEdit()
+                msgSucessoPost()
+        }
+         else {
             fetch(`http://localhost:3001/editar-usuario-comum-estabelecimento/${idEstabelecimento}`, {
                 method: 'PUT',
                 headers: {
@@ -108,29 +124,32 @@ function EditarUsuario() {
                 },
                 body: JSON.stringify({ usuarioDados }),
             })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Erro ao editar dados');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    console.log('Dados editados com sucesso:', data);
-                })
-                .catch(error => {
-                    console.error('Erro ao editar dados:', error);
-                });
-        }
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Erro ao editar dados');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Dados editados com sucesso:', data);
+            })
+            .catch(error => {
+                console.error('Erro ao editar dados:', error);
+            });
 
-        Swal.fire({
-            icon: 'success',
-            title: 'Informações alteradas com sucesso!',
-        }).then((result) => {
-            if (result.isConfirmed) {
-                window.location.reload();
-            }
-        });
+            backEditEstab()
+            msgSucessoPost()
+        }
     };
+
+    const userType = localStorage.getItem('tipo')
+
+    const showPasswordHandler = () => {
+        setShowPassword(!showPassword);
+    };
+    
+    const passwordInputType = showPassword ? "text" : "password";
+    const passwordIconSrc = showPassword ? eyeIconOpen : eyeIconClose;
 
 
     return (
@@ -161,19 +180,18 @@ function EditarUsuario() {
                         <div className='campo-editar-usuario'>
                             <Form.Group controlId='senha'>
                                 <Form.Label>Senha</Form.Label>
-                                <InputGroup className='grupo-campo-senha'>
+                                <InputGroup>
                                     <FormControl
-                                        type='password'
+                                        type={passwordInputType}
                                         required
                                         placeholder='Digite sua Senha'
                                         aria-label='senha'
                                         aria-describedby='senha-addon'
                                         className='form-control-editar-usuario'
-                                        id='campo-senha'
                                         defaultValue={usuarioDados.senha}
                                         onChange={handleInputChange}
                                     />
-                                    <i className='bi bi-eye' id='botao-senha' onClick={(event) => mostrarSenha()}></i>
+                                <img src={passwordIconSrc} alt="eye icon" onClick={showPasswordHandler} style={{width: '5%', height: '5%', marginLeft: '10px', marginTop: '06px'}} />
                                 </InputGroup>
                             </Form.Group>
                         </div>
@@ -296,6 +314,25 @@ function EditarUsuario() {
                                 </InputGroup>
                             </Form.Group>
                         </div>
+                        {userType === 'ComumParceiro' && (
+                            <div className='campo-editar-usuario'>
+                                <Form.Group controlId='cidadesAtende'>
+                                    <Form.Label>Cidades em que atende</Form.Label>
+                                    <InputGroup>
+                                        <FormControl
+                                            type='text'
+                                            required
+                                            placeholder='Digite as cidades em que atende'
+                                            aria-label='cidadesAtende'
+                                            aria-describedby='regiao-addon'
+                                            className='form-control-editar-usuario'
+                                            defaultValue={usuarioDados.cidadesAtende}
+                                            onChange={handleInputChange}
+                                        />
+                                    </InputGroup>
+                                </Form.Group>
+                            </div>
+                        )}
                     </div>
                     <div className='botoes-editar-usuario'>
                         <Button variant="danger" onClick={handleBack}>Cancelar</Button>

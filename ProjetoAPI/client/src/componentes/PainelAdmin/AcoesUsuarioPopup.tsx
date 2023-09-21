@@ -9,6 +9,8 @@ import Tab from '@mui/material/Tab';
 import styles from '../styles/PainelAdmin.module.css';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Alert from 'react-bootstrap/Alert';
+import eyeIconOpen from '../Imagens/close.png';
+import eyeIconClose from '../Imagens/open.png';
 import Swal from "sweetalert2";
 
 interface FormDataUserParc {
@@ -26,6 +28,7 @@ interface FormDataUserParc {
   parceiro_regiao: string;
   parceiro_telefone: string;
   parceiro_tipo: string;
+  parceiro_cidades_atende: string;
   showEmptyFieldsAlertParc: boolean;
   cadastradoParc: boolean;
   cnpjEmUsoParc: boolean;
@@ -45,7 +48,6 @@ interface FormDataUserEstab {
   estabelecimento_cep: string;
   estabelecimento_regiao: string;
   estabelecimento_telefone: string;
-  estabelecimento_volume: string;
   estabelecimento_tipo: string;
   showEmptyFieldsAlertEstab: boolean;
   cadastradoEstab: boolean;
@@ -69,7 +71,6 @@ export default function AdicionarUsuarioPopup({ open, onClose }: { open: boolean
     estabelecimento_cep: '',
     estabelecimento_regiao: '',
     estabelecimento_telefone: '',
-    estabelecimento_volume: '',
     estabelecimento_tipo: '',
     showEmptyFieldsAlertEstab: false,
     cadastradoEstab: false,
@@ -90,6 +91,7 @@ export default function AdicionarUsuarioPopup({ open, onClose }: { open: boolean
     parceiro_regiao: '',
     parceiro_telefone: '',
     parceiro_tipo: '',
+    parceiro_cidades_atende: '',
     showEmptyFieldsAlertParc: false,
     cadastradoParc: false,
     cnpjEmUsoParc: false,
@@ -177,6 +179,7 @@ export default function AdicionarUsuarioPopup({ open, onClose }: { open: boolean
             regiao: formDataUserParc.parceiro_regiao,
             telefone: formDataUserParc.parceiro_telefone,
             tipo: formDataUserParc.parceiro_tipo,
+            cidadesAtende: formDataUserParc.parceiro_cidades_atende,
           }),
         });
 
@@ -303,6 +306,7 @@ export default function AdicionarUsuarioPopup({ open, onClose }: { open: boolean
       parceiro_regiao,
       parceiro_telefone,
       parceiro_tipo,
+      parceiro_cidades_atende,
     } = formData;
     console.log(formData);
     if (parceiro_razao_social === '' ||
@@ -318,7 +322,8 @@ export default function AdicionarUsuarioPopup({ open, onClose }: { open: boolean
       parceiro_estado === '' ||
       parceiro_regiao === '' ||
       parceiro_telefone === '' ||
-      parceiro_tipo === ''
+      parceiro_tipo === '' ||
+      parceiro_cidades_atende === ''
     ) {
       return true
     } else {
@@ -554,6 +559,15 @@ export default function AdicionarUsuarioPopup({ open, onClose }: { open: boolean
             </div>
 
             <div>
+              <label>Cidades em que Atende:</label>
+              <input type="text" id="parceiro_cidades_atende"
+                name="parceiro_cidades_atende"
+                value={formDataUserParc.parceiro_cidades_atende}
+                onChange={handleInputChangeParc}
+              />
+            </div>
+
+            <div>
               <label>Tipos de parceiros:</label>
               <select id="parceiro_tipo"
                 name="parceiro_tipo"
@@ -774,6 +788,7 @@ export function EditarUsuarioPopup({ open, onClose }: { open: boolean, onClose: 
     estado: '',
     cep: '',
     regiao: '',
+    cidadesAtende: '',
   });
   const handleClose = () => {
     onClose();
@@ -785,6 +800,23 @@ export function EditarUsuarioPopup({ open, onClose }: { open: boolean, onClose: 
       ...prevData,
       [id]: value,
     }));
+  };
+
+  const msgSucessoPost = () => {
+    Swal.fire({
+      title: "Sucesso",
+      html: "Informações alteradas com sucesso.",
+      icon: "success",
+      showConfirmButton: true,
+      confirmButtonColor: '#de940a',
+      customClass: {
+        container: 'swal-container',
+      },
+    })
+  }
+
+  const handleCloseEdit = () => {
+    onClose();
   };
 
   useEffect(() => {
@@ -821,6 +853,7 @@ export function EditarUsuarioPopup({ open, onClose }: { open: boolean, onClose: 
         estado: '',
         cep: '',
         regiao: '',
+        cidadesAtende: '',
       });
     }
   }, [open]);
@@ -850,6 +883,8 @@ export function EditarUsuarioPopup({ open, onClose }: { open: boolean, onClose: 
         .catch(error => {
           console.error('Erro ao editar dados:', error);
         });
+        handleCloseEdit()
+        msgSucessoPost()
     } else if (tipoUsuario === 'Estabelecimento') {
       fetch(`http://localhost:3001/editar-usuario-comum-parceiro-by-admin/${razaoSocial}/${tipoUsuario}`, {
         method: 'PUT',
@@ -870,17 +905,12 @@ export function EditarUsuarioPopup({ open, onClose }: { open: boolean, onClose: 
         .catch(error => {
           console.error('Erro ao editar dados:', error);
         });
+        handleCloseEdit()
+        msgSucessoPost()
     }
-
-    Swal.fire({
-      icon: 'success',
-      title: 'Informações alteradas com sucesso!',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        onClose();
-      }
-    });
   };
+
+  const userType = localStorage.getItem('tipoEdit');
 
   return (
     <Dialog
@@ -897,7 +927,7 @@ export function EditarUsuarioPopup({ open, onClose }: { open: boolean, onClose: 
         </div>
         <div>
           <label>Senha:</label>
-          <input type="password" id="senha" className={styles.passwordInput} defaultValue={usuarioDados.senha} onChange={handleInputChange} />
+          <input type='password' id="senha" className={styles.passwordInput} defaultValue={usuarioDados.senha} onChange={handleInputChange} />
         </div>
         <div>
           <label>Logradouro:</label>
@@ -923,7 +953,12 @@ export function EditarUsuarioPopup({ open, onClose }: { open: boolean, onClose: 
           <label>CEP:</label>
           <input type="text" id="cep" defaultValue={usuarioDados.cep} onChange={handleInputChange} />
         </div>
-
+        {userType === 'Parceiro' && (
+          <div>
+            <label>Cidades em que atende:</label>
+            <input type="text" id="cidadesAtende" defaultValue={usuarioDados.cidadesAtende} onChange={handleInputChange} />
+          </div>
+        )}
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose} color="primary">
@@ -983,6 +1018,19 @@ export function EditarUsuarioAdminPopup({ open, onClose }: { open: boolean, onCl
     const tipoUsuario = localStorage.getItem('tipoEdit')
     const razaoSocial = localStorage.getItem('nomeEdit')
 
+    const msgSucessoPost = () => {
+      Swal.fire({
+        title: "Sucesso",
+        html: "Cadastrado realizado com sucesso.",
+        icon: "success",
+        showConfirmButton: true,
+        confirmButtonColor: '#de940a',
+        customClass: {
+          container: 'swal-container',
+        },
+      })
+    }
+
     if (tipoUsuario === "Administrador") {
       fetch(`http://localhost:3001/editar-usuario-comum-parceiro-by-admin/${razaoSocial}/${tipoUsuario}`, {
         method: 'PUT',
@@ -1003,8 +1051,9 @@ export function EditarUsuarioAdminPopup({ open, onClose }: { open: boolean, onCl
         .catch(error => {
           console.error('Erro ao editar dados:', error);
         });
+        msgSucessoPost()
+        onClose();
     }
-    onClose();
   };
 
   return (

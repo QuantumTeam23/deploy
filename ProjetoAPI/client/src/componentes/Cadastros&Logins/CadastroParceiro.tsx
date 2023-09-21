@@ -21,7 +21,7 @@ interface FormData {
   cep: string;
   regiao: string;
   telefone: string;
-  volume: string;
+  cidadesAtende: string;
   tipo: string;
   showEmptyFieldsAlert: boolean;
   cadastrado: boolean;
@@ -45,7 +45,7 @@ function CadastroParceiro() {
     regiao: '',
     telefone: '',
     tipo: '',
-    volume: '',
+    cidadesAtende: '',
     showEmptyFieldsAlert: false,
     cadastrado: false,
     cnpjEmUso: false,
@@ -66,7 +66,7 @@ function CadastroParceiro() {
     regiao,
     telefone,
     tipo,
-    volume,
+    cidadesAtende,
     showEmptyFieldsAlert,
     cnpjEmUso,
   } = formData;
@@ -94,7 +94,7 @@ function CadastroParceiro() {
     'campo-11': 'regiao',
     'campo-12': 'telefone',
     'campo-13': 'tipo',
-    'campo-14': 'volume',
+    'campo-14': 'cidadesAtende',
   };
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -199,7 +199,7 @@ function CadastroParceiro() {
           regiao,
           telefone,
           tipo,
-          volume,
+          cidadesAtende,
         }),
       });
   
@@ -248,7 +248,7 @@ function CadastroParceiro() {
       cep !== '' &&
       regiao !== '' &&
       tipo !== '' &&
-      volume !== ''
+      cidadesAtende !== ''
     );
   };
 
@@ -355,10 +355,10 @@ function CadastroParceiro() {
           value = formData.tipo || '';
           break;
         case 14:
-          label = 'Volume Coletado no Mês';
-          placeholder = 'Digite o Volume em Litros';
-          name = 'volume';
-          value = formData.volume || '';
+          label = 'Cidades em que atende:';
+          placeholder = 'Digite as cidades em que atende';
+          name = 'cidadesAtende';
+          value = formData.cidadesAtende || '';
           break;
         default:
           break;

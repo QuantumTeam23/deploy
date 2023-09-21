@@ -21,7 +21,6 @@ interface FormDataEstab {
   cep: string;
   regiao: string;
   telefone: string;
-  volume: string;
   tipo: string;
   showEmptyFieldsAlert: boolean;
   cadastrado: boolean;
@@ -48,7 +47,6 @@ function CadastroEstabelecimento() {
       regiao: '',
       telefone: '',
       tipo: '',
-      volume: '',
       showEmptyFieldsAlert: false,
       cadastrado: false,
       cnpjEmUso: false,
@@ -69,7 +67,6 @@ function CadastroEstabelecimento() {
       regiao,
       telefone,
       tipo,
-      volume,
       showEmptyFieldsAlert,
       cnpjEmUso,
     } = formDataEstab;
@@ -94,7 +91,6 @@ function CadastroEstabelecimento() {
       'campo-11': 'regiao',
       'campo-12': 'telefone',
       'campo-13': 'tipo',
-      'campo-14': 'volume',
     };
   
     const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -200,7 +196,6 @@ function CadastroEstabelecimento() {
             regiao,
             telefone,
             tipo,
-            volume,
           }),
         });
   
@@ -247,14 +242,13 @@ function CadastroEstabelecimento() {
         estado !== '' &&
         cep !== '' &&
         regiao !== '' &&
-        tipo !== '' &&
-        volume !== ''
+        tipo !== ''
       );
     };
   
     const renderInputs = () => {
       const startIndex = (step - 1) * fieldsPerStep;
-      const endIndex = Math.min(startIndex + fieldsPerStep, 15);
+      const endIndex = Math.min(startIndex + fieldsPerStep, 14);
       const inputFields = [];
   
       for (let i = startIndex; i < endIndex; i++) {
@@ -349,12 +343,6 @@ function CadastroEstabelecimento() {
             name = 'tipo';
             value = formDataEstab.tipo || '';
             break;
-          case 14:
-            label = "Volume Comercializado no Mês";
-            placeholder = "Digite o Volume em Litros";
-            name = 'volume';
-            value = formDataEstab.volume || '';
-            break
           default:
             break;
         }
