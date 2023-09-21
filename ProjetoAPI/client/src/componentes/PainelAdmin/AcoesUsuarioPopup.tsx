@@ -457,7 +457,7 @@ export default function AdicionarUsuarioPopup({ open, onClose }: { open: boolean
                 onChange={handleInputChangeParc}
               />
             </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between',height:"40px", marginBottom:'30px' }}>
               <div style={{ flex: '1' }}>
                 <label>Logradouro:</label>
                 <input type="text" id="parceiro_logradouro"
@@ -475,7 +475,7 @@ export default function AdicionarUsuarioPopup({ open, onClose }: { open: boolean
                 />
               </div>
             </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', height:"40px", marginBottom:'30px' }}>
               <div style={{ flex: '60%' }}> {/* Bairro ocupando 60% da largura */}
                 <label>Bairro:</label>
                 <input type="text" id="parceiro_bairro"
@@ -635,7 +635,7 @@ export default function AdicionarUsuarioPopup({ open, onClose }: { open: boolean
                 onChange={handleInputChangeEstab}
               />
             </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', height:"40px", marginBottom:'30px' }}>
               <div style={{ flex: '1' }}>
                 <label>Logradouro:</label>
                 <input type="text" id="estabelecimento_logradouro"
@@ -654,7 +654,7 @@ export default function AdicionarUsuarioPopup({ open, onClose }: { open: boolean
                 />
               </div>
             </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', height:"40px", marginBottom:'30px' }}>
               <div style={{ flex: '60%' }}> {/* Bairro ocupando 60% da largura */}
                 <label>Bairro:</label>
                 <input type="text" id="estabelecimento_bairro"
