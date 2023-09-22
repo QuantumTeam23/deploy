@@ -10,7 +10,7 @@
 mudar as conexões no arquivo index nas linhas 46-50 conforme a configuração dos seu banco. Para utilizar o banco local, foi utilizado o PgAdmin4, onde a database é criado nele e após isso é colocado o script. O script do banco é o seguinte </h4>
 
 ```console
-  CREATE DOMAIN DESC100 VARCHAR(100);
+CREATE DOMAIN DESC100 VARCHAR(100);
 
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
@@ -22,18 +22,17 @@ CREATE TABLE Parceiros (
 	parceiro_logradouro DESC100 null,
 	parceiro_logradouro_numero VARCHAR(10),
 	parceiro_bairro DESC100 null,
-        parceiro_cidade DESC100 null,
+    parceiro_cidade DESC100 null,
 	parceiro_estado DESC100 null,
-        parceiro_cep VARCHAR(10) null,
+    parceiro_cep VARCHAR(10) null,
 	parceiro_regiao DESC100 null,
 	parceiro_telefone VARCHAR (20) null,
+    parceiro_cidades_atende DESC100 null,
 	parceiro_saldo DECIMAL(8,2) null,
-	parceiro_cidades_atende DESC100 null,
-	parceiro_data_inicio_operacao DATE null,
 	parceiro_volume_coleta_mes VARCHAR (20) null,
 	parceiro_email DESC100 null,
-	parceiro_tipo DESC100 null,
-	parceiro_senha DESC100 null
+	parceiro_senha DESC100 null,
+    parceiro_tipo DESC100 null
 );
 
 CREATE TABLE Estabelecimentos(
@@ -44,16 +43,16 @@ CREATE TABLE Estabelecimentos(
 	estabelecimento_logradouro DESC100 null,
 	estabelecimento_logradouro_numero VARCHAR(10),
 	estabelecimento_bairro DESC100 null,
-        estabelecimento_cidade DESC100 null,
+    estabelecimento_cidade DESC100 null,
 	estabelecimento_estado DESC100 null,
-        estabelecimento_cep VARCHAR(10) null,
+    estabelecimento_cep VARCHAR(10) null,
 	estabelecimento_regiao DESC100 null,
 	estabelecimento_telefone VARCHAR (20) null,
 	estabelecimento_saldo DECIMAL(8,2) null,
 	estabelecimento_volume_comercializado_mes VARCHAR (20) null,
 	estabelecimento_email DESC100 null,
-	estabelecimento_tipo DESC100 null,
-	estabelecimento_senha DESC100 null
+	estabelecimento_senha DESC100 null,
+    estabelecimento_tipo DESC100 null
 );
 
 CREATE TABLE Administradores(
