@@ -88,7 +88,7 @@ function Login() {
                 localStorage.setItem('idAdministrador', data.idAdministrador)
             } else if (data.msg === "Usuário não encontrado") {
                 Swal.fire({
-                    title: "Error",
+                    title: "Erro",
                     icon: 'error',
                     text: 'Usuário não cadastrado no sistema',
                     confirmButtonColor: '#de940a'
