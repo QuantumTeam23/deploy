@@ -86,6 +86,16 @@ function Login() {
                 }, 1100);
                 localStorage.setItem('tipo', 'Administrador')
                 localStorage.setItem('idAdministrador', data.idAdministrador)
+            } else if (data.msg === "Usuário não encontrado") {
+                Swal.fire({
+                    title: "Error",
+                    icon: 'error',
+                    text: 'Usuário não cadastrado no sistema',
+                    confirmButtonColor: '#de940a'
+                })
+                setTimeout(() => {
+                    navigate('/login');
+                }, 1100); 
             } else {
                 Swal.fire({
                     title: "Erro",

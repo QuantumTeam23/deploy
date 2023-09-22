@@ -135,6 +135,10 @@ async function login2(req, res) {
             }else{
                 res.send({msg: "Senha incorreta" })
             }
+        }else if(adms.rowCount === 0 && estabelecimentos.rowCount === 0 && parceiros.rowCount === 0){
+            res.send({
+                msg: "Usuário não encontrado"
+            })
         }        
     } catch (error) {
         console.error("Erro", error);
