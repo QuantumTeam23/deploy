@@ -12,6 +12,8 @@ import Alert from 'react-bootstrap/Alert';
 import eyeIconOpen from '../Imagens/close.png';
 import eyeIconClose from '../Imagens/open.png';
 import Swal from "sweetalert2";
+import 'sweetalert2/dist/sweetalert2.css';
+
 
 interface FormDataUserParc {
   parceiro_razao_social: string;
@@ -778,6 +780,7 @@ export default function AdicionarUsuarioPopup({ open, onClose }: { open: boolean
 }
 
 export function EditarUsuarioPopup({ open, onClose }: { open: boolean, onClose: () => void }) {
+  const [dadosOriginais, setDadosOriginais] = useState({});
   const [usuarioDados, setUsuarioDados] = useState({
     email: '',
     senha: '',
@@ -827,6 +830,7 @@ export function EditarUsuarioPopup({ open, onClose }: { open: boolean, onClose: 
         try {
           const parsedData = JSON.parse(DadosParceiro);
           setUsuarioDados(parsedData);
+          setDadosOriginais(parsedData)
         } catch (error) {
           console.error('Erro ao analisar os dados do localStorage:', error);
         }
@@ -834,6 +838,7 @@ export function EditarUsuarioPopup({ open, onClose }: { open: boolean, onClose: 
         try {
           const parsedData = JSON.parse(DadosEstabelecimento);
           setUsuarioDados(parsedData);
+          setDadosOriginais(parsedData)
         } catch (error) {
           console.error('Erro ao analisar os dados do localStorage:', error);
         }
@@ -863,51 +868,66 @@ export function EditarUsuarioPopup({ open, onClose }: { open: boolean, onClose: 
     const tipoUsuario = localStorage.getItem('tipoEdit')
     const razaoSocial = localStorage.getItem('nomeEdit')
 
-    if (tipoUsuario === "Parceiro") {
-      fetch(`http://localhost:3001/editar-usuario-comum-parceiro-by-admin/${razaoSocial}/${tipoUsuario}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ usuarioDados }),
+    const dadosEditados = usuarioDados;
+    const dadosMudaram = JSON.stringify(dadosEditados) !== JSON.stringify(dadosOriginais);
+
+    if (dadosMudaram) {
+      if (tipoUsuario === "Parceiro") {
+        fetch(`http://localhost:3001/editar-usuario-comum-parceiro-by-admin/${razaoSocial}/${tipoUsuario}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ usuarioDados }),
+        })
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Erro ao editar dados');
+            }
+            return response.json();
+          })
+          .then(data => {
+            console.log('Dados editados com sucesso:', data);
+          })
+          .catch(error => {
+            console.error('Erro ao editar dados:', error);
+          });
+          handleCloseEdit()
+          msgSucessoPost()
+      } else if (tipoUsuario === 'Estabelecimento') {
+        fetch(`http://localhost:3001/editar-usuario-comum-parceiro-by-admin/${razaoSocial}/${tipoUsuario}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ usuarioDados }),
+        })
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Erro ao editar dados');
+            }
+            return response.json();
+          })
+          .then(data => {
+            console.log('Dados editados com sucesso:', data);
+          })
+          .catch(error => {
+            console.error('Erro ao editar dados:', error);
+          });
+          handleCloseEdit()
+          msgSucessoPost()
+      }
+    } else {
+      Swal.fire({
+        title: 'Alerta',
+        html: 'Forneça os novos dados.',
+        icon: 'warning',
+        confirmButtonColor: '#de940a'
       })
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Erro ao editar dados');
-          }
-          return response.json();
-        })
-        .then(data => {
-          console.log('Dados editados com sucesso:', data);
-        })
-        .catch(error => {
-          console.error('Erro ao editar dados:', error);
-        });
-        handleCloseEdit()
-        msgSucessoPost()
-    } else if (tipoUsuario === 'Estabelecimento') {
-      fetch(`http://localhost:3001/editar-usuario-comum-parceiro-by-admin/${razaoSocial}/${tipoUsuario}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ usuarioDados }),
-      })
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Erro ao editar dados');
-          }
-          return response.json();
-        })
-        .then(data => {
-          console.log('Dados editados com sucesso:', data);
-        })
-        .catch(error => {
-          console.error('Erro ao editar dados:', error);
-        });
-        handleCloseEdit()
-        msgSucessoPost()
+      onClose();
     }
+
+
   };
 
   const userType = localStorage.getItem('tipoEdit');
@@ -973,6 +993,7 @@ export function EditarUsuarioPopup({ open, onClose }: { open: boolean, onClose: 
 }
 
 export function EditarUsuarioAdminPopup({ open, onClose }: { open: boolean, onClose: () => void }) {
+  const [dadosOriginais, setDadosOriginais] = useState({})
   const [usuarioDados, setUsuarioDados] = useState({
     email: '',
     senha: '',
@@ -997,6 +1018,7 @@ export function EditarUsuarioAdminPopup({ open, onClose }: { open: boolean, onCl
         try {
           const parsedData = JSON.parse(DadosAdministrador);
           setUsuarioDados(parsedData);
+          setDadosOriginais(parsedData)
         } catch (error) {
           console.error('Erro ao analisar os dados do localStorage:', error);
         }
@@ -1013,46 +1035,59 @@ export function EditarUsuarioAdminPopup({ open, onClose }: { open: boolean, onCl
     }
   }, [open]);
 
+  const msgSucessoPost = () => {
+    Swal.fire({
+      title: "Sucesso",
+      html: "Cadastrado realizado com sucesso.",
+      icon: "success",
+      showConfirmButton: true,
+      confirmButtonColor: '#de940a',
+      customClass: {
+        container: 'swal-container',
+      },
+    })
+  }
+
 
   const handleEdit = () => {
     const tipoUsuario = localStorage.getItem('tipoEdit')
     const razaoSocial = localStorage.getItem('nomeEdit')
 
-    const msgSucessoPost = () => {
-      Swal.fire({
-        title: "Sucesso",
-        html: "Cadastrado realizado com sucesso.",
-        icon: "success",
-        showConfirmButton: true,
-        confirmButtonColor: '#de940a',
-        customClass: {
-          container: 'swal-container',
-        },
-      })
-    }
+    const dadosEditados = usuarioDados;
+    const dadosMudaram = JSON.stringify(dadosEditados) !== JSON.stringify(dadosOriginais);
 
-    if (tipoUsuario === "Administrador") {
-      fetch(`http://localhost:3001/editar-usuario-comum-parceiro-by-admin/${razaoSocial}/${tipoUsuario}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ usuarioDados }),
+    if (dadosMudaram) {
+      if (tipoUsuario === "Administrador") {
+        fetch(`http://localhost:3001/editar-usuario-comum-parceiro-by-admin/${razaoSocial}/${tipoUsuario}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ usuarioDados }),
+        })
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Erro ao editar dados');
+            }
+            return response.json();
+          })
+          .then(data => {
+            console.log('Dados editados com sucesso:', data);
+          })
+          .catch(error => {
+            console.error('Erro ao editar dados:', error);
+          });
+          msgSucessoPost()
+          onClose();
+      }
+    } else {
+      Swal.fire({
+        title: 'Alerta',
+        html: 'Forneça os novos dados.',
+        icon: 'warning',
+        confirmButtonColor: '#de940a'
       })
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Erro ao editar dados');
-          }
-          return response.json();
-        })
-        .then(data => {
-          console.log('Dados editados com sucesso:', data);
-        })
-        .catch(error => {
-          console.error('Erro ao editar dados:', error);
-        });
-        msgSucessoPost()
-        onClose();
+      onClose();
     }
   };
 

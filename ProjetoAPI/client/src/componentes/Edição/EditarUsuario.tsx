@@ -10,6 +10,7 @@ import Swal from 'sweetalert2';
 function EditarUsuario() {
     const navigate = useNavigate()
     const [showPassword, setShowPassword] = useState(false);
+    const [dadosOriginais, setDadosOriginais] = useState({});
     const [usuarioDados, setUsuarioDados] = useState({
         email: '',
         senha: '',
@@ -31,6 +32,7 @@ function EditarUsuario() {
             try {
                 const parsedData = JSON.parse(DadosParceiro);
                 setUsuarioDados(parsedData);
+                setDadosOriginais(parsedData);
             } catch (error) {
                 console.error('Erro ao analisar os dados do localStorage:', error);
             }
@@ -38,6 +40,7 @@ function EditarUsuario() {
             try {
                 const parsedData = JSON.parse(DadosEstabelecimento);
                 setUsuarioDados(parsedData);
+                setDadosOriginais(parsedData);
             } catch (error) {
                 console.error('Erro ao analisar os dados do localStorage:', error);
             }
@@ -92,14 +95,43 @@ function EditarUsuario() {
         const idParceiro = localStorage.getItem('idParceiro')
         const idEstabelecimento = localStorage.getItem('idEstabelecimento')
 
-        if (idParceiro !== null) {
-            fetch(`http://localhost:3001/editar-usuario-comum-parceiro/${idParceiro}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ usuarioDados }),
-            })
+        const dadosEditados = usuarioDados;
+        const dadosMudaram = JSON.stringify(dadosEditados) !== JSON.stringify(dadosOriginais);
+
+
+        if (dadosMudaram) {
+            if (idParceiro !== null) {
+                fetch(`http://localhost:3001/editar-usuario-comum-parceiro/${idParceiro}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ usuarioDados }),
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Erro ao editar dados');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log('Dados editados com sucesso:', data);
+                    })
+                    .catch(error => {
+                        console.error('Erro ao editar dados:', error);
+                    });
+    
+                    backEdit()
+                    msgSucessoPost()
+            }
+             else {
+                fetch(`http://localhost:3001/editar-usuario-comum-estabelecimento/${idEstabelecimento}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ usuarioDados }),
+                })
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Erro ao editar dados');
@@ -112,33 +144,17 @@ function EditarUsuario() {
                 .catch(error => {
                     console.error('Erro ao editar dados:', error);
                 });
-
-                backEdit()
+    
+                backEditEstab()
                 msgSucessoPost()
-        }
-         else {
-            fetch(`http://localhost:3001/editar-usuario-comum-estabelecimento/${idEstabelecimento}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ usuarioDados }),
+            }
+        } else {
+            Swal.fire({
+                title: 'Alerta',
+                html: 'Forneça os novos dados.',
+                icon: 'warning',
+                confirmButtonColor: '#de940a'
             })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Erro ao editar dados');
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log('Dados editados com sucesso:', data);
-            })
-            .catch(error => {
-                console.error('Erro ao editar dados:', error);
-            });
-
-            backEditEstab()
-            msgSucessoPost()
         }
     };
 
