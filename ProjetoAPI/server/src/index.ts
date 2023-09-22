@@ -130,7 +130,7 @@ async function login2(req, res) {
             if(await bcrypt.compare(password, parceiros.rows[0].parceiro_senha)){
                 res.send({
                     msg: "Parceiro logado com sucesso.",
-                    idEstabelecimento: parceiros.rows[0].parceiro_id,
+                    idParceiro: parceiros.rows[0].parceiro_id,
                 })
             }else{
                 res.send({msg: "Senha incorreta" })
