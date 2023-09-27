@@ -89,10 +89,6 @@ export default function TabelaCarteiraEstab() {
           </tr>
         </tfoot>
       </table>
-      <p>ㅤ</p>
-      <p>ㅤ</p>
-      <p>ㅤ</p>
-      <p>ㅤ</p>
     </>
   );
 }

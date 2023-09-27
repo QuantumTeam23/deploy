@@ -5,6 +5,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  letter-spacing: 0.5px;
 }
 
 body {
@@ -21,9 +22,8 @@ h1, h2{
 }
 
 .containerConteudo {
-  width: 90%;
-  max-width: 1700px;
-  height: 80vh;
+  width: 95vw;
+  height: 70vh;
   margin: 0 auto;
   padding: 0;
   background-color: #ffffff;
@@ -39,6 +39,7 @@ h1, h2{
   width: 100%;
   height: 6px;
   margin-left: 6px;
+  margin-right: 1vw;
   display: flex;
   align-items: center;
 }
@@ -101,7 +102,8 @@ select + label {
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  margin-bottom: 20px;
+  margin-bottom: 1.5vh;
+  margin-top: 5vh;
 }
 
 .headerActions {
