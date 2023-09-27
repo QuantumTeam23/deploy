@@ -39,14 +39,14 @@ function Login() {
             const response = await fetch('http://localhost:3001/login', {
                 method: 'POST',
                 headers: {
-                  'Content-Type': 'application/json',
+                    'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ email, password }),
-                
+
             })
             const data = await response.json()
-    
-            if (data.msg === "Usuário logado com sucesso." && data.idParceiro !== null) {
+
+            if (data.msg === "Parceiro logado com sucesso." && data.idParceiro !== null) {
                 Swal.fire({
                     title: "Sucesso",
                     icon: 'success',
@@ -59,8 +59,8 @@ function Login() {
                 localStorage.setItem('tipo', 'ComumParceiro')
                 localStorage.setItem('idParceiro', data.idParceiro)
             }
-    
-            else if (data.msg === "Usuário logado com sucesso." && data.idEstabelecimento !== null) {
+
+            else if (data.msg === "Estabelecimento logado com sucesso." && data.idEstabelecimento !== null) {
                 Swal.fire({
                     title: "Sucesso",
                     icon: 'success',
@@ -73,8 +73,8 @@ function Login() {
                 localStorage.setItem('tipo', 'ComumEstabelecimento')
                 localStorage.setItem('idEstabelecimento', data.idEstabelecimento)
             }
-    
-            else if (data.msg === "Usuário logado com sucesso." && data.idAdministrador !== null) {
+
+            else if (data.msg === "Administrador logado com sucesso." && data.idAdministrador !== null) {
                 Swal.fire({
                     title: "Sucesso",
                     icon: 'success',
@@ -86,11 +86,21 @@ function Login() {
                 }, 1100);
                 localStorage.setItem('tipo', 'Administrador')
                 localStorage.setItem('idAdministrador', data.idAdministrador)
+            } else if (data.msg === "Usuário não encontrado") {
+                Swal.fire({
+                    title: "Erro",
+                    icon: 'error',
+                    text: 'Usuário não cadastrado no sistema',
+                    confirmButtonColor: '#de940a'
+                })
+                setTimeout(() => {
+                    navigate('/login');
+                }, 1100); 
             } else {
                 Swal.fire({
                     title: "Erro",
                     icon: 'error',
-                    text: 'Usuário não cadastrado no sistema.',
+                    text: 'Email ou senha incorretos',
                     confirmButtonColor: '#de940a'
                 })
             }
@@ -98,6 +108,7 @@ function Login() {
             msgValidaCampos()
         }
     }
+
 
     const showPasswordHandler = () => {
         setShowPassword(!showPassword);

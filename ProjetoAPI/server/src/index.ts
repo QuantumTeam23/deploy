@@ -36,7 +36,8 @@ app.get('/read-by-id-to-edit-admin/:razaoSocial/:tipo', SelectToEditAdmin)
 app.put('/editar-usuario-comum-parceiro-by-admin/:razaoSocial/:tipoUsuario', editarAdmin)
 app.get('/verifica-email/:emailEDIT', verificaEmail)
 app.delete('/deletar-users/:razaoSocial/:tipoUsuario', DeletarUsers)
-
+//addAdmin é pra ser usado apenas internamente, não terá conexão com front
+app.post('/addAdmin', addAdmin)
 //LISTAR USUARIOS (nome, tipo e id)
 app.get('/listarusuarios', getUsers); 
 
@@ -47,7 +48,7 @@ app.get('/read-by-id-to-edit/:id/:tipo', SelectToEdit);
 app.put('/editSenhaRec/:idUser/:tipo', editarSenhaRec);
 
 //LOGIN
-app.post('/login', login);
+app.post('/login', login2);
 
 //CONEXÃO BANCO
 const DB = new Pool({
@@ -71,6 +72,79 @@ DB.connect().then(conn => {
 const jwtSecret = '779568';
 
 //Validação e Login no Sistema
+async function login2(req, res) {
+    const { email } = req.body;
+    const { password } = req.body;
+
+    try{
+        const SQL1 = `
+    SELECT 
+        *
+    FROM  
+        Administradores
+    WHERE 
+        administrador_email = '${email}'
+    `
+        const SQL2 = `
+    SELECT
+        *
+    FROM 
+        Estabelecimentos
+    WHERE
+        estabelecimento_email = '${email}'
+    `
+        const SQL3 = `
+    SELECT
+        *
+    FROM
+        Parceiros
+    WHERE
+        parceiro_email = '${email}'
+    `
+        const adms = await connectionDB.query(SQL1);
+        const estabelecimentos = await connectionDB.query(SQL2);
+        const parceiros = await connectionDB.query(SQL3);
+
+        if(adms.rowCount === 1) {
+            if(await bcrypt.compare(password, adms.rows[0].administrador_senha)){
+                res.send({
+                    msg: "Administrador logado com sucesso.",
+                    idAdministrador: adms.rows[0].administrador_id,
+                })
+            }else{
+                res.send({msg: "Senha incorreta" })
+            }
+        }else if(estabelecimentos.rowCount === 1) {
+            if(await bcrypt.compare(password, estabelecimentos.rows[0].estabelecimento_senha)){
+                res.send({
+                    msg: "Estabelecimento logado com sucesso.",
+                    idEstabelecimento: estabelecimentos.rows[0].estabelecimento_id,
+                })
+            }else{
+                res.send({msg: "Senha incorreta" })
+            }
+        }else if(parceiros.rowCount === 1) {
+            if(await bcrypt.compare(password, parceiros.rows[0].parceiro_senha)){
+                res.send({
+                    msg: "Parceiro logado com sucesso.",
+                    idParceiro: parceiros.rows[0].parceiro_id,
+                })
+            }else{
+                res.send({msg: "Senha incorreta" })
+            }
+        }else if(adms.rowCount === 0 && estabelecimentos.rowCount === 0 && parceiros.rowCount === 0){
+            res.send({
+                msg: "Usuário não encontrado"
+            })
+        }        
+    } catch (error) {
+        console.error("Erro", error);
+        res.status(500).send({ msg: "Usuário não encontrado" });
+    }
+
+
+}
+/*
 async function login(req, res) {
     const { email } = req.body
     const { password } = req.body
@@ -102,6 +176,7 @@ async function login(req, res) {
         }
     })
 }
+*/
 
 async function checkEmailParceiro(email) {
     const client = await DB.connect(); // Acquire a client from the pool
@@ -211,7 +286,7 @@ async function cadastrarEstabelecimento(req, res) {
             const SQL = `
                 INSERT INTO
                     Estabelecimentos("estabelecimento_razao_social","estabelecimento_nome_fantasia","estabelecimento_cnpj_cpf","estabelecimento_logradouro", "estabelecimento_logradouro_numero","estabelecimento_bairro","estabelecimento_cidade","estabelecimento_estado","estabelecimento_cep", "estabelecimento_regiao","estabelecimento_telefone","estabelecimento_email", "estabelecimento_tipo", "estabelecimento_senha")
-                VALUES ('${razao_social}','${nome_fantasia}','${cnpj}','${logradouro}', '${logradouroNumero}','${bairro}','${cidade}','${estado}','${cep}','${regiao}','${telefone}','${email}','${tipo}','${senha}')
+                VALUES ('${razao_social}','${nome_fantasia}','${cnpj}','${logradouro}', '${logradouroNumero}','${bairro}','${cidade}','${estado}','${cep}','${regiao}','${telefone}','${email}','${tipo}','${hashSenha}')
             `
             const resultado = await connectionDB.query(SQL);
             res.send({ msg: "Estabelecimento cadastrado com sucesso!" });
@@ -260,6 +335,7 @@ async function DeletarUsers (req, res) {
 async function editarEstabelecimento(req, res) {
     const idEstabelecimento = req.params.idEstabelecimento;
     const { usuarioDados } = req.body;
+    
 
     const fieldsToUpdate = [
         `estabelecimento_email = '${usuarioDados.email}'`,
@@ -272,8 +348,9 @@ async function editarEstabelecimento(req, res) {
         `estabelecimento_regiao = '${usuarioDados.regiao}'`
     ];
 
-    if (usuarioDados.senha !== undefined) {
-        fieldsToUpdate.push(`estabelecimento_senha = '${usuarioDados.senha}'`);
+    if (usuarioDados.senha !== undefined && usuarioDados.senha !== '') {
+        const hashSenha = await bcrypt.hash(usuarioDados.senha, 10)
+        fieldsToUpdate.push(`estabelecimento_senha = '${hashSenha}'`);
     }
 
     const updateFieldsStr = fieldsToUpdate.join(', ');
@@ -368,10 +445,11 @@ async function cadastrarParceiro(req, res) {
         res.status(409).send({ msg: "Já existe um parceiro com esse CNPJ/CPF." });
     } else {
         try {
+            const hashSenha = await bcrypt.hash(senha, 10)
             const SQL = `
                 INSERT INTO
                     Parceiros("parceiro_razao_social","parceiro_nome_fantasia","parceiro_cnpj_cpf","parceiro_logradouro", "parceiro_logradouro_numero","parceiro_bairro","parceiro_cidade","parceiro_estado","parceiro_cep", "parceiro_regiao","parceiro_telefone","parceiro_cidades_atende","parceiro_email", "parceiro_tipo", "parceiro_senha")
-                VALUES ('${razao_social}','${nome_fantasia}','${cnpj}','${logradouro}', '${logradouroNumero}','${bairro}','${cidade}','${estado}','${cep}','${regiao}','${telefone}','${cidadesAtende}','${email}','${tipo}','${senha}')
+                VALUES ('${razao_social}','${nome_fantasia}','${cnpj}','${logradouro}', '${logradouroNumero}','${bairro}','${cidade}','${estado}','${cep}','${regiao}','${telefone}','${cidadesAtende}','${email}','${tipo}','${hashSenha}')
             `
             const resultado = await connectionDB.query(SQL);
             console.log("Parceiro cadastrado com sucesso!");
@@ -400,8 +478,9 @@ async function editarParceiro(req, res) {
         `parceiro_cidades_atende = '${usuarioDados.cidadesAtende}'`
     ];
 
-    if (usuarioDados.senha !== undefined) {
-        fieldsToUpdate.push(`parceiro_senha = '${usuarioDados.senha}'`);
+    if (usuarioDados.senha !== undefined && usuarioDados.senha !== '') {
+        const hashSenha = await bcrypt.hash(usuarioDados.senha, 10)
+        fieldsToUpdate.push(`parceiro_senha = '${hashSenha}'`);
     }
 
     const updateFieldsStr = fieldsToUpdate.join(', ');
@@ -445,8 +524,9 @@ async function editarAdmin (req, res) {
             `parceiro_cidades_atende = '${usuarioDados.cidadesAtende}'`
         ];
 
-        if (usuarioDados.senha !== undefined) {
-            fieldsToUpdate.push(`parceiro_senha = '${usuarioDados.senha}'`);
+        if (usuarioDados.senha !== undefined && usuarioDados.senha !== '') {
+            const hashSenha = await bcrypt.hash(usuarioDados.senha, 10)
+            fieldsToUpdate.push(`parceiro_senha = '${hashSenha}'`);
         }
 
         const updateFieldsStr = fieldsToUpdate.join(', ');
@@ -482,8 +562,9 @@ async function editarAdmin (req, res) {
             `estabelecimento_regiao = '${usuarioDados.regiao}'`
         ];
 
-        if (usuarioDados.senha !== undefined) {
-            fieldsToUpdate.push(`estabelecimento_senha = '${usuarioDados.senha}'`);
+        if (usuarioDados.senha !== undefined && usuarioDados.senha !== '') {
+            const hashSenha = await bcrypt.hash(usuarioDados.senha, 10)
+            fieldsToUpdate.push(`estabelecimento_senha = '${hashSenha}'`);
         }
 
         const updateFieldsStr = fieldsToUpdate.join(', ');
@@ -512,8 +593,9 @@ async function editarAdmin (req, res) {
             `administrador_email = '${usuarioDados.email}'`,
         ];
 
-        if (usuarioDados.senha !== undefined) {
-            fieldToUpdate.push(`administrador_senha = '${usuarioDados.senha}'`);
+        if (usuarioDados.senha !== undefined && usuarioDados.senha !== '') {
+            const hashSenha = await bcrypt.hash(usuarioDados.senha, 10)
+            fieldToUpdate.push(`administrador_senha = '${hashSenha}'`);
         }
 
         const updateFieldsStr = fieldToUpdate.join(', ');
@@ -543,13 +625,14 @@ async function editarSenhaRec (req, _) {
     const idUser = req.params.idUser
     const tipo = req.params.tipo
     const {usuarioDados} = req.body
+    const hashSenha = await bcrypt.hash(usuarioDados.senha, 10)
     
     if (tipo === 'Parceiro') {
         const SQL = `
         UPDATE 
             Parceiros 
         SET
-            parceiro_senha = '${usuarioDados.senha}'
+            parceiro_senha = '${hashSenha}'
         WHERE
             parceiro_id = '${idUser}'
     `
@@ -565,7 +648,7 @@ async function editarSenhaRec (req, _) {
         UPDATE 
             Estabelecimentos 
         SET
-            estabelecimento_senha = '${usuarioDados.senha}'
+            estabelecimento_senha = '${hashSenha}'
         WHERE
         estabelecimento_id = '${idUser}'
     `
@@ -604,6 +687,28 @@ async function existeAdministrador(email) {
         }
     });
     return response
+}
+
+async function addAdmin(req, res) {
+    const { nome, email, senha } = req.body;
+    const existeAdm = await existeAdministrador(email);
+    if (existeAdm) {
+        res.status(409).send({ msg: "Já existe um administrador com esse e-mail" });
+    } else {
+        try {
+            const hashSenha = await bcrypt.hash(senha, 10);
+            const SQL = `
+                INSERT INTO
+                    Administradores("administrador_nome","administrador_email","administrador_senha")
+                VALUES ('${nome}','${email}','${hashSenha}')
+            `
+            const resultado = await connectionDB.query(SQL);
+            res.send({ msg: "Administrador cadastrado com sucesso!" });
+        } catch (error) {
+            console.error("Erro ao cadastrar administrador:", error);
+            res.status(500).send({ msg: "Erro ao cadastrar administrador." });
+        }
+    }
 }
 
 async function listAllAdministrador(req, res) {
