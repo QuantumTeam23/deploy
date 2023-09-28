@@ -66,7 +66,7 @@ function NavbarEstabelecimento() {
                             <a className="nav-link text-white" href="#" style={{ fontSize: '28px'}}>Painel do Estabelecimento </a>
                         </li>
                     </ul>
-                    <ul className="navbar-nav ms-auto">
+                    <ul className="navbar-nav ms-auto" style={{ alignItems: 'center'}}>
                         <li className="nav-item">
                             <a className="nav-link text-white" href="/painel-estabelecimento-extrato" style={{ marginRight: '0.5vw'}}>Extrato e Saldo de Crédito </a>
                         </li>
