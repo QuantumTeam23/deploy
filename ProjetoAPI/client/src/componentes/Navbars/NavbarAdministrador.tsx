@@ -50,9 +50,9 @@ function NavbarAdministrador() {
       };
     return (
         <nav className="navbar navbar-expand-lg navbar-light" style={{ backgroundColor: '#136935' }}>
-            <div className="container" style={{ maxWidth: '80%', marginLeft: 'auto', marginRight: 'auto' }}>
+            <div className="container" style={{ maxWidth: '90vw', maxHeight: '60px' }}>
                 <a href="#" className="navbar-brand">
-                    <img src={require('../Imagens/logoEmpresa.png')} alt="Imagem" className="img-fluid"  style={{ maxWidth: '100px', maxHeight: '60px' }}  /> 
+                    <img src={require('../Imagens/logoEmpresa.png')} alt="Imagem" className="img-fluid"  style={{ maxWidth: '58px', maxHeight: '58px' }}  /> 
                 </a>
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span style={{ display: 'flex', alignItems: 'center' }}><MenuLateralAdministrador /></span>
@@ -61,25 +61,25 @@ function NavbarAdministrador() {
                 <div className="collapse navbar-collapse" id="navbarNav">
                     <ul className='navbar-nav mt-auto'>
                         <li className="nav-item">
-                            <a className="nav-link text-white" href="#" style={{ marginLeft: '200px', marginRight: '200px', fontSize: '35px'}}>Painel do Administrador </a>
+                            <a className="nav-link text-white" href="#" style={{ fontSize: '28px'}}>Painel do Administrador </a>
                         </li>
                     </ul>
-                    <ul className="navbar-nav ms-auto">
-                        <li className="nav-item" style={{ marginRight: '25px' }}>
-                            <a className="nav-link text-white" href="#">Processos</a>
+                    <ul className="navbar-nav ms-auto" style={{ alignItems: 'center'}}>
+                        <li className="nav-item">
+                            <a className="nav-link text-white" href="#" style={{ marginRight: '0,5vw' }}>Processos</a>
                         </li>
-                        <li className="nav-item" style={{ marginRight: '25px' }}>
-                            <a className="nav-link text-white" href="/painel-administrador-transacoes">Transações</a>
+                        <li className="nav-item">
+                            <a className="nav-link text-white" href="/painel-administrador-transacoes" style={{ marginRight: '0,5vw' }}>Transações</a>
                         </li>
-                        <li className="nav-item" style={{ marginRight: '25px' }}>
-                            <a className="nav-link text-white" href="/painel-administrador-usuario">Controle de Usuários</a>
+                        <li className="nav-item">
+                            <a className="nav-link text-white" href="/painel-administrador-usuario" style={{ marginRight: '3vw' }}>Controle de Usuários</a>
                         </li>
-                        <li className="nav-item" style={{ marginRight: '10px' }}>
-                            <img src={require('../Imagens/user.png')} alt="Imagem" className="img-fluid"  style={{ maxWidth: '100px', maxHeight: '40px' }}  /> 
+                        <li className="nav-item">
+                            <img src={require('../Imagens/user.png')} alt="Imagem" className="img-fluid"  style={{ marginRight: '1vw', maxHeight: '36px', maxWidth: '36px' }} /> 
                         </li>
-                        <li className="nav-item" style={{ marginRight: '10px' }}>
+                        <li className="nav-item">
                             <a href="#">
-                                <img src={require('../Imagens/icone-sair.png')} alt="Imagem" className="img-fluid" style={{ maxWidth: '100px', maxHeight: '40px' }} onClick={handleSair}/>
+                                <img src={require('../Imagens/icone-sair.png')} alt="Imagem" className="img-fluid" style={{ maxHeight: '36px', maxWidth: '36px' }} onClick={handleSair}/>
                             </a>
                         </li>
                     </ul>
