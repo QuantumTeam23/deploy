@@ -1,7 +1,6 @@
-import DeleteIcon from '@mui/icons-material/Delete';
+import React, { useState } from 'react';
 import Button from '@mui/material/Button';
 import styles from '../styles/TabelaCarteiraEstab.module.css';
-import { useState } from 'react';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 
@@ -89,6 +88,10 @@ export default function TabelaCarteiraEstab() {
           </tr>
         </tfoot>
       </table>
+      <p>ㅤ</p>
+      <p>ㅤ</p>
+      <p>ㅤ</p>
+      <p>ㅤ</p>
     </>
   );
 }
