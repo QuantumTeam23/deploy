@@ -70,8 +70,8 @@ export default function PainelEstabelecimentoExtrato() {
             </span>
           </h1>
         </div>
-        <h2>Extrato</h2>
         <div className={styles.topContent}>
+        <h2>Extrato</h2>
           <div className={styles.headerActions}>
             <MesAno />
           </div>

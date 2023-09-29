@@ -1,4 +1,3 @@
-import DeleteIcon from '@mui/icons-material/Delete';
 import Button from '@mui/material/Button';
 import styles from '../styles/TabelaColetas.module.css';
 import { useState } from 'react';

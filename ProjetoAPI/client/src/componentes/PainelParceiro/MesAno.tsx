@@ -23,24 +23,27 @@ export default function MesAno() {
     'Outubro/2023',
     'Novembro/2023',
     'Dezembro/2023',
-  ];  
+  ];
 
   return (
-    <div className={`${styles.componenteMesAno} ${styles.menuIcon}`}>
-      <TextField
-        select
-        variant="filled"
-        value={mesAno}
-        onChange={handleChange}
-        label="Mês/Ano"
-        style={{ minWidth: '200px', fontSize: '16px' }} // Ajuste o minWidth e a fonte conforme necessário
-      >
-        {mesesAnosDisponiveis.map((opcao) => (
-          <MenuItem key={opcao} value={opcao}>
-            {opcao}
-          </MenuItem>
-        ))}
-      </TextField>
+    <div className={styles.componenteMesAno}>
+      <div className={styles.alignVertical}>
+        <h2></h2>
+        <TextField
+          select
+          variant="filled"
+          value={mesAno}
+          onChange={handleChange}
+          label="Mês/Ano"
+          style={{ minWidth: '200px', fontSize: '16px' }} // Ajuste o minWidth e a fonte conforme necessário
+        >
+          {mesesAnosDisponiveis.map((opcao) => (
+            <MenuItem key={opcao} value={opcao}>
+              {opcao}
+            </MenuItem>
+          ))}
+        </TextField>
+      </div>
     </div>
   );
 }

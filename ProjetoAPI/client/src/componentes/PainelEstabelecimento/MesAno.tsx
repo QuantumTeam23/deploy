@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
-import styles from '../styles/PainelEstabelecimento.module.css';
+import styles from '../styles/PainelParceiro.module.css';
 
 export default function MesAno() {
   const [mesAno, setMesAno] = useState('');
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => { 
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setMesAno(event.target.value);
   };
 
@@ -23,24 +23,27 @@ export default function MesAno() {
     'Outubro/2023',
     'Novembro/2023',
     'Dezembro/2023',
-  ];  
+  ];
 
   return (
-    <div className={`${styles.componenteMesAno} ${styles.menuIcon}`}>
-      <TextField
-        select
-        variant="filled"
-        value={mesAno}
-        onChange={handleChange}
-        label="Mês/Ano"
-        style={{ minWidth: '200px', fontSize: '16px' }}
-      >
-        {mesesAnosDisponiveis.map((opcao) => (
-          <MenuItem key={opcao} value={opcao}>
-            {opcao}
-          </MenuItem>
-        ))}
-      </TextField>
+    <div className={styles.componenteMesAno}>
+      <div className={styles.alignVertical}>
+        <h2></h2>
+        <TextField
+          select
+          variant="filled"
+          value={mesAno}
+          onChange={handleChange}
+          label="Mês/Ano"
+          style={{ minWidth: '200px', fontSize: '16px' }} // Ajuste o minWidth e a fonte conforme necessário
+        >
+          {mesesAnosDisponiveis.map((opcao) => (
+            <MenuItem key={opcao} value={opcao}>
+              {opcao}
+            </MenuItem>
+          ))}
+        </TextField>
+      </div>
     </div>
   );
 }
