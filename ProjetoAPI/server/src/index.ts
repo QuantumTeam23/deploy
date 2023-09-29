@@ -144,39 +144,6 @@ async function login2(req, res) {
 
 
 }
-/*
-async function login(req, res) {
-    const { email } = req.body
-    const { password } = req.body
-
-    let SQL = (`SELECT *, *, *
-    FROM parceiros 
-    FULL JOIN estabelecimentos ON parceiro_id = estabelecimento_id 
-    FULL JOIN administradores ON parceiro_id = administrador_id
-    WHERE parceiros.parceiro_email = '${email}' AND parceiros.parceiro_senha = '${password}'
-    OR estabelecimentos.estabelecimento_email = '${email}' AND estabelecimentos.estabelecimento_senha = '${password}'
-    OR administradores.administrador_email = '${email}' AND administradores.administrador_senha = '${password}'`)
-
-    DB.query(SQL, (err, result) => {
-        if (err) {
-            console.log(err)
-        }
-
-        if (result.rows.length === 1) {
-            res.send({
-                msg: "Usuário logado com sucesso.",
-                idParceiro: result.rows.values().next().value.parceiro_id,
-                idEstabelecimento: result.rows.values().next().value.estabelecimento_id,
-                idAdministrador: result.rows.values().next().value.administrador_id,
-            });
-
-        } else {
-            res.send({ msg: 'Email ou senha incorretos.' })
-
-        }
-    })
-}
-*/
 
 async function checkEmailParceiro(email) {
     const client = await DB.connect(); // Acquire a client from the pool
