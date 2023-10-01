@@ -5,7 +5,7 @@ import CadastroEstabelecimento from "../componentes/Cadastros&Logins/CadastroEst
 import CadastroParceiro from "../componentes/Cadastros&Logins/CadastroParceiro";
 import Recuperacao from "../componentes/Cadastros&Logins/Recuperacao";
 import Token from "../componentes/Cadastros&Logins/Token"
-import {PrivateRouteAdmin, PrivateRouteParceiro, PrivateRouteEstabelecimento, PrivateRouteToken, PrivateRouteEditarUsuario, PrivateRouteEditarSenha} from "./RouteAuthentication"
+import { PrivateRouteAdmin, PrivateRouteParceiro, PrivateRouteEstabelecimento, PrivateRouteToken, PrivateRouteEditarUsuario, PrivateRouteEditarSenha } from "./RouteAuthentication"
 import Usuario from "../componentes/Cadastros&Logins/Usuario";
 import EditarSenha from "../componentes/Cadastros&Logins/EditarSenha";
 import PainelAdminControlUser from "../componentes/PainelAdmin/PainelAdminControlUser";
@@ -16,120 +16,135 @@ import PainelHistoricoCompra from "../componentes/PainelParceiro/PainelHistóric
 import PainelEstabelecimentoHistorico from "../componentes/PainelEstabelecimento/PainelEstabelecimentoHistoricoCompras";
 import PainelEstabelecimentoExtrato from "../componentes/PainelEstabelecimento/PainelEstabelecimentoExtrato";
 import PainelParceiroSaldoCredito from "../componentes/PainelParceiro/PainelSaldoCredito";
-
+import TransacaoCompraCredito from "../componentes/Transacoes/TransacaoCompraCredito";
+import TransacaoDoacao from "../componentes/Transacoes/TransacaoDoacao";
 
 export const Rotas = () => {
     return (
         <BrowserRouter>
             <Routes>
-                
+
                 {/* ROTA ADM */}
-                <Route path="/painel-administrador-usuario" 
+                <Route path="/painel-administrador-usuario"
                     element={
                         <PrivateRouteAdmin>
                             <PainelAdminControlUser />
                         </PrivateRouteAdmin>
-                    } 
+                    }
                 />
 
                 {/* ROTA ADM */}
-                <Route path="/painel-administrador-transacoes" 
+                <Route path="/painel-administrador-transacoes"
                     element={
                         <PrivateRouteAdmin>
                             <HistoricoTransacoes />
                         </PrivateRouteAdmin>
-                    } 
+                    }
                 />
 
                 {/* ROTA PARCEIRO */}
-                <Route path="/painel-parceiro-carteira-estabelecimento" 
+                <Route path="/painel-parceiro-carteira-estabelecimento"
                     element={
                         <PrivateRouteParceiro>
-                            <PainelParceiroCarteiraEstab/>
+                            <PainelParceiroCarteiraEstab />
                         </PrivateRouteParceiro>
-                    } 
+                    }
                 />
 
                 {/* ROTA PARCEIRO */}
-                <Route path="/painel-parceiro-coleta" 
+                <Route path="/painel-parceiro-coleta"
                     element={
                         <PrivateRouteParceiro>
-                            <PainelParceiroColetas/>
+                            <PainelParceiroColetas />
                         </PrivateRouteParceiro>
-                    } 
+                    }
                 />
 
                 {/* ROTA PARCEIRO */}
-                <Route path="/painel-parceiro-historico-compra" 
+                <Route path="/painel-parceiro-historico-compra"
                     element={
                         <PrivateRouteParceiro>
-                            <PainelHistoricoCompra/>
+                            <PainelHistoricoCompra />
                         </PrivateRouteParceiro>
-                    } 
+                    }
                 />
 
                 {/* ROTA PARCEIRO */}
-                <Route path="/painel-parceiro-saldo-credito" 
+                <Route path="/painel-parceiro-saldo-credito"
                     element={
                         <PrivateRouteParceiro>
-                            <PainelParceiroSaldoCredito/>
+                            <PainelParceiroSaldoCredito />
                         </PrivateRouteParceiro>
-                    } 
+                    }
                 />
 
                 {/* ROTA ESTABELECIMENTO */}
-                <Route path="/painel-estabelecimento-historico-compras" 
+                <Route path="/painel-estabelecimento-historico-compras"
                     element={
                         <PrivateRouteEstabelecimento>
-                            <PainelEstabelecimentoHistorico/>
+                            <PainelEstabelecimentoHistorico />
                         </PrivateRouteEstabelecimento>
-                    } 
+                    }
                 />
 
                 {/* ROTA ESTABELECIMENTO */}
-                <Route path="/painel-estabelecimento-extrato" 
+                <Route path="/painel-estabelecimento-extrato"
                     element={
                         <PrivateRouteEstabelecimento>
-                            <PainelEstabelecimentoExtrato/>
+                            <PainelEstabelecimentoExtrato />
                         </PrivateRouteEstabelecimento>
-                    } 
+                    }
                 />
 
                 {/* ROTA EDITAR USUÁRIO */}
-                <Route path="/editar-usuario" 
+                <Route path="/editar-usuario"
                     element={
                         <PrivateRouteEditarUsuario>
                             <EditarUsuario />
                         </PrivateRouteEditarUsuario>
-                    } 
+                    }
                 />
 
                 {/* ROTA TOKEN */}
-                <Route path="/token" 
+                <Route path="/token"
                     element={
                         <PrivateRouteToken>
                             <Token />
                         </PrivateRouteToken>
-                    } 
+                    }
                 />
 
                 {/* ROTA EDITAR SENHA */}
-                <Route path="/editar-senha" 
+                <Route path="/editar-senha"
                     element={
                         <PrivateRouteEditarSenha>
                             <EditarSenha />
                         </PrivateRouteEditarSenha>
-                    } 
+                    }
+                />
+
+                {/* ROTA TRANSACAO COMPRA CREDITO */}
+                <Route path="/transacao-compra-credito"
+                    element={
+                        <TransacaoCompraCredito />
+                    }
+                />
+
+                {/* ROTA TRANSACAO DOACAO */}
+                <Route path="/transacao-doacao"
+                    element={
+                        <TransacaoDoacao />
+                    }
                 />
 
                 <Route path="/login" element={<Login />} />
-                <Route path="/usuario" element={<Usuario/>} />
-                <Route path="/cadastro-parceiro" element={<CadastroParceiro/>} />
+                <Route path="/usuario" element={<Usuario />} />
+                <Route path="/cadastro-parceiro" element={<CadastroParceiro />} />
                 <Route path="/cadastro-estabelecimento" element={<CadastroEstabelecimento />} />
-                <Route path="/recuperacao" element={<Recuperacao/>} />
+                <Route path="/recuperacao" element={<Recuperacao />} />
 
                 <Route path="/" element={<Navigate to={'/login'} />} />
-                <Route path="*" element={<h1>PÁGINA NÃO ENCONTRADA</h1>}/>
+                <Route path="*" element={<h1>PÁGINA NÃO ENCONTRADA</h1>} />
             </Routes>
 
         </BrowserRouter>
