@@ -2,10 +2,11 @@ import Footer from "../Footer/Footer";
 import "../styles/TransacaoDoacao.css";
 import NavbarTransacaoDoacao from "../Navbars/NavbarDoacao";
 import { Form, FormControl, InputGroup, Button } from "react-bootstrap";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TransacaoPopup from "./TransacaoPopup";
 
 function TransacaoDoacao() {
+  const [razoesSociais, setRazoesSociais] = useState([]);
   const [popupOpen, setPopupOpen] = useState(false);
 
   const handleOpenPopup = () => {
@@ -15,6 +16,20 @@ function TransacaoDoacao() {
   const handleClosePopup = () => {
     setPopupOpen(false);
   };
+
+  useEffect(() => {
+    // Fazer uma chamada de API para obter os estabelecimentos
+    fetch("http://localhost:3001/listEstabelecimento")
+      .then((response) => response.json())
+      .then((data) => {
+        // Extrair a razão social de cada estabelecimento
+        const razoesSociais = data.map((estabelecimento: any) => estabelecimento.estabelecimento_razao_social);
+        setRazoesSociais(razoesSociais);
+      })
+      .catch((error) => {
+        console.error("Erro ao buscar estabelecimentos:", error);
+      });
+  }, []);
 
   return (
     <>
@@ -47,7 +62,11 @@ function TransacaoDoacao() {
               style={{ marginBottom: "3%" }}
             >
               <option value="">Selecione o Estabelecimento</option>
-              <option value="Cooperativas">Estabelecimento teste 1</option>
+              {razoesSociais.map((razaoSocial) => (
+                <option key={razaoSocial} value={razaoSocial}>
+                  {razaoSocial}
+                </option>
+              ))}
             </Form.Control>
           </Form.Group>
           <div style={{textAlign:"center", marginTop:"1%"}}>

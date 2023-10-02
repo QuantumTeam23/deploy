@@ -5,7 +5,7 @@ import CadastroEstabelecimento from "../componentes/Cadastros&Logins/CadastroEst
 import CadastroParceiro from "../componentes/Cadastros&Logins/CadastroParceiro";
 import Recuperacao from "../componentes/Cadastros&Logins/Recuperacao";
 import Token from "../componentes/Cadastros&Logins/Token"
-import { PrivateRouteAdmin, PrivateRouteParceiro, PrivateRouteEstabelecimento, PrivateRouteToken, PrivateRouteEditarUsuario, PrivateRouteEditarSenha } from "./RouteAuthentication"
+import { PrivateRouteAdmin, PrivateRouteParceiro, PrivateRouteEstabelecimento, PrivateRouteToken, PrivateRouteEditarUsuario, PrivateRouteEditarSenha, PrivateRouteCredito } from "./RouteAuthentication"
 import Usuario from "../componentes/Cadastros&Logins/Usuario";
 import EditarSenha from "../componentes/Cadastros&Logins/EditarSenha";
 import PainelAdminControlUser from "../componentes/PainelAdmin/PainelAdminControlUser";
@@ -126,14 +126,18 @@ export const Rotas = () => {
                 {/* ROTA TRANSACAO COMPRA CREDITO */}
                 <Route path="/transacao-compra-credito"
                     element={
-                        <TransacaoCompraCredito />
-                    }
+                        <PrivateRouteCredito>
+                            <TransacaoCompraCredito />
+                        </PrivateRouteCredito>
+                    }              
                 />
 
                 {/* ROTA TRANSACAO DOACAO */}
                 <Route path="/transacao-doacao"
                     element={
-                        <TransacaoDoacao />
+                        <PrivateRouteCredito>
+                            <TransacaoDoacao />
+                        </PrivateRouteCredito>
                     }
                 />
 
