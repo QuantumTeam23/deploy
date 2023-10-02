@@ -108,3 +108,21 @@ export function PrivateRouteEditarSenha({ children }: { children: React.ReactNod
         );
     }
 }
+
+export function PrivateRouteCredito({ children }: { children: React.ReactNode }) {
+    const dados = {
+        id: localStorage.getItem('id_usuario'),
+        tipo: localStorage.getItem('tipo')
+    }
+
+    if (dados.tipo === "ComumParceiro") {
+        return <>{children}</>
+    } else {
+        return (
+            <div>
+              <p>Você precisa estar logado como parceiro para acessar esta página.</p>
+              <Link to="/login">Ir para a página de login</Link>
+            </div>
+        );
+    }
+}
