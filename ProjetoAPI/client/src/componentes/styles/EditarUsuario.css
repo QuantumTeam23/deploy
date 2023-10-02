@@ -1,5 +1,3 @@
-@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css");
-
 * {
     font-family: Montserrat, sans-serif, Arial;
     margin: 0;
@@ -114,4 +112,19 @@
 
 .botoes-editar-usuario button:nth-child(1) {
     background-color: #FF0000;
+}
+
+.campo-senha {
+    position: relative;
+    height: 41px;
+}
+
+.eyeIcon {
+    width: 20px;
+    height: 25px;
+    position: absolute;
+    right: 0.3vw;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
 }
