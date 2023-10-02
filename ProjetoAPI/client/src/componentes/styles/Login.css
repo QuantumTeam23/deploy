@@ -1,5 +1,3 @@
-@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css");
-
 * {
     font-family: Montserrat, sans-serif, Arial;
 }
@@ -101,10 +99,20 @@
 }
 
 .form-control-login-2 {
-    background-color: null;
+    height: 100%;
 }
 
-input[type="text"] {
-    height: 100%; /* Altura igual à altura do pai */
+.campo-senha {
+    position: relative;
+    height: 40px;
 }
 
+.eyeIcon {
+    width: 20px;
+    height: 25px;
+    position: absolute;
+    right: 0.3vw;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}

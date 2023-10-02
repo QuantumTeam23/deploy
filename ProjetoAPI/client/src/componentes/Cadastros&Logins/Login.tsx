@@ -138,7 +138,7 @@ function Login() {
                         <div className='campo-login-1'>
                             <Form.Group controlId='email' >
                                 <Form.Label>E-mail</Form.Label>
-                                <InputGroup >
+                                <InputGroup>
                                     <FormControl
                                         type='email'
                                         required
@@ -158,7 +158,7 @@ function Login() {
                         <div className='campo-login-2'>
                             <Form.Group controlId='senha'>
                                 <Form.Label>Senha</Form.Label>
-                                <InputGroup>
+                                <InputGroup className='campo-senha'>
                                     <FormControl
                                         type={passwordInputType}
                                         required
@@ -170,7 +170,7 @@ function Login() {
                                         onChange={(event) => setPassword(event.target.value)}
                                         style={{backgroundColor: '#E2FFC9'}}
                                     />
-                                    <img src={passwordIconSrc} alt="eye icon" onClick={showPasswordHandler} style={{width: '5%', height: '5%', marginLeft: '10px', marginTop: '06px'}} />
+                                    <img src={passwordIconSrc} alt="eye icon" className='eyeIcon' onClick={showPasswordHandler}/>
                                 </InputGroup>
                             </Form.Group>
                         </div>
