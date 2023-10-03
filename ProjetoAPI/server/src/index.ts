@@ -52,12 +52,12 @@ app.put('/transacaoParceiroEstab/:idParceiro', transacaoParceiroEstab);
 
 //CONEXÃO BANCO
 const DB = new Pool({
-    // connectionString: "postgres://qbcagjjm:lydMj-e79H0fZSQch9RHD2WnJvnnURWz@silly.db.elephantsql.com/qbcagjjm"
-    user: 'postgres',       //user PostgreSQL padrão = postgres
-    host: 'localhost',
-    database: 'API',
-    password: 'General779568@',
-    port: 5432             //port PostgreSQL padrão = 5432
+    connectionString: "postgres://qbcagjjm:lydMj-e79H0fZSQch9RHD2WnJvnnURWz@silly.db.elephantsql.com/qbcagjjm"
+    // user: 'postgres',       //user PostgreSQL padrão = postgres
+    // host: 'localhost',
+    // database: 'API',
+    // password: '',
+    // port: 5432             //port PostgreSQL padrão = 5432
 });
 
 let connectionDB: PoolClient;
