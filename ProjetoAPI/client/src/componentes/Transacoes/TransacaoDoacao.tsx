@@ -8,6 +8,9 @@ import TransacaoPopup from "./TransacaoPopup";
 function TransacaoDoacao() {
   const [razoesSociais, setRazoesSociais] = useState([]);
   const [popupOpen, setPopupOpen] = useState(false);
+  const [volumeOleo, setVolumeOleo] = useState("");
+  const [selectedEstabelecimento, setSelectedEstabelecimento] = useState("");
+
 
   const handleOpenPopup = () => {
     setPopupOpen(true);
@@ -15,6 +18,40 @@ function TransacaoDoacao() {
 
   const handleClosePopup = () => {
     setPopupOpen(false);
+  };
+
+  const handleConfirm = () => {
+    // Verifique se os campos foram preenchidos
+    if (!volumeOleo || !selectedEstabelecimento) {
+      alert("Por favor, preencha todos os campos.");
+      return;
+    }
+
+    const idParceiro = localStorage.getItem("idParceiro");
+
+    fetch(`http://localhost:3001/transacaoParceiroEstab/${idParceiro}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        volumeOleo: parseFloat(volumeOleo), // Converter para número
+        estabelecimento: selectedEstabelecimento,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          setVolumeOleo("");
+          setSelectedEstabelecimento("");
+        } else {
+          alert("Ocorreu um erro ao processar a transação.");
+        }
+      })
+      .catch((error) => {
+        console.error("Erro ao enviar os dados:", error);
+        alert("Ocorreu um erro ao enviar os dados.");
+      });
   };
 
   useEffect(() => {
@@ -48,7 +85,9 @@ function TransacaoDoacao() {
                 aria-label="volume oleo"
                 aria-describedby="valor-addon"
                 className="form-control-transacao"
-              />  
+                value={volumeOleo}
+                onChange={(e) => setVolumeOleo(e.target.value)}
+              />
             </InputGroup>
           </Form.Group>
           <Form.Group>
@@ -60,6 +99,8 @@ function TransacaoDoacao() {
               required
               className="form-control-transacao"
               style={{ marginBottom: "3%" }}
+              value={selectedEstabelecimento}
+              onChange={(e) => setSelectedEstabelecimento(e.target.value)}
             >
               <option value="">Selecione o Estabelecimento</option>
               {razoesSociais.map((razaoSocial) => (
@@ -69,15 +110,15 @@ function TransacaoDoacao() {
               ))}
             </Form.Control>
           </Form.Group>
-          <div style={{textAlign:"center", marginTop:"1%"}}>
-            <Button 
-              style={{ fontSize: 18, marginRight: "2%", marginTop:"2%" }}
+          <div style={{ textAlign: "center", marginTop: "1%" }}>
+            <Button
+              style={{ fontSize: 18, marginRight: "2%", marginTop: "2%" }}
               variant="success"
-              onClick={handleOpenPopup}
+              onClick={handleConfirm}
             >
               Confirmar
             </Button>
-            <Button style={{ fontSize: 18, marginTop:"2%"}} variant="success">
+            <Button style={{ fontSize: 18, marginTop: "2%" }} variant="success">
               Voltar
             </Button>
           </div>
@@ -85,9 +126,9 @@ function TransacaoDoacao() {
       </div>
 
       <Footer />
-      {popupOpen && (
+      {/* {popupOpen && (
         <TransacaoPopup open={popupOpen} onClose={handleClosePopup} />
-      )}
+      )} */}
     </>
   );
 }

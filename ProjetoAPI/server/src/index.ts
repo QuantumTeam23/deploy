@@ -39,25 +39,25 @@ app.delete('/deletar-users/:razaoSocial/:tipoUsuario', DeletarUsers)
 //addAdmin é pra ser usado apenas internamente, não terá conexão com front
 app.post('/addAdmin', addAdmin)
 //LISTAR USUARIOS (nome, tipo e id)
-app.get('/listarusuarios', getUsers); 
+app.get('/listarusuarios', getUsers);
 
 //FUNCIONALIDADES
 app.post('/enviarToken', enviarToken);
 app.post('/VerificarToken', verificarToken);
 app.get('/read-by-id-to-edit/:id/:tipo', SelectToEdit);
 app.put('/editSenhaRec/:idUser/:tipo', editarSenhaRec);
+app.put('/transacaoParceiroEstab/:idParceiro', transacaoParceiroEstab);
 
 //LOGIN
-app.post('/login', login2);
 
 //CONEXÃO BANCO
 const DB = new Pool({
-    connectionString: "postgres://qbcagjjm:lydMj-e79H0fZSQch9RHD2WnJvnnURWz@silly.db.elephantsql.com/qbcagjjm"
-    // user: 'postgres',       //user PostgreSQL padrão = postgres
-    // host: 'localhost',
-    // database: 'API',
-    // password: '',
-    // port: 5432             //port PostgreSQL padrão = 5432
+    // connectionString: "postgres://qbcagjjm:lydMj-e79H0fZSQch9RHD2WnJvnnURWz@silly.db.elephantsql.com/qbcagjjm"
+    user: 'postgres',       //user PostgreSQL padrão = postgres
+    host: 'localhost',
+    database: 'API',
+    password: 'General779568@',
+    port: 5432             //port PostgreSQL padrão = 5432
 });
 
 let connectionDB: PoolClient;
@@ -76,7 +76,7 @@ async function login2(req, res) {
     const { email } = req.body;
     const { password } = req.body;
 
-    try{
+    try {
         const SQL1 = `
     SELECT 
         *
@@ -105,38 +105,38 @@ async function login2(req, res) {
         const estabelecimentos = await connectionDB.query(SQL2);
         const parceiros = await connectionDB.query(SQL3);
 
-        if(adms.rowCount === 1) {
-            if(await bcrypt.compare(password, adms.rows[0].administrador_senha)){
+        if (adms.rowCount === 1) {
+            if (await bcrypt.compare(password, adms.rows[0].administrador_senha)) {
                 res.send({
                     msg: "Administrador logado com sucesso.",
                     idAdministrador: adms.rows[0].administrador_id,
                 })
-            }else{
-                res.send({msg: "Senha incorreta" })
+            } else {
+                res.send({ msg: "Senha incorreta" })
             }
-        }else if(estabelecimentos.rowCount === 1) {
-            if(await bcrypt.compare(password, estabelecimentos.rows[0].estabelecimento_senha)){
+        } else if (estabelecimentos.rowCount === 1) {
+            if (await bcrypt.compare(password, estabelecimentos.rows[0].estabelecimento_senha)) {
                 res.send({
                     msg: "Estabelecimento logado com sucesso.",
                     idEstabelecimento: estabelecimentos.rows[0].estabelecimento_id,
                 })
-            }else{
-                res.send({msg: "Senha incorreta" })
+            } else {
+                res.send({ msg: "Senha incorreta" })
             }
-        }else if(parceiros.rowCount === 1) {
-            if(await bcrypt.compare(password, parceiros.rows[0].parceiro_senha)){
+        } else if (parceiros.rowCount === 1) {
+            if (await bcrypt.compare(password, parceiros.rows[0].parceiro_senha)) {
                 res.send({
                     msg: "Parceiro logado com sucesso.",
                     idParceiro: parceiros.rows[0].parceiro_id,
                 })
-            }else{
-                res.send({msg: "Senha incorreta" })
+            } else {
+                res.send({ msg: "Senha incorreta" })
             }
-        }else if(adms.rowCount === 0 && estabelecimentos.rowCount === 0 && parceiros.rowCount === 0){
+        } else if (adms.rowCount === 0 && estabelecimentos.rowCount === 0 && parceiros.rowCount === 0) {
             res.send({
                 msg: "Usuário não encontrado"
             })
-        }        
+        }
     } catch (error) {
         console.error("Erro", error);
         res.status(500).send({ msg: "Usuário não encontrado" });
@@ -147,77 +147,77 @@ async function login2(req, res) {
 
 async function checkEmailParceiro(email) {
     const client = await DB.connect(); // Acquire a client from the pool
-  
-    try {
-      const result = await client.query(`SELECT * FROM parceiros WHERE parceiro_email = '${email}'`);
-  
-      if (result.rows.length > 0) {
-        // Email is already in use
-        return true;
-      } else {
-        // Email is available
-        return false;
-      }
-    } catch (error) {
-      console.error('Error checking email:', error);
-      throw error;
-    } finally {
-      client.release(); // Release the client back to the pool
-    }
-  }
-  
-  app.post('/checkEmailParceiro', async (req, res) => {
-    const { email } = req.body;
-    try {
-      const emailInUse = await checkEmailParceiro(email);
-  
-      if (emailInUse) {
-        res.status(409).json({ message: 'Email already in use' });
-      } else {
-        res.status(200).json({ message: 'Email available' });
-      }
-    } catch (error) {
-      console.error('Error checking email:', error);
-      res.status(500).json({ message: 'Internal server error' });
-    }
-  });
 
-  async function checkEmailEstabelecimento(email) {
-    const client = await DB.connect(); // Acquire a client from the pool
-  
     try {
-      const result = await client.query(`SELECT * FROM estabelecimentos WHERE estabelecimento_email = '${email}'`);
-  
-      if (result.rows.length > 0) {
-        // Email is already in use
-        return true;
-      } else {
-        // Email is available
-        return false;
-      }
+        const result = await client.query(`SELECT * FROM parceiros WHERE parceiro_email = '${email}'`);
+
+        if (result.rows.length > 0) {
+            // Email is already in use
+            return true;
+        } else {
+            // Email is available
+            return false;
+        }
     } catch (error) {
-      console.error('Error checking email:', error);
-      throw error;
+        console.error('Error checking email:', error);
+        throw error;
     } finally {
-      client.release(); // Release the client back to the pool
+        client.release(); // Release the client back to the pool
     }
-  }
-  
-  app.post('/checkEmailEstabelecimento', async (req, res) => {
+}
+
+app.post('/checkEmailParceiro', async (req, res) => {
     const { email } = req.body;
     try {
-      const emailInUse = await checkEmailEstabelecimento(email);
-  
-      if (emailInUse) {
-        res.status(409).json({ message: 'Email already in use' });
-      } else {
-        res.status(200).json({ message: 'Email available' });
-      }
+        const emailInUse = await checkEmailParceiro(email);
+
+        if (emailInUse) {
+            res.status(409).json({ message: 'Email already in use' });
+        } else {
+            res.status(200).json({ message: 'Email available' });
+        }
     } catch (error) {
-      console.error('Error checking email:', error);
-      res.status(500).json({ message: 'Internal server error' });
+        console.error('Error checking email:', error);
+        res.status(500).json({ message: 'Internal server error' });
     }
-  });
+});
+
+async function checkEmailEstabelecimento(email) {
+    const client = await DB.connect(); // Acquire a client from the pool
+
+    try {
+        const result = await client.query(`SELECT * FROM estabelecimentos WHERE estabelecimento_email = '${email}'`);
+
+        if (result.rows.length > 0) {
+            // Email is already in use
+            return true;
+        } else {
+            // Email is available
+            return false;
+        }
+    } catch (error) {
+        console.error('Error checking email:', error);
+        throw error;
+    } finally {
+        client.release(); // Release the client back to the pool
+    }
+}
+
+app.post('/checkEmailEstabelecimento', async (req, res) => {
+    const { email } = req.body;
+    try {
+        const emailInUse = await checkEmailEstabelecimento(email);
+
+        if (emailInUse) {
+            res.status(409).json({ message: 'Email already in use' });
+        } else {
+            res.status(200).json({ message: 'Email available' });
+        }
+    } catch (error) {
+        console.error('Error checking email:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
 
 
 //CRUD ESTABELECIMENTO
@@ -264,36 +264,36 @@ async function cadastrarEstabelecimento(req, res) {
     }
 }
 
-async function DeletarUsers (req, res) {
+async function DeletarUsers(req, res) {
     const razaoSocial = req.params.razaoSocial
     const tipoUsuario = req.params.tipoUsuario
 
     if (tipoUsuario === 'Parceiro') {
         let SQL = `DELETE FROM Parceiros WHERE parceiro_razao_social = '${razaoSocial}'`;
         DB.query(SQL, (err, result) => {
-          if (err) {
-            console.log(err)
-          }else {
-            console.log('Deletado')
-          }
+            if (err) {
+                console.log(err)
+            } else {
+                console.log('Deletado')
+            }
         })
     } else if (tipoUsuario === 'Estabelecimento') {
         let SQL = `DELETE FROM Estabelecimentos WHERE estabelecimento_razao_social = '${razaoSocial}'`;
         DB.query(SQL, (err, result) => {
-          if (err) {
-            console.log(err)
-          }else {
-            console.log('Deletado')
-          }
+            if (err) {
+                console.log(err)
+            } else {
+                console.log('Deletado')
+            }
         })
     } else if (tipoUsuario === 'Administrador') {
         let SQL = `DELETE FROM Administradores WHERE administrador_nome = '${razaoSocial}'`;
         DB.query(SQL, (err, result) => {
-          if (err) {
-            console.log(err)
-          }else {
-            console.log('Deletado')
-          }
+            if (err) {
+                console.log(err)
+            } else {
+                console.log('Deletado')
+            }
         })
     }
 }
@@ -302,7 +302,7 @@ async function DeletarUsers (req, res) {
 async function editarEstabelecimento(req, res) {
     const idEstabelecimento = req.params.idEstabelecimento;
     const { usuarioDados } = req.body;
-    
+
 
     const fieldsToUpdate = [
         `estabelecimento_email = '${usuarioDados.email}'`,
@@ -364,7 +364,7 @@ async function listAllEstabelecimento(_, res) {
     }
 }
 
-async function getEstabelecimentoById(req, res){
+async function getEstabelecimentoById(req, res) {
     const id = req.params.idEstabelecimento;
     try {
 
@@ -472,11 +472,11 @@ async function editarParceiro(req, res) {
     });
 }
 
-async function editarAdmin (req, res) {
+async function editarAdmin(req, res) {
     const razaoSocial = req.params.razaoSocial
     const tipoUsuario = req.params.tipoUsuario
     const { usuarioDados } = req.body
-    
+
     if (tipoUsuario === 'Parceiro') {
 
         const fieldsToUpdate = [
@@ -507,15 +507,15 @@ async function editarAdmin (req, res) {
             parceiro_razao_social = '${razaoSocial}'
     `;
 
-    DB.query(SQL, (err, _) => {
-        if (err) {
-            console.log(err);
-            res.status(500).json({ error: 'Falha' });
-        } else {
-            console.log('Editado!');
-            res.status(200).json({ message: 'Parceiro data updated successfully' });
-        }
-    });
+        DB.query(SQL, (err, _) => {
+            if (err) {
+                console.log(err);
+                res.status(500).json({ error: 'Falha' });
+            } else {
+                console.log('Editado!');
+                res.status(200).json({ message: 'Parceiro data updated successfully' });
+            }
+        });
 
     } else if (tipoUsuario === 'Estabelecimento') {
         const fieldsToUpdate = [
@@ -575,7 +575,7 @@ async function editarAdmin (req, res) {
         WHERE
         administrador_nome = '${razaoSocial}'
     `
-    
+
         DB.query(SQL, (err, _) => {
             if (err) {
                 console.log(err)
@@ -588,12 +588,12 @@ async function editarAdmin (req, res) {
 
 }
 
-async function editarSenhaRec (req, _) {
+async function editarSenhaRec(req, _) {
     const idUser = req.params.idUser
     const tipo = req.params.tipo
-    const {usuarioDados} = req.body
+    const { usuarioDados } = req.body
     const hashSenha = await bcrypt.hash(usuarioDados.senha, 10)
-    
+
     if (tipo === 'Parceiro') {
         const SQL = `
         UPDATE 
@@ -619,7 +619,7 @@ async function editarSenhaRec (req, _) {
         WHERE
         estabelecimento_id = '${idUser}'
     `
-    
+
         DB.query(SQL, (err, _) => {
             if (err) {
                 console.log(err)
@@ -767,8 +767,8 @@ async function SelectToEdit(req, res) {
     const id = req.params.id;
     const tipo = req.params.tipo
 
-    if (tipo ==='ComumParceiro') {
-        let SQL = "SELECT parceiro_email, parceiro_logradouro, parceiro_logradouro_numero, parceiro_bairro, parceiro_cidade, parceiro_estado, parceiro_cep, parceiro_regiao, parceiro_cidades_atende FROM parceiros WHERE parceiro_ID = '"+id+"'"
+    if (tipo === 'ComumParceiro') {
+        let SQL = "SELECT parceiro_email, parceiro_logradouro, parceiro_logradouro_numero, parceiro_bairro, parceiro_cidade, parceiro_estado, parceiro_cep, parceiro_regiao, parceiro_cidades_atende FROM parceiros WHERE parceiro_ID = '" + id + "'"
 
         DB.query(SQL, (err, result) => {
             if (err) {
@@ -788,7 +788,7 @@ async function SelectToEdit(req, res) {
             }
         })
     } else if (tipo === 'ComumEstabelecimento') {
-        let SQL2 = "SELECT estabelecimento_email, estabelecimento_logradouro, estabelecimento_logradouro_numero, estabelecimento_bairro, estabelecimento_cidade, estabelecimento_estado, estabelecimento_cep, estabelecimento_regiao FROM estabelecimentos WHERE estabelecimento_ID = '"+id+"'"
+        let SQL2 = "SELECT estabelecimento_email, estabelecimento_logradouro, estabelecimento_logradouro_numero, estabelecimento_bairro, estabelecimento_cidade, estabelecimento_estado, estabelecimento_cep, estabelecimento_regiao FROM estabelecimentos WHERE estabelecimento_ID = '" + id + "'"
 
         DB.query(SQL2, (err, result) => {
             if (err) {
@@ -813,8 +813,8 @@ async function SelectToEditAdmin(req, res) {
     const razaoSocial = req.params.razaoSocial;
     const tipo = req.params.tipo;
 
-    if (tipo ==='Parceiro') {
-        let SQL = "SELECT parceiro_email, parceiro_logradouro, parceiro_logradouro_numero, parceiro_bairro, parceiro_cidade, parceiro_estado, parceiro_cep, parceiro_regiao, parceiro_cidades_atende FROM parceiros WHERE parceiro_razao_social = '"+razaoSocial+"'"
+    if (tipo === 'Parceiro') {
+        let SQL = "SELECT parceiro_email, parceiro_logradouro, parceiro_logradouro_numero, parceiro_bairro, parceiro_cidade, parceiro_estado, parceiro_cep, parceiro_regiao, parceiro_cidades_atende FROM parceiros WHERE parceiro_razao_social = '" + razaoSocial + "'"
 
         DB.query(SQL, (err, result) => {
             if (err) {
@@ -834,7 +834,7 @@ async function SelectToEditAdmin(req, res) {
             }
         })
     } else if (tipo === 'Estabelecimento') {
-        let SQL2 = "SELECT estabelecimento_email, estabelecimento_logradouro, estabelecimento_logradouro_numero, estabelecimento_bairro, estabelecimento_cidade, estabelecimento_estado, estabelecimento_cep, estabelecimento_regiao FROM estabelecimentos WHERE estabelecimento_razao_social = '"+razaoSocial+"'"
+        let SQL2 = "SELECT estabelecimento_email, estabelecimento_logradouro, estabelecimento_logradouro_numero, estabelecimento_bairro, estabelecimento_cidade, estabelecimento_estado, estabelecimento_cep, estabelecimento_regiao FROM estabelecimentos WHERE estabelecimento_razao_social = '" + razaoSocial + "'"
 
         DB.query(SQL2, (err, result) => {
             if (err) {
@@ -853,7 +853,7 @@ async function SelectToEditAdmin(req, res) {
             }
         })
     } else if (tipo === 'Administrador') {
-        let SQL2 = "SELECT administrador_email FROM administradores WHERE administrador_nome = '"+razaoSocial+"'"
+        let SQL2 = "SELECT administrador_email FROM administradores WHERE administrador_nome = '" + razaoSocial + "'"
 
         DB.query(SQL2, (err, result) => {
             if (err) {
@@ -895,7 +895,7 @@ async function verificaEmail(req, res) {
 
 //função para retornar nome e tipo de todos os usuarios
 async function getUsers(req, res) {
-    try{
+    try {
         const SQL1 = `
     SELECT 
         administrador_nome, administrador_id
@@ -919,26 +919,60 @@ async function getUsers(req, res) {
         const parceiros = await connectionDB.query(SQL3);
 
         const users = new Array;
-        for(let i=0; i<= adms.rowCount; i++){
-            if(typeof(adms.rows[i]) !== "undefined"){
-                users.push({nome: adms.rows[i].administrador_nome, tipo: "Administrador", id: adms.rows[i].administrador_id})
-            }             
+        for (let i = 0; i <= adms.rowCount; i++) {
+            if (typeof (adms.rows[i]) !== "undefined") {
+                users.push({ nome: adms.rows[i].administrador_nome, tipo: "Administrador", id: adms.rows[i].administrador_id })
+            }
         }
-        for(let i=0; i<= parceiros.rowCount; i++){
-            if(typeof(parceiros.rows[i]) !== "undefined"){
-                users.push({nome: parceiros.rows[i].parceiro_razao_social, tipo: "Parceiro", id: parceiros.rows[i].parceiro_id})
-            }             
+        for (let i = 0; i <= parceiros.rowCount; i++) {
+            if (typeof (parceiros.rows[i]) !== "undefined") {
+                users.push({ nome: parceiros.rows[i].parceiro_razao_social, tipo: "Parceiro", id: parceiros.rows[i].parceiro_id })
+            }
         }
-        for(let i=0; i<= estabelecimentos.rowCount; i++){
-            if(typeof(estabelecimentos.rows[i]) !== "undefined"){
-                users.push({nome: estabelecimentos.rows[i].estabelecimento_razao_social, tipo: "Estabelecimento", id: estabelecimentos.rows[i].estabelecimento_id})
-            }             
+        for (let i = 0; i <= estabelecimentos.rowCount; i++) {
+            if (typeof (estabelecimentos.rows[i]) !== "undefined") {
+                users.push({ nome: estabelecimentos.rows[i].estabelecimento_razao_social, tipo: "Estabelecimento", id: estabelecimentos.rows[i].estabelecimento_id })
+            }
         }
-        
-        res.send(users); 
+
+        res.send(users);
     } catch (error) {
         console.error("Erro ao listar usuários", error);
         res.status(500).send({ msg: "Erro ao listar usuários" });
     }
 
 }
+
+async function transacaoParceiroEstab(req, res) {
+    try {
+      const { volumeOleo, estabelecimento } = req.body;
+      const idParceiro = req.params.idParceiro;
+  
+      const quantidadeMoedas = parseFloat(volumeOleo) * 100;
+      const oleoFinal = parseFloat(volumeOleo)
+
+      // Atualizar o saldo do parceiro
+      const updateParceirosQuery = "UPDATE Parceiros SET parceiro_saldo = parceiro_saldo - "+quantidadeMoedas+", parceiro_volume_coleta_mes = parceiro_volume_coleta_mes + "+oleoFinal+" WHERE parceiro_id = '"+idParceiro+"'";
+
+        await DB.query(updateParceirosQuery, (err, _) => {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log('Editado Parceiro!');
+            }
+        });
+  
+      // Atualizar o saldo do estabelecimento
+        const updateEstabelecimentosQuery = "UPDATE Estabelecimentos SET estabelecimento_saldo = estabelecimento_saldo + "+quantidadeMoedas+", estabelecimento_volume_comercializado_mes = estabelecimento_volume_comercializado_mes + "+oleoFinal+" WHERE estabelecimento_razao_social = '"+estabelecimento+"'";
+
+        await DB.query(updateEstabelecimentosQuery, (err, _) => {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log('Editado Estabelecimento!');
+            }
+        });
+    } catch (error) {
+      console.error("Erro ao processar a transação:", error);
+    }
+};
