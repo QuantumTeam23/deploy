@@ -50,6 +50,7 @@ app.put('/transacaoParceiroEstab/:idParceiro', transacaoParceiroEstab);
 app.post('/login', login2)
 
 //LOGIN
+app.post('/login', login2);
 
 //CONEXÃO BANCO
 const DB = new Pool({

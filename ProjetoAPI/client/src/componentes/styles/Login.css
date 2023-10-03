@@ -37,9 +37,9 @@
     height: auto;
 }
 
-.form-control-login{
+.form-control-login-1{
+    height: 100%;
     background-color: rgb(221, 255, 218) !important;
-    width: 100%;
 }
 
 .botao-login{
@@ -100,9 +100,10 @@
 
 .form-control-login-2 {
     height: 100%;
+    background-color: rgb(221, 255, 218) !important;
 }
 
-.campo-senha {
+.campo-login {
     position: relative;
     height: 41px;
 }
