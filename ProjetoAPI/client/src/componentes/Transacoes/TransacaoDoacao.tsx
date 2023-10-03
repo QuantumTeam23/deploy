@@ -54,14 +54,20 @@ function TransacaoDoacao() {
             estabelecimento: selectedEstabelecimento,
           }),
         })
-          .then((response) => response.json())
-          .then((data) => {
-            if (data.success) {
-              Swal.fire("Sucesso", "Transação concluída com sucesso.", "success");
-            } else {
-              console.log("Erro", "Ocorreu um erro ao processar a transação.", "error");
-            }
-          })
+        .then((response) => {
+          if (response.status === 500) {
+            Swal.fire("Erro", "Saldo Insuficiente para realizar essa transação.", "error");
+            throw new Error("Saldo do parceiro é igual a 0.00.");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          if (data.success) {
+            Swal.fire("Sucesso", "Transação concluída com sucesso.", "success");
+          } else {
+            console.log("Erro", "Ocorreu um erro ao processar a transação.", "error");
+          }
+        })
           .catch((error) => {
             console.error("Erro ao enviar os dados:", error);
           });

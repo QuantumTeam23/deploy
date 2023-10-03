@@ -954,27 +954,36 @@ async function transacaoParceiroEstab(req, res) {
       const quantidadeMoedas = parseFloat(volumeOleo) * 100;
       const oleoFinal = parseFloat(volumeOleo)
 
-      // Atualizar o saldo do parceiro
-      const updateParceirosQuery = "UPDATE Parceiros SET parceiro_saldo = parceiro_saldo - "+quantidadeMoedas+", parceiro_volume_coleta_mes = parceiro_volume_coleta_mes + "+oleoFinal+" WHERE parceiro_id = '"+idParceiro+"'";
+      const saldoParceiroQuery = `SELECT parceiro_saldo FROM Parceiros WHERE parceiro_id = '${idParceiro}'`;
+      const resultado = await connectionDB.query(saldoParceiroQuery);
+      const saldoParceiro = parseFloat(resultado.rows[0].parceiro_saldo);
 
-        await DB.query(updateParceirosQuery, (err, _) => {
-            if (err) {
-                console.log(err);
-            } else {
-                console.log('Editado Parceiro!');
-            }
-        });
-  
-      // Atualizar o saldo do estabelecimento
-        const updateEstabelecimentosQuery = "UPDATE Estabelecimentos SET estabelecimento_saldo = estabelecimento_saldo + "+quantidadeMoedas+", estabelecimento_volume_comercializado_mes = estabelecimento_volume_comercializado_mes + "+oleoFinal+" WHERE estabelecimento_razao_social = '"+estabelecimento+"'";
+        if (saldoParceiro < quantidadeMoedas) {
+            return res.status(500).json({ success: false, error: "Saldo do parceiro é igual a 0." });
+        } else {
+            // Atualizar o saldo do parceiro
+            const updateParceirosQuery = "UPDATE Parceiros SET parceiro_saldo = parceiro_saldo - "+quantidadeMoedas+", parceiro_volume_coleta_mes = parceiro_volume_coleta_mes + "+oleoFinal+" WHERE parceiro_id = '"+idParceiro+"'";
 
-        await DB.query(updateEstabelecimentosQuery, (err, _) => {
-            if (err) {
-                console.log(err);
-            } else {
-                console.log('Editado Estabelecimento!');
-            }
-        });
+            await DB.query(updateParceirosQuery, (err, _) => {
+                if (err) {
+                    console.log(err);
+                } else {
+                    console.log('Editado Parceiro!');
+                }
+            });
+
+            // Atualizar o saldo do estabelecimento
+            const updateEstabelecimentosQuery = "UPDATE Estabelecimentos SET estabelecimento_saldo = estabelecimento_saldo + "+quantidadeMoedas+", estabelecimento_volume_comercializado_mes = estabelecimento_volume_comercializado_mes + "+oleoFinal+" WHERE estabelecimento_razao_social = '"+estabelecimento+"'";
+
+            await DB.query(updateEstabelecimentosQuery, (err, _) => {
+                if (err) {
+                    console.log(err);
+                } else {
+                    console.log('Editado Estabelecimento!');
+                }
+            });
+        }
+ 
     } catch (error) {
       console.error("Erro ao processar a transação:", error);
     }
