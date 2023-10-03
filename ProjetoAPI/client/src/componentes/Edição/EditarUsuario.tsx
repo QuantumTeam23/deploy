@@ -196,7 +196,7 @@ function EditarUsuario() {
                         <div className='campo-editar-usuario'>
                             <Form.Group controlId='senha'>
                                 <Form.Label>Senha</Form.Label>
-                                <InputGroup>
+                                <InputGroup className='campo-senha'>
                                     <FormControl
                                         type={passwordInputType}
                                         required
@@ -207,7 +207,7 @@ function EditarUsuario() {
                                         defaultValue={usuarioDados.senha}
                                         onChange={handleInputChange}
                                     />
-                                <img src={passwordIconSrc} alt="eye icon" onClick={showPasswordHandler} style={{width: '5%', height: '5%', marginLeft: '10px', marginTop: '06px'}} />
+                                <img src={passwordIconSrc} alt="eye icon" className='eyeIcon' onClick={showPasswordHandler}/>
                                 </InputGroup>
                             </Form.Group>
                         </div>
