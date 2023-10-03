@@ -47,6 +47,7 @@ app.post('/VerificarToken', verificarToken);
 app.get('/read-by-id-to-edit/:id/:tipo', SelectToEdit);
 app.put('/editSenhaRec/:idUser/:tipo', editarSenhaRec);
 app.put('/transacaoParceiroEstab/:idParceiro', transacaoParceiroEstab);
+app.post('/login', login2)
 
 //LOGIN
 

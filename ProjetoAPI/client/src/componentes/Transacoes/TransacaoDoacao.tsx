@@ -3,55 +3,73 @@ import "../styles/TransacaoDoacao.css";
 import NavbarTransacaoDoacao from "../Navbars/NavbarDoacao";
 import { Form, FormControl, InputGroup, Button } from "react-bootstrap";
 import { useEffect, useState } from "react";
-import TransacaoPopup from "./TransacaoPopup";
+import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 
 function TransacaoDoacao() {
   const [razoesSociais, setRazoesSociais] = useState([]);
-  const [popupOpen, setPopupOpen] = useState(false);
   const [volumeOleo, setVolumeOleo] = useState("");
   const [selectedEstabelecimento, setSelectedEstabelecimento] = useState("");
+  const navigate = useNavigate()
 
-
-  const handleOpenPopup = () => {
-    setPopupOpen(true);
-  };
-
-  const handleClosePopup = () => {
-    setPopupOpen(false);
-  };
+  const msgSucesso = () => {
+    Swal.fire({
+      title: "Sucesso",
+      icon: 'success',
+      text: 'Transação concluida',
+      confirmButtonColor: '#de940a'
+    })
+  }
 
   const handleConfirm = () => {
     // Verifique se os campos foram preenchidos
     if (!volumeOleo || !selectedEstabelecimento) {
-      alert("Por favor, preencha todos os campos.");
+      Swal.fire("Erro", "Por favor, preencha todos os campos.", "error");
       return;
     }
-
+  
     const idParceiro = localStorage.getItem("idParceiro");
-
-    fetch(`http://localhost:3001/transacaoParceiroEstab/${idParceiro}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        volumeOleo: parseFloat(volumeOleo), // Converter para número
-        estabelecimento: selectedEstabelecimento,
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.success) {
+    const quantidadeMoedas = parseFloat(volumeOleo) * 100
+  
+    // Exibir uma janela de confirmação usando Swal
+    Swal.fire({
+      title: "Confirmar Transação",
+      text: `Você está doando ${quantidadeMoedas} Créditos Greennneat para o estabelecimento ${selectedEstabelecimento}, por ${volumeOleo} litros de óleo.`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Sim, Confirmar",
+      cancelButtonText: "Cancelar",
+      confirmButtonColor: '#198754',
+      cancelButtonColor: '#ffc107'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // O usuário confirmou, execute a função fetch
+        fetch(`http://localhost:3001/transacaoParceiroEstab/${idParceiro}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            volumeOleo: parseFloat(volumeOleo), // Converter para número
+            estabelecimento: selectedEstabelecimento,
+          }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.success) {
+              Swal.fire("Sucesso", "Transação concluída com sucesso.", "success");
+            } else {
+              console.log("Erro", "Ocorreu um erro ao processar a transação.", "error");
+            }
+          })
+          .catch((error) => {
+            console.error("Erro ao enviar os dados:", error);
+          });
           setVolumeOleo("");
           setSelectedEstabelecimento("");
-        } else {
-          alert("Ocorreu um erro ao processar a transação.");
-        }
-      })
-      .catch((error) => {
-        console.error("Erro ao enviar os dados:", error);
-        alert("Ocorreu um erro ao enviar os dados.");
-      });
+          msgSucesso()
+      }
+    });
   };
 
   useEffect(() => {
@@ -70,7 +88,6 @@ function TransacaoDoacao() {
 
   return (
     <>
-      <NavbarTransacaoDoacao />
       <div className="container" style={{ marginTop: "5%", width: "60%" }}>
         <div className="campo-inserir-valor">
           <div style={{ marginBottom: "3%" }}>
@@ -81,7 +98,7 @@ function TransacaoDoacao() {
               <FormControl
                 type="volumeOleo"
                 required
-                placeholder="Ex: 50.00"
+                placeholder="Ex: 1.5"
                 aria-label="volume oleo"
                 aria-describedby="valor-addon"
                 className="form-control-transacao"
@@ -118,7 +135,7 @@ function TransacaoDoacao() {
             >
               Confirmar
             </Button>
-            <Button style={{ fontSize: 18, marginTop: "2%" }} variant="success">
+            <Button style={{ fontSize: 18, marginTop: "2%", color: 'white' }} variant="warning" onClick={ () => navigate('/painel-parceiro-saldo-credito')}>
               Voltar
             </Button>
           </div>

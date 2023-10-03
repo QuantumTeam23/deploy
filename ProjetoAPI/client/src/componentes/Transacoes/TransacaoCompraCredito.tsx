@@ -33,7 +33,7 @@ function TransacaoCompraCredito() {
               <FormControl
                 type="campo-valor"
                 required
-                placeholder="Ex: 100.00"
+                placeholder="Ex: 1.5"
                 aria-label="campo-valor"
                 aria-describedby="campo-valor-addon"
                 style={{ backgroundColor: "#ddffda" }}
