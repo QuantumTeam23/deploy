@@ -88,6 +88,7 @@ function TransacaoDoacao() {
 
   return (
     <>
+      <NavbarTransacaoDoacao />
       <div className="container" style={{ marginTop: "5%", width: "60%" }}>
         <div className="campo-inserir-valor">
           <div style={{ marginBottom: "3%" }}>
@@ -143,9 +144,6 @@ function TransacaoDoacao() {
       </div>
 
       <Footer />
-      {/* {popupOpen && (
-        <TransacaoPopup open={popupOpen} onClose={handleClosePopup} />
-      )} */}
     </>
   );
 }

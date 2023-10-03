@@ -47,6 +47,7 @@ app.post('/VerificarToken', verificarToken);
 app.get('/read-by-id-to-edit/:id/:tipo', SelectToEdit);
 app.put('/editSenhaRec/:idUser/:tipo', editarSenhaRec);
 app.put('/transacaoParceiroEstab/:idParceiro', transacaoParceiroEstab);
+app.put('/transacaoGreenneatParc/:idParceiro', transacaoGreenneatParc);
 app.post('/login', login2)
 
 //LOGIN
@@ -54,7 +55,7 @@ app.post('/login', login2);
 
 //CONEXÃO BANCO
 const DB = new Pool({
-    connectionString: "postgres://qbcagjjm:lydMj-e79H0fZSQch9RHD2WnJvnnURWz@silly.db.elephantsql.com/qbcagjjm"
+    connectionString: "postgres://qcqpwqkt:HzevF570ust-MGb_oXyBDCiQJDvo7--r@silly.db.elephantsql.com/qcqpwqkt"
     // user: 'postgres',       //user PostgreSQL padrão = postgres
     // host: 'localhost',
     // database: 'API',
@@ -972,6 +973,28 @@ async function transacaoParceiroEstab(req, res) {
                 console.log(err);
             } else {
                 console.log('Editado Estabelecimento!');
+            }
+        });
+    } catch (error) {
+      console.error("Erro ao processar a transação:", error);
+    }
+};
+
+async function transacaoGreenneatParc(req, res) {
+    try {
+      const { valorCreditos } = req.body;
+      const idParceiro = req.params.idParceiro;
+
+      console.log(typeof(valorCreditos))
+      console.log(valorCreditos)
+  
+      const updateParceirosQuery = "UPDATE Parceiros SET parceiro_saldo = parceiro_saldo + "+valorCreditos+" WHERE parceiro_id = '"+idParceiro+"'";
+
+        await DB.query(updateParceirosQuery, (err, _) => {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log('Editado Parceiro!');
             }
         });
     } catch (error) {
