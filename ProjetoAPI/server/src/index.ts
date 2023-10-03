@@ -49,6 +49,7 @@ app.put('/editSenhaRec/:idUser/:tipo', editarSenhaRec);
 app.put('/transacaoParceiroEstab/:idParceiro', transacaoParceiroEstab);
 
 //LOGIN
+app.post('/login', login2);
 
 //CONEXÃO BANCO
 const DB = new Pool({
