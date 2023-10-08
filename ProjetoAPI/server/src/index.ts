@@ -29,6 +29,9 @@ app.get('/Estabelecimento/:idEstabelecimento', getEstabelecimentoById);
 //PARCEIRO
 app.post('/addParceiro', cadastrarParceiro);
 app.put('/editar-usuario-comum-parceiro/:idParceiro', editarParceiro);
+app.get('/listSemVinculo', listCarteiraSemVinculo);
+app.get('/Parceiro/:idParceiro', getParceiroById);
+app.get('/listCarteira/:idParceiro', listCarteiraDoParceiroLogado);
 
 //ADMINISTRADOR
 app.get('/listAdministrador', listAllAdministrador);
@@ -49,6 +52,8 @@ app.put('/editSenhaRec/:idUser/:tipo', editarSenhaRec);
 app.put('/transacaoParceiroEstab/:idParceiro', transacaoParceiroEstab);
 app.put('/transacaoGreenneatParc/:idParceiro', transacaoGreenneatParc);
 app.post('/login', login2)
+
+app.post('/vincular', vincularCarteira)
 
 //LOGIN
 app.post('/login', login2);
@@ -431,7 +436,6 @@ async function cadastrarParceiro(req, res) {
     }
 }
 
-
 async function editarParceiro(req, res) {
     const idParceiro = req.params.idParceiro;
     const { usuarioDados } = req.body;
@@ -473,6 +477,24 @@ async function editarParceiro(req, res) {
             res.status(200).json({ message: 'Parceiro data updated successfully' });
         }
     });
+}
+
+async function getParceiroById(req, res) {
+    const id = req.params.idParceiro;
+    try {
+
+        const SQL1 = `
+            SELECT * FROM
+                Parceiros
+            WHERE
+                parceiro_id = '${id}'
+        `
+        const resultado = await connectionDB.query(SQL1);
+        res.send(resultado.rows);
+    } catch (error) {
+        console.error("Erro ao buscar dados:", error);
+        res.status(500).send({ msg: "Erro ao buscar dados do parceiro." });
+    }
 }
 
 async function editarAdmin(req, res) {
@@ -1010,3 +1032,67 @@ async function transacaoGreenneatParc(req, res) {
       console.error("Erro ao processar a transação:", error);
     }
 };
+
+async function listCarteiraSemVinculo(req, res) {
+    console.log("Requisição de listagem de estabelecimentos sem vínculo em carteira de parceiros.");
+    try {
+        const SQL = `
+    SELECT 
+        * 
+    FROM
+        Estabelecimentos
+    LEFT OUTER JOIN
+        ParceiroCarteira
+    ON 
+        Estabelecimentos.estabelecimento_id = ParceiroCarteira.id_estabelecimento
+    WHERE
+        ParceiroCarteira.parceiro_carteira_id IS NULL
+    `
+        const resultado = await connectionDB.query(SQL);
+        res.send(resultado.rows);
+    } catch (error) {
+        console.error("Erro ao listar estabelecimentos:", error);
+        res.status(500).send({ msg: "Erro ao listar estabelecimentos." });
+    }
+}
+
+async function listCarteiraDoParceiroLogado(req,res) {
+    console.log("Requisição de listagem de estabelecimentos vinculados à carteira do usuário.");
+    const id = req.params.idParceiro;
+    try {
+
+        const SQL1 = `
+            SELECT * FROM
+                Estabelecimentos e
+            JOIN
+                ParceiroCarteira c
+            ON
+                e.estabelecimento_id = c.id_estabelecimento
+            WHERE
+                c.id_parceiro = '${id}'
+        `
+        const resultado = await connectionDB.query(SQL1);
+        res.send(resultado.rows);
+    } catch (error) {
+        console.error("Erro ao buscar estabelecimento:", error);
+        res.status(500).send({ msg: "Erro ao buscar estabelecimento." });
+    }
+}
+
+async function vincularCarteira(req,res) {
+    const { idParceiro, estabelecimentoId } = req.body;
+    try{
+        const SQL = `
+            INSERT INTO
+                ParceiroCarteira("id_parceiro","id_estabelecimento")
+            VALUES ('${idParceiro}','${estabelecimentoId}')
+        `
+        await connectionDB.query(SQL);
+        console.log("Estabelecimento vinculado à carteira!");
+        res.send({ msg: "Estabelecimento vinculado à carteira!" });
+
+    }catch (error) {
+        console.error("Erro ao vincular estabelecimento à carteira", error);
+        res.status(500).send({ msg: "Erro ao vincular estabelecimento à carteira." })
+    }
+}

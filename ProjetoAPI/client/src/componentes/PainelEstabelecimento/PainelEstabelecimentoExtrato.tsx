@@ -7,22 +7,9 @@ import NavbarEstabelecimento from '../Navbars/NavbarEstabelecimento';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
-interface DataEstab {
-  nome_fantasia: string;
-  email: string;
-  cnpj: string;
-  saldo: number;
-}
-
 export default function PainelEstabelecimentoExtrato() {
   const [saldoVisivel, setSaldoVisivel] = useState(false);
   const [saldoValor, setSaldoValor] = useState(0);
-  const [dataEstab, setDataEstab] = useState<DataEstab>({
-    nome_fantasia: '',
-    email: '',
-    cnpj: '',
-    saldo: 0,
-  });
   const id = localStorage.getItem('idEstabelecimento');
 
   //buscar dados do estabelecimento logado e setar o valor do saldo
@@ -35,8 +22,7 @@ export default function PainelEstabelecimentoExtrato() {
     })
       .then((response) => response.json())
       .then((data) => {
-        setDataEstab(data)
-        setSaldoValor(dataEstab.saldo);
+        setSaldoValor(data[0].estabelecimento_saldo);
       })
       .catch((error) => console.log(error));
   }, []);
