@@ -40,6 +40,26 @@ export default function PainelParceiroSaldoCredito() {
         <div className={styles.topContent}>
           <h2>Crédito Contratado</h2>
           <div className={styles.headerActions}>
+          <div style={{alignContent:"center"}}>
+              <a href="../transacao-compra-credito">
+                <img
+                  src={require("../Imagens/icone-moedas.png")}
+                  alt="Editar"
+                  className="img-fluid"
+                  style={{
+                    width: "40px",
+                    height: "40px",
+                    maxWidth: "40px",
+                    maxHeight: "40px",
+                    marginRight: "10px",
+                    marginTop:"20%"
+                  }}
+
+                  
+                />
+              </a>
+            </div>
+
             <MesAno />
           </div>
         </div>
@@ -47,6 +67,26 @@ export default function PainelParceiroSaldoCredito() {
         <div className={styles.topContent}>
           <h2>Crédito Cedido</h2>
           <div className={styles.headerActions}>
+          <div style={{alignContent:"center"}}>
+              <a href="../transacao-doacao">
+                <img
+                  src={require("../Imagens/icone-ceder-credito.png")}
+                  alt="Editar"
+                  className="img-fluid"
+                  style={{
+                    width: "40px",
+                    height: "40px",
+                    maxWidth: "40px",
+                    maxHeight: "40px",
+                    marginRight: "10px",
+                    marginTop:"20%"
+                  }}
+
+                  
+                />
+              </a>
+            </div>
+
             <MesAno />
           </div>
         </div>
