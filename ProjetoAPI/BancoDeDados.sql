@@ -65,7 +65,7 @@ CREATE TABLE AcaoTransacoes (
 	quantidade_moedas DESC100 null,
 	id_parceiro UUID NOT null,
 	id_estabelecimento UUID NOT null,
-	FOREIGN KEY (id_parceiro) REFERENCES Parceiros(parceiro_id)
+	FOREIGN KEY (id_parceiro) REFERENCES Parceiros(parceiro_id),
 	FOREIGN KEY (id_estabelecimento) REFERENCES Estabelecimentos(estabelecimento_id)
 );
 

@@ -61,12 +61,12 @@ app.post('/login', login2);
 
 //CONEXÃO BANCO
 const DB = new Pool({
-    connectionString: "postgres://qcqpwqkt:HzevF570ust-MGb_oXyBDCiQJDvo7--r@silly.db.elephantsql.com/qcqpwqkt"
-    // user: 'postgres',       //user PostgreSQL padrão = postgres
-    // host: 'localhost',
-    // database: 'API',
-    // password: 'General779568@',
-    // port: 5432             //port PostgreSQL padrão = 5432
+    // connectionString: "postgres://qcqpwqkt:HzevF570ust-MGb_oXyBDCiQJDvo7--r@silly.db.elephantsql.com/qcqpwqkt"
+    user: 'postgres',       //user PostgreSQL padrão = postgres
+    host: 'localhost',
+    database: 'API',
+    password: 'General779568@',
+    port: 5432             //port PostgreSQL padrão = 5432
 });
 
 let connectionDB: PoolClient;
@@ -1100,7 +1100,7 @@ async function vincularCarteira(req,res) {
 
 async function insertAcaoTransacoes(req, res) {
     const { idEstabelecimento, quantidadeMoedasString, volumeOleo, idParceiro } = req.body;
-
+    console.log(idEstabelecimento)
     try {
         const SQL = `
             INSERT INTO AcaoTransacoes("quantidade_oleo_coletado","moedas_doadas", "id_parceiro", "id_estabelecimento") 
