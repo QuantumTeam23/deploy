@@ -29,7 +29,9 @@ function TransacaoDoacao() {
     }
   
     const idParceiro = localStorage.getItem("idParceiro");
+    const idEstabelecimento = localStorage.getItem("idParceiro")
     const quantidadeMoedas = parseFloat(volumeOleo) * 100
+    const quantidadeMoedasString = quantidadeMoedas.toString()
   
     // Exibir uma janela de confirmação usando Swal
     Swal.fire({
@@ -68,6 +70,18 @@ function TransacaoDoacao() {
             console.log("Erro", "Ocorreu um erro ao processar a transação.", "error");
           }
         })
+        fetch("http://localhost:3001/insertAcaoTransacoes", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            volumeOleo: parseFloat(volumeOleo),
+            idParceiro: idParceiro,
+            quantidadeMoedasString: quantidadeMoedasString,
+            idEstabelecimento: idEstabelecimento,
+          }),
+        })
           .catch((error) => {
             console.error("Erro ao enviar os dados:", error);
           });
@@ -79,12 +93,16 @@ function TransacaoDoacao() {
   };
 
   useEffect(() => {
+
+    const idParceiro = localStorage.getItem('idParceiro')
+
     // Fazer uma chamada de API para obter os estabelecimentos
-    fetch("http://localhost:3001/listEstabelecimento")
+    fetch(`http://localhost:3001/listCarteira/${idParceiro}`)
       .then((response) => response.json())
       .then((data) => {
         // Extrair a razão social de cada estabelecimento
         const razoesSociais = data.map((estabelecimento: any) => estabelecimento.estabelecimento_razao_social);
+        // const idEstabelecimento = data.map((estabelecimento: any) => estabelecimento.estabelecimento_id)
         setRazoesSociais(razoesSociais);
       })
       .catch((error) => {

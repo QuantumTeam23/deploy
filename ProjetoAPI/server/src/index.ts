@@ -54,18 +54,19 @@ app.put('/transacaoGreenneatParc/:idParceiro', transacaoGreenneatParc);
 app.post('/login', login2)
 
 app.post('/vincular', vincularCarteira)
+app.post('/insertAcaoTransacoes', insertAcaoTransacoes)
 
 //LOGIN
 app.post('/login', login2);
 
 //CONEXÃO BANCO
 const DB = new Pool({
-    connectionString: "postgres://qcqpwqkt:HzevF570ust-MGb_oXyBDCiQJDvo7--r@silly.db.elephantsql.com/qcqpwqkt"
-    // user: 'postgres',       //user PostgreSQL padrão = postgres
-    // host: 'localhost',
-    // database: 'API',
-    // password: '',
-    // port: 5432             //port PostgreSQL padrão = 5432
+    // connectionString: "postgres://qcqpwqkt:HzevF570ust-MGb_oXyBDCiQJDvo7--r@silly.db.elephantsql.com/qcqpwqkt"
+    user: 'postgres',       //user PostgreSQL padrão = postgres
+    host: 'localhost',
+    database: 'API',
+    password: 'General779568@',
+    port: 5432             //port PostgreSQL padrão = 5432
 });
 
 let connectionDB: PoolClient;
@@ -1094,5 +1095,21 @@ async function vincularCarteira(req,res) {
     }catch (error) {
         console.error("Erro ao vincular estabelecimento à carteira", error);
         res.status(500).send({ msg: "Erro ao vincular estabelecimento à carteira." })
+    }
+}
+
+async function insertAcaoTransacoes(req, res) {
+    const { idEstabelecimento, quantidadeMoedasString, volumeOleo, idParceiro } = req.body;
+
+    try {
+        const SQL = `
+            INSERT INTO AcaoTransacoes("quantidade_oleo_coletado","moedas_doadas", "id_parceiro", "id_estabelecimento") 
+            VALUES ('${volumeOleo}', '${quantidadeMoedasString}', '${idParceiro}', ${idEstabelecimento})  
+        `
+        await connectionDB.query(SQL)
+        res.send({ msg: "Acao Registrada" });
+
+    } catch (error)  {
+        console.error(error)
     }
 }

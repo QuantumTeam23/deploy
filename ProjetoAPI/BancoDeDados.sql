@@ -53,23 +53,19 @@ CREATE TABLE Administradores(
 
 CREATE TABLE ParceiroCarteira (
 	parceiro_carteira_id UUID DEFAULT uuid_generate_v4() PRIMARY KEY NOT null,
-	parceiro_nome DESC100 null,
-	estabelecimento_nome DESC100 null,
 	id_parceiro UUID NOT null,
 	id_estabelecimento UUID NOT null,
 	FOREIGN KEY (id_parceiro) REFERENCES Parceiros(parceiro_id),
 	FOREIGN KEY (id_estabelecimento) REFERENCES Estabelecimentos(estabelecimento_id)
 );
 
-CREATE TABLE AcaoColeta (
-	acao_coleta_id UUID DEFAULT uuid_generate_v4() PRIMARY KEY NOT null,
-	acao_descricao DESC100 null,
+CREATE TABLE AcaoTransacoes (
+	acao_coleta_parceiro_id UUID DEFAULT uuid_generate_v4() PRIMARY KEY NOT null,
 	quantidade_oleo_coletado DESC100 null,
-	parceiro_nome DESC100 null,
-	estabelecimento_nome DESC100 null,
+	quantidade_moedas DESC100 null,
 	id_parceiro UUID NOT null,
 	id_estabelecimento UUID NOT null,
-	FOREIGN KEY (id_parceiro) REFERENCES Parceiros(parceiro_id),
+	FOREIGN KEY (id_parceiro) REFERENCES Parceiros(parceiro_id)
 	FOREIGN KEY (id_estabelecimento) REFERENCES Estabelecimentos(estabelecimento_id)
 );
 
@@ -88,30 +84,9 @@ CREATE TABLE AcoesAdministrativas (
 	FOREIGN KEY (id_estabelecimento) REFERENCES Estabelecimentos(estabelecimento_id)
 );
 
-CREATE TABLE Transacoes (
-	transacao_id UUID DEFAULT uuid_generate_v4() PRIMARY KEY NOT null,
-	estabelecimento_nome DESC100 null,
-	parceiro_nome DESC100 null,
-	administrador_nome DESC100 null,
-	transacao_tipo DESC100 null,
-	transacao_quantidade DESC100 null,
-	transacao_descricao DESC100 null,
-	id_administrador UUID null,
-	id_parceiro UUID null,
-	id_estabelecimento UUID null,
-	FOREIGN KEY (id_administrador) REFERENCES Administradores (administrador_id),
-	FOREIGN KEY (id_parceiro) REFERENCES Parceiros(parceiro_id),
-	FOREIGN KEY (id_estabelecimento) REFERENCES Estabelecimentos(estabelecimento_id)
-);
-
 CREATE TABLE Oleo (
 	oleo_id UUID DEFAULT uuid_generate_v4() PRIMARY KEY NOT null,
 	oleo_tipo DESC100 null,
 	oleo_nome DESC100 null,
 	oleo_preco DESC100 null
-);
-
-CREATE TABLE Creditos (
-	credito_id UUID DEFAULT uuid_generate_v4() PRIMARY KEY NOT null,
-	credito_valor VARCHAR(20) null
 );
