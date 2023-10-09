@@ -61,12 +61,12 @@ app.post('/login', login2);
 
 //CONEXÃO BANCO
 const DB = new Pool({
-    // connectionString: "postgres://qcqpwqkt:HzevF570ust-MGb_oXyBDCiQJDvo7--r@silly.db.elephantsql.com/qcqpwqkt"
-    user: 'postgres',       //user PostgreSQL padrão = postgres
-    host: 'localhost',
-    database: 'API',
-    password: 'General779568@',
-    port: 5432             //port PostgreSQL padrão = 5432
+    connectionString: "postgres://qcqpwqkt:HzevF570ust-MGb_oXyBDCiQJDvo7--r@silly.db.elephantsql.com/qcqpwqkt"
+    // user: 'postgres',       //user PostgreSQL padrão = postgres
+    // host: 'localhost',
+    // database: 'API',
+    // password: 'General779568@',
+    // port: 5432             //port PostgreSQL padrão = 5432
 });
 
 let connectionDB: PoolClient;
