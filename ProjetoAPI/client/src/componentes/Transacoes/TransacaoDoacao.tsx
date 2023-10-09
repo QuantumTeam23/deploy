@@ -18,7 +18,6 @@ function TransacaoDoacao() {
   const [volumeOleo, setVolumeOleo] = useState("");
   const [selectedEstabelecimento, setSelectedEstabelecimento] = useState("");
   const [estabelecimentos, setEstabelecimentos] = useState<Estabelecimento[]>([]);
-  const [selectedEstabelecimentoId, setSelectedEstabelecimentoId] = useState("");
 
   const navigate = useNavigate()
 
@@ -41,7 +40,6 @@ function TransacaoDoacao() {
     const idParceiro = localStorage.getItem("idParceiro");
     const quantidadeMoedas = parseFloat(volumeOleo) * 100
     const quantidadeMoedasString = quantidadeMoedas.toString()
-    selectEstabelecimentoId()
   
     // Exibir uma janela de confirmação usando Swal
     Swal.fire({
@@ -89,7 +87,7 @@ function TransacaoDoacao() {
             volumeOleo: parseFloat(volumeOleo),
             idParceiro: idParceiro,
             quantidadeMoedasString: quantidadeMoedasString,
-            idEstabelecimento: selectedEstabelecimentoId,
+            idEstabelecimento: selectEstabelecimentoId(),
           }),
         })
           .catch((error) => {
@@ -127,7 +125,7 @@ function TransacaoDoacao() {
   
     if (estabelecimentoSelecionado) {
       const idEstabelecimentoSelecionado = estabelecimentoSelecionado.estabelecimento_id;
-      setSelectedEstabelecimentoId(idEstabelecimentoSelecionado)
+      return idEstabelecimentoSelecionado
     } else {
       console.error("Estabelecimento selecionado não encontrado.");
     }

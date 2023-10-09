@@ -86,6 +86,7 @@ export default function VincularEstabelecimento({ open, onClose }: { open: boole
           timerProgressBar: true,
         });
       }, 100);
+      window.location.reload();
       }
     });
   }
