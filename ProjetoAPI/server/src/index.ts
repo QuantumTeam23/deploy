@@ -61,7 +61,7 @@ app.post('/login', login2);
 
 //CONEXÃO BANCO
 const DB = new Pool({
-    connectionString: "postgres://qcqpwqkt:HzevF570ust-MGb_oXyBDCiQJDvo7--r@silly.db.elephantsql.com/qcqpwqkt"
+    connectionString: "postgres://vvyjfscd:0gBAW71AqPpA3XqACE9AvHFTdX4TiVus@tuffi.db.elephantsql.com/vvyjfscd"
     // user: 'postgres',       //user PostgreSQL padrão = postgres
     // host: 'localhost',
     // database: 'API',
@@ -1102,14 +1102,17 @@ async function insertAcaoTransacoes(req, res) {
     const { idEstabelecimento, quantidadeMoedasString, volumeOleo, idParceiro } = req.body;
 
     try {
+        const currentDate = new Date();
+        const formattedDate = currentDate.toISOString();
+
         const SQL = `
-            INSERT INTO AcaoTransacoes("quantidade_oleo_coletado","quantidade_moedas", "id_parceiro", "id_estabelecimento") 
-            VALUES ('${volumeOleo}', '${quantidadeMoedasString}', '${idParceiro}', '${idEstabelecimento}')  
-        `
-        await connectionDB.query(SQL)
+            INSERT INTO AcaoTransacoes("quantidade_oleo_coletado", "quantidade_moedas", "acao_data", "id_parceiro", "id_estabelecimento") 
+            VALUES ('${volumeOleo}', '${quantidadeMoedasString}', '${formattedDate}', '${idParceiro}', '${idEstabelecimento}')  
+        `;
+        await connectionDB.query(SQL);
         res.send({ msg: "Acao Registrada" });
 
     } catch (error)  {
-        console.error(error)
+        console.error(error);
     }
 }
