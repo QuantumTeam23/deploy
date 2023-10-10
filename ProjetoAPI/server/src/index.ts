@@ -1115,7 +1115,6 @@ async function insertAcaoTransacoes(req, res) {
         `;
         await connectionDB.query(SQL);
         res.send({ msg: "Acao Registrada" });
-        console.log(SQL);
 
     } catch (error)  {
         console.error(error);
