@@ -1103,14 +1103,19 @@ async function insertAcaoTransacoes(req, res) {
 
     try {
         const currentDate = new Date();
-        const formattedDate = currentDate.toISOString();
+        const currentDateBR = currentDate.toLocaleString('pt-BR', {
+              timeZone: 'America/Sao_Paulo',
+        });
+
+        //const formattedDate = currentDateBR.toISOString();
 
         const SQL = `
             INSERT INTO AcaoTransacoes("quantidade_oleo_coletado", "quantidade_moedas", "acao_data", "id_parceiro", "id_estabelecimento") 
-            VALUES ('${volumeOleo}', '${quantidadeMoedasString}', '${formattedDate}', '${idParceiro}', '${idEstabelecimento}')  
+            VALUES ('${volumeOleo}', '${quantidadeMoedasString}', '${currentDateBR}', '${idParceiro}', '${idEstabelecimento}')  
         `;
         await connectionDB.query(SQL);
         res.send({ msg: "Acao Registrada" });
+        console.log(SQL);
 
     } catch (error)  {
         console.error(error);
