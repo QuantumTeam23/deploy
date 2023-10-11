@@ -25,6 +25,7 @@ app.post('/addEstabelecimento', cadastrarEstabelecimento);
 app.put('/editar-usuario-comum-estabelecimento/:idEstabelecimento', editarEstabelecimento);
 app.get('/listEstabelecimento', listAllEstabelecimento);
 app.get('/Estabelecimento/:idEstabelecimento', getEstabelecimentoById);
+app.get('/transacoes-estabelecimento/:idEstabelecimento', getTransacoesEstab);
 
 //PARCEIRO
 app.post('/addParceiro', cadastrarParceiro);
@@ -32,6 +33,7 @@ app.put('/editar-usuario-comum-parceiro/:idParceiro', editarParceiro);
 app.get('/listSemVinculo', listCarteiraSemVinculo);
 app.get('/Parceiro/:idParceiro', getParceiroById);
 app.get('/listCarteira/:idParceiro', listCarteiraDoParceiroLogado);
+app.get('/transacoes-parceiro/:idParceiro', getTransacoesParceiro);
 
 //ADMINISTRADOR
 app.get('/listAdministrador', listAllAdministrador);
@@ -55,6 +57,7 @@ app.post('/login', login2)
 
 app.post('/vincular', vincularCarteira)
 app.post('/insertAcaoTransacoes', insertAcaoTransacoes)
+app.get('/admTransacoes', getTransacoesAdm);
 
 //LOGIN
 app.post('/login', login2);
@@ -1103,11 +1106,10 @@ async function insertAcaoTransacoes(req, res) {
 
     try {
         const currentDate = new Date();
+
         const currentDateBR = currentDate.toLocaleString('pt-BR', {
               timeZone: 'America/Sao_Paulo',
         });
-
-        //const formattedDate = currentDateBR.toISOString();
 
         const SQL = `
             INSERT INTO AcaoTransacoes("quantidade_oleo_coletado", "quantidade_moedas", "acao_data", "id_parceiro", "id_estabelecimento") 
@@ -1118,5 +1120,64 @@ async function insertAcaoTransacoes(req, res) {
 
     } catch (error)  {
         console.error(error);
+    }
+}
+
+async function getTransacoesAdm(req , res){
+    try{
+        const SQL = `
+        SELECT * FROM AcaoTransacoes t 
+        JOIN Estabelecimentos e 
+        ON t.id_estabelecimento = e.estabelecimento_id
+        JOIN Parceiros p
+        ON t.id_parceiro = p.parceiro_id
+        ORDER BY acao_data DESC
+        `;
+        const resultado = await connectionDB.query(SQL);
+        res.send(resultado.rows);
+    } catch (error) {
+        console.error("Erro ao buscar transações:", error);
+        res.status(500).send({ msg: "Erro ao buscar transações." });
+    }
+}
+
+async function getTransacoesEstab(req, res) {
+    const id = req.params.idEstabelecimento;
+    try {
+
+        const SQL1 = `
+            SELECT * FROM
+                AcaoTransacoes
+            WHERE
+                id_estabelecimento = '${id}'
+            ORDER BY
+                acao_data
+            DESC
+        `
+        const resultado = await connectionDB.query(SQL1);
+        res.send(resultado.rows);
+    } catch (error) {
+        console.error("Erro ao buscar transações:", error);
+        res.status(500).send({ msg: "Erro ao buscar transações." });
+    }
+}
+
+async function getTransacoesParceiro(req, res) {
+    const id = req.params.idParceiro;
+    try {
+
+        const SQL1 = `
+            SELECT * FROM AcaoTransacoes t 
+            JOIN Estabelecimentos e 
+            ON t.id_estabelecimento = e.estabelecimento_id
+            WHERE t.id_parceiro = '${id}'
+            ORDER BY t.acao_data
+            DESC
+        `
+        const resultado = await connectionDB.query(SQL1);
+        res.send(resultado.rows);
+    } catch (error) {
+        console.error("Erro ao buscar transações:", error);
+        res.status(500).send({ msg: "Erro ao buscar transações." });
     }
 }
