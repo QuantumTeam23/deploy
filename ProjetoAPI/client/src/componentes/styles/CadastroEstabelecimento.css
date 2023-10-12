@@ -89,3 +89,23 @@
   max-height: 0;
   overflow: hidden;
 }
+
+.form-control-login-senha {
+    height: 100%;
+    background-color: rgb(221, 255, 218) !important;
+  }
+  
+  .campo-senha {
+    height: 38px;
+    margin-bottom: 34px;
+  }
+  
+  .eyeIconParceiro {
+    width: 20px;
+    height: 25px;
+    position: absolute;
+    right: 0.3vw;
+    top: 95%;
+    cursor: pointer;
+  }
+  
