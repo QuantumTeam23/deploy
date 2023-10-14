@@ -10,13 +10,28 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 export default function PainelEstabelecimentoExtrato() {
   const [saldoVisivel, setSaldoVisivel] = useState(false);
   const [saldoValor, setSaldoValor] = useState(0);
+  const [totalOleoDoado, settotalOleoDoado] = useState(0);
   const id = localStorage.getItem('idEstabelecimento');
+
+  useEffect(() => {
+    fetch(`http://localhost:3001/Parceiro/${id}`, {
+      method: "GET",
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        settotalOleoDoado(data[0].estabelecimento_volume_comercializado_mes);
+      })
+      .catch((error) => console.log(error));
+  }, []);
 
   //buscar dados do estabelecimento logado e setar o valor do saldo
   useEffect(() => {
     fetch(`http://localhost:3001/Estabelecimento/${id}`, {
       method: "GET",
-       headers: {
+      headers: {
         'Content-Type': 'application/json',
       },
     })
@@ -27,7 +42,7 @@ export default function PainelEstabelecimentoExtrato() {
       .catch((error) => console.log(error));
   }, []);
   //buscar dados do estabelecimento logado e setar o valor do saldo
-  
+
 
   const toggleSaldoVisivel = () => {
     setSaldoVisivel(!saldoVisivel);
@@ -39,7 +54,7 @@ export default function PainelEstabelecimentoExtrato() {
 
       <div className={styles.containerConteudo}>
         <div className={styles.topContent}>
-        <h1>
+          <h1>
             Saldo de crédito: {' '}
             <span className={styles.saldoValue}>
               {saldoVisivel ? (
@@ -52,12 +67,17 @@ export default function PainelEstabelecimentoExtrato() {
               ) : (
                 <VisibilityIcon onClick={toggleSaldoVisivel} style={{ cursor: 'pointer' }} />
               )}
-              
             </span>
           </h1>
         </div>
         <div className={styles.topContent}>
-        <h2>Extrato</h2>
+          <h1>
+            Total de óleo doado: {' '}
+            <span className={styles.saldoAtual}>{totalOleoDoado}</span> litros
+          </h1>
+        </div>
+        <div className={styles.topContent}>
+          <h2>Extrato</h2>
           <div className={styles.headerActions}>
             <MesAno />
           </div>

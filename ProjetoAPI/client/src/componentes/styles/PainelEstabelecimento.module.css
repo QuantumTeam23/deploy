@@ -82,7 +82,7 @@ select + label {
   display: flex;
   width: 98%;
   margin-bottom: 1.5vh;
-  margin-top: 5vh;
+  margin-top: 3vh;
 }
 
 .headerActions {
