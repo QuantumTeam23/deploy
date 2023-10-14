@@ -55,6 +55,7 @@ app.put('/transacaoParceiroEstab/:idParceiro', transacaoParceiroEstab);
 app.put('/transacaoGreenneatParc/:idParceiro', transacaoGreenneatParc);
 app.post('/login', login2)
 
+
 app.post('/vincular', vincularCarteira)
 app.post('/insertAcaoTransacoes', insertAcaoTransacoes)
 app.get('/admTransacoes', getTransacoesAdm);
@@ -974,21 +975,21 @@ async function getUsers(req, res) {
 
 async function transacaoParceiroEstab(req, res) {
     try {
-      const { volumeOleo, estabelecimento } = req.body;
-      const idParceiro = req.params.idParceiro;
-  
-      const quantidadeMoedas = parseFloat(volumeOleo) * 100;
-      const oleoFinal = parseFloat(volumeOleo)
+        const { volumeOleo, estabelecimento } = req.body;
+        const idParceiro = req.params.idParceiro;
 
-      const saldoParceiroQuery = `SELECT parceiro_saldo FROM Parceiros WHERE parceiro_id = '${idParceiro}'`;
-      const resultado = await connectionDB.query(saldoParceiroQuery);
-      const saldoParceiro = parseFloat(resultado.rows[0].parceiro_saldo);
+        const quantidadeMoedas = parseFloat(volumeOleo) * 100;
+        const oleoFinal = parseFloat(volumeOleo)
+
+        const saldoParceiroQuery = `SELECT parceiro_saldo FROM Parceiros WHERE parceiro_id = '${idParceiro}'`;
+        const resultado = await connectionDB.query(saldoParceiroQuery);
+        const saldoParceiro = parseFloat(resultado.rows[0].parceiro_saldo);
 
         if (saldoParceiro < quantidadeMoedas) {
             return res.status(500).json({ success: false, error: "Saldo do parceiro é igual a 0." });
         } else {
             // Atualizar o saldo do parceiro
-            const updateParceirosQuery = "UPDATE Parceiros SET parceiro_saldo = parceiro_saldo - "+quantidadeMoedas+", parceiro_volume_coleta_mes = parceiro_volume_coleta_mes + "+oleoFinal+" WHERE parceiro_id = '"+idParceiro+"'";
+            const updateParceirosQuery = "UPDATE Parceiros SET parceiro_saldo = parceiro_saldo - " + quantidadeMoedas + ", parceiro_volume_coleta_mes = parceiro_volume_coleta_mes + " + oleoFinal + " WHERE parceiro_id = '" + idParceiro + "'";
 
             await DB.query(updateParceirosQuery, (err, _) => {
                 if (err) {
@@ -999,7 +1000,7 @@ async function transacaoParceiroEstab(req, res) {
             });
 
             // Atualizar o saldo do estabelecimento
-            const updateEstabelecimentosQuery = "UPDATE Estabelecimentos SET estabelecimento_saldo = estabelecimento_saldo + "+quantidadeMoedas+", estabelecimento_volume_comercializado_mes = estabelecimento_volume_comercializado_mes + "+oleoFinal+" WHERE estabelecimento_razao_social = '"+estabelecimento+"'";
+            const updateEstabelecimentosQuery = "UPDATE Estabelecimentos SET estabelecimento_saldo = estabelecimento_saldo + " + quantidadeMoedas + ", estabelecimento_volume_comercializado_mes = estabelecimento_volume_comercializado_mes + " + oleoFinal + " WHERE estabelecimento_razao_social = '" + estabelecimento + "'";
 
             await DB.query(updateEstabelecimentosQuery, (err, _) => {
                 if (err) {
@@ -1009,21 +1010,21 @@ async function transacaoParceiroEstab(req, res) {
                 }
             });
         }
- 
+
     } catch (error) {
-      console.error("Erro ao processar a transação:", error);
+        console.error("Erro ao processar a transação:", error);
     }
 };
 
 async function transacaoGreenneatParc(req, res) {
     try {
-      const { valorCreditos } = req.body;
-      const idParceiro = req.params.idParceiro;
+        const { valorCreditos } = req.body;
+        const idParceiro = req.params.idParceiro;
 
-      console.log(typeof(valorCreditos))
-      console.log(valorCreditos)
-  
-      const updateParceirosQuery = "UPDATE Parceiros SET parceiro_saldo = parceiro_saldo + "+valorCreditos+" WHERE parceiro_id = '"+idParceiro+"'";
+        console.log(typeof (valorCreditos))
+        console.log(valorCreditos)
+
+        const updateParceirosQuery = "UPDATE Parceiros SET parceiro_saldo = parceiro_saldo + " + valorCreditos + " WHERE parceiro_id = '" + idParceiro + "'";
 
         await DB.query(updateParceirosQuery, (err, _) => {
             if (err) {
@@ -1033,7 +1034,7 @@ async function transacaoGreenneatParc(req, res) {
             }
         });
     } catch (error) {
-      console.error("Erro ao processar a transação:", error);
+        console.error("Erro ao processar a transação:", error);
     }
 };
 
@@ -1060,7 +1061,7 @@ async function listCarteiraSemVinculo(req, res) {
     }
 }
 
-async function listCarteiraDoParceiroLogado(req,res) {
+async function listCarteiraDoParceiroLogado(req, res) {
     console.log("Requisição de listagem de estabelecimentos vinculados à carteira do usuário.");
     const id = req.params.idParceiro;
     try {
@@ -1083,9 +1084,9 @@ async function listCarteiraDoParceiroLogado(req,res) {
     }
 }
 
-async function vincularCarteira(req,res) {
+async function vincularCarteira(req, res) {
     const { idParceiro, estabelecimentoId } = req.body;
-    try{
+    try {
         const SQL = `
             INSERT INTO
                 ParceiroCarteira("id_parceiro","id_estabelecimento")
@@ -1095,7 +1096,7 @@ async function vincularCarteira(req,res) {
         console.log("Estabelecimento vinculado à carteira!");
         res.send({ msg: "Estabelecimento vinculado à carteira!" });
 
-    }catch (error) {
+    } catch (error) {
         console.error("Erro ao vincular estabelecimento à carteira", error);
         res.status(500).send({ msg: "Erro ao vincular estabelecimento à carteira." })
     }
@@ -1108,7 +1109,7 @@ async function insertAcaoTransacoes(req, res) {
         const currentDate = new Date();
 
         const currentDateBR = currentDate.toLocaleString('pt-BR', {
-              timeZone: 'America/Sao_Paulo',
+            timeZone: 'America/Sao_Paulo',
         });
 
         const SQL = `
@@ -1118,13 +1119,13 @@ async function insertAcaoTransacoes(req, res) {
         await connectionDB.query(SQL);
         res.send({ msg: "Acao Registrada" });
 
-    } catch (error)  {
+    } catch (error) {
         console.error(error);
     }
 }
 
-async function getTransacoesAdm(req , res){
-    try{
+async function getTransacoesAdm(req, res) {
+    try {
         const SQL = `
         SELECT * FROM AcaoTransacoes t 
         JOIN Estabelecimentos e 

@@ -10,6 +10,9 @@ export default function PainelParceiroColetas() {
   const [totalOleoColetado, settotalOleoColetado] = useState(0);
   const id = localStorage.getItem('idParceiro');
 
+
+
+  
   useEffect(() => {
     fetch(`http://localhost:3001/Parceiro/${id}`, {
       method: "GET",

@@ -14,7 +14,7 @@ export default function PainelEstabelecimentoExtrato() {
   const id = localStorage.getItem('idEstabelecimento');
 
   useEffect(() => {
-    fetch(`http://localhost:3001/Parceiro/${id}`, {
+    fetch(`http://localhost:3001/Estabelecimento/${id}`, {
       method: "GET",
       headers: {
         'Content-Type': 'application/json',
