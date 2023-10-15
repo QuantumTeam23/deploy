@@ -1023,7 +1023,10 @@ async function transacaoGreenneatParc(req, res) {
         const idParceiro = req.params.idParceiro;
 
         const currentDate = new Date();
-        const formattedDate = currentDate.toISOString();
+        const horaAtual = currentDate.getHours();
+        const dateBR = currentDate.setHours(horaAtual - 3);
+        const novaData = new Date(dateBR);
+        const formattedDate = novaData.toISOString();
 
         console.log(typeof (valorCreditos))
         console.log(valorCreditos)
@@ -1121,7 +1124,10 @@ async function insertAcaoTransacoes(req, res) {
 
     try {
         const currentDate = new Date();
-        const formattedDate = currentDate.toISOString();
+        const horaAtual = currentDate.getHours();
+        const dateBR = currentDate.setHours(horaAtual - 3);
+        const novaData = new Date(dateBR);
+        const formattedDate = novaData.toISOString();
 
         const SQL = `
             INSERT INTO AcaoTransacoes("quantidade_oleo_coletado", "quantidade_moedas", "acao_data", "id_parceiro", "id_estabelecimento") 
