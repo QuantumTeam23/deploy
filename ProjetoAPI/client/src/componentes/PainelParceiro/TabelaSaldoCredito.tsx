@@ -7,17 +7,32 @@ import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 export function TabelaCreditoContratado() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 9;
+  const [contratacoes, setContratacoes] = useState([]);
+  const id = localStorage.getItem('idParceiro');
 
-  const data = Array.from({ length: 18 }, (_, index) => ({
-    valor: `Valor ${index + 1}`,
-    quantidade: `Quantidade ${index + 1}`,
-    data: `Data ${index + 1}`,
-  }));
+  useEffect(() => {
+    fetch(`http://localhost:3001/creditos-contratados/${id}`, {
+      method: "GET",
+       headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setContratacoes(data);
+      })
+      .catch((error) => console.log(error));
+  }, []);
+
+  const formatarData = (date: string) => {
+    const dataformat = new Date(date).toLocaleString('pt-BR');
+    return dataformat;
+  }
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
 
-  const currentData = data.slice(startIndex, endIndex);
+  const currentData = contratacoes.slice(startIndex, endIndex);
 
   const handlePrevPage = () => {
     if (currentPage > 1) {
@@ -26,7 +41,7 @@ export function TabelaCreditoContratado() {
   };
 
   const handleNextPage = () => {
-    if (endIndex < data.length) {
+    if (endIndex < contratacoes.length) {
       setCurrentPage(currentPage + 1);
     }
   };
@@ -36,23 +51,21 @@ export function TabelaCreditoContratado() {
       <table className={styles.table}>
         <thead>
           <tr>
-            <th>Valor</th>
-            <th>Quantidade</th>
-            <th>Data</th>
+            <th>Quantidade de Créditos</th>
+            <th>Data / Hora</th>
           </tr>
         </thead>
         <tbody>
-          {currentData.map((item, index) => (
+          {currentData.map((item: any, index: any) => (
             <tr key={index}>
-              <td>{item.valor}</td>
-              <td>{item.quantidade}</td>
-              <td>{item.data}</td>
+              <td>{item.valor_comprado}</td>
+              <td>{formatarData(item.acao_compra_data)}</td>
             </tr>
           ))}
         </tbody>
         <tfoot>
           <tr>
-            <td colSpan={3} style={{ textAlign: 'center' }}>
+            <td colSpan={2} style={{ textAlign: 'center' }}>
               <Button
                 startIcon={<KeyboardArrowLeftIcon />}
                 disabled={currentPage === 1}
@@ -66,11 +79,11 @@ export function TabelaCreditoContratado() {
               </Button>
               <Button
                 endIcon={<KeyboardArrowRightIcon />}
-                disabled={endIndex >= data.length}
+                disabled={endIndex >= contratacoes.length}
                 onClick={handleNextPage}
                 style={{
-                  color: endIndex < data.length ? 'lightblue' : 'lightgray',
-                  fontWeight: endIndex < data.length ? 'bold' : 'normal',
+                  color: endIndex < contratacoes.length ? 'lightblue' : 'lightgray',
+                  fontWeight: endIndex < contratacoes.length ? 'bold' : 'normal',
                 }}
               >
                 Próxima

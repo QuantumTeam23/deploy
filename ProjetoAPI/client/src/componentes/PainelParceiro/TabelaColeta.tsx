@@ -1,24 +1,40 @@
 import Button from '@mui/material/Button';
 import styles from '../styles/TabelaColetas.module.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 
 export default function TabelaColeta() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 9;
+  const id = localStorage.getItem('idParceiro');
+  const [transacoes , setTransacoes] = useState([]);
+  const index = [1, 2, 3, 4];
 
-  const data = Array.from({ length: 18 }, (_, index) => ({
-    estabelecimento: `Estabelecimento ${index + 1}`,
-    data: `Data ${index + 1}`,
-    endereco: `Endereço ${index + 1}`,
-    volume: `Volume médio ${index + 1}`,
-  }));
+  useEffect(() => {
+    fetch(`http://localhost:3001/transacoes-parceiro/${id}`, {
+      method: "GET",
+       headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setTransacoes(data);
+      })
+      .catch((error) => console.log(error));
+  }, []);
+
+  const formatarData = (date: string) => {
+    const dataformat = new Date(date).toLocaleString('pt-BR');
+    return dataformat;
+  }
+
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
 
-  const currentData = data.slice(startIndex, endIndex);
+  const currentData = transacoes.slice(startIndex, endIndex);
 
   const handlePrevPage = () => {
     if (currentPage > 1) {
@@ -27,7 +43,7 @@ export default function TabelaColeta() {
   };
 
   const handleNextPage = () => {
-    if (endIndex < data.length) {
+    if (endIndex < transacoes.length) {
       setCurrentPage(currentPage + 1);
     }
   };
@@ -44,12 +60,12 @@ export default function TabelaColeta() {
           </tr>
         </thead>
         <tbody>
-          {currentData.map((item, index) => (
+          {currentData.map((item: any, index: any) => (
             <tr key={index}>
-              <td>{item.estabelecimento}</td>
-              <td>{item.data}</td>
-              <td>{item.endereco}</td>
-              <td>{item.volume}</td>
+              <td>{item.estabelecimento_razao_social}</td>
+              <td>{formatarData(item.acao_data)}</td>
+              <td>{item.estabelecimento_cidade}</td>
+              <td>{item.quantidade_oleo_coletado} litros</td>
             </tr>
           ))}
         </tbody>
@@ -69,11 +85,11 @@ export default function TabelaColeta() {
               </Button>
               <Button
                 endIcon={<KeyboardArrowRightIcon />}
-                disabled={endIndex >= data.length}
+                disabled={endIndex >= transacoes.length}
                 onClick={handleNextPage}
                 style={{
-                  color: endIndex < data.length ? 'lightblue' : 'lightgray', // Alterado para cinza claro quando desativado
-                  fontWeight: endIndex < data.length ? 'bold' : 'normal',
+                  color: endIndex < transacoes.length ? 'lightblue' : 'lightgray', // Alterado para cinza claro quando desativado
+                  fontWeight: endIndex < transacoes.length ? 'bold' : 'normal',
                 }}
               >
                 Próxima

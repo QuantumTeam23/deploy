@@ -34,6 +34,7 @@ app.get('/listSemVinculo', listCarteiraSemVinculo);
 app.get('/Parceiro/:idParceiro', getParceiroById);
 app.get('/listCarteira/:idParceiro', listCarteiraDoParceiroLogado);
 app.get('/transacoes-parceiro/:idParceiro', getTransacoesParceiro);
+app.get('/creditos-contratados/:idParceiro', getCreditosContratadosParceiro);
 
 //ADMINISTRADOR
 app.get('/listAdministrador', listAllAdministrador);
@@ -1021,16 +1022,29 @@ async function transacaoGreenneatParc(req, res) {
         const { valorCreditos } = req.body;
         const idParceiro = req.params.idParceiro;
 
+        const currentDate = new Date();
+        const formattedDate = currentDate.toISOString();
+
         console.log(typeof (valorCreditos))
         console.log(valorCreditos)
 
         const updateParceirosQuery = "UPDATE Parceiros SET parceiro_saldo = parceiro_saldo + " + valorCreditos + " WHERE parceiro_id = '" + idParceiro + "'";
-
+        const insertTransacoesQuery = `
+        INSERT INTO AcaoTransacaoCompra ("valor_comprado", "acao_compra_data", "id_parceiro") 
+        VALUES ('${valorCreditos}', '${formattedDate}','${idParceiro}')  
+        `
         await DB.query(updateParceirosQuery, (err, _) => {
             if (err) {
                 console.log(err);
             } else {
                 console.log('Editado Parceiro!');
+            }
+        });
+        await DB.query(insertTransacoesQuery, (err, _) => {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log('Dados da compra registrados!');
             }
         });
     } catch (error) {
@@ -1107,14 +1121,11 @@ async function insertAcaoTransacoes(req, res) {
 
     try {
         const currentDate = new Date();
-
-        const currentDateBR = currentDate.toLocaleString('pt-BR', {
-            timeZone: 'America/Sao_Paulo',
-        });
+        const formattedDate = currentDate.toISOString();
 
         const SQL = `
             INSERT INTO AcaoTransacoes("quantidade_oleo_coletado", "quantidade_moedas", "acao_data", "id_parceiro", "id_estabelecimento") 
-            VALUES ('${volumeOleo}', '${quantidadeMoedasString}', '${currentDateBR}', '${idParceiro}', '${idEstabelecimento}')  
+            VALUES ('${volumeOleo}', '${quantidadeMoedasString}', '${formattedDate}', '${idParceiro}', '${idEstabelecimento}')  
         `;
         await connectionDB.query(SQL);
         res.send({ msg: "Acao Registrada" });
@@ -1180,5 +1191,23 @@ async function getTransacoesParceiro(req, res) {
     } catch (error) {
         console.error("Erro ao buscar transações:", error);
         res.status(500).send({ msg: "Erro ao buscar transações." });
+    }
+}
+
+async function getCreditosContratadosParceiro(req, res) {
+    const id = req.params.idParceiro;
+    try {
+
+        const SQL1 = `
+            SELECT * FROM AcaoTransacaoCompra
+            WHERE id_parceiro = '${id}'
+            ORDER BY acao_compra_data
+            DESC
+        `
+        const resultado = await connectionDB.query(SQL1);
+        res.send(resultado.rows);
+    } catch (error) {
+        console.error("Erro ao buscar histórico:", error);
+        res.status(500).send({ msg: "Erro ao buscar histórico de crédito comprado." });
     }
 }
