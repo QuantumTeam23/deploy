@@ -60,7 +60,7 @@ CREATE TABLE ParceiroCarteira (
 );
 
 CREATE TABLE AcaoTransacoes (
-	acao_coleta_parceiro_id UUID DEFAULT uuid_generate_v4() PRIMARY KEY NOT NULL,
+	acao_transacao_id UUID DEFAULT uuid_generate_v4() PRIMARY KEY NOT NULL,
 	quantidade_oleo_coletado DESC100 NULL,
 	quantidade_moedas DESC100 NULL,
 	acao_data TIMESTAMP DEFAULT CURRENT_TIMESTAMP NULL,
@@ -68,6 +68,14 @@ CREATE TABLE AcaoTransacoes (
 	id_estabelecimento UUID NOT NULL,
 	FOREIGN KEY (id_parceiro) REFERENCES Parceiros(parceiro_id),
 	FOREIGN KEY (id_estabelecimento) REFERENCES Estabelecimentos(estabelecimento_id)
+);
+
+CREATE TABLE AcaoTransacaoCompra (
+	acao_transacao_compra_id UUID DEFAULT uuid_generate_v4() PRIMARY KEY NOT NULL,
+	valor_comprado DESC100 NULL,
+	acao_compra_data TIMESTAMP DEFAULT CURRENT_TIMESTAMP NULL,
+	id_parceiro UUID NOT NULL,
+	FOREIGN KEY (id_parceiro) REFERENCES Parceiros(parceiro_id)
 );
 
 CREATE TABLE AcoesAdministrativas (
