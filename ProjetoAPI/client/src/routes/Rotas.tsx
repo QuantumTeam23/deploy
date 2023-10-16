@@ -18,6 +18,7 @@ import PainelEstabelecimentoExtrato from "../componentes/PainelEstabelecimento/P
 import PainelParceiroSaldoCredito from "../componentes/PainelParceiro/PainelSaldoCredito";
 import TransacaoCompraCredito from "../componentes/Transacoes/TransacaoCompraCredito";
 import TransacaoDoacao from "../componentes/Transacoes/TransacaoDoacao";
+import ComparadorPrecos from "../componentes/ComparadorDePrecos/ComparadorDePreco";
 
 export const Rotas = () => {
     return (
@@ -138,6 +139,15 @@ export const Rotas = () => {
                         <PrivateRouteCredito>
                             <TransacaoDoacao />
                         </PrivateRouteCredito>
+                    }
+                />
+
+                {/* ROTA Comparador de Preços*/}
+                <Route path="/comparador-precos"
+                    element={
+                
+                            <ComparadorPrecos/>
+ 
                     }
                 />
 
