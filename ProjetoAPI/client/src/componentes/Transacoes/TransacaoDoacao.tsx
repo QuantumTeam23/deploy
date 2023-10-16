@@ -67,32 +67,22 @@ function TransacaoDoacao() {
         .then((response) => {
           if (response.status === 500) {
             Swal.fire("Erro", "Saldo Insuficiente para realizar essa transação.", "error");
-            throw new Error("Saldo do parceiro é igual a 0.00.");
+          } if (response.status === 501) {
+            fetch("http://localhost:3001/insertAcaoTransacoes", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                volumeOleo: parseFloat(volumeOleo),
+                idParceiro: idParceiro,
+                quantidadeMoedasString: quantidadeMoedasString,
+                idEstabelecimento: selectEstabelecimentoId(),
+              }),
+            })
           }
           return response.json();
         })
-        .then((data) => {
-          if (data.success) {
-            Swal.fire("Sucesso", "Transação concluída com sucesso.", "success");
-          } else {
-            console.log("Erro", "Ocorreu um erro ao processar a transação.", "error");
-          }
-        })
-        fetch("http://localhost:3001/insertAcaoTransacoes", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            volumeOleo: parseFloat(volumeOleo),
-            idParceiro: idParceiro,
-            quantidadeMoedasString: quantidadeMoedasString,
-            idEstabelecimento: selectEstabelecimentoId(),
-          }),
-        })
-          .catch((error) => {
-            console.error("Erro ao enviar os dados:", error);
-          });
           setVolumeOleo("");
           setSelectedEstabelecimento("");
           msgSucesso()

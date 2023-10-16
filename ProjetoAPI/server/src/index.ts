@@ -1010,6 +1010,8 @@ async function transacaoParceiroEstab(req, res) {
                     console.log('Editado Estabelecimento!');
                 }
             });
+
+            return res.status(501).json({ success: true });
         }
 
     } catch (error) {
