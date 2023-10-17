@@ -1148,24 +1148,6 @@ async function insertAcaoTransacoes(req, res) {
     }
 }
 
-async function getTransacoesAdm(req, res) {
-    try {
-        const SQL = `
-        SELECT * FROM AcaoTransacoes t 
-        JOIN Estabelecimentos e 
-        ON t.id_estabelecimento = e.estabelecimento_id
-        JOIN Parceiros p
-        ON t.id_parceiro = p.parceiro_id
-        ORDER BY acao_data DESC
-        `;
-        const resultado = await connectionDB.query(SQL);
-        res.send(resultado.rows);
-    } catch (error) {
-        console.error("Erro ao buscar transações:", error);
-        res.status(500).send({ msg: "Erro ao buscar transações." });
-    }
-}
-
 async function getAllTransAdm(req, res) {
     try {
         const SQL1 = `
