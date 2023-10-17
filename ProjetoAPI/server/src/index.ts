@@ -30,7 +30,7 @@ app.get('/transacoes-estabelecimento/:idEstabelecimento', getTransacoesEstab);
 //PARCEIRO
 app.post('/addParceiro', cadastrarParceiro);
 app.put('/editar-usuario-comum-parceiro/:idParceiro', editarParceiro);
-app.get('/listSemVinculo', listCarteiraSemVinculo);
+app.get('/listSemVinculo/:idParceiro', listCarteiraSemVinculo);
 app.get('/Parceiro/:idParceiro', getParceiroById);
 app.get('/listCarteira/:idParceiro', listCarteiraDoParceiroLogado);
 app.get('/transacoes-parceiro/:idParceiro', getTransacoesParceiro);
@@ -59,7 +59,7 @@ app.post('/login', login2)
 
 app.post('/vincular', vincularCarteira)
 app.post('/insertAcaoTransacoes', insertAcaoTransacoes)
-app.get('/admTransacoes', getTransacoesAdm);
+app.get('/admTransacoes', getAllTransAdm);
 
 //LOGIN
 app.post('/login', login2);
@@ -966,7 +966,9 @@ async function getUsers(req, res) {
             }
         }
 
-        res.send(users);
+        const usersPorId = users.sort((a, b) => (a.id < b.id) ? 1 : -1)
+
+        res.send(usersPorId);
     } catch (error) {
         console.error("Erro ao listar usuários", error);
         res.status(500).send({ msg: "Erro ao listar usuários" });
@@ -1057,20 +1059,22 @@ async function transacaoGreenneatParc(req, res) {
     }
 };
 
+
 async function listCarteiraSemVinculo(req, res) {
-    console.log("Requisição de listagem de estabelecimentos sem vínculo em carteira de parceiros.");
+    console.log("Requisição de listagem de estabelecimentos sem vínculo na carteira do parceiro.");
+    const id = req.params.idParceiro;
     try {
         const SQL = `
     SELECT 
         * 
     FROM
         Estabelecimentos
-    LEFT OUTER JOIN
-        ParceiroCarteira
-    ON 
-        Estabelecimentos.estabelecimento_id = ParceiroCarteira.id_estabelecimento
     WHERE
-        ParceiroCarteira.parceiro_carteira_id IS NULL
+        estabelecimento_id
+    NOT IN
+        (
+            SELECT id_estabelecimento FROM ParceiroCarteira WHERE id_parceiro = '${id}'
+        )
     `
         const resultado = await connectionDB.query(SQL);
         res.send(resultado.rows);
@@ -1079,6 +1083,7 @@ async function listCarteiraSemVinculo(req, res) {
         res.status(500).send({ msg: "Erro ao listar estabelecimentos." });
     }
 }
+
 
 async function listCarteiraDoParceiroLogado(req, res) {
     console.log("Requisição de listagem de estabelecimentos vinculados à carteira do usuário.");
@@ -1159,6 +1164,56 @@ async function getTransacoesAdm(req, res) {
         console.error("Erro ao buscar transações:", error);
         res.status(500).send({ msg: "Erro ao buscar transações." });
     }
+}
+
+async function getAllTransAdm(req, res) {
+    try {
+        const SQL1 = `
+    SELECT 
+        *
+    FROM 
+        AcaoTransacoes t
+    JOIN 
+        Estabelecimentos e 
+    ON 
+        t.id_estabelecimento = e.estabelecimento_id
+    JOIN 
+        Parceiros p
+    ON 
+        t.id_parceiro = p.parceiro_id
+    `
+        const SQL2 = `
+    SELECT
+        *
+    FROM 
+        AcaoTransacaoCompra c
+    JOIN 
+        Parceiros p
+    ON 
+        c.id_parceiro = p.parceiro_id
+    `
+        const coletas = await connectionDB.query(SQL1);
+        const comprasCreditos = await connectionDB.query(SQL2);
+
+        const transacoes = new Array;
+        for (let i = 0; i <= coletas.rowCount; i++) {
+            if (typeof (coletas.rows[i]) !== "undefined") {
+                transacoes.push({tipo: "Coleta de óleo", data: coletas.rows[i].acao_data , creditos: coletas.rows[i].quantidade_moedas , estabelecimento: coletas.rows[i].estabelecimento_razao_social , parceiro: coletas.rows[i].parceiro_razao_social })
+            }
+        }
+        for (let i = 0; i <=comprasCreditos.rowCount; i++) {
+            if (typeof (comprasCreditos.rows[i]) !== "undefined") {
+                transacoes.push({tipo: "Compra de créditos GreenNeat" , data: comprasCreditos.rows[i].acao_compra_data, creditos: comprasCreditos.rows[i].valor_comprado , estabelecimento: "N/A", parceiro: comprasCreditos.rows[i].parceiro_razao_social })
+            }
+        }
+        const transacoesPorData = transacoes.sort((a, b) => (a.data < b.data) ? 1 : -1)
+
+        res.send(transacoesPorData);
+    } catch (error) {
+        console.error("Erro ao listar transações", error);
+        res.status(500).send({ msg: "Erro ao listar transações." });
+    }
+
 }
 
 async function getTransacoesEstab(req, res) {

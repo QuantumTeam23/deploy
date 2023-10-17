@@ -12,14 +12,14 @@ import { resourceLimits } from 'worker_threads';
 
 
 export default function VincularEstabelecimento({ open, onClose }: { open: boolean; onClose: () => void }) {
-
+  const id = localStorage.getItem('idParceiro');
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 9;
 
 
   const [estabData, setEstabData] = useState([]);
   useEffect(() => {
-    fetch("http://localhost:3001/listSemVinculo", {
+    fetch(`http://localhost:3001/listSemVinculo/${id}`, {
       method: "GET",
        headers: {
         'Content-Type': 'application/json',

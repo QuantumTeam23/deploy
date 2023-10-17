@@ -52,21 +52,21 @@ export default function TabelasHistTransacoes() {
       <table className={styles.table}>
         <thead>
           <tr>
-            <th>Descrição</th>
+            <th>Tipo</th>
             <th>Data / Hora</th>
             <th>Créditos</th>
-            <th>Estabelecimento</th>
             <th>Parceiro</th>
+            <th>Estabelecimento</th>
           </tr>
         </thead>
         <tbody>
           {currentData.map((item: any, index: number) => (
             <tr key={index}>
-              <td>Coleta de {item.quantidade_oleo_coletado} litros de óleo</td>
-              <td>{formatarData(item.acao_data)}</td>
-              <td>{item.quantidade_moedas}</td>
-              <td>{item.estabelecimento_razao_social}</td>
-              <td>{item.parceiro_razao_social}</td>
+              <td>{item.tipo}</td>
+              <td>{formatarData(item.data)}</td>
+              <td>{item.creditos}</td>
+              <td>{item.parceiro}</td>
+              <td>{item.estabelecimento}</td>
             </tr>
           ))}
         </tbody>
