@@ -57,24 +57,35 @@ export default function TabelaPrecoRegiao() {
         const virgemInput = document.getElementById('virgem') as HTMLInputElement;
         const usadoInput = document.getElementById('usado') as HTMLInputElement;
         const creditosInput = document.getElementById('creditos') as HTMLInputElement;
-
-        const updatedData = data.map((d) =>
-          d === item
-            ? {
-                ...d,
-                oleoVirgem: parseFloat(virgemInput.value),
-                oleoUsado: parseFloat(usadoInput.value),
-                creditosGreeneat: parseFloat(creditosInput.value),
-              }
-            : d
-        );
-
-        setData(updatedData);
-
-        Swal.fire('Salvo!', 'As informações foram atualizadas.', 'success');
+  
+        const virgemValue = parseFloat(virgemInput.value);
+        const usadoValue = parseFloat(usadoInput.value);
+        const creditosValue = parseFloat(creditosInput.value);
+  
+        if (virgemValue !== 0 && usadoValue !== 0 && creditosValue !== 0) {
+          const updatedData = data.map((d) =>
+            d === item
+              ? {
+                  ...d,
+                  oleoVirgem: virgemValue,
+                  oleoUsado: usadoValue,
+                  creditosGreeneat: creditosValue,
+                }
+              : d
+          );
+  
+          setData(updatedData);
+  
+          Swal.fire('Salvo!', 'As informações foram atualizadas.', 'success');
+        } else {
+          Swal.fire('Erro!', 'Por favor, insira valores válidos maiores que zero.', 'error')
+            .then(() => handleEdit(item)); // Chama handleEdit novamente se os valores não são válidos
+        }
       },
     });
   };
+  
+  
   
   
 
