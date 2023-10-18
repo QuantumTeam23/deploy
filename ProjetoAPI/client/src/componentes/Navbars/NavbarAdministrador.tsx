@@ -66,7 +66,7 @@ function NavbarAdministrador() {
                     </ul>
                     <ul className="navbar-nav ms-auto" style={{ alignItems: 'center'}}>
                         <li className="nav-item">
-                            <a className="nav-link text-white" href="#" style={{ marginRight: '0,5vw' }}>Processos</a>
+                            <a className="nav-link text-white" href="/painel-administrador-preco-regiao" style={{ marginRight: '0,5vw' }}>Preço por Região</a>
                         </li>
                         <li className="nav-item">
                             <a className="nav-link text-white" href="/painel-administrador-transacoes" style={{ marginRight: '0,5vw' }}>Transações</a>

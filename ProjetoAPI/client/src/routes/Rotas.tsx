@@ -18,6 +18,7 @@ import PainelEstabelecimentoExtrato from "../componentes/PainelEstabelecimento/P
 import PainelParceiroSaldoCredito from "../componentes/PainelParceiro/PainelSaldoCredito";
 import TransacaoCompraCredito from "../componentes/Transacoes/TransacaoCompraCredito";
 import TransacaoDoacao from "../componentes/Transacoes/TransacaoDoacao";
+import PainelPrecoPorRegiao from "../componentes/PainelAdmin/PainelPrecoRegiao";
 
 export const Rotas = () => {
     return (
@@ -38,6 +39,15 @@ export const Rotas = () => {
                     element={
                         <PrivateRouteAdmin>
                             <HistoricoTransacoes />
+                        </PrivateRouteAdmin>
+                    }
+                />
+
+                {/* ROTA ADM */}
+                <Route path="/painel-administrador-preco-regiao"
+                    element={
+                        <PrivateRouteAdmin>
+                            <PainelPrecoPorRegiao />
                         </PrivateRouteAdmin>
                     }
                 />
