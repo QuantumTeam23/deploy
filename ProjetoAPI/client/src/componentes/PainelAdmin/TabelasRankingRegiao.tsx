@@ -27,14 +27,15 @@ const generateRandomData = (regioes: string[]): Data[] => {
     QtdOleo: Math.floor(Math.random() * 10000) + 1,
   }));
 };
-
 export const TabelaParceiros: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const itemsPerPage: number = 9;
   const initialData: Data[] = generateRandomData(uniqueRegioes);
 
-  // Ordenar dados com base na quantidade de créditos em ordem decrescente
-  const [data, setData] = useState<Data[]>(initialData.sort((a, b) => b.QtdCreditoCedido - a.QtdCreditoCedido));
+  // Ordenar dados com base na quantidade de créditos cedidos em ordem decrescente
+  const [data, setData] = useState<Data[]>(
+    initialData.sort((a, b) => b.QtdCreditoCedido - a.QtdCreditoCedido)
+  );
 
   // Reindexar os dados para que a contagem comece do 1º lugar
   const indexedData = data.map((parceiro, index) => ({
@@ -74,7 +75,7 @@ export const TabelaParceiros: React.FC = () => {
             <tr key={index}>
               <td>{item.numRanking}</td>
               <td>{item.nomeRegiao}</td>
-              <td>{item.QtdCreditoRecebido}</td>
+              <td>{item.QtdCreditoCedido}</td>
             </tr>
           ))}
         </tbody>
@@ -114,19 +115,19 @@ export const TabelaParceiros: React.FC = () => {
   );
 };
 
-
-
 export const TabelaEstabelecimento: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const itemsPerPage: number = 9;
   const initialData: Data[] = generateRandomData(uniqueRegioes);
 
-  // Ordenar dados com base na quantidade de créditos em ordem decrescente
-  const [data, setData] = useState<Data[]>(initialData.sort((a, b) => b.QtdCreditoCedido - a.QtdCreditoCedido));
+  // Ordenar dados com base na quantidade de créditos cedidos em ordem decrescente
+  const [data, setData] = useState<Data[]>(
+    initialData.sort((a, b) => b.QtdCreditoCedido - a.QtdCreditoCedido)
+  );
 
   // Reindexar os dados para que a contagem comece do 1º lugar
-  const indexedData = data.map((estabelecimento, index) => ({
-    ...estabelecimento,
+  const indexedData = data.map((parceiro, index) => ({
+    ...parceiro,
     numRanking: `${index + 1}º`,
   }));
 
@@ -148,13 +149,13 @@ export const TabelaEstabelecimento: React.FC = () => {
 
   return (
     <>
-      <h2>Ranking de Estabelecimentos por Região</h2>
+      <h2>Ranking de Parceiros por Região</h2>
       <table className={styles.table}>
         <thead>
           <tr>
             <th>Nº</th>
             <th>Região</th>
-            <th>Créditos Recebidos</th>
+            <th>Créditos Cedidos</th>
           </tr>
         </thead>
         <tbody>
@@ -162,7 +163,7 @@ export const TabelaEstabelecimento: React.FC = () => {
             <tr key={index}>
               <td>{item.numRanking}</td>
               <td>{item.nomeRegiao}</td>
-              <td>{item.QtdCreditoRecebido}</td>
+              <td>{item.QtdCreditoCedido}</td>
             </tr>
           ))}
         </tbody>
@@ -201,7 +202,6 @@ export const TabelaEstabelecimento: React.FC = () => {
     </>
   );
 };
-
 
 
 export const TabelaMelhorPerformance: React.FC = () => {
@@ -209,12 +209,14 @@ export const TabelaMelhorPerformance: React.FC = () => {
   const itemsPerPage: number = 9;
   const initialData: Data[] = generateRandomData(uniqueRegioes);
 
-  // Ordenar dados com base na quantidade de créditos em ordem decrescente
-  const [data, setData] = useState<Data[]>(initialData.sort((a, b) => b.QtdCreditoCedido - a.QtdCreditoCedido));
+  // Ordenar dados com base na quantidade de créditos recebidos em ordem decrescente
+  const [data, setData] = useState<Data[]>(
+    initialData.sort((a, b) => b.QtdOleo - a.QtdOleo)
+  );
 
   // Reindexar os dados para que a contagem comece do 1º lugar
-  const indexedData = data.map((estabelecimento, index) => ({
-    ...estabelecimento,
+  const indexedData = data.map((parceiro, index) => ({
+    ...parceiro,
     numRanking: `${index + 1}º`,
   }));
 
@@ -236,13 +238,13 @@ export const TabelaMelhorPerformance: React.FC = () => {
 
   return (
     <>
-      <h2>Ranking de Estabelecimento com Melhor Descarte por Região</h2>
+      <h2>Ranking de Parceiros por Região</h2>
       <table className={styles.table}>
         <thead>
           <tr>
             <th>Nº</th>
             <th>Região</th>
-            <th>Óleo (Em Litros)</th>
+            <th>Créditos Cedidos</th>
           </tr>
         </thead>
         <tbody>
@@ -250,7 +252,7 @@ export const TabelaMelhorPerformance: React.FC = () => {
             <tr key={index}>
               <td>{item.numRanking}</td>
               <td>{item.nomeRegiao}</td>
-              <td>{item.QtdCreditoRecebido}</td>
+              <td>{item.QtdOleo}</td>
             </tr>
           ))}
         </tbody>
