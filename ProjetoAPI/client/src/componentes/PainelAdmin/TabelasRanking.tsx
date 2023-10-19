@@ -5,37 +5,39 @@ import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import styles from '../styles/TabelasRaking.module.css'
 
 
-const regioes: string[] = ['Norte', 'Nordeste', 'Centro-Oeste', 'Sudeste', 'Sul'];
 
-type Data = {
-  numRanking: string;
-  nomeRegiao: string;
-  nomeParceiro: string;
-  nomeEstabelecimento: string;
-  QtdCredito: number;
-  QtdVolume: number;
-};
-
-const generateRandomData = (): Data[] => {
-  return Array.from({ length: 18 }, (_, index) => ({
-    numRanking: `${index + 1}º`,
-    nomeParceiro: `Parceiro ${index + 1}`,
-    nomeEstabelecimento: `Estebelecimento ${index + 1}`,
-    nomeRegiao: regioes[Math.floor(Math.random() * regioes.length)],
-    QtdCredito: Math.floor(Math.random() * 10000) + 1,
-    QtdVolume: Math.floor(Math.random() * 10000) + 1,
-  }));
-};
 
 export const TabelaParceirosRanking: React.FC = () => {
+  const regioes: string[] = ['Norte', 'Nordeste', 'Centro-Oeste', 'Sudeste', 'Sul'];
+
+
+  type Data = {
+    numRanking: string;
+    nomeRegiao: string;
+    nomeParceiro: string;
+    nomeEstabelecimento: string;
+    QtdCredito: number;
+    QtdVolume: number;
+  };
+
   const [currentPage, setCurrentPage] = useState<number>(1);
   const itemsPerPage: number = 9;
+
+  const generateRandomData = () => {
+    return Array.from({ length: 18 }, (_, index) => ({
+      numRanking: `${index + 1}º`,
+      nomeParceiro: `Parceiro ${index + 1}`,
+      nomeEstabelecimento: `Estabelecimento ${index + 1}`,
+      nomeRegiao: regioes[Math.floor(Math.random() * regioes.length)],
+      QtdCredito: Math.floor(Math.random() * 10000) + 1,
+      QtdVolume: Math.floor(Math.random() * 10000) + 1,
+    }));
+  };
+
   const initialData: Data[] = generateRandomData();
 
-  // Ordenar dados com base na quantidade de créditos em ordem decrescente
   const [data, setData] = useState<Data[]>(initialData.sort((a, b) => b.QtdCredito - a.QtdCredito));
 
-  // Reindexar os dados para que a contagem comece do 1º lugar
   const indexedData = data.map((usuario, index) => ({
     ...usuario,
     numRanking: `${index + 1}º`,
@@ -107,25 +109,40 @@ export const TabelaParceirosRanking: React.FC = () => {
           </tr>
         </tfoot>
       </table>
+      <p>ㅤ</p>
     </>
   );
 };
-
-
-
-
-
 export const TabelaEstabelecimentosRanking: React.FC = () => {
+  const regioes: string[] = ['Norte', 'Nordeste', 'Centro-Oeste', 'Sudeste', 'Sul'];
+
+  type Data = {
+    numRanking: string;
+    nomeRegiao: string;
+    nomeParceiro: string;
+    nomeEstabelecimento: string;
+    QtdVolume: number;
+  };
+
   const [currentPage, setCurrentPage] = useState<number>(1);
   const itemsPerPage: number = 9;
+
+  const generateRandomData = () => {
+    return Array.from({ length: 18 }, (_, index) => ({
+      numRanking: `${index + 1}º`,
+      nomeParceiro: `Parceiro ${index + 1}`,
+      nomeEstabelecimento: `Estabelecimento ${index + 1}`,
+      nomeRegiao: regioes[Math.floor(Math.random() * regioes.length)],
+      QtdVolume: Math.floor(Math.random() * 10000) + 1,
+    })).sort((a, b) => b.QtdVolume - a.QtdVolume); // Sort the data here.
+  };
+
   const initialData: Data[] = generateRandomData();
 
-  // Ordenar dados com base na quantidade de créditos em ordem decrescente
-  const [data, setData] = useState<Data[]>(initialData.sort((a, b) => b.QtdCredito - a.QtdCredito));
+  const [data, setData] = useState<Data[]>(initialData);
 
-  // Reindexar os dados para que a contagem comece do 1º lugar
-  const indexedData = data.map((parceiro, index) => ({
-    ...parceiro,
+  const indexedData = data.map((estabelecimento, index) => ({
+    ...estabelecimento,
     numRanking: `${index + 1}º`,
   }));
 
