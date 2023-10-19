@@ -19,6 +19,8 @@ import PainelParceiroSaldoCredito from "../componentes/PainelParceiro/PainelSald
 import TransacaoCompraCredito from "../componentes/Transacoes/TransacaoCompraCredito";
 import TransacaoDoacao from "../componentes/Transacoes/TransacaoDoacao";
 import PainelPrecoPorRegiao from "../componentes/PainelAdmin/PainelPrecoRegiao";
+import DashboardRankingRegiao from "../componentes/PainelAdmin/DashboardRankingRegiao";
+import DashboardRanking from "../componentes/PainelAdmin/DashboardRanking";
 
 export const Rotas = () => {
     return (
@@ -48,6 +50,24 @@ export const Rotas = () => {
                     element={
                         <PrivateRouteAdmin>
                             <PainelPrecoPorRegiao />
+                        </PrivateRouteAdmin>
+                    }
+                />
+
+                  {/* ROTA ADM */}
+                  <Route path="/painel-administrador-dashboard-ranking-regiao"
+                    element={
+                        <PrivateRouteAdmin>
+                            <DashboardRankingRegiao />
+                        </PrivateRouteAdmin>
+                    }
+                />
+
+                {/* ROTA ADM */}
+                <Route path="/painel-administrador-dashboard-ranking"
+                    element={
+                        <PrivateRouteAdmin>
+                            <DashboardRanking />
                         </PrivateRouteAdmin>
                     }
                 />

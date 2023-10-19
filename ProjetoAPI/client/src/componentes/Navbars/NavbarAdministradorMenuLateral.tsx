@@ -112,6 +112,12 @@ const MenuLateralAdministrador: React.FC = () => {
             <ListItemButton onClick={fecharMenu} component={Link} to="/painel-administrador-transacoes">
               <ListItemText primary="Histórico de Transações" />
             </ListItemButton>
+            <ListItemButton onClick={fecharMenu} component={Link} to="/painel-administrador-dashboard-ranking">
+              <ListItemText primary="Dashboard Ranking" />
+            </ListItemButton>
+            <ListItemButton onClick={fecharMenu} component={Link} to="/painel-administrador-dashboard-ranking-regiao">
+              <ListItemText primary="Dashboard Ranking por Região" />
+            </ListItemButton>
             <ListItemButton onClick={handleSair} component={Link} to="#">
               <ListItemText primary="Sair" />
             </ListItemButton>
