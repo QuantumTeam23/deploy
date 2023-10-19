@@ -155,7 +155,7 @@ export const TabelaEstabelecimento: React.FC = () => {
           <tr>
             <th>Nº</th>
             <th>Região</th>
-            <th>Créditos Cedidos</th>
+            <th>Créditos Recebidos</th>
           </tr>
         </thead>
         <tbody>
