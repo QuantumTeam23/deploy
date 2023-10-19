@@ -149,7 +149,7 @@ export const TabelaEstabelecimento: React.FC = () => {
 
   return (
     <>
-      <h2>Ranking de Parceiros por Região</h2>
+      <h2>Ranking de Estabelecimento por Região</h2>
       <table className={styles.table}>
         <thead>
           <tr>
@@ -238,13 +238,13 @@ export const TabelaMelhorPerformance: React.FC = () => {
 
   return (
     <>
-      <h2>Ranking de Parceiros por Região</h2>
+      <h2>Ranking de Estabelecimentos com Melhor Descarte</h2>
       <table className={styles.table}>
         <thead>
           <tr>
             <th>Nº</th>
             <th>Região</th>
-            <th>Créditos Cedidos</th>
+            <th>Óleo (Em Litros)</th>
           </tr>
         </thead>
         <tbody>
