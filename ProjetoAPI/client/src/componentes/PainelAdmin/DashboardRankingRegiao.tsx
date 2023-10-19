@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import Footer from '../Footer/Footer';
 import NavbarParceiro from '../Navbars/NavbarParceiro';
 import { TabelaParceiros, TabelaEstabelecimento, TabelaMelhorPerformance } from './TabelasRankingRegiao';
-import styles from '../styles/TabelasRaking.module.css';
+import stylesTable from '../styles/TabelasRaking.module.css';
+import styles from '../styles/PainelParceiro.module.css';
+
 import PieChart from './DashboardPizza';
 import NavbarAdministrador from '../Navbars/NavbarAdministrador';
 
@@ -21,7 +23,7 @@ export default function DashboardRankingRegiao() {
           <div className={styles.mapaContainer}>
           <PieChart />
           </div>
-          <div className={styles.tabsContainer}>
+          <div className={stylesTable.tabsContainer}>
             <button
               className={activeTab === 'parceiro' ? styles.activeTabButton : styles.tabButton}
               onClick={() => handleTabClick('parceiro')}
