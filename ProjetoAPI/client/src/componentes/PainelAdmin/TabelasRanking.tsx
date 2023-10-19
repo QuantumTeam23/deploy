@@ -195,6 +195,10 @@ export const TabelaEstabelecimentosRanking: React.FC = () => {
           </tr>
         </tfoot>
       </table>
+      <p>ㅤ</p>
+      <p>ㅤ</p>
+      <p>ㅤ</p>
+      <p>ㅤ</p>
     </>
   );
 };

@@ -107,18 +107,12 @@ export const TabelaParceiros: React.FC = () => {
           </tr>
         </tfoot>
       </table>
+      <p>ㅤ</p>
+      <p>ㅤ</p>
+      <p>ㅤ</p>
     </>
   );
 };
-
-
-
-
-
-
-
-
-
 
 
 
@@ -201,24 +195,12 @@ export const TabelaEstabelecimento: React.FC = () => {
           </tr>
         </tfoot>
       </table>
+      <p>ㅤ</p>
+      <p>ㅤ</p>
+      <p>ㅤ</p>
     </>
   );
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -301,6 +283,9 @@ export const TabelaMelhorPerformance: React.FC = () => {
           </tr>
         </tfoot>
       </table>
+      <p>ㅤ</p>
+      <p>ㅤ</p>
+      <p>ㅤ</p>
     </>
   );
 };
