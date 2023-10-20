@@ -90,9 +90,11 @@ CREATE TABLE AcoesAdministrativas (
 	FOREIGN KEY (id_estabelecimento) REFERENCES Estabelecimentos(estabelecimento_id)
 );
 
-CREATE TABLE Oleo (
-	oleo_id UUID DEFAULT uuid_generate_v4() PRIMARY KEY NOT NULL,
-	oleo_tipo DESC100 NULL,
-	oleo_nome DESC100 NULL,
-	oleo_preco DESC100 NULL
+CREATE TABLE Preco (
+	preco_id UUID DEFAULT uuid_generate_v4() PRIMARY KEY NOT NULL,
+	preco_regiao DESC100 NULL,
+	preco_oleo_virgem DESC100 NULL,
+	preco_oleo_usado DESC100 NULL,
+	preco_credito_greeneat DESC100 NULL,
+	FOREIGN KEY (administrador_id) REFERENCES Administradores(administrador_id)
 );
