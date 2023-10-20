@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import EditIcon from '@mui/icons-material/Edit';
 import Swal from 'sweetalert2';
 import Button from '@mui/material/Button';
@@ -9,21 +9,41 @@ import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 type RegionType = 'Norte' | 'Nordeste' | 'Centro-Oeste' | 'Sudeste' | 'Sul';
 
 type ItemType = {
-  regiao: RegionType;
-  oleoVirgem: number;
-  oleoUsado: number;
+  preco_regiao: RegionType;
+  preco_oleo_virgem: number;
+  preco_oleo_usado: number;
   creditosGreeneat: number;
 };
 
-export default function TabelaPrecoRegiao() {
+export default function TabelaPrecopreco_regiao() {
   const [currentPage, setCurrentPage] = useState(1);
   const [data, setData] = useState<ItemType[]>([
-    { regiao: 'Norte', oleoVirgem: 0, oleoUsado: 0, creditosGreeneat: 0 },
-    { regiao: 'Nordeste', oleoVirgem: 0, oleoUsado: 0, creditosGreeneat: 0 },
-    { regiao: 'Centro-Oeste', oleoVirgem: 0, oleoUsado: 0, creditosGreeneat: 0 },
-    { regiao: 'Sudeste', oleoVirgem: 0, oleoUsado: 0, creditosGreeneat: 0 },
-    { regiao: 'Sul', oleoVirgem: 0, oleoUsado: 0, creditosGreeneat: 0 },
+    { preco_regiao: 'Norte', preco_oleo_virgem: 99, preco_oleo_usado: 0, creditosGreeneat: 0 },
+    { preco_regiao: 'Nordeste', preco_oleo_virgem: 0, preco_oleo_usado: 0, creditosGreeneat: 0 },
+    { preco_regiao: 'Centro-Oeste', preco_oleo_virgem: 0, preco_oleo_usado: 0, creditosGreeneat: 0 },
+    { preco_regiao: 'Sudeste', preco_oleo_virgem: 0, preco_oleo_usado: 0, creditosGreeneat: 0 },
+    { preco_regiao: 'Sul', preco_oleo_virgem: 0, preco_oleo_usado: 0, creditosGreeneat: 0 },
   ]);
+
+  useEffect(() => {
+    fetch(`http://localhost:3001/listPreco`, {
+      method: "GET",
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    .then((response) => response.json())
+    .then((data) => {
+      setData(data);
+    })
+    .catch((error) => console.log(error));
+  }, []);
+
+
+  const formatarData = (date: string) => {
+    const dataformat = new Date(date).toLocaleString('pt-BR');
+    return dataformat;
+  }
 
   const itemsPerPage = 5;
 
@@ -47,8 +67,8 @@ export default function TabelaPrecoRegiao() {
     Swal.fire({
       title: 'Editar Informações',
       html: `
-        <div>Preço de Óleo Virgem: <input type="number" id="virgem" value="${item.oleoVirgem}" /></div>
-        <div>Preço de Óleo Usado: <input type="number" id="usado" value="${item.oleoUsado}" /></div>
+        <div>Preço de Óleo Virgem: <input type="number" id="virgem" value="${item.preco_oleo_virgem}" /></div>
+        <div>Preço de Óleo Usado: <input type="number" id="usado" value="${item.preco_oleo_usado}" /></div>
         <div>Créditos Greeneat: <input type="number" id="creditos" value="${item.creditosGreeneat}" /></div>
       `,
       showCancelButton: true,
@@ -67,8 +87,8 @@ export default function TabelaPrecoRegiao() {
             d === item
               ? {
                   ...d,
-                  oleoVirgem: virgemValue,
-                  oleoUsado: usadoValue,
+                  preco_oleo_virgem: virgemValue,
+                  preco_oleo_usado: usadoValue,
                   creditosGreeneat: creditosValue,
                 }
               : d
@@ -102,11 +122,11 @@ export default function TabelaPrecoRegiao() {
           </tr>
         </thead>
         <tbody>
-          {currentData.map((item, index) => (
+          {currentData.map((item: any, index: any) => (
             <tr key={index}>
-              <td>{item.regiao}</td>
-              <td>{item.oleoVirgem}</td>
-              <td>{item.oleoUsado}</td>
+              <td>{item.preco_regiao}</td>
+              <td>{item.preco_oleo_virgem}</td>
+              <td>{item.preco_oleo_usado}</td>
               <td>{item.creditosGreeneat}</td>
               <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                 <center>
