@@ -10,15 +10,15 @@ import "../styles/Grafico.css";
 import Grafico from "../Graficos/Grafico";
 
 import Footer from "../Footer/Footer";
-import NavbarComparadorDePrecos from "../Navbars/NavbarComparadorDePrecos";
 import ApexCharts from "react-apexcharts";
 import { Divider } from "@mui/material";
+import NavbarAdministrador from "../Navbars/NavbarAdministrador";
 
 function ComparadorPrecos() {
   return (
     <>
       <Row>
-        <NavbarComparadorDePrecos />
+        <NavbarAdministrador />
       </Row>
       <Row className="" style={{ width: "flex", alignContent: "center" }}>
         <Container
