@@ -83,6 +83,9 @@ function NavbarAdministrador() {
                             <a className="nav-link text-white" href="/painel-administrador-dashboard-ranking-regiao" style={{ marginRight: '3vw' }}>Dashboard Ranking Por Região</a>
                         </li>
                         <li className="nav-item">
+                            <a className="nav-link text-white" href="/painel-administrador-comparador-precos" style={{ marginRight: '3vw' }}>Comparador de Preços</a>
+                        </li>
+                        <li className="nav-item">
                             <img src={require('../Imagens/user.png')} alt="Imagem" className="img-fluid"  style={{ marginRight: '1vw', maxHeight: '36px', maxWidth: '36px' }} /> 
                         </li>
                         <li className="nav-item">
