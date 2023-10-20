@@ -6,10 +6,19 @@ import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 
+interface Estabelecimento {
+  estabelecimento_razao_social: string;
+  estabelecimento_id: string;
+  // Adicione outras propriedades conforme necessário
+}
+
+
 function TransacaoDoacao() {
-  const [razoesSociais, setRazoesSociais] = useState([]);
+  const [razoesSociais, setRazoesSociais] = useState<string[]>([]);
   const [volumeOleo, setVolumeOleo] = useState("");
   const [selectedEstabelecimento, setSelectedEstabelecimento] = useState("");
+  const [estabelecimentos, setEstabelecimentos] = useState<Estabelecimento[]>([]);
+
   const navigate = useNavigate()
 
   const msgSucesso = () => {
@@ -30,6 +39,7 @@ function TransacaoDoacao() {
   
     const idParceiro = localStorage.getItem("idParceiro");
     const quantidadeMoedas = parseFloat(volumeOleo) * 100
+    const quantidadeMoedasString = quantidadeMoedas.toString()
   
     // Exibir uma janela de confirmação usando Swal
     Swal.fire({
@@ -57,20 +67,22 @@ function TransacaoDoacao() {
         .then((response) => {
           if (response.status === 500) {
             Swal.fire("Erro", "Saldo Insuficiente para realizar essa transação.", "error");
-            throw new Error("Saldo do parceiro é igual a 0.00.");
+          } if (response.status === 501) {
+            fetch("http://localhost:3001/insertAcaoTransacoes", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                volumeOleo: parseFloat(volumeOleo),
+                idParceiro: idParceiro,
+                quantidadeMoedasString: quantidadeMoedasString,
+                idEstabelecimento: selectEstabelecimentoId(),
+              }),
+            })
           }
           return response.json();
         })
-        .then((data) => {
-          if (data.success) {
-            Swal.fire("Sucesso", "Transação concluída com sucesso.", "success");
-          } else {
-            console.log("Erro", "Ocorreu um erro ao processar a transação.", "error");
-          }
-        })
-          .catch((error) => {
-            console.error("Erro ao enviar os dados:", error);
-          });
           setVolumeOleo("");
           setSelectedEstabelecimento("");
           msgSucesso()
@@ -79,10 +91,15 @@ function TransacaoDoacao() {
   };
 
   useEffect(() => {
+    const idParceiro = localStorage.getItem('idParceiro')
+  
     // Fazer uma chamada de API para obter os estabelecimentos
-    fetch("http://localhost:3001/listEstabelecimento")
+    fetch(`http://localhost:3001/listCarteira/${idParceiro}`)
       .then((response) => response.json())
       .then((data) => {
+        // Armazenar os dados completos dos estabelecimentos
+        setEstabelecimentos(data);
+        
         // Extrair a razão social de cada estabelecimento
         const razoesSociais = data.map((estabelecimento: any) => estabelecimento.estabelecimento_razao_social);
         setRazoesSociais(razoesSociais);
@@ -91,6 +108,20 @@ function TransacaoDoacao() {
         console.error("Erro ao buscar estabelecimentos:", error);
       });
   }, []);
+  
+
+  const selectEstabelecimentoId = () => {
+    const estabelecimentoSelecionado = estabelecimentos.find((estabelecimento) => estabelecimento.estabelecimento_razao_social === selectedEstabelecimento);
+  
+    if (estabelecimentoSelecionado) {
+      const idEstabelecimentoSelecionado = estabelecimentoSelecionado.estabelecimento_id;
+      return idEstabelecimentoSelecionado
+    } else {
+      console.error("Estabelecimento selecionado não encontrado.");
+    }
+  };
+  
+  
 
   return (
     <>

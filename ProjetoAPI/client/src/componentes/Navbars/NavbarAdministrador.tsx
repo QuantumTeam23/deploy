@@ -66,13 +66,21 @@ function NavbarAdministrador() {
                     </ul>
                     <ul className="navbar-nav ms-auto" style={{ alignItems: 'center'}}>
                         <li className="nav-item">
-                            <a className="nav-link text-white" href="#" style={{ marginRight: '0,5vw' }}>Processos</a>
+                            <a className="nav-link text-white" href="/painel-administrador-preco-regiao" style={{ marginRight: '0,5vw' }}>Preço por Região</a>
                         </li>
                         <li className="nav-item">
                             <a className="nav-link text-white" href="/painel-administrador-transacoes" style={{ marginRight: '0,5vw' }}>Transações</a>
                         </li>
                         <li className="nav-item">
                             <a className="nav-link text-white" href="/painel-administrador-usuario" style={{ marginRight: '3vw' }}>Controle de Usuários</a>
+                        </li>
+
+
+                        <li className="nav-item">
+                            <a className="nav-link text-white" href="/painel-administrador-dashboard-ranking" style={{ marginRight: '3vw' }}>Dashboard Ranking</a>
+                        </li>
+                        <li className="nav-item">
+                            <a className="nav-link text-white" href="/painel-administrador-dashboard-ranking-regiao" style={{ marginRight: '3vw' }}>Dashboard Ranking Por Região</a>
                         </li>
                         <li className="nav-item">
                             <img src={require('../Imagens/user.png')} alt="Imagem" className="img-fluid"  style={{ marginRight: '1vw', maxHeight: '36px', maxWidth: '36px' }} /> 

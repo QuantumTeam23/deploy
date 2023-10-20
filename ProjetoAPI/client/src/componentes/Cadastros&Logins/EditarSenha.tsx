@@ -4,7 +4,8 @@ import { Container, Form, FormControl, InputGroup } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
 import Swal from 'sweetalert2';
-
+import eyeIconOpen from '../Imagens/close.png';
+import eyeIconClose from '../Imagens/open.png';
 
 interface FormDataEditarSenha {
     novaSenha: string;
@@ -20,6 +21,20 @@ const handleLogout = () => {
 };
 
 function EditarSenha() {
+    const [password, setPassword] = useState("" as any);
+    const [showPassword, setShowPassword] = useState(false);
+    const passwordInputType = showPassword ? "text" : "password";
+    const passwordIconSrc = showPassword ? eyeIconOpen : eyeIconClose;
+
+    const [passwordRepeted, setPasswordRepeted] = useState("" as any);
+    const [showPasswordRepeted, setShowPasswordRepeted] = useState(false);
+    const passwordInputTypeRepeted = showPasswordRepeted ? "text" : "password";
+    const passwordIconSrcRepeted = showPasswordRepeted ? eyeIconOpen : eyeIconClose;
+
+    function showPasswordHandler(show: any, set: any) {
+        return set(!show);
+    };
+
     const [usuarioDados, setUsuarioDados] = useState({
         senha: '',
         repetirSenha: '',
@@ -133,17 +148,18 @@ function EditarSenha() {
                         <div className='campo-editarsenha'>
                             <Form.Group controlId='senha'>
                                 <Form.Label>Nova senha</Form.Label>
-                                <InputGroup >
+                                <InputGroup className='campo-senha'>
                                     <FormControl
-                                        type='password'
+                                        type={passwordInputType}
                                         name='novaSenha'
                                         onChange={handleInputChange}
                                         required
                                         placeholder='Digite a sua nova senha'
                                         aria-label='Senha'
                                         aria-describedby='senha-addon'
-                                        className='form-control-editarsenha'
+                                        className='form-control-nova-senha'
                                     />
+                                    <img src={passwordIconSrc} alt="eye icon" className='eyeIcon' onClick={() => showPasswordHandler(showPassword, setShowPassword)} />
                                 </InputGroup>
                             </Form.Group>
                         </div>
@@ -152,17 +168,18 @@ function EditarSenha() {
                         <div className='campo-editarsenha'>
                             <Form.Group controlId='repetirSenha'>
                                 <Form.Label>Repetir a senha</Form.Label>
-                                <InputGroup>
+                                <InputGroup className='campo-senha'>
                                     <FormControl
-                                        type='password'
+                                        type={passwordInputTypeRepeted}
                                         name='repetirSenha'
                                         required
                                         onChange={handleInputChange}
                                         placeholder='Repita a sua nova senha'
                                         aria-label='Senha'
                                         aria-describedby='senha-addon'
-                                        className='form-control-editarsenha'
+                                        className='form-control-nova-senha'
                                     />
+                                    <img src={passwordIconSrcRepeted} alt="eye icon" className='eyeIcon' onClick={() => showPasswordHandler(showPasswordRepeted, setShowPasswordRepeted)} />
                                 </InputGroup>
                             </Form.Group>
                         </div>

@@ -103,11 +103,20 @@ const MenuLateralAdministrador: React.FC = () => {
             <h2>Menu</h2>
           </div>
           <List>
+            <ListItemButton onClick={fecharMenu} component={Link} to="/painel-administrador-preco-regiao">
+              <ListItemText primary="Preço por Região" />
+            </ListItemButton>
             <ListItemButton onClick={fecharMenu} component={Link} to="/painel-administrador-usuario">
               <ListItemText primary="Controle de Usuário" />
             </ListItemButton>
             <ListItemButton onClick={fecharMenu} component={Link} to="/painel-administrador-transacoes">
               <ListItemText primary="Histórico de Transações" />
+            </ListItemButton>
+            <ListItemButton onClick={fecharMenu} component={Link} to="/painel-administrador-dashboard-ranking">
+              <ListItemText primary="Dashboard Ranking" />
+            </ListItemButton>
+            <ListItemButton onClick={fecharMenu} component={Link} to="/painel-administrador-dashboard-ranking-regiao">
+              <ListItemText primary="Dashboard Ranking por Região" />
             </ListItemButton>
             <ListItemButton onClick={handleSair} component={Link} to="#">
               <ListItemText primary="Sair" />

@@ -1,24 +1,46 @@
 import Button from '@mui/material/Button';
 import styles from '../styles/TabelasEstabelecimento.module.css'; // Corrija o caminho do estilo se necessário
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 
 export default function TabelaSaldoCreditoExtrato() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 9;
-
+  const id = localStorage.getItem('idEstabelecimento');
+  const [transacoes , setTransacoes] = useState([]);
+  const index = [1, 2, 3, 4];
+  /*
   const data = Array.from({ length: 18 }, (_, index) => ({
     movimentacao: `Movimentação ${index + 1}`,
     valor: `Valor ${index + 1}`,
     data: `Data ${index + 1}`,
     descricao: `Descrição ${index + 1}`,
   }));
+  */
+  useEffect(() => {
+    fetch(`http://localhost:3001/transacoes-estabelecimento/${id}`, {
+      method: "GET",
+       headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setTransacoes(data);
+      })
+      .catch((error) => console.log(error));
+  }, []);
+
+  const formatarData = (date: string) => {
+    const dataformat = new Date(date).toLocaleString('pt-BR');
+    return dataformat;
+  }
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
 
-  const currentData = data.slice(startIndex, endIndex);
+  const currentData = transacoes.slice(startIndex, endIndex);
 
   const handlePrevPage = () => {
     if (currentPage > 1) {
@@ -27,7 +49,7 @@ export default function TabelaSaldoCreditoExtrato() {
   };
 
   const handleNextPage = () => {
-    if (endIndex < data.length) {
+    if (endIndex < transacoes.length) {
       setCurrentPage(currentPage + 1);
     }
   };
@@ -38,18 +60,18 @@ export default function TabelaSaldoCreditoExtrato() {
         <thead>
           <tr>
             <th>Movimentação</th>
-            <th>Valor</th>
-            <th>Data</th>
-            <th>Descrição</th>
+            <th>Créditos Recebidos</th>
+            <th>Data / Hora</th>
+            <th>Litros de óleo</th>
           </tr>
         </thead>
         <tbody>
-          {currentData.map((item, index) => (
+          {currentData.map((item: any, index: any) => (
             <tr key={index}>
-              <td>{item.movimentacao}</td>
-              <td>{item.valor}</td>
-              <td>{item.data}</td>
-              <td>{item.descricao}</td>
+              <td>Coleta de óleo com crédito recebido do Parceiro Greenneat</td>
+              <td>{item.quantidade_moedas}</td>
+              <td>{formatarData(item.acao_data)}</td>
+              <td>{item.quantidade_oleo_coletado}</td>
             </tr>
           ))}
         </tbody>
@@ -69,11 +91,11 @@ export default function TabelaSaldoCreditoExtrato() {
               </Button>
               <Button
                 endIcon={<KeyboardArrowRightIcon />}
-                disabled={endIndex >= data.length}
+                disabled={endIndex >= transacoes.length}
                 onClick={handleNextPage}
                 style={{
-                  color: endIndex < data.length ? 'lightblue' : 'lightgray',
-                  fontWeight: endIndex < data.length ? 'bold' : 'normal',
+                  color: endIndex < transacoes.length ? 'lightblue' : 'lightgray',
+                  fontWeight: endIndex < transacoes.length ? 'bold' : 'normal',
                 }}
               >
                 Próxima

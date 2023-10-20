@@ -68,11 +68,6 @@
     max-width: 600px;
 }
 
-.form-control-editarsenha {
-    background-color: rgb(221, 255, 218) !important;
-    width: 100%;
-}
-
 .volta-login-editarsenha {
     text-align: center;
     margin-top: 3%;
@@ -86,4 +81,24 @@
 .volta-login-editarsenha p {
     color: black;
     font-weight: 400;
+}
+
+.form-control-nova-senha {
+    background-color: rgb(221, 255, 218) !important;
+    height: 100%;
+}
+
+.campo-senha {
+    position: relative;
+    height: 41px;
+}
+
+.eyeIcon {
+    width: 20px;
+    height: 25px;
+    position: absolute;
+    right: 0.3vw;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
 }

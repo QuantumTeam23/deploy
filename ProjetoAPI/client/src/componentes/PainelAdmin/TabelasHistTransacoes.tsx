@@ -1,24 +1,39 @@
 import styles from '../styles/TabelaHistTransacoes.module.css';
 import DeleteIcon from '@mui/icons-material/Delete'; // Importe o ícone que deseja usar
 import Button from '@mui/material/Button';
-import { useState } from 'react'; // Importe useState
+import { useEffect, useState } from 'react'; // Importe useState
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 
 export default function TabelasHistTransacoes() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 9;
+  const [transacoes, setTransacoes] = useState([]);
 
-  const data = Array.from({ length: 18 }, (_, index) => ({
-    usuario: `Usuário ${index + 1}`,
-    valor: `Valor ${index + 1}`,
-    destinatario: `Destinatário ${index + 1}`,
-  }));
+  useEffect(() => {
+    fetch("http://localhost:3001/admTransacoes", {
+      method: "GET",
+       headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setTransacoes(data)
+      })
+      .catch((error) => console.log(error));
+  }, []);
 
+  const formatarData = (date: string) => {
+    const dataformat = new Date(date).toLocaleString('pt-BR');
+    return dataformat;
+  }
+
+  const index = [1,2,3,4,5];
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
 
-  const currentData = data.slice(startIndex, endIndex);
+  const currentData = transacoes.slice(startIndex, endIndex);
 
   const handlePrevPage = () => {
     if (currentPage > 1) {
@@ -27,7 +42,7 @@ export default function TabelasHistTransacoes() {
   };
 
   const handleNextPage = () => {
-    if (endIndex < data.length) {
+    if (endIndex < transacoes.length) {
       setCurrentPage(currentPage + 1);
     }
   };
@@ -37,23 +52,27 @@ export default function TabelasHistTransacoes() {
       <table className={styles.table}>
         <thead>
           <tr>
-            <th>Usuário</th>
-            <th>Valor</th>
-            <th>Destinatário</th>
+            <th>Tipo</th>
+            <th>Data / Hora</th>
+            <th>Créditos</th>
+            <th>Parceiro</th>
+            <th>Estabelecimento</th>
           </tr>
         </thead>
         <tbody>
-          {currentData.map((item, index) => (
+          {currentData.map((item: any, index: number) => (
             <tr key={index}>
-              <td>{item.usuario}</td>
-              <td>{item.valor}</td>
-              <td>{item.destinatario}</td>
+              <td>{item.tipo}</td>
+              <td>{formatarData(item.data)}</td>
+              <td>{item.creditos}</td>
+              <td>{item.parceiro}</td>
+              <td>{item.estabelecimento}</td>
             </tr>
           ))}
         </tbody>
         <tfoot>
           <tr>
-            <td colSpan={3}>
+            <td colSpan={5}>
               <div style={{ textAlign: 'center' }}>
                 <Button
                   startIcon={<KeyboardArrowLeftIcon />}
@@ -68,11 +87,11 @@ export default function TabelasHistTransacoes() {
                 </Button>
                 <Button
                   endIcon={<KeyboardArrowRightIcon />}
-                  disabled={endIndex >= data.length}
+                  disabled={endIndex >= transacoes.length}
                   onClick={handleNextPage}
                   style={{
-                    color: endIndex < data.length ? 'lightblue' : 'lightgray',
-                    fontWeight: endIndex < data.length ? 'bold' : 'normal',
+                    color: endIndex < transacoes.length ? 'lightblue' : 'lightgray',
+                    fontWeight: endIndex < transacoes.length ? 'bold' : 'normal',
                   }}
                 >
                   Próxima

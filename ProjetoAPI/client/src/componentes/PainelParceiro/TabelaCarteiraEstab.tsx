@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Button from '@mui/material/Button';
 import styles from '../styles/TabelaCarteiraEstab.module.css';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
@@ -7,7 +7,24 @@ import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 export default function TabelaCarteiraEstab() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 9;
+  const id = localStorage.getItem('idParceiro');
+  const [estabData, setEstabData] = useState([]);
 
+  useEffect(() => {
+    fetch(`http://localhost:3001/listCarteira/${id}`, {
+      method: "GET",
+       headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setEstabData(data)
+      })
+      .catch((error) => console.log(error));
+  }, []);
+
+  /*
   const data = Array.from({ length: 18 }, (_, index) => ({
     nome: `Nome ${index + 1}`,
     contato: `Contato ${index + 1}`,
@@ -16,11 +33,12 @@ export default function TabelaCarteiraEstab() {
     volumeTotal: `Volume total ${index + 1}`,
     dataUltimaColeta: `0${index + 1}/09/2023`,
   }));
+  */
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
 
-  const currentData = data.slice(startIndex, endIndex);
+  const currentData = estabData.slice(startIndex, endIndex);
 
   const handlePrevPage = () => {
     if (currentPage > 1) {
@@ -29,7 +47,7 @@ export default function TabelaCarteiraEstab() {
   };
 
   const handleNextPage = () => {
-    if (endIndex < data.length) {
+    if (endIndex < estabData.length) {
       setCurrentPage(currentPage + 1);
     }
   };
@@ -48,14 +66,14 @@ export default function TabelaCarteiraEstab() {
           </tr>
         </thead>
         <tbody>
-          {currentData.map((item, index) => (
+          {currentData.map((item: any, index: any) => (
             <tr key={index}>
-              <td>{item.nome}</td>
-              <td>{item.contato}</td>
-              <td>{item.endereco}</td>
-              <td>{item.volumeMedio}</td>
-              <td>{item.volumeTotal}</td>
-              <td>{item.dataUltimaColeta}</td>
+              <td>{item.estabelecimento_razao_social}</td>
+              <td>{item.estabelecimento_telefone}</td>
+              <td>{item.estabelecimento_cidade}</td>
+              <td>0</td>
+              <td>0</td>
+              <td>sem coletas</td>
             </tr>
           ))}
         </tbody>
@@ -75,11 +93,11 @@ export default function TabelaCarteiraEstab() {
               </Button>
               <Button
                 endIcon={<KeyboardArrowRightIcon />}
-                disabled={endIndex >= data.length}
+                disabled={endIndex >= estabData.length}
                 onClick={handleNextPage}
                 style={{
-                  color: endIndex < data.length ? 'lightblue' : 'lightgray',
-                  fontWeight: endIndex < data.length ? 'bold' : 'normal',
+                  color: endIndex < estabData.length ? 'lightblue' : 'lightgray',
+                  fontWeight: endIndex < estabData.length ? 'bold' : 'normal',
                 }}
               >
                 Próxima

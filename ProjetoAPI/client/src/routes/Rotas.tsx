@@ -18,7 +18,13 @@ import PainelEstabelecimentoExtrato from "../componentes/PainelEstabelecimento/P
 import PainelParceiroSaldoCredito from "../componentes/PainelParceiro/PainelSaldoCredito";
 import TransacaoCompraCredito from "../componentes/Transacoes/TransacaoCompraCredito";
 import TransacaoDoacao from "../componentes/Transacoes/TransacaoDoacao";
+
 import ComparadorPrecos from "../componentes/ComparadorDePrecos/ComparadorDePreco";
+
+import PainelPrecoPorRegiao from "../componentes/PainelAdmin/PainelPrecoRegiao";
+import DashboardRankingRegiao from "../componentes/PainelAdmin/DashboardRankingRegiao";
+import DashboardRanking from "../componentes/PainelAdmin/DashboardRanking";
+
 
 export const Rotas = () => {
     return (
@@ -39,6 +45,33 @@ export const Rotas = () => {
                     element={
                         <PrivateRouteAdmin>
                             <HistoricoTransacoes />
+                        </PrivateRouteAdmin>
+                    }
+                />
+
+                {/* ROTA ADM */}
+                <Route path="/painel-administrador-preco-regiao"
+                    element={
+                        <PrivateRouteAdmin>
+                            <PainelPrecoPorRegiao />
+                        </PrivateRouteAdmin>
+                    }
+                />
+
+                  {/* ROTA ADM */}
+                  <Route path="/painel-administrador-dashboard-ranking-regiao"
+                    element={
+                        <PrivateRouteAdmin>
+                            <DashboardRankingRegiao />
+                        </PrivateRouteAdmin>
+                    }
+                />
+
+                {/* ROTA ADM */}
+                <Route path="/painel-administrador-dashboard-ranking"
+                    element={
+                        <PrivateRouteAdmin>
+                            <DashboardRanking />
                         </PrivateRouteAdmin>
                     }
                 />

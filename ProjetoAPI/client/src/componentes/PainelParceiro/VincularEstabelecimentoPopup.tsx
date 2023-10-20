@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
@@ -8,23 +8,33 @@ import styles from '../styles/PainelAdmin.module.css';
 import IconButton from '@mui/material/IconButton';
 import AddIcon from '@mui/icons-material/Add';
 import Swal from 'sweetalert2';
+import { resourceLimits } from 'worker_threads';
+
 
 export default function VincularEstabelecimento({ open, onClose }: { open: boolean; onClose: () => void }) {
+  const id = localStorage.getItem('idParceiro');
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 9;
 
-  const userData = Array.from({ length: 50 }, (_, index) => ({
-    nome: `Usuário ${index + 1}`,
-    tipo: 'Parceiro',
-    bairro: `Bairro ${index + 1}`,
-    cidade: `Cidade ${index + 1}`,
-    estabelecimento_estado: `Estado ${index + 1}`,
-    estabelecimento_id: index + 1,
-  }));
+
+  const [estabData, setEstabData] = useState([]);
+  useEffect(() => {
+    fetch(`http://localhost:3001/listSemVinculo/${id}`, {
+      method: "GET",
+       headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setEstabData(data);
+      })
+      .catch((error) => console.log(error));
+  }, []);
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const currentData = userData.slice(startIndex, endIndex);
+  const currentData = estabData.slice(startIndex, endIndex);
 
   const handlePrevPage = () => {
     if (currentPage > 1) {
@@ -33,12 +43,14 @@ export default function VincularEstabelecimento({ open, onClose }: { open: boole
   };
 
   const handleNextPage = () => {
-    if (endIndex < userData.length) {
+    if (endIndex < estabData.length) {
       setCurrentPage(currentPage + 1);
     }
   };
 
-  const handleAdicionarEstabelecimento = (estabelecimentoId: number, nome: string) => {
+  const handleAdicionarEstabelecimento = async (estabelecimentoId: string, nome: string) => {
+    const idParceiro = localStorage.getItem('idParceiro');
+    handleClose();
     Swal.fire({
       title: `Deseja vincular o estabelecimento ${nome} à sua carteira?`,
       text: 'Esta ação é irreversível.',
@@ -54,21 +66,48 @@ export default function VincularEstabelecimento({ open, onClose }: { open: boole
       },
     }).then((result) => {
       if (result.isConfirmed) {
+        fetch('http://localhost:3001/vincular', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          estabelecimentoId,
+          idParceiro,
+        }),
+      })
+      setTimeout(() => {
+        Swal.close();
+        Swal.fire({
+          title: 'Sucesso',
+          text: 'O estabelecimento foi adicionado com sucesso.',
+          icon: 'success',
+          timer: 2000,
+          timerProgressBar: true,
+        });
+      }, 100);
+      window.location.reload();
+      }
+    });
+  }
+
+      /*
+      if (result.isConfirmed) {
         console.log(`Adicionar estabelecimento com ID ${estabelecimentoId}`);
-        
+
         setTimeout(() => {
           Swal.close();
           Swal.fire({
             title: 'Sucesso',
             text: 'O estabelecimento foi adicionado com sucesso.',
             icon: 'success',
-            timer: 2000,
+            timer: 5000,
             timerProgressBar: true,
           });
         }, 100);
       }
     });
-  };
+    */
 
   const handleClose = () => {
     onClose();
@@ -91,16 +130,15 @@ export default function VincularEstabelecimento({ open, onClose }: { open: boole
           </thead>
           <tbody>
             {currentData
-              .filter((item) => item.tipo === 'Parceiro')
-              .map((item, index) => (
+              .map((item: any, index: any) => (
                 <tr key={index}>
-                  <td>{item.nome}</td>
-                  <td>{item.tipo}</td>
-                  <td>{item.bairro}</td>
-                  <td>{item.cidade}</td>
+                  <td>{item.estabelecimento_razao_social}</td>
+                  <td>{item.estabelecimento_tipo}</td>
+                  <td>{item.estabelecimento_bairro}</td>
+                  <td>{item.estabelecimento_cidade}</td>
                   <td>{item.estabelecimento_estado}</td>
                   <td style={{ verticalAlign: 'middle', textAlign: 'center' }}>
-                    <IconButton onClick={() => handleAdicionarEstabelecimento(item.estabelecimento_id, item.nome)}>
+                    <IconButton onClick={() => handleAdicionarEstabelecimento(item.estabelecimento_id, item.estabelecimento_razao_social)}>
                       <AddIcon />
                     </IconButton>
                   </td>
@@ -121,11 +159,11 @@ export default function VincularEstabelecimento({ open, onClose }: { open: boole
                   Anterior
                 </Button>
                 <Button
-                  disabled={endIndex >= userData.length}
+                  disabled={endIndex >= estabData.length}
                   onClick={handleNextPage}
                   style={{
-                    color: endIndex < userData.length ? 'lightblue' : 'lightgray',
-                    fontWeight: endIndex < userData.length ? 'bold' : 'normal',
+                    color: endIndex < estabData.length ? 'lightblue' : 'lightgray',
+                    fontWeight: endIndex < estabData.length ? 'bold' : 'normal',
                   }}
                 >
                   Próxima

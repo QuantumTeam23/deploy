@@ -5,7 +5,8 @@ import { ChangeEvent, useEffect, useState } from 'react';
 import Alert from 'react-bootstrap/Alert';
 import Swal from "sweetalert2";
 import { useNavigate } from 'react-router-dom';
-
+import eyeIconOpen from '../Imagens/close.png';
+import eyeIconClose from '../Imagens/open.png';
 
 interface FormData {
   razao_social: string;
@@ -77,7 +78,7 @@ function CadastroParceiro() {
   const [emailInUse, setEmailInUse] = useState(false);
   const navigate = useNavigate()
 
-  
+
 
   const fieldMappings: Record<string, string> = {
     'campo-0': 'razao_social',
@@ -96,6 +97,16 @@ function CadastroParceiro() {
     'campo-13': 'tipo',
     'campo-14': 'cidadesAtende',
   };
+
+  const [password, setPassword] = useState("" as any);
+  const [showPassword, setShowPassword] = useState(false);
+
+  const showPasswordHandler = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const passwordInputType = showPassword ? "text" : "password";
+  const passwordIconSrc = showPassword ? eyeIconOpen : eyeIconClose;
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -151,13 +162,13 @@ function CadastroParceiro() {
       }, 250);
     }
   };
-  
+
   const handleSubmit = async () => {
     if (!isFormValid()) {
       setFormData({ ...formData, showEmptyFieldsAlert: true });
       return;
     }
-  
+
 
     const emailCheckResponse = await fetch('http://localhost:3001/checkEmailParceiro', {
       method: 'POST',
@@ -168,7 +179,7 @@ function CadastroParceiro() {
         email,
       }),
     });
-  
+
     if (emailCheckResponse.status === 409) {
       console.log('Email já está em uso.');
       setEmailInUse(true);
@@ -177,7 +188,7 @@ function CadastroParceiro() {
       }, 5000);
       return;
     }
-  
+
     try {
       const response = await fetch('http://localhost:3001/addParceiro', {
         method: 'POST',
@@ -202,7 +213,7 @@ function CadastroParceiro() {
           cidadesAtende,
         }),
       });
-  
+
       if (response.status === 200) {
         Swal.fire({
           title: 'Sucesso',
@@ -227,10 +238,10 @@ function CadastroParceiro() {
     } catch (error) {
       console.error('Erro ao cadastrar parceiro:', error);
     }
-  
+
     console.log('Formulário enviado:', formData);
   };
-  
+
 
 
   const isFormValid = () => {
@@ -364,7 +375,24 @@ function CadastroParceiro() {
           break;
       }
 
-      if (i === 13) {
+      if (i === 3) {
+        inputFields.push(
+          <Form.Group key={i} controlId={`campo-${i}`} className='campo-senha'>
+            <Form.Label>{label}</Form.Label>
+            <FormControl
+              type={passwordInputType}
+              name={`campo-${i}`}
+              required
+              placeholder={placeholder}
+              className='form-control-login-senha'
+              onChange={handleInputChange}
+              value={value}
+
+            />
+            <img src={passwordIconSrc} alt="eye icon" className='eyeIconParceiro' onClick={showPasswordHandler} />
+          </Form.Group>
+        );
+      } else if (i === 13) {
         inputFields.push(
           <Form.Group key={i} controlId={`campo-${i}`}>
             <Form.Label>{label}</Form.Label>
@@ -423,7 +451,7 @@ function CadastroParceiro() {
           </span>
         </div>
         <div className='container-direita-cadastro-parceiro'>
-        {emptyFields.length > 0 && (
+          {emptyFields.length > 0 && (
             <Alert variant="danger">
               Preencha todos os campos para prosseguir.
             </Alert>
@@ -445,38 +473,38 @@ function CadastroParceiro() {
           <div className='campo-cadastro-parceiro'>
             {renderInputs()}
             <div className='botao-cadastro-parceiro'>
-            {step > 1 ? (
-              <Button
-                variant='primary'
-                onClick={handlePreviousStep}
-              >
-                Voltar
-              </Button>
-            ) : null}
-            {step * fieldsPerStep < 15 ? (
-              <Button
-                variant='success'
-                onClick={() => {
-                  if (isStepFormValid()) {
-                    handleNextStep();
-                  }
-                }}
-                
-              >
-                Continuar
-              </Button>
-            ) : (
-              <Button
-                style={{ fontSize: 18 }}
-                variant='success'
-                onClick={(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-                  event.preventDefault();
-                  handleSubmit();
-                }}
-              >
-                CADASTRAR
-              </Button>
-            )}
+              {step > 1 ? (
+                <Button
+                  variant='primary'
+                  onClick={handlePreviousStep}
+                >
+                  Voltar
+                </Button>
+              ) : null}
+              {step * fieldsPerStep < 15 ? (
+                <Button
+                  variant='success'
+                  onClick={() => {
+                    if (isStepFormValid()) {
+                      handleNextStep();
+                    }
+                  }}
+
+                >
+                  Continuar
+                </Button>
+              ) : (
+                <Button
+                  style={{ fontSize: 18 }}
+                  variant='success'
+                  onClick={(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+                    event.preventDefault();
+                    handleSubmit();
+                  }}
+                >
+                  CADASTRAR
+                </Button>
+              )}
             </div>
           </div>
           <div className='registro-cadastro-parceiro'>

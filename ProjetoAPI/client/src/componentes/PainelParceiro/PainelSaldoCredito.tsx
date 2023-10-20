@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from '../styles/PainelParceiro.module.css';
 import MesAno from './MesAno';
 import { TabelaCreditoCedido, TabelaCreditoContratado } from './TabelaSaldoCredito';
@@ -10,6 +10,23 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 export default function PainelParceiroSaldoCredito() {
   const [saldoVisivel, setSaldoVisivel] = useState(false);
   const [saldoValor, setSaldoValor] = useState(0);
+  const id = localStorage.getItem('idParceiro');
+
+  //buscar dados do parceiro logado e setar o valor do saldo
+  useEffect(() => {
+    fetch(`http://localhost:3001/Parceiro/${id}`, {
+      method: "GET",
+       headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setSaldoValor(data[0].parceiro_saldo);
+      })
+      .catch((error) => console.log(error));
+  }, []);
+  //buscar dados do parceiro logado e setar o valor do saldo
 
   const toggleSaldoVisivel = () => {
     setSaldoVisivel(!saldoVisivel);
