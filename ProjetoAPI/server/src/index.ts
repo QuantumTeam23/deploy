@@ -56,6 +56,8 @@ app.put('/transacaoParceiroEstab/:idParceiro', transacaoParceiroEstab);
 app.put('/transacaoGreenneatParc/:idParceiro', transacaoGreenneatParc);
 app.post('/login', login2)
 
+//Listar Precos
+app.get('/listPreco', listAllPreco);
 
 app.post('/vincular', vincularCarteira)
 app.post('/insertAcaoTransacoes', insertAcaoTransacoes)
@@ -375,6 +377,26 @@ async function listAllEstabelecimento(_, res) {
     } catch (error) {
         console.error("Erro ao listar estabelecimento:", error);
         res.status(500).send({ msg: "Erro ao listar estabelecimento." });
+    }
+}
+
+async function listAllPreco(_, res) {
+    console.log("Requisição de listagem de preco recebida.");
+    try {
+
+        const SQL = `
+        SELECT 
+            *
+        FROM 
+            Preco
+        ORDER BY
+            preco_id 
+    `
+        const resultado = await connectionDB.query(SQL);
+        res.send(resultado.rows);
+    } catch (error) {
+        console.error("Erro ao listar preco:", error);
+        res.status(500).send({ msg: "Erro ao listar preco." });
     }
 }
 
