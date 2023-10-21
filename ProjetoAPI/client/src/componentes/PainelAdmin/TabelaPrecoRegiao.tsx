@@ -9,6 +9,7 @@ import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 type RegionType = 'Norte' | 'Nordeste' | 'Centro-Oeste' | 'Sudeste' | 'Sul';
 
 type ItemType = {
+  preco_id?: string;
   preco_regiao: RegionType;
   preco_oleo_virgem: number;
   preco_oleo_usado: number;
@@ -18,7 +19,7 @@ type ItemType = {
 export default function TabelaPrecopreco_regiao() {
   const [currentPage, setCurrentPage] = useState(1);
   const [data, setData] = useState<ItemType[]>([
-    { preco_regiao: 'Norte', preco_oleo_virgem: 99, preco_oleo_usado: 0, creditosGreeneat: 0 },
+    { preco_regiao: 'Norte', preco_oleo_virgem: 0, preco_oleo_usado: 0, creditosGreeneat: 0 },
     { preco_regiao: 'Nordeste', preco_oleo_virgem: 0, preco_oleo_usado: 0, creditosGreeneat: 0 },
     { preco_regiao: 'Centro-Oeste', preco_oleo_virgem: 0, preco_oleo_usado: 0, creditosGreeneat: 0 },
     { preco_regiao: 'Sudeste', preco_oleo_virgem: 0, preco_oleo_usado: 0, creditosGreeneat: 0 },
@@ -96,10 +97,32 @@ export default function TabelaPrecopreco_regiao() {
   
           setData(updatedData);
   
+          fetch(`http://localhost:3001/editar-preco/${item.preco_id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            preco_oleo_virgem: virgemValue,
+            preco_oleo_usado: usadoValue,
+          }),
+        })
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error('Erro ao editar dados no servidor');
+            }
+            return response.json();
+          })
+          .then((data) => {
+            console.log('Dados editados com sucesso no servidor:', data);
+          })
+          .catch((error) => {
+            console.error('Erro ao editar dados no servidor:', error);
+          });
           Swal.fire('Salvo!', 'As informações foram atualizadas.', 'success');
         } else {
           Swal.fire('Erro!', 'Por favor, insira valores válidos maiores que zero.', 'error')
-            .then(() => handleEdit(item)); // Chama handleEdit novamente se os valores não são válidos
+            .then(() => handleEdit(item));
         }
       },
     });

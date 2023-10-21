@@ -58,6 +58,7 @@ app.post('/login', login2)
 
 //Listar Precos
 app.get('/listPreco', listAllPreco);
+app.put('/editar-preco/:idPreco', editarPreco);
 
 app.post('/vincular', vincularCarteira)
 app.post('/insertAcaoTransacoes', insertAcaoTransacoes)
@@ -380,25 +381,6 @@ async function listAllEstabelecimento(_, res) {
     }
 }
 
-async function listAllPreco(_, res) {
-    console.log("Requisição de listagem de preco recebida.");
-    try {
-
-        const SQL = `
-        SELECT 
-            *
-        FROM 
-            Preco
-        ORDER BY
-            preco_id 
-    `
-        const resultado = await connectionDB.query(SQL);
-        res.send(resultado.rows);
-    } catch (error) {
-        console.error("Erro ao listar preco:", error);
-        res.status(500).send({ msg: "Erro ao listar preco." });
-    }
-}
 
 async function getEstabelecimentoById(req, res) {
     const id = req.params.idEstabelecimento;
@@ -1202,12 +1184,12 @@ async function getAllTransAdm(req, res) {
         const transacoes = new Array;
         for (let i = 0; i <= coletas.rowCount; i++) {
             if (typeof (coletas.rows[i]) !== "undefined") {
-                transacoes.push({tipo: "Coleta de óleo", data: coletas.rows[i].acao_data , creditos: coletas.rows[i].quantidade_moedas , estabelecimento: coletas.rows[i].estabelecimento_razao_social , parceiro: coletas.rows[i].parceiro_razao_social })
+                transacoes.push({ tipo: "Coleta de óleo", data: coletas.rows[i].acao_data, creditos: coletas.rows[i].quantidade_moedas, estabelecimento: coletas.rows[i].estabelecimento_razao_social, parceiro: coletas.rows[i].parceiro_razao_social })
             }
         }
-        for (let i = 0; i <=comprasCreditos.rowCount; i++) {
+        for (let i = 0; i <= comprasCreditos.rowCount; i++) {
             if (typeof (comprasCreditos.rows[i]) !== "undefined") {
-                transacoes.push({tipo: "Compra de créditos GreenNeat" , data: comprasCreditos.rows[i].acao_compra_data, creditos: comprasCreditos.rows[i].valor_comprado , estabelecimento: "N/A", parceiro: comprasCreditos.rows[i].parceiro_razao_social })
+                transacoes.push({ tipo: "Compra de créditos GreenNeat", data: comprasCreditos.rows[i].acao_compra_data, creditos: comprasCreditos.rows[i].valor_comprado, estabelecimento: "N/A", parceiro: comprasCreditos.rows[i].parceiro_razao_social })
             }
         }
         const transacoesPorData = transacoes.sort((a, b) => (a.data < b.data) ? 1 : -1)
@@ -1277,4 +1259,49 @@ async function getCreditosContratadosParceiro(req, res) {
         console.error("Erro ao buscar histórico:", error);
         res.status(500).send({ msg: "Erro ao buscar histórico de crédito comprado." });
     }
+}
+
+async function listAllPreco(_, res) {
+    console.log("Requisição de listagem de preco recebida.");
+    try {
+
+        const SQL = `
+        SELECT 
+            *
+        FROM 
+            Preco
+        ORDER BY
+            preco_regiao 
+    `
+        const resultado = await connectionDB.query(SQL);
+        res.send(resultado.rows);
+    } catch (error) {
+        console.error("Erro ao listar preco:", error);
+        res.status(500).send({ msg: "Erro ao listar preco." });
+    }
+}
+
+async function editarPreco(req, res) {
+    console.log("Requisição de edição de preço recebida")
+    const { preco_oleo_virgem, preco_oleo_usado } = req.body
+    const idPreco = req.params.idPreco;
+    try {
+        const SQL = `
+            UPDATE 
+                Preco 
+            SET
+                preco_oleo_virgem = '${preco_oleo_virgem}',
+                preco_oleo_usado = '${preco_oleo_usado}'
+            WHERE
+                preco_id = '${idPreco}'
+`;
+        const resultado = await connectionDB.query(SQL);
+        console.log("Preços editados com sucesso!");
+        res.status(200).send({ msg: "Preços editados com sucesso!" });
+    } catch (error) {
+        console.error("Erro ao editar preço:", error);
+        res.status(500).send({ msg: "Erro ao editar preço." });
+    }
+
+
 }
