@@ -1,7 +1,24 @@
+@font-face {
+  font-family: 'oswald-media';
+  src: url(../../Fontes/Oswald-Medium.ttf);
+}
+@font-face {
+  font-family: 'oswald-bold';
+  src: url(../../Fontes/Oswald-Bold.ttf);
+}
+@font-face {
+  font-family: 'montserrat-medium';
+  src: url(../../Fontes/Montserrat-Medium.ttf);
+}
+
 * {
-    font-family: Montserrat, sans-serif, Arial;
+    font-family: 'montserrat-medium', sans-serif, Arial;
   }
   
+  .fontes-precos{
+    font-family: 'oswald-media','montserrat-medium';
+  }
+
   .container-geral-comparador-de-preco {
    
     width: 100vw;
@@ -10,6 +27,8 @@
     align-items: center;
     justify-content: center;
   }
+
+
 
   .campos-textos{
       background-color: rgb(221, 255, 218) !important;
