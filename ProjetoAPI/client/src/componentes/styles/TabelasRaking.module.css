@@ -28,24 +28,23 @@ tfoot td {
 }
 
 th:nth-child(1), td:nth-child(1) {
+
   width: 8%;
   padding-left: 2%;
+ 
+
 }
 
 th:nth-child(2), td:nth-child(2) {
-  width: 30%;
+  width: 20%;
 }
 
 th:nth-child(3), td:nth-child(3) {
-  width: 24%;
+  width: 20%;
 }
 
 th:nth-child(4), td:nth-child(4) {
-  width: 32%;
-}
-
-th:nth-child(5), td:nth-child(5) {
-  width: 8%;
+  width: 5%;
 }
 
 @media screen and (max-width: 768px) {
