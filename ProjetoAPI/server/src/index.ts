@@ -64,6 +64,9 @@ app.post('/vincular', vincularCarteira)
 app.post('/insertAcaoTransacoes', insertAcaoTransacoes)
 app.get('/admTransacoes', getAllTransAdm);
 
+// DASHBOARD
+app.get('/parceirosMaisCreditosDoados', listParceirosMaisGastaram)
+app.get('/estabelecimentosMaisCreditosDoados', listEstabelecimentoMaisGastaram)
 //LOGIN
 app.post('/login', login2);
 
@@ -1302,6 +1305,45 @@ async function editarPreco(req, res) {
         console.error("Erro ao editar preço:", error);
         res.status(500).send({ msg: "Erro ao editar preço." });
     }
+}
 
+async function listParceirosMaisGastaram (req, res) {
+    try {
+        const SQL = `
+            SELECT
+                p.parceiro_razao_social AS nome_parceiro,
+                p.parceiro_regiao AS regiao,
+                SUM(CAST(at.quantidade_moedas AS DECIMAL)) AS total_creditos_doados
+            FROM Parceiros p
+            LEFT JOIN AcaoTransacoes at ON p.parceiro_id = at.id_parceiro
+            GROUP BY p.parceiro_razao_social, p.parceiro_regiao
+            ORDER BY total_creditos_doados DESC;
+        `
+        const resultado = await connectionDB.query(SQL);
+        res.send(resultado.rows);
+    } catch (error) {
+        console.error("Erro", error);
+        res.status(500).send({ msg: "Erro" });
+    }
+}
 
+async function listEstabelecimentoMaisGastaram (req, res) {
+    try {
+        const SQL = `
+            SELECT
+                e.estabelecimento_razao_social AS nome_estabelecimento,
+                e.estabelecimento_regiao AS regiao,
+                SUM(CAST(at.quantidade_oleo_coletado AS DECIMAL)) AS total_oleo_coletado
+            FROM Estabelecimentos e
+            LEFT JOIN AcaoTransacoes at ON e.estabelecimento_id = at.id_estabelecimento
+            GROUP BY e.estabelecimento_razao_social, e.estabelecimento_regiao
+            ORDER BY total_oleo_coletado DESC;
+    
+        `
+        const resultado = await connectionDB.query(SQL);
+        res.send(resultado.rows);
+    } catch (error) {
+        console.error("Erro", error);
+        res.status(500).send({ msg: "Erro" });
+    }
 }

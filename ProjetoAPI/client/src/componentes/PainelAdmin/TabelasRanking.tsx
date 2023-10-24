@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Button from '@mui/material/Button';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
@@ -8,38 +8,39 @@ import styles from '../styles/TabelasRaking.module.css'
 
 
 export const TabelaParceirosRanking: React.FC = () => {
-  const regioes: string[] = ['Norte', 'Nordeste', 'Centro-Oeste', 'Sudeste', 'Sul'];
-
 
   type Data = {
     numRanking: string;
-    nomeRegiao: string;
-    nomeParceiro: string;
+    regiao: string;
+    nome_parceiro: string;
     nomeEstabelecimento: string;
-    QtdCredito: number;
+    total_creditos_doados: number;
     QtdVolume: number;
   };
 
   const [currentPage, setCurrentPage] = useState<number>(1);
   const itemsPerPage: number = 9;
 
-  const generateRandomData = () => {
-    return Array.from({ length: 18 }, (_, index) => ({
-      numRanking: `${index + 1}º`,
-      nomeParceiro: `Parceiro ${index + 1}`,
-      nomeEstabelecimento: `Estabelecimento ${index + 1}`,
-      nomeRegiao: regioes[Math.floor(Math.random() * regioes.length)],
-      QtdCredito: Math.floor(Math.random() * 10000) + 1,
-      QtdVolume: Math.floor(Math.random() * 10000) + 1,
-    }));
-  };
+  useEffect(() => {
+    fetch("http://localhost:3001/parceirosMaisCreditosDoados", { // Atualize a URL para a rota correta do servidor
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setData(data); // Define os dados obtidos na resposta da API
+      })
+      .catch((error) => console.log(error));
+  }, []);
 
-  const initialData: Data[] = generateRandomData();
+  const initialData: Data[] = []
 
-  const [data, setData] = useState<Data[]>(initialData.sort((a, b) => b.QtdCredito - a.QtdCredito));
+  const [data, setData] = useState<Data[]>(initialData.sort((a, b) => b.total_creditos_doados - a.total_creditos_doados));
 
-  const indexedData = data.map((usuario, index) => ({
-    ...usuario,
+  const indexedData = data.map((item, index) => ({
+    ...item,
     numRanking: `${index + 1}º`,
   }));
 
@@ -74,9 +75,9 @@ export const TabelaParceirosRanking: React.FC = () => {
           {currentData.map((item, index) => (
             <tr key={index}>
               <td>{item.numRanking}</td>
-              <td>{item.nomeParceiro}</td>
-              <td>{item.nomeRegiao}</td>
-              <td>{item.QtdCredito}</td>
+              <td>{item.nome_parceiro}</td>
+              <td>{item.regiao}</td>
+              <td>{item.total_creditos_doados}</td>
             </tr>
           ))}
         </tbody>
@@ -114,35 +115,37 @@ export const TabelaParceirosRanking: React.FC = () => {
   );
 };
 export const TabelaEstabelecimentosRanking: React.FC = () => {
-  const regioes: string[] = ['Norte', 'Nordeste', 'Centro-Oeste', 'Sudeste', 'Sul'];
 
   type Data = {
     numRanking: string;
-    nomeRegiao: string;
-    nomeParceiro: string;
-    nomeEstabelecimento: string;
-    QtdVolume: number;
+    regiao: string;
+    nome_estabelecimento: string;
+    total_oleo_coletado: number;
   };
 
   const [currentPage, setCurrentPage] = useState<number>(1);
   const itemsPerPage: number = 9;
 
-  const generateRandomData = () => {
-    return Array.from({ length: 18 }, (_, index) => ({
-      numRanking: `${index + 1}º`,
-      nomeParceiro: `Parceiro ${index + 1}`,
-      nomeEstabelecimento: `Estabelecimento ${index + 1}`,
-      nomeRegiao: regioes[Math.floor(Math.random() * regioes.length)],
-      QtdVolume: Math.floor(Math.random() * 10000) + 1,
-    })).sort((a, b) => b.QtdVolume - a.QtdVolume); // Sort the data here.
-  };
+  useEffect(() => {
+    fetch("http://localhost:3001/estabelecimentosMaisCreditosDoados", { // Atualize a URL para a rota correta do servidor
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setData(data);
+      })
+      .catch((error) => console.log(error));
+  }, []);
 
-  const initialData: Data[] = generateRandomData();
+  const initialData: Data[] = []
 
-  const [data, setData] = useState<Data[]>(initialData);
+  const [data, setData] = useState<Data[]>(initialData.sort((a, b) => b.total_oleo_coletado - a.total_oleo_coletado));
 
-  const indexedData = data.map((estabelecimento, index) => ({
-    ...estabelecimento,
+  const indexedData = data.map((item, index) => ({
+    ...item,
     numRanking: `${index + 1}º`,
   }));
 
@@ -177,9 +180,9 @@ export const TabelaEstabelecimentosRanking: React.FC = () => {
           {currentData.map((item, index) => (
             <tr key={index}>
               <td>{item.numRanking}</td>
-              <td>{item.nomeEstabelecimento}</td>
-              <td>{item.nomeRegiao}</td>
-              <td>{item.QtdVolume}</td>
+              <td>{item.nome_estabelecimento}</td>
+              <td>{item.regiao}</td>
+              <td>{item.total_oleo_coletado}</td>
             </tr>
           ))}
         </tbody>
