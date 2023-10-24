@@ -95,5 +95,6 @@ CREATE TABLE Preco (
 	preco_regiao DESC100 NULL,
 	preco_oleo_virgem DESC100 NULL,
 	preco_oleo_usado DESC100 NULL,
+	id_administrador UUID NOT NULL,
 	FOREIGN KEY (administrador_id) REFERENCES Administradores(administrador_id)
 );
