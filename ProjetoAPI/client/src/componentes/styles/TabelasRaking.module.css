@@ -29,6 +29,7 @@ tfoot td {
 
 th:nth-child(1), td:nth-child(1) {
   width: 8%;
+  padding-left: 2%;
 }
 
 th:nth-child(2), td:nth-child(2) {
@@ -63,12 +64,14 @@ th:nth-child(5), td:nth-child(5) {
 } 
 /* Estilos para botões dentro de .tabsContainer */
 .tabsContainer button {
-  background-color: rgb(29, 158, 29);
+  background-color: rgb(221, 255, 218);
   padding: 8px;
   margin-right: 30px;
   font-weight: 600;
-  font-size: 18px;
+  font-size: 15px;
   margin-bottom: 30px;
+  border: solid 0.1px;
+  border-radius: 10px;
 }
 
 .tabsContainer button:hover {
@@ -78,7 +81,7 @@ th:nth-child(5), td:nth-child(5) {
 
 .tabsContainer button:active {
   background-color: rgb(123, 212, 123);
-  border: solid 1px gray;
+ 
   margin-right: 30px;
 }
 

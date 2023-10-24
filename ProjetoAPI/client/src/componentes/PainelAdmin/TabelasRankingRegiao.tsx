@@ -61,7 +61,7 @@ export const TabelaParceiros: React.FC = () => {
 
   return (
     <>
-      <h2>Ranking de Parceiros por Região</h2>
+      <h4>Ranking de Parceiros por Região</h4>
       <table className={styles.table}>
         <thead>
           <tr>
@@ -108,9 +108,7 @@ export const TabelaParceiros: React.FC = () => {
           </tr>
         </tfoot>
       </table>
-      <p>ㅤ</p>
-      <p>ㅤ</p>
-      <p>ㅤ</p>
+
     </>
   );
 };
@@ -149,7 +147,7 @@ export const TabelaEstabelecimento: React.FC = () => {
 
   return (
     <>
-      <h2>Ranking de Estabelecimento por Região</h2>
+      <h4>Ranking de Estabelecimento por Região</h4>
       <table className={styles.table}>
         <thead>
           <tr>
@@ -196,9 +194,7 @@ export const TabelaEstabelecimento: React.FC = () => {
           </tr>
         </tfoot>
       </table>
-      <p>ㅤ</p>
-      <p>ㅤ</p>
-      <p>ㅤ</p>
+   
     </>
   );
 };
@@ -238,7 +234,7 @@ export const TabelaMelhorPerformance: React.FC = () => {
 
   return (
     <>
-      <h2>Ranking de Estabelecimentos com Melhor Descarte</h2>
+      <h4>Ranking de Estabelecimentos com Melhor Descarte</h4>
       <table className={styles.table}>
         <thead>
           <tr>
@@ -285,9 +281,7 @@ export const TabelaMelhorPerformance: React.FC = () => {
           </tr>
         </tfoot>
       </table>
-      <p>ㅤ</p>
-      <p>ㅤ</p>
-      <p>ㅤ</p>
+      
     </>
   );
 };
