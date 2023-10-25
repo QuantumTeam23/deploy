@@ -65,6 +65,7 @@ export default function TabelaPrecopreco_regiao() {
 
         const virgemValue = parseFloat(virgemInput.value);
         const usadoValue = parseFloat(usadoInput.value);
+        const id_administrador = localStorage.getItem('idAdministrador');
 
         if (virgemValue !== 0 && usadoValue !== 0) {
           const updatedData = data.map((d) =>
@@ -87,6 +88,7 @@ export default function TabelaPrecopreco_regiao() {
             body: JSON.stringify({
               preco_oleo_virgem: virgemValue,
               preco_oleo_usado: usadoValue,
+              id_administrador: id_administrador,
             }),
           })
             .then((response) => {
