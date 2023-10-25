@@ -1,23 +1,17 @@
 import React, { useState } from 'react';
 import Footer from '../Footer/Footer';
-import NavbarParceiro from '../Navbars/NavbarParceiro';
 import { TabelaRegiaoParceiros, TabelaRegiaoEstabelecimento, TabelaMelhorPerformanceDescarte, TabelaEstabMaiorVolDescartado, TabelaParceirosMaisDoamCreditos } from './TabelasRankingRegiao';
 import stylesTable from '../styles/TabelasRaking.module.css';
 import styles from '../styles/PainelParceiro.module.css';
-//import data from './TabelaPrecoRegiao'
-
-//import PieChart from './DashboardPizza';
 import NavbarAdministrador from '../Navbars/NavbarAdministrador';
 import { Pie } from 'react-chartjs-2';
-import 'chart.js/auto'; // Importe 'chart.js/auto' para corrigir problemas com canvas.
-import { setDatasets } from 'react-chartjs-2/dist/utils';
+import 'chart.js/auto';
 import { Col, Container, Row } from 'react-bootstrap';
 
-
-var dados: number[];
-//valores aleatórios, para o gráfico não iniciar vazio ao abrir a tela, mas deve ser trocado por dados vindo do banco
-//esses valores são os que movimentam o gráfico
-dados = [80.60, 55.70, 25.30, 66.70, 45.60]
+type Data = {
+  regiao: string;
+  quantidade: number;
+};
 
 export default function DashboardRanking() {
   const [activeTab, setActiveTab] = useState('parceiro');
@@ -25,53 +19,58 @@ export default function DashboardRanking() {
   const handleTabClick = (tab: string) => {
     setActiveTab(tab);
 
-    if (tab == "regiao-parceiro") {
-      //Os dados dessa lista devem vir do banco de dados e são os que estão na coluna  Créditos Cedidos da Tabela Ranking Parceiro
-      dados = [7.99, 6.80, 2.80, 33.90, 44.56]
-
-
+    if (tab === 'regiao-parceiro') {
+      fetchChartData('regiaoParceiroMaisCedido');
+    } else if (tab === 'regiao-estabelecimento') {
+      fetchChartData('regiaoEstabMaisRecebeu');
+    } else if (tab === 'melhor-performance-descarte') {
+      fetchChartData('regiaoEstabMaisOleoDescarte');
+    } else if (tab === 'parceiros-mais-utilizam-creditos') {
+      fetchChartData('parceirosMaisCreditosDoados');
+    } else if (tab === 'estabelecimentos-maiores-volumes-descartados') {
+      fetchChartData('estabelecimentosMaisCreditosDoados');
     }
-
-    if (tab == "regiao-estabelecimento") {
-      //Os dados dessa lista devem vir do banco de dados e são os que estão na coluna Créditos Recebidos da tabela Ranking Estabelecimento
-      dados = [25.60, 80.70, 15.30, 45.70, 25]
-
-    }
-
-    if (tab == "melhor-performance-descarte") {
-      //Os dados dessa lista devem vir do banco de dados e são os que estão na coluna Óleo(Em Litros) da tabela Ranking de Estabelecimentos
-      dados = [80.60, 55.70, 25.30, 66.70, 45.60]
-    }
-
-    if (tab == "parceiros-mais-utilizam-creditos") {
-      // Os dados dessa lista devem vir do banco de dados e são os que estão na coluna .....
-      dados = [10.10, 15.70, 15.30, 66.70, 35.60]
-    }
-
-    if (tab == "estabelecimentos-maiores-volumes-descartados") {
-      // Os dados dessa lista devem vir do banco de dados e são os que estão na coluna ......
-      dados = [70.70, 85.70, 85.30, 36.70, 15.60]
-    };
-
   };
 
-  const PieChart: React.FC = (props) => {
+  const fetchChartData = async (route: string) => {
+    try {
+      const response = await fetch(`http://localhost:3001/${route}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setChartData(data);
+      } else {
+        console.error('Erro ao buscar dados do servidor.');
+      }
+    } catch (error) {
+      console.error('Erro na solicitação ao servidor:', error);
+    }
+  };
+
+  const initialData: Data[] = []
+
+  const [chartData, setChartData] = useState<Data[]>(initialData.sort((a, b) => b.quantidade - a.quantidade));
+
+  const PieChart: React.FC = () => {
     const data = {
-      labels: ['Norte', 'Nordeste', 'Centro-Oeste', 'Sudeste', 'Sul'],
+      labels: chartData.map((item) => item.regiao),
       datasets: [
         {
-          data: dados, // Quantidade de estados em cada região (exemplo)
+          data: chartData.map((item) => item.quantidade),
           backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#FF5733', '#4BC0C0'],
           hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#FF5733', '#4BC0C0'],
-
         },
       ],
     };
-
+  
     return <Pie data={data} />;
-  }
-
-
+  };
+  
   return (
     <>
       <NavbarAdministrador />

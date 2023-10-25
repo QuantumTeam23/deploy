@@ -9,10 +9,7 @@ export const TabelaRegiaoParceiros: React.FC = () => {
   type Data = {
     numRanking: string;
     regiao: string;
-    nomeParceiro: string;
-    QtdCreditoRecebido: number;
     total_creditos_doados: number;
-    QtdOleo: number;
   };
 
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -112,11 +109,42 @@ export const TabelaRegiaoParceiros: React.FC = () => {
 };
 
 export const TabelaRegiaoEstabelecimento: React.FC = () => {
+
+  type Data = {
+    numRanking: string;
+    regiao: string;
+    QtdCreditoRecebido: number;
+  };
+
+  useEffect(() => {
+    fetch("http://localhost:3001/regiaoEstabMaisRecebeu", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setData(data);
+      })
+      .catch((error) => console.log(error));
+  }, []);
+
+  const initialData: Data[] = []
+
+  const [data, setData] = useState<Data[]>(initialData.sort((a, b) => b.QtdCreditoRecebido - a.QtdCreditoRecebido));
+
+  const indexedData = data.map((item, index) => ({
+    ...item,
+    numRanking: `${index + 1}º`,
+  }));
+
   const [currentPage, setCurrentPage] = useState<number>(1);
   const itemsPerPage: number = 9;
 
   const startIndex: number = (currentPage - 1) * itemsPerPage;
   const endIndex: number = startIndex + itemsPerPage;
+  const currentData: Data[] = indexedData.slice(startIndex, endIndex);
 
   const handlePrevPage = () => {
     if (currentPage > 1) {
@@ -124,11 +152,11 @@ export const TabelaRegiaoEstabelecimento: React.FC = () => {
     }
   };
 
-  // const handleNextPage = () => {
-  //   if (endIndex < data.length) {
-  //     setCurrentPage(currentPage + 1);
-  //   }
-  // };
+  const handleNextPage = () => {
+    if (endIndex < data.length) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
 
   return (
     <>
@@ -142,13 +170,13 @@ export const TabelaRegiaoEstabelecimento: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          {/* {currentData.map((item, index) => (
+          {currentData.map((item, index) => (
             <tr key={index}>
               <td>{item.numRanking}</td>
-              <td>{item.nomeRegiao}</td>
-              <td>{item.QtdCreditoCedido}</td>
+              <td>{item.regiao}</td>
+              <td>{item.QtdCreditoRecebido}</td>
             </tr>
-          ))} */}
+          ))} 
         </tbody>
         <tfoot>
           <tr>
@@ -165,13 +193,13 @@ export const TabelaRegiaoEstabelecimento: React.FC = () => {
                 Anterior
               </Button>
               <Button
-                // endIcon={<KeyboardArrowRightIcon />}
-                // disabled={endIndex >= data.length}
-                // onClick={handleNextPage}
-                // style={{
-                //   color: endIndex < data.length ? 'lightblue' : 'lightgray',
-                //   fontWeight: endIndex < data.length ? 'bold' : 'normal',
-                // }}
+                endIcon={<KeyboardArrowRightIcon />}
+                disabled={endIndex >= data.length}
+                onClick={handleNextPage}
+                style={{
+                  color: endIndex < data.length ? 'lightblue' : 'lightgray',
+                  fontWeight: endIndex < data.length ? 'bold' : 'normal',
+                }}
               >
                 Próxima
               </Button>
@@ -189,9 +217,39 @@ export const TabelaMelhorPerformanceDescarte: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const itemsPerPage: number = 9;
 
+  type Data = {
+    numRanking: string;
+    regiao: string;
+    QtdOleo: number;
+  };
+
+  useEffect(() => {
+    fetch("http://localhost:3001/regiaoEstabMaisOleoDescarte", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setData(data);
+      })
+      .catch((error) => console.log(error));
+  }, []);
+
+  const initialData: Data[] = []
+
+  const [data, setData] = useState<Data[]>(initialData.sort((a, b) => b.QtdOleo - a.QtdOleo));
+
+  const indexedData = data.map((item, index) => ({
+    ...item,
+    numRanking: `${index + 1}º`,
+  }));
+
 
   const startIndex: number = (currentPage - 1) * itemsPerPage;
   const endIndex: number = startIndex + itemsPerPage;
+  const currentData: Data[] = indexedData.slice(startIndex, endIndex);
 
   const handlePrevPage = () => {
     if (currentPage > 1) {
@@ -199,11 +257,11 @@ export const TabelaMelhorPerformanceDescarte: React.FC = () => {
     }
   };
 
-  // const handleNextPage = () => {
-  //   if (endIndex < data.length) {
-  //     setCurrentPage(currentPage + 1);
-  //   }
-  // };
+  const handleNextPage = () => {
+    if (endIndex < data.length) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
 
   return (
     <>
@@ -217,13 +275,13 @@ export const TabelaMelhorPerformanceDescarte: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          {/* {currentData.map((item, index) => (
+          {currentData.map((item, index) => (
             <tr key={index}>
               <td>{item.numRanking}</td>
-              <td>{item.nomeRegiao}</td>
+              <td>{item.regiao}</td>
               <td>{item.QtdOleo}</td>
             </tr>
-          ))} */}
+          ))}
         </tbody>
         <tfoot>
           <tr>
@@ -240,13 +298,13 @@ export const TabelaMelhorPerformanceDescarte: React.FC = () => {
                 Anterior
               </Button>
               <Button
-                // endIcon={<KeyboardArrowRightIcon />}
-                // disabled={endIndex >= data.length}
-                // onClick={handleNextPage}
-                // style={{
-                //   color: endIndex < data.length ? 'lightblue' : 'lightgray',
-                //   fontWeight: endIndex < data.length ? 'bold' : 'normal',
-                // }}
+                endIcon={<KeyboardArrowRightIcon />}
+                disabled={endIndex >= data.length}
+                onClick={handleNextPage}
+                style={{
+                  color: endIndex < data.length ? 'lightblue' : 'lightgray',
+                  fontWeight: endIndex < data.length ? 'bold' : 'normal',
+                }}
               >
                 Próxima
               </Button>
@@ -258,11 +316,6 @@ export const TabelaMelhorPerformanceDescarte: React.FC = () => {
     </>
   );
 };
-
-
-
-
-
 
 export const TabelaParceirosMaisDoamCreditos: React.FC = () => {
 
@@ -372,9 +425,6 @@ export const TabelaParceirosMaisDoamCreditos: React.FC = () => {
     </>
   );
 };
-
-
-
 
 export const TabelaEstabMaiorVolDescartado: React.FC = () => {
 
