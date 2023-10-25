@@ -1291,7 +1291,7 @@ async function listAllPreco(_, res) {
 
 async function editarPreco(req, res) {
     console.log("Requisição de edição de preço recebida")
-    const { preco_oleo_virgem, preco_oleo_usado } = req.body
+    const { preco_oleo_virgem, preco_oleo_usado, id_administrador } = req.body
     const idPreco = req.params.idPreco;
     try {
         const SQL = `
@@ -1299,7 +1299,8 @@ async function editarPreco(req, res) {
                 Preco 
             SET
                 preco_oleo_virgem = '${preco_oleo_virgem}',
-                preco_oleo_usado = '${preco_oleo_usado}'
+                preco_oleo_usado = '${preco_oleo_usado}',
+                id_administrador = '${id_administrador}'
             WHERE
                 preco_id = '${idPreco}'
 `;
