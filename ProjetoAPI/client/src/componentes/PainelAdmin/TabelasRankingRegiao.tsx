@@ -4,7 +4,7 @@ import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import styles from '../styles/TabelasRaking.module.css';
 
-export const TabelaParceiros: React.FC = () => {
+export const TabelaRegiaoParceiros: React.FC = () => {
 
   type Data = {
     numRanking: string;
@@ -59,7 +59,7 @@ export const TabelaParceiros: React.FC = () => {
 
   return (
     <>
-      <h4>Ranking de Parceiros por Região</h4>
+      <h4>Parceiros que Mais Doaram Créditos (Por Região)</h4>
       <table className={styles.table}>
         <thead>
           <tr>
@@ -111,7 +111,7 @@ export const TabelaParceiros: React.FC = () => {
   );
 };
 
-export const TabelaEstabelecimento: React.FC = () => {
+export const TabelaRegiaoEstabelecimento: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const itemsPerPage: number = 9;
 
@@ -132,7 +132,7 @@ export const TabelaEstabelecimento: React.FC = () => {
 
   return (
     <>
-      <h4>Ranking de Estabelecimento por Região</h4>
+      <h4>Estabelecimentos que Mais Receberam Créditos (Por Região)</h4>
       <table className={styles.table}>
         <thead>
           <tr>
@@ -185,7 +185,7 @@ export const TabelaEstabelecimento: React.FC = () => {
 };
 
 
-export const TabelaMelhorPerformance: React.FC = () => {
+export const TabelaMelhorPerformanceDescarte: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const itemsPerPage: number = 9;
 
@@ -207,7 +207,7 @@ export const TabelaMelhorPerformance: React.FC = () => {
 
   return (
     <>
-      <h4>Ranking de Estabelecimentos com Melhor Descarte</h4>
+      <h4>Estabelecimentos com Melhor Descarte de Óleo (Por Região)</h4>
       <table className={styles.table}>
         <thead>
           <tr>
@@ -255,6 +255,233 @@ export const TabelaMelhorPerformance: React.FC = () => {
         </tfoot>
       </table>
       
+    </>
+  );
+};
+
+
+
+
+
+
+export const TabelaParceirosMaisDoamCreditos: React.FC = () => {
+
+  type Data = {
+    numRanking: string;
+    regiao: string;
+    nome_parceiro: string;
+    nomeEstabelecimento: string;
+    total_creditos_doados: number;
+    QtdVolume: number;
+  };
+
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const itemsPerPage: number = 9;
+
+  useEffect(() => {
+    fetch("http://localhost:3001/parceirosMaisCreditosDoados", { 
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setData(data); 
+      })
+      .catch((error) => console.log(error));
+  }, []);
+
+  const initialData: Data[] = []
+
+  const [data, setData] = useState<Data[]>(initialData.sort((a, b) => b.total_creditos_doados - a.total_creditos_doados));
+
+  const indexedData = data.map((item, index) => ({
+    ...item,
+    numRanking: `${index + 1}º`,
+  }));
+
+  const startIndex: number = (currentPage - 1) * itemsPerPage;
+  const endIndex: number = startIndex + itemsPerPage;
+  const currentData: Data[] = indexedData.slice(startIndex, endIndex);
+
+  const handlePrevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const handleNextPage = () => {
+    if (endIndex < data.length) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  return (
+    <>
+      <h4>Parceiros que mais doam os créditos</h4>
+      <table className={styles.table}>
+        <thead>
+          <tr>
+            <th>Nº</th>
+            <th>Parceiro</th>
+            <th>Região</th>
+            <th>Créditos</th>
+          </tr>
+        </thead>
+        <tbody>
+          {currentData.map((item, index) => (
+            <tr key={index}>
+              <td>{item.numRanking}</td>
+              <td>{item.nome_parceiro}</td>
+              <td>{item.regiao}</td>
+              <td>{item.total_creditos_doados}</td>
+            </tr>
+          ))}
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colSpan={4} style={{ textAlign: 'center' }}>
+              <Button
+                startIcon={<KeyboardArrowLeftIcon />}
+                disabled={currentPage === 1}
+                onClick={handlePrevPage}
+                style={{
+                  color: currentPage !== 1 ? 'lightblue' : 'lightgray',
+                  fontWeight: currentPage !== 1 ? 'bold' : 'normal',
+                }}
+              >
+                Anterior
+              </Button>
+              <Button
+                endIcon={<KeyboardArrowRightIcon />}
+                disabled={endIndex >= data.length}
+                onClick={handleNextPage}
+                style={{
+                  color: endIndex < data.length ? 'lightblue' : 'lightgray',
+                  fontWeight: endIndex < data.length ? 'bold' : 'normal',
+                }}
+              >
+                Próxima
+              </Button>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+      <p>ㅤ</p>
+    </>
+  );
+};
+
+
+
+
+export const TabelaEstabMaiorVolDescartado: React.FC = () => {
+
+  type Data = {
+    numRanking: string;
+    regiao: string;
+    nome_estabelecimento: string;
+    total_oleo_coletado: number;
+  };
+
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const itemsPerPage: number = 9;
+
+  useEffect(() => {
+    fetch("http://localhost:3001/estabelecimentosMaisCreditosDoados", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setData(data);
+      })
+      .catch((error) => console.log(error));
+  }, []);
+
+  const initialData: Data[] = []
+
+  const [data, setData] = useState<Data[]>(initialData.sort((a, b) => b.total_oleo_coletado - a.total_oleo_coletado));
+
+  const indexedData = data.map((item, index) => ({
+    ...item,
+    numRanking: `${index + 1}º`,
+  }));
+
+  const startIndex: number = (currentPage - 1) * itemsPerPage;
+  const endIndex: number = startIndex + itemsPerPage;
+  const currentData: Data[] = indexedData.slice(startIndex, endIndex);
+
+  const handlePrevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const handleNextPage = () => {
+    if (endIndex < data.length) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  return (
+    <>
+      <h4>Estabelecimentos com maiores volumes descartados</h4>
+      <table className={styles.table}>
+        <thead>
+          <tr>
+            <th>Nº</th>
+            <th>Estabelecimento</th>
+            <th>Região</th>
+            <th>Volume (Em Litros)</th>
+          </tr>
+        </thead>
+        <tbody>
+          {currentData.map((item, index) => (
+            <tr key={index}>
+              <td>{item.numRanking}</td>
+              <td>{item.nome_estabelecimento}</td>
+              <td>{item.regiao}</td>
+              <td>{item.total_oleo_coletado}</td>
+            </tr>
+          ))}
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colSpan={4} style={{ textAlign: 'center' }}>
+              <Button
+                startIcon={<KeyboardArrowLeftIcon />}
+                disabled={currentPage === 1}
+                onClick={handlePrevPage}
+                style={{
+                  color: currentPage !== 1 ? 'lightblue' : 'lightgray',
+                  fontWeight: currentPage !== 1 ? 'bold' : 'normal',
+                }}
+              >
+                Anterior
+              </Button>
+              <Button
+                endIcon={<KeyboardArrowRightIcon />}
+                disabled={endIndex >= data.length}
+                onClick={handleNextPage}
+                style={{
+                  color: endIndex < data.length ? 'lightblue' : 'lightgray',
+                  fontWeight: endIndex < data.length ? 'bold' : 'normal',
+                }}
+              >
+                Próxima
+              </Button>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+      <p>ㅤ</p>
+      <p>ㅤ</p>
+      <p>ㅤ</p>
+      <p>ㅤ</p>
     </>
   );
 };

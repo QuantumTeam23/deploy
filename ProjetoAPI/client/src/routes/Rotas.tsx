@@ -30,7 +30,6 @@ import TransacaoDoacao from "../componentes/Transacoes/TransacaoDoacao";
 import ComparadorPrecos from "../componentes/PainelAdmin/ComparadorDePreco";
 
 import PainelPrecoPorRegiao from "../componentes/PainelAdmin/PainelPrecoRegiao";
-import DashboardRankingRegiao from "../componentes/PainelAdmin/DashboardRankingRegiao";
 import DashboardRanking from "../componentes/PainelAdmin/DashboardRanking";
 
 export const Rotas = () => {
@@ -63,16 +62,6 @@ export const Rotas = () => {
           element={
             <PrivateRouteAdmin>
               <PainelPrecoPorRegiao />
-            </PrivateRouteAdmin>
-          }
-        />
-
-        {/* ROTA ADM */}
-        <Route
-          path="/painel-administrador-dashboard-ranking-regiao"
-          element={
-            <PrivateRouteAdmin>
-              <DashboardRankingRegiao />
             </PrivateRouteAdmin>
           }
         />

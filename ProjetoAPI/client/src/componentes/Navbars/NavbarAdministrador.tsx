@@ -81,9 +81,6 @@ function NavbarAdministrador() {
                             <a className="nav-link text-white" href="/painel-administrador-dashboard-ranking">Dashboard Ranking</a>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link text-white" href="/painel-administrador-dashboard-ranking-regiao">Dashboard Ranking Por Região</a>
-                        </li>
-                        <li className="nav-item">
                             <a className="nav-link text-white" href="/painel-administrador-comparador-precos">Comparador de Preços</a>
                         </li>
                         <li className="nav-img">
