@@ -392,6 +392,70 @@ function CadastroParceiro() {
             <img src={passwordIconSrc} alt="eye icon" className='eyeIconParceiro' onClick={showPasswordHandler} />
           </Form.Group>
         );
+      } else if (i === 9) {
+        inputFields.push(
+          <Form.Group key={i} controlId={`campo-${i}`}>
+            <Form.Label>{label}</Form.Label>
+            <Form.Control
+              as='select'
+              name={`campo-${i}`}
+              required
+              className='form-control-cadastro-parceiro'
+              onChange={handleInputChange}
+              value={value}
+            >
+              <option value=''>Selecione o estado</option>
+              <option value='Acre'>Acre</option>
+              <option value='Alagoas'>Alagoas</option>
+              <option value='Amapá'>Amapá</option>
+              <option value='Amazonas'>Amazonas</option>
+              <option value='Bahia'>Bahia</option>
+              <option value='Ceará'>Ceará</option>
+              <option value='Distrito Federal'>Distrito Federal</option>
+              <option value='Espírito Santo'>Espírito Santo</option>
+              <option value='Goiás'>Goiás</option>
+              <option value='Maranhão'>Maranhão</option>
+              <option value='Mato Grosso'>Mato Grosso</option>
+              <option value='Mato Grosso do Sul'>Mato Grosso do Sul</option>
+              <option value='Minas Gerais'>Minas Gerais</option>
+              <option value='Pará'>Pará</option>
+              <option value='Paraíba'>Paraíba</option>
+              <option value='Paraná'>Paraná</option>
+              <option value='Pernambuco'>Pernambuco</option>
+              <option value='Piauí'>Piauí</option>
+              <option value='Rio de Janeiro'>Rio de Janeiro</option>
+              <option value='Rio Grande do Norte'>Rio Grande do Norte</option>
+              <option value='Rio Grande do Sul'>Rio Grande do Sul</option>
+              <option value='Rondônia'>Rondônia</option>
+              <option value='Roraima'>Roraima</option>
+              <option value='Santa Catarina'>Santa Catarina</option>
+              <option value='São Paulo'>São Paulo</option>
+              <option value='Sergipe'>Sergipe</option>
+              <option value='Tocantins'>Tocantins</option>
+            </Form.Control>
+          </Form.Group>
+        );
+      } else if (i === 11) {
+        inputFields.push(
+          <Form.Group key={i} controlId={`campo-${i}`}>
+            <Form.Label>{label}</Form.Label>
+            <Form.Control
+              as='select'
+              name={`campo-${i}`}
+              required
+              className='form-control-cadastro-parceiro'
+              onChange={handleInputChange}
+              value={value}
+            >
+              <option value=''>Selecione a região</option>
+              <option value='Norte'>Norte</option>
+              <option value='Nordeste'>Nordeste</option>
+              <option value='Centro-Oeste'>Centro-Oeste</option>
+              <option value='Sudeste'>Sudeste</option>
+              <option value='Sul'>Sul</option>
+            </Form.Control>
+          </Form.Group>
+        );
       } else if (i === 13) {
         inputFields.push(
           <Form.Group key={i} controlId={`campo-${i}`}>
