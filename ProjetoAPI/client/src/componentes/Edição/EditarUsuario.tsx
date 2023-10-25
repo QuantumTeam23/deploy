@@ -23,7 +23,7 @@ function EditarUsuario() {
         regiao: '',
         cidadesAtende: ''
     });
-    
+
 
     useEffect(() => {
         const DadosParceiro = localStorage.getItem('parceiroData');
@@ -72,14 +72,14 @@ function EditarUsuario() {
 
     const msgSucessoPost = () => {
         Swal.fire({
-          title: "Sucesso",
-          html: "Informações alteradas com sucesso.",
-          icon: "success",
-          showConfirmButton: true,
-          confirmButtonColor: '#de940a',
-          customClass: {
-            container: 'swal-container',
-          },
+            title: "Sucesso",
+            html: "Informações alteradas com sucesso.",
+            icon: "success",
+            showConfirmButton: true,
+            confirmButtonColor: '#de940a',
+            customClass: {
+                container: 'swal-container',
+            },
         })
     }
 
@@ -120,11 +120,11 @@ function EditarUsuario() {
                     .catch(error => {
                         console.error('Erro ao editar dados:', error);
                     });
-    
-                    backEdit()
-                    msgSucessoPost()
+
+                backEdit()
+                msgSucessoPost()
             }
-             else {
+            else {
                 fetch(`http://localhost:3001/editar-usuario-comum-estabelecimento/${idEstabelecimento}`, {
                     method: 'PUT',
                     headers: {
@@ -132,19 +132,19 @@ function EditarUsuario() {
                     },
                     body: JSON.stringify({ usuarioDados }),
                 })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Erro ao editar dados');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    console.log('Dados editados com sucesso:', data);
-                })
-                .catch(error => {
-                    console.error('Erro ao editar dados:', error);
-                });
-    
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Erro ao editar dados');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log('Dados editados com sucesso:', data);
+                    })
+                    .catch(error => {
+                        console.error('Erro ao editar dados:', error);
+                    });
+
                 backEditEstab()
                 msgSucessoPost()
             }
@@ -163,7 +163,7 @@ function EditarUsuario() {
     const showPasswordHandler = () => {
         setShowPassword(!showPassword);
     };
-    
+
     const passwordInputType = showPassword ? "text" : "password";
     const passwordIconSrc = showPassword ? eyeIconOpen : eyeIconClose;
 
@@ -207,7 +207,7 @@ function EditarUsuario() {
                                         defaultValue={usuarioDados.senha}
                                         onChange={handleInputChange}
                                     />
-                                <img src={passwordIconSrc} alt="eye icon" className='eyeIcon' onClick={showPasswordHandler}/>
+                                    <img src={passwordIconSrc} alt="eye icon" className='eyeIcon' onClick={showPasswordHandler} />
                                 </InputGroup>
                             </Form.Group>
                         </div>
@@ -282,18 +282,50 @@ function EditarUsuario() {
                         <div className='campo-editar-usuario'>
                             <Form.Group controlId='estado'>
                                 <Form.Label>Estado</Form.Label>
-                                <InputGroup>
-                                    <FormControl
-                                        type='text'
-                                        required
-                                        placeholder='Digite o estado'
-                                        aria-label='estado'
-                                        aria-describedby='estado-addon'
-                                        className='form-control-editar-usuario'
-                                        defaultValue={usuarioDados.estado}
-                                        onChange={handleInputChange}
-                                    />
-                                </InputGroup>
+                                <Form.Control
+                                    as='select'  // Isso altera o componente para uma lista suspensa
+                                    required
+                                    value={usuarioDados.estado}  // Use a propriedade value para definir o valor padrão
+                                    onChange={handleInputChange}
+                                    style={{
+                                        backgroundColor: 'rgb(221, 255, 218)',
+                                        width: '100%',
+                                        padding: '7.2px',
+                                        marginTop: '0.7px',
+                                        border: '1px solid #ccc',
+                                        borderRadius: '5px',
+                                        fontSize: '16px'
+                                    }}
+                                >
+                                    <option value=''>Selecione o estado</option>
+                                    <option value='Acre'>Acre</option>
+                                    <option value='Alagoas'>Alagoas</option>
+                                    <option value='Amapá'>Amapá</option>
+                                    <option value='Amazonas'>Amazonas</option>
+                                    <option value='Bahia'>Bahia</option>
+                                    <option value='Ceará'>Ceará</option>
+                                    <option value='Distrito Federal'>Distrito Federal</option>
+                                    <option value='Espírito Santo'>Espírito Santo</option>
+                                    <option value='Goiás'>Goiás</option>
+                                    <option value='Maranhão'>Maranhão</option>
+                                    <option value='Mato Grosso'>Mato Grosso</option>
+                                    <option value='Mato Grosso do Sul'>Mato Grosso do Sul</option>
+                                    <option value='Minas Gerais'>Minas Gerais</option>
+                                    <option value='Pará'>Pará</option>
+                                    <option value='Paraíba'>Paraíba</option>
+                                    <option value='Paraná'>Paraná</option>
+                                    <option value='Pernambuco'>Pernambuco</option>
+                                    <option value='Piauí'>Piauí</option>
+                                    <option value='Rio de Janeiro'>Rio de Janeiro</option>
+                                    <option value='Rio Grande do Norte'>Rio Grande do Norte</option>
+                                    <option value='Rio Grande do Sul'>Rio Grande do Sul</option>
+                                    <option value='Rondônia'>Rondônia</option>
+                                    <option value='Roraima'>Roraima</option>
+                                    <option value='Santa Catarina'>Santa Catarina</option>
+                                    <option value='São Paulo'>São Paulo</option>
+                                    <option value='Sergipe'>Sergipe</option>
+                                    <option value='Tocantins'>Tocantins</option>
+                                </Form.Control>
                             </Form.Group>
                         </div>
                         <div className='campo-editar-usuario'>
@@ -316,20 +348,31 @@ function EditarUsuario() {
                         <div className='campo-editar-usuario'>
                             <Form.Group controlId='regiao'>
                                 <Form.Label>Região</Form.Label>
-                                <InputGroup>
-                                    <FormControl
-                                        type='text'
-                                        required
-                                        placeholder='Digite a região'
-                                        aria-label='regiao'
-                                        aria-describedby='regiao-addon'
-                                        className='form-control-editar-usuario'
-                                        defaultValue={usuarioDados.regiao}
-                                        onChange={handleInputChange}
-                                    />
-                                </InputGroup>
+                                <Form.Control
+                                    as='select'
+                                    required
+                                    value={usuarioDados.regiao}
+                                    onChange={handleInputChange}
+                                    style={{
+                                        backgroundColor: 'rgb(221, 255, 218)',
+                                        width: '100%',
+                                        padding: '10px',
+                                        border: '1px solid #ccc',
+                                        borderRadius: '5px',
+                                        fontSize: '16px'
+                                    }}
+                                >
+                                    <option value=''>Selecione a região </option>
+                                    <option value='Norte'>Norte</option>
+                                    <option value='Nordeste'>Nordeste</option>
+                                    <option value='Centro-Oeste'>Centro-Oeste</option>
+                                    <option value='Sudeste'>Sudeste</option>
+                                    <option value='Sul'>Sul</option>
+                                </Form.Control>
+                                
                             </Form.Group>
                         </div>
+
                         {userType === 'ComumParceiro' && (
                             <div className='campo-editar-usuario'>
                                 <Form.Group controlId='cidadesAtende'>

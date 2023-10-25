@@ -47,7 +47,8 @@
     margin-bottom: 20px;
 }
 
-.form-control-editar-usuario {
+.form-control-editar-usuario,
+.form-control-editar-usuario option {
     background-color: rgb(221, 255, 218) !important;
     width: 100%;
     padding: 10px;
