@@ -4,9 +4,6 @@ import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import styles from '../styles/TabelasRaking.module.css'
 
-
-
-
 export const TabelaParceirosRanking: React.FC = () => {
 
   type Data = {
@@ -22,7 +19,7 @@ export const TabelaParceirosRanking: React.FC = () => {
   const itemsPerPage: number = 9;
 
   useEffect(() => {
-    fetch("http://localhost:3001/parceirosMaisCreditosDoados", { // Atualize a URL para a rota correta do servidor
+    fetch("http://localhost:3001/parceirosMaisCreditosDoados", { 
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -30,7 +27,7 @@ export const TabelaParceirosRanking: React.FC = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        setData(data); // Define os dados obtidos na resposta da API
+        setData(data); 
       })
       .catch((error) => console.log(error));
   }, []);
@@ -127,7 +124,7 @@ export const TabelaEstabelecimentosRanking: React.FC = () => {
   const itemsPerPage: number = 9;
 
   useEffect(() => {
-    fetch("http://localhost:3001/estabelecimentosMaisCreditosDoados", { // Atualize a URL para a rota correta do servidor
+    fetch("http://localhost:3001/estabelecimentosMaisCreditosDoados", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

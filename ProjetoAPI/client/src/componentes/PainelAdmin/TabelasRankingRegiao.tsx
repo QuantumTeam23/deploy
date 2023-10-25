@@ -1,45 +1,43 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Button from '@mui/material/Button';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import styles from '../styles/TabelasRaking.module.css';
 
-const regioes: string[] = ['Norte', 'Nordeste', 'Centro-Oeste', 'Sudeste', 'Sul'];
-
-type Data = {
-  numRanking: string;
-  nomeRegiao: string;
-  nomeParceiro: string;
-  QtdCreditoRecebido: number;
-  QtdCreditoCedido: number;
-  QtdOleo: number;
-};
-
-const uniqueRegioes: string[] = Array.from(new Set(regioes));
-
-const generateRandomData = (regioes: string[]): Data[] => {
-  return regioes.map((regiao, index) => ({
-    numRanking: `${index + 1}º`,
-    nomeRegiao: regiao,
-    nomeParceiro: `Parceiro ${index + 1}`,
-    QtdCreditoRecebido: Math.floor(Math.random() * 10000) + 1,
-    QtdCreditoCedido: Math.floor(Math.random() * 10000) + 1,
-    QtdOleo: Math.floor(Math.random() * 10000) + 1,
-  }));
-};
 export const TabelaParceiros: React.FC = () => {
+
+  type Data = {
+    numRanking: string;
+    regiao: string;
+    nomeParceiro: string;
+    QtdCreditoRecebido: number;
+    total_creditos_doados: number;
+    QtdOleo: number;
+  };
+
   const [currentPage, setCurrentPage] = useState<number>(1);
   const itemsPerPage: number = 9;
-  const initialData: Data[] = generateRandomData(uniqueRegioes);
 
-  // Ordenar dados com base na quantidade de créditos cedidos em ordem decrescente
-  const [data, setData] = useState<Data[]>(
-    initialData.sort((a, b) => b.QtdCreditoCedido - a.QtdCreditoCedido)
-  );
+  useEffect(() => {
+    fetch("http://localhost:3001/regiaoParceiroMaisCedido", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setData(data);
+      })
+      .catch((error) => console.log(error));
+  }, []);
 
-  // Reindexar os dados para que a contagem comece do 1º lugar
-  const indexedData = data.map((parceiro, index) => ({
-    ...parceiro,
+  const initialData: Data[] = []
+
+  const [data, setData] = useState<Data[]>(initialData.sort((a, b) => b.total_creditos_doados - a.total_creditos_doados));
+
+  const indexedData = data.map((item, index) => ({
+    ...item,
     numRanking: `${index + 1}º`,
   }));
 
@@ -74,8 +72,8 @@ export const TabelaParceiros: React.FC = () => {
           {currentData.map((item, index) => (
             <tr key={index}>
               <td>{item.numRanking}</td>
-              <td>{item.nomeRegiao}</td>
-              <td>{item.QtdCreditoCedido}</td>
+              <td>{item.regiao}</td>
+              <td>{item.total_creditos_doados}</td>
             </tr>
           ))}
         </tbody>
@@ -116,22 +114,9 @@ export const TabelaParceiros: React.FC = () => {
 export const TabelaEstabelecimento: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const itemsPerPage: number = 9;
-  const initialData: Data[] = generateRandomData(uniqueRegioes);
-
-  // Ordenar dados com base na quantidade de créditos cedidos em ordem decrescente
-  const [data, setData] = useState<Data[]>(
-    initialData.sort((a, b) => b.QtdCreditoCedido - a.QtdCreditoCedido)
-  );
-
-  // Reindexar os dados para que a contagem comece do 1º lugar
-  const indexedData = data.map((parceiro, index) => ({
-    ...parceiro,
-    numRanking: `${index + 1}º`,
-  }));
 
   const startIndex: number = (currentPage - 1) * itemsPerPage;
   const endIndex: number = startIndex + itemsPerPage;
-  const currentData: Data[] = indexedData.slice(startIndex, endIndex);
 
   const handlePrevPage = () => {
     if (currentPage > 1) {
@@ -139,11 +124,11 @@ export const TabelaEstabelecimento: React.FC = () => {
     }
   };
 
-  const handleNextPage = () => {
-    if (endIndex < data.length) {
-      setCurrentPage(currentPage + 1);
-    }
-  };
+  // const handleNextPage = () => {
+  //   if (endIndex < data.length) {
+  //     setCurrentPage(currentPage + 1);
+  //   }
+  // };
 
   return (
     <>
@@ -157,13 +142,13 @@ export const TabelaEstabelecimento: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          {currentData.map((item, index) => (
+          {/* {currentData.map((item, index) => (
             <tr key={index}>
               <td>{item.numRanking}</td>
               <td>{item.nomeRegiao}</td>
               <td>{item.QtdCreditoCedido}</td>
             </tr>
-          ))}
+          ))} */}
         </tbody>
         <tfoot>
           <tr>
@@ -180,13 +165,13 @@ export const TabelaEstabelecimento: React.FC = () => {
                 Anterior
               </Button>
               <Button
-                endIcon={<KeyboardArrowRightIcon />}
-                disabled={endIndex >= data.length}
-                onClick={handleNextPage}
-                style={{
-                  color: endIndex < data.length ? 'lightblue' : 'lightgray',
-                  fontWeight: endIndex < data.length ? 'bold' : 'normal',
-                }}
+                // endIcon={<KeyboardArrowRightIcon />}
+                // disabled={endIndex >= data.length}
+                // onClick={handleNextPage}
+                // style={{
+                //   color: endIndex < data.length ? 'lightblue' : 'lightgray',
+                //   fontWeight: endIndex < data.length ? 'bold' : 'normal',
+                // }}
               >
                 Próxima
               </Button>
@@ -203,22 +188,10 @@ export const TabelaEstabelecimento: React.FC = () => {
 export const TabelaMelhorPerformance: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const itemsPerPage: number = 9;
-  const initialData: Data[] = generateRandomData(uniqueRegioes);
 
-  // Ordenar dados com base na quantidade de créditos recebidos em ordem decrescente
-  const [data, setData] = useState<Data[]>(
-    initialData.sort((a, b) => b.QtdOleo - a.QtdOleo)
-  );
-
-  // Reindexar os dados para que a contagem comece do 1º lugar
-  const indexedData = data.map((parceiro, index) => ({
-    ...parceiro,
-    numRanking: `${index + 1}º`,
-  }));
 
   const startIndex: number = (currentPage - 1) * itemsPerPage;
   const endIndex: number = startIndex + itemsPerPage;
-  const currentData: Data[] = indexedData.slice(startIndex, endIndex);
 
   const handlePrevPage = () => {
     if (currentPage > 1) {
@@ -226,11 +199,11 @@ export const TabelaMelhorPerformance: React.FC = () => {
     }
   };
 
-  const handleNextPage = () => {
-    if (endIndex < data.length) {
-      setCurrentPage(currentPage + 1);
-    }
-  };
+  // const handleNextPage = () => {
+  //   if (endIndex < data.length) {
+  //     setCurrentPage(currentPage + 1);
+  //   }
+  // };
 
   return (
     <>
@@ -244,13 +217,13 @@ export const TabelaMelhorPerformance: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          {currentData.map((item, index) => (
+          {/* {currentData.map((item, index) => (
             <tr key={index}>
               <td>{item.numRanking}</td>
               <td>{item.nomeRegiao}</td>
               <td>{item.QtdOleo}</td>
             </tr>
-          ))}
+          ))} */}
         </tbody>
         <tfoot>
           <tr>
@@ -267,13 +240,13 @@ export const TabelaMelhorPerformance: React.FC = () => {
                 Anterior
               </Button>
               <Button
-                endIcon={<KeyboardArrowRightIcon />}
-                disabled={endIndex >= data.length}
-                onClick={handleNextPage}
-                style={{
-                  color: endIndex < data.length ? 'lightblue' : 'lightgray',
-                  fontWeight: endIndex < data.length ? 'bold' : 'normal',
-                }}
+                // endIcon={<KeyboardArrowRightIcon />}
+                // disabled={endIndex >= data.length}
+                // onClick={handleNextPage}
+                // style={{
+                //   color: endIndex < data.length ? 'lightblue' : 'lightgray',
+                //   fontWeight: endIndex < data.length ? 'bold' : 'normal',
+                // }}
               >
                 Próxima
               </Button>

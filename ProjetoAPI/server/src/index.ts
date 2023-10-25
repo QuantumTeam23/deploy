@@ -67,12 +67,13 @@ app.get('/admTransacoes', getAllTransAdm);
 // DASHBOARD
 app.get('/parceirosMaisCreditosDoados', listParceirosMaisGastaram)
 app.get('/estabelecimentosMaisCreditosDoados', listEstabelecimentoMaisGastaram)
+app.get('/regiaoParceiroMaisCedido', listRegioesParceirosMaisGastaram)
 //LOGIN
 app.post('/login', login2);
 
 //CONEXÃO BANCO
 const DB = new Pool({
-    connectionString: "postgres://vvyjfscd:0gBAW71AqPpA3XqACE9AvHFTdX4TiVus@tuffi.db.elephantsql.com/vvyjfscd"
+    connectionString: "postgres://pgjxrgaa:CqhytIY0_dhY12GTGtozurAHYgG7zA77@isabelle.db.elephantsql.com/pgjxrgaa"
     // user: 'postgres',       //user PostgreSQL padrão = postgres
     // host: 'localhost',
     // database: 'API',
@@ -1339,6 +1340,25 @@ async function listEstabelecimentoMaisGastaram (req, res) {
             GROUP BY e.estabelecimento_razao_social, e.estabelecimento_regiao
             ORDER BY total_oleo_coletado DESC;
     
+        `
+        const resultado = await connectionDB.query(SQL);
+        res.send(resultado.rows);
+    } catch (error) {
+        console.error("Erro", error);
+        res.status(500).send({ msg: "Erro" });
+    }
+}
+
+async function listRegioesParceirosMaisGastaram (req, res) {
+    try {
+        const SQL = `
+            SELECT
+                p.parceiro_regiao AS regiao,
+                SUM(CAST(at.quantidade_moedas AS DECIMAL)) AS total_creditos_doados
+            FROM Parceiros p
+            LEFT JOIN AcaoTransacoes at ON p.parceiro_id = at.id_parceiro
+            GROUP BY p.parceiro_regiao
+            ORDER BY total_creditos_doados DESC;
         `
         const resultado = await connectionDB.query(SQL);
         res.send(resultado.rows);
