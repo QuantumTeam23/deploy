@@ -68,6 +68,10 @@ app.get('/admTransacoes', getAllTransAdm);
 app.get('/parceirosMaisCreditosDoados', listParceirosMaisGastaram)
 app.get('/estabelecimentosMaisCreditosDoados', listEstabelecimentoMaisGastaram)
 app.get('/regiaoParceiroMaisCedido', listRegioesParceirosMaisGastaram)
+
+//COMPARADOR
+app.get('/selectComparador/:regiao', selectComparador)
+
 //LOGIN
 app.post('/login', login2);
 
@@ -1367,3 +1371,35 @@ async function listRegioesParceirosMaisGastaram (req, res) {
         res.status(500).send({ msg: "Erro" });
     }
 }
+
+async function selectComparador(req, res) {
+    console.log ("Requisição comparador recebida");
+    const {regiao} = req.params;
+    try {
+        const SQL = `
+            SELECT
+                preco_oleo_virgem,
+                preco_oleo_usado
+            FROM Preco 
+            WHERE preco_regiao = '${regiao}'
+        `;
+        const resultado = await connectionDB.query(SQL);
+
+        const precoOleoVirgem = parseFloat(resultado.rows[0].preco_oleo_virgem);
+        const precoOleoUsado = parseFloat(resultado.rows[0].preco_oleo_usado);
+
+
+        const valorMedio = (precoOleoVirgem + precoOleoUsado + 10) / 3;
+        const response = {
+            preco_oleo_virgem: precoOleoVirgem,
+            preco_oleo_usado: precoOleoUsado,
+            valor_medio: valorMedio
+        };
+
+        res.send(response);
+    } catch (error) {
+        console.error("Erro ao buscar valores:", error);
+        res.status(500).send({ msg: "Erro ao buscar valores." });
+    }
+}
+
