@@ -68,12 +68,14 @@ app.get('/admTransacoes', getAllTransAdm);
 app.get('/parceirosMaisCreditosDoados', listParceirosMaisGastaram)
 app.get('/estabelecimentosMaisCreditosDoados', listEstabelecimentoMaisGastaram)
 app.get('/regiaoParceiroMaisCedido', listRegioesParceirosMaisGastaram)
+app.get('/regiaoEstabMaisRecebeu', listRegioesEstabMaisReceberam)
+app.get('/regiaoEstabMaisOleoDescarte', listRegioesEstabMaisOleoDescarte)
 //LOGIN
 app.post('/login', login2);
 
 //CONEXÃO BANCO
 const DB = new Pool({
-    connectionString: "postgres://pgjxrgaa:CqhytIY0_dhY12GTGtozurAHYgG7zA77@isabelle.db.elephantsql.com/pgjxrgaa"
+    connectionString: "postgres://yephqbaq:LBiulBYFI5wETIVSl8uENQwJUNnrN0Ln@isabelle.db.elephantsql.com/yephqbaq"
     // user: 'postgres',       //user PostgreSQL padrão = postgres
     // host: 'localhost',
     // database: 'API',
@@ -1359,6 +1361,45 @@ async function listRegioesParceirosMaisGastaram (req, res) {
             LEFT JOIN AcaoTransacoes at ON p.parceiro_id = at.id_parceiro
             GROUP BY p.parceiro_regiao
             ORDER BY total_creditos_doados DESC;
+        `
+        const resultado = await connectionDB.query(SQL);
+        res.send(resultado.rows);
+    } catch (error) {
+        console.error("Erro", error);
+        res.status(500).send({ msg: "Erro" });
+    }
+}
+
+async function listRegioesEstabMaisReceberam(req, res) {
+    try {
+        const SQL = `
+            SELECT
+                e.estabelecimento_regiao AS regiao,
+                SUM(CAST(at.quantidade_moedas AS DECIMAL)) AS total_moedas_recebidas
+            FROM Estabelecimentos e
+            LEFT JOIN AcaoTransacoes at ON e.estabelecimento_id = at.id_estabelecimento
+            GROUP BY e.estabelecimento_regiao
+            ORDER BY total_moedas_recebidas DESC;
+    
+        `
+        const resultado = await connectionDB.query(SQL);
+        res.send(resultado.rows);
+    } catch (error) {
+        console.error("Erro", error);
+        res.status(500).send({ msg: "Erro" });
+    }
+}
+
+async function listRegioesEstabMaisOleoDescarte(req, res) {
+    try {
+        const SQL = `
+                SELECT
+                e.estabelecimento_regiao AS regiao,
+                SUM(CAST(at.quantidade_oleo_coletado AS DECIMAL)) AS total_oleo_descartado
+            FROM Estabelecimentos e
+            LEFT JOIN AcaoTransacoes at ON e.estabelecimento_id = at.id_estabelecimento
+            GROUP BY e.estabelecimento_regiao
+            ORDER BY total_oleo_descartado DESC;
         `
         const resultado = await connectionDB.query(SQL);
         res.send(resultado.rows);
