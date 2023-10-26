@@ -56,7 +56,7 @@ export const TabelaRegiaoParceiros: React.FC = () => {
 
   return (
     <>
-      <h4>Parceiros que Mais Doaram Créditos (Por Região)</h4>
+      <h4>Regiões que mais receberam créditos de parceiros</h4>
       <table className={styles.table}>
         <thead>
           <tr>
