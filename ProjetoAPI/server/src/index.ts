@@ -1317,12 +1317,13 @@ async function editarPreco(req, res) {
 async function listParceirosMaisGastaram (req, res) {
     try {
         const SQL = `
-            SELECT
+                SELECT
                 p.parceiro_razao_social AS nome_parceiro,
                 p.parceiro_regiao AS regiao,
                 SUM(CAST(at.quantidade_moedas AS DECIMAL)) AS total_creditos_doados
             FROM Parceiros p
             LEFT JOIN AcaoTransacoes at ON p.parceiro_id = at.id_parceiro
+            WHERE at.quantidade_moedas IS NOT NULL
             GROUP BY p.parceiro_razao_social, p.parceiro_regiao
             ORDER BY total_creditos_doados DESC;
         `
@@ -1343,6 +1344,7 @@ async function listEstabelecimentoMaisGastaram (req, res) {
                 SUM(CAST(at.quantidade_oleo_coletado AS DECIMAL)) AS total_oleo_coletado
             FROM Estabelecimentos e
             LEFT JOIN AcaoTransacoes at ON e.estabelecimento_id = at.id_estabelecimento
+            WHERE at.quantidade_oleo_coletado IS NOT NULL
             GROUP BY e.estabelecimento_razao_social, e.estabelecimento_regiao
             ORDER BY total_oleo_coletado DESC;
     
@@ -1363,6 +1365,7 @@ async function listRegioesParceirosMaisGastaram (req, res) {
                 SUM(CAST(at.quantidade_moedas AS DECIMAL)) AS total_creditos_doados
             FROM Parceiros p
             LEFT JOIN AcaoTransacoes at ON p.parceiro_id = at.id_parceiro
+            WHERE at.quantidade_moedas IS NOT NULL
             GROUP BY p.parceiro_regiao
             ORDER BY total_creditos_doados DESC;
         `
@@ -1382,6 +1385,7 @@ async function listRegioesEstabMaisReceberam(req, res) {
                 SUM(CAST(at.quantidade_moedas AS DECIMAL)) AS total_moedas_recebidas
             FROM Estabelecimentos e
             LEFT JOIN AcaoTransacoes at ON e.estabelecimento_id = at.id_estabelecimento
+            WHERE at.quantidade_moedas IS NOT NULL
             GROUP BY e.estabelecimento_regiao
             ORDER BY total_moedas_recebidas DESC;
     
@@ -1402,6 +1406,7 @@ async function listRegioesEstabMaisOleoDescarte(req, res) {
                 SUM(CAST(at.quantidade_oleo_coletado AS DECIMAL)) AS total_oleo_descartado
             FROM Estabelecimentos e
             LEFT JOIN AcaoTransacoes at ON e.estabelecimento_id = at.id_estabelecimento
+            WHERE at.quantidade_oleo_coletado IS NOT NULL
             GROUP BY e.estabelecimento_regiao
             ORDER BY total_oleo_descartado DESC;
         `
