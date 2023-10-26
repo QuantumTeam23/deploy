@@ -8,7 +8,22 @@ import { Pie } from 'react-chartjs-2';
 import 'chart.js/auto';
 import { Col, Container, Row } from 'react-bootstrap';
 
-type Data = {
+interface DataFromBackend {
+  regiao: string;
+  total_oleo_descartado: number;
+  total_moedas_recebidas: number;
+  total_creditos_doados: number;
+  total_oleo_coletado: number;
+}
+
+const mapData = (dataFromBackend: DataFromBackend[]) => {
+  return dataFromBackend.map((item) => ({
+    regiao: item.regiao,
+    quantidade: item.total_creditos_doados || item.total_moedas_recebidas || item.total_oleo_descartado || item.total_oleo_coletado
+  }));
+};
+
+type DataMapeada = {
   regiao: string;
   quantidade: number;
 };
@@ -43,7 +58,8 @@ export default function DashboardRanking() {
 
       if (response.ok) {
         const data = await response.json();
-        setChartData(data);
+        const mappedData = mapData(data);
+        setChartData(mappedData);
       } else {
         console.error('Erro ao buscar dados do servidor.');
       }
@@ -52,9 +68,9 @@ export default function DashboardRanking() {
     }
   };
 
-  const initialData: Data[] = []
+  const initialData: DataMapeada[] = []
 
-  const [chartData, setChartData] = useState<Data[]>(initialData.sort((a, b) => b.quantidade - a.quantidade));
+  const [chartData, setChartData] = useState<DataMapeada[]>(initialData.sort((a, b) => b.quantidade - a.quantidade));
 
   const PieChart: React.FC = () => {
     const data = {

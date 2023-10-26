@@ -113,7 +113,7 @@ export const TabelaRegiaoEstabelecimento: React.FC = () => {
   type Data = {
     numRanking: string;
     regiao: string;
-    QtdCreditoRecebido: number;
+    total_moedas_recebidas: number;
   };
 
   useEffect(() => {
@@ -132,7 +132,7 @@ export const TabelaRegiaoEstabelecimento: React.FC = () => {
 
   const initialData: Data[] = []
 
-  const [data, setData] = useState<Data[]>(initialData.sort((a, b) => b.QtdCreditoRecebido - a.QtdCreditoRecebido));
+  const [data, setData] = useState<Data[]>(initialData.sort((a, b) => b.total_moedas_recebidas - a.total_moedas_recebidas));
 
   const indexedData = data.map((item, index) => ({
     ...item,
@@ -174,7 +174,7 @@ export const TabelaRegiaoEstabelecimento: React.FC = () => {
             <tr key={index}>
               <td>{item.numRanking}</td>
               <td>{item.regiao}</td>
-              <td>{item.QtdCreditoRecebido}</td>
+              <td>{item.total_moedas_recebidas}</td>
             </tr>
           ))} 
         </tbody>
@@ -220,7 +220,7 @@ export const TabelaMelhorPerformanceDescarte: React.FC = () => {
   type Data = {
     numRanking: string;
     regiao: string;
-    QtdOleo: number;
+    total_oleo_descartado: number;
   };
 
   useEffect(() => {
@@ -239,7 +239,7 @@ export const TabelaMelhorPerformanceDescarte: React.FC = () => {
 
   const initialData: Data[] = []
 
-  const [data, setData] = useState<Data[]>(initialData.sort((a, b) => b.QtdOleo - a.QtdOleo));
+  const [data, setData] = useState<Data[]>(initialData.sort((a, b) => b.total_oleo_descartado - a.total_oleo_descartado));
 
   const indexedData = data.map((item, index) => ({
     ...item,
@@ -279,7 +279,7 @@ export const TabelaMelhorPerformanceDescarte: React.FC = () => {
             <tr key={index}>
               <td>{item.numRanking}</td>
               <td>{item.regiao}</td>
-              <td>{item.QtdOleo}</td>
+              <td>{item.total_oleo_descartado}</td>
             </tr>
           ))}
         </tbody>
