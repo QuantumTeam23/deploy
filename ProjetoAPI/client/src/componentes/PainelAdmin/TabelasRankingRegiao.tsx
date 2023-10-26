@@ -30,7 +30,7 @@ export const TabelaRegiaoParceiros: React.FC = () => {
   }, []);
 
   const initialData: Data[] = []
-
+ 
   const [data, setData] = useState<Data[]>(initialData.sort((a, b) => b.total_creditos_doados - a.total_creditos_doados));
 
   const indexedData = data.map((item, index) => ({
@@ -378,7 +378,6 @@ export const TabelaParceirosMaisDoamCreditos: React.FC = () => {
           <tr>
             <th>Nº</th>
             <th>Parceiro</th>
-            <th>Região</th>
             <th>Créditos</th>
           </tr>
         </thead>
@@ -387,14 +386,13 @@ export const TabelaParceirosMaisDoamCreditos: React.FC = () => {
             <tr key={index}>
               <td>{item.numRanking}</td>
               <td>{item.nome_parceiro}</td>
-              <td>{item.regiao}</td>
               <td>{item.total_creditos_doados}</td>
             </tr>
           ))}
         </tbody>
         <tfoot>
           <tr>
-            <td colSpan={4} style={{ textAlign: 'center' }}>
+            <td colSpan={3} style={{ textAlign: 'center' }}>
               <Button
                 startIcon={<KeyboardArrowLeftIcon />}
                 disabled={currentPage === 1}
@@ -485,7 +483,6 @@ export const TabelaEstabMaiorVolDescartado: React.FC = () => {
           <tr>
             <th>Nº</th>
             <th>Estabelecimento</th>
-            <th>Região</th>
             <th>Volume (Em Litros)</th>
           </tr>
         </thead>
@@ -494,14 +491,13 @@ export const TabelaEstabMaiorVolDescartado: React.FC = () => {
             <tr key={index}>
               <td>{item.numRanking}</td>
               <td>{item.nome_estabelecimento}</td>
-              <td>{item.regiao}</td>
               <td>{item.total_oleo_coletado}</td>
             </tr>
           ))}
         </tbody>
         <tfoot>
           <tr>
-            <td colSpan={4} style={{ textAlign: 'center' }}>
+            <td colSpan={3} style={{ textAlign: 'center' }}>
               <Button
                 startIcon={<KeyboardArrowLeftIcon />}
                 disabled={currentPage === 1}
@@ -535,3 +531,6 @@ export const TabelaEstabMaiorVolDescartado: React.FC = () => {
     </>
   );
 };
+
+
+

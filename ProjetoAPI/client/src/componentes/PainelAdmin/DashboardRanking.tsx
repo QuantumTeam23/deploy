@@ -7,6 +7,7 @@ import NavbarAdministrador from '../Navbars/NavbarAdministrador';
 import { Pie } from 'react-chartjs-2';
 import 'chart.js/auto';
 import { Col, Container, Row } from 'react-bootstrap';
+import { useActionData, useSubmit } from 'react-router-dom';
 
 interface DataFromBackend {
   regiao: string;
@@ -30,6 +31,7 @@ type DataMapeada = {
 
 export default function DashboardRanking() {
   const [activeTab, setActiveTab] = useState('parceiro');
+  
 
   const handleTabClick = (tab: string) => {
     setActiveTab(tab);
@@ -40,12 +42,15 @@ export default function DashboardRanking() {
       fetchChartData('regiaoEstabMaisRecebeu');
     } else if (tab === 'melhor-performance-descarte') {
       fetchChartData('regiaoEstabMaisOleoDescarte');
-    } else if (tab === 'parceiros-mais-utilizam-creditos') {
-      fetchChartData('parceirosMaisCreditosDoados');
-    } else if (tab === 'estabelecimentos-maiores-volumes-descartados') {
-      fetchChartData('estabelecimentosMaisCreditosDoados');
-    }
+    } 
   };
+
+  //evento para os botões "Parceiros que mais doas os créditos" e "Estabelecimentos com maiores volumes descartados" 
+  const [activeTab2, setActiveTab2] = useState('parceiro2');
+  const handleTabClick2 = (tab2: string) => {
+    setActiveTab2(tab2);
+  };
+
 
   const fetchChartData = async (route: string) => {
     try {
@@ -68,9 +73,14 @@ export default function DashboardRanking() {
     }
   };
 
+
+
   const initialData: DataMapeada[] = []
 
+
   const [chartData, setChartData] = useState<DataMapeada[]>(initialData.sort((a, b) => b.quantidade - a.quantidade));
+
+
 
   const PieChart: React.FC = () => {
     const data = {
@@ -83,10 +93,10 @@ export default function DashboardRanking() {
         },
       ],
     };
-  
+
     return <Pie data={data} />;
   };
-  
+
   return (
     <>
       <NavbarAdministrador />
@@ -100,9 +110,6 @@ export default function DashboardRanking() {
           <Col sm={9} >
             <Row className={stylesTable.tabsContainer}>
               <div style={{ justifyContent: "center" }}>
-
-
-
                 <button
                   className={
                     activeTab === 'regiao-parceiro' ? `${styles.activeTabButton} ${stylesTable.enabledButton}` : styles.tabButton
@@ -111,8 +118,6 @@ export default function DashboardRanking() {
                 >
                   Parceiro
                 </button>
-
-                  
                 <button
                   className={
                     activeTab === 'regiao-estabelecimento' ? `${styles.activeTabButton} ${stylesTable.enabledButton}` : styles.tabButton
@@ -121,8 +126,6 @@ export default function DashboardRanking() {
                 >
                   Estabelecimento
                 </button>
-
-
                 <button
                   className={
                     activeTab === 'melhor-performance-descarte' ? `${styles.activeTabButton} ${stylesTable.enabledButton}` : styles.tabButton
@@ -131,25 +134,6 @@ export default function DashboardRanking() {
                 >
                   Melhor Performance de Descarte
                 </button>
-
-
-                <button
-                  className={
-                    activeTab === 'parceiros-mais-utilizam-creditos' ? `${styles.activeTabButton} ${stylesTable.enabledButton}` : styles.tabButton
-                  }
-                  onClick={() => handleTabClick('parceiros-mais-utilizam-creditos')}
-                >
-                  Parceiros que mais doam os créditos
-                </button>
-                <button
-                  className={
-                    activeTab === 'estabelecimentos-maiores-volumes-descartados' ? `${styles.activeTabButton} ${stylesTable.enabledButton}` : styles.tabButton
-                  }
-                  onClick={() => handleTabClick('estabelecimentos-maiores-volumes-descartados')}
-                >
-                  Estabelecimentos com maiores volumes descartados
-                </button>
-
               </div>
               {/* Adicione mais botões de aba conforme necessário */}
             </Row>
@@ -157,17 +141,36 @@ export default function DashboardRanking() {
               {activeTab === 'regiao-parceiro' && <TabelaRegiaoParceiros />}
               {activeTab === 'regiao-estabelecimento' && <TabelaRegiaoEstabelecimento />}
               {activeTab === 'melhor-performance-descarte' && <TabelaMelhorPerformanceDescarte />}
-
-              {activeTab === 'parceiros-mais-utilizam-creditos' && <TabelaParceirosMaisDoamCreditos />}
-              {activeTab === 'estabelecimentos-maiores-volumes-descartados' && <TabelaEstabMaiorVolDescartado />}
-
-
-
             </Row>
           </Col>
           <Col sm={3} style={{ display: "flex", textAlign: "center", paddingTop: "5%", maxHeight: "367px", minHeight: "367px" }}>
             <PieChart />
           </Col>
+          <Row className={stylesTable.tabsContainer}>
+            <div style={{ justifyContent: "center" }}>
+              <button
+                className={
+                  activeTab === 'parceiros-mais-utilizam-creditos' ? `${styles.activeTabButton} ${stylesTable.enabledButton}` : styles.tabButton
+                }
+                onClick={() => handleTabClick2('parceiros-mais-utilizam-creditos')}
+              >
+                Parceiros que mais doam os créditos
+              </button>
+              <button
+                className={
+                  activeTab === 'estabelecimentos-maiores-volumes-descartados' ? `${styles.activeTabButton} ${stylesTable.enabledButton}` : styles.tabButton
+                }
+                onClick={() => handleTabClick2('estabelecimentos-maiores-volumes-descartados')}
+              >
+                Estabelecimentos com maiores volumes descartados
+              </button>
+            </div>
+          </Row>
+          <Row sm={8} className='TabelasRankingRegiao' style={{ marginBottom: "5%" }}>
+            {activeTab2 === 'parceiros-mais-utilizam-creditos' && <TabelaParceirosMaisDoamCreditos />}
+            {activeTab2 === 'estabelecimentos-maiores-volumes-descartados' && <TabelaEstabMaiorVolDescartado />}
+          </Row>
+
         </Row>
       </Container>
       <Footer />
