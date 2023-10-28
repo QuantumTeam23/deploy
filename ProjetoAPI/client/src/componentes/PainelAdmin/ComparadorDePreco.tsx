@@ -67,65 +67,106 @@ function ComparadorPrecos() {
 
   //=====================GRUPO DE BOTÕES DO MENU LATERAL ESQUERDO COM NOMES DE REGIÕES DO BRASIL==========================
   const botaoNorteClick = () => {
-    //===ALTERA VALOR DOS CAMPOS DE PREÇOS==============
-    setInputValueVirgem("R$7,99")
-    setInputValueFritura("R$6,80")
-    setInputValueCreditoGreenneat("$2.80")
-    setInputValueMedio("R$5,90")
-    setLabelRegiao("NORTE")
-    //===== ALTERA OS VALORES DO GRÁFICO DE BARRAS =====
-    valores = [7.99, 6.80, 2.80]
-    Grafico()
-    //=====FIM ALTERA VALORES DO GRÁFICO DE BARRAS======
-  };
+    fetch('http://localhost:3001/selectComparador/Norte')
+      .then(response => response.json())
+      .then(data => {
+        const precoOleoVirgem = parseFloat(data.preco_oleo_virgem);
+        const precoOleoUsado = parseFloat(data.preco_oleo_usado);
+        const valorMedio = parseFloat(data.valor_medio);
+        const valorCreditoGreenneat = 10;
+
+        setInputValueVirgem(`R$${precoOleoVirgem}`);
+        setInputValueFritura(`R$${precoOleoUsado}`);
+        setInputValueMedio(`R$${valorMedio}`);
+        setInputValueCreditoGreenneat(`R$${10}`)
+        valores = [precoOleoVirgem, precoOleoUsado, valorCreditoGreenneat];
+        Grafico()
+      })
+      .catch(error => {
+        console.error("Erro ao buscar valores:", error);
+      });
+  }
   const botaoSulClick = () => {
-    //===ALTERA VALOR DOS CAMPOS DE PREÇOS==============
-    setInputValueVirgem("R$7,99")
-    setInputValueVirgem("R$6,30")
-    setInputValueFritura("R$4,78")
-    setInputValueCreditoGreenneat("$1.99")
-    setInputValueMedio("R$4,40")
-    setLabelRegiao("SUL")
-    //===== ALTERA OS VALORES DO GRÁFICO DE BARRAS =====
-    valores = [6.30, 4.78, 1.99]
-    Grafico()
-    //=====FIM ALTERA VALORES DO GRÁFICO DE BARRAS======
+
+    fetch('http://localhost:3001/selectComparador/Sul')
+      .then(response => response.json())
+      .then(data => {
+        const precoOleoVirgem = parseFloat(data.preco_oleo_virgem);
+        const precoOleoUsado = parseFloat(data.preco_oleo_usado);
+        const valorMedio = parseFloat(data.valor_medio);
+        const valorCreditoGreenneat = 10;
+
+        setInputValueVirgem(`R$${precoOleoVirgem}`);
+        setInputValueFritura(`R$${precoOleoUsado}`);
+        setInputValueMedio(`R$${valorMedio}`);
+        setInputValueCreditoGreenneat(`R$${10}`)
+        valores = [precoOleoVirgem, precoOleoUsado, valorCreditoGreenneat];
+        Grafico()
+      })
+      .catch(error => {
+        console.error("Erro ao buscar valores:", error);
+      });
   };
   const botaoSuldesteClick = () => {
-    //===ALTERA VALOR DOS CAMPOS DE PREÇOS==============
-    setInputValueVirgem("R$3,97")
-    setInputValueFritura("R$7,50")
-    setInputValueCreditoGreenneat("$5.77")
-    setInputValueMedio("R$8,50")
-    setLabelRegiao("SULDESTE")
-    //===== ALTERA OS VALORES DO GRÁFICO DE BARRAS =====
-    valores = [3.97, 7.50, 5.77]
-    Grafico()
-    //=====FIM ALTERA VALORES DO GRÁFICO DE BARRAS======
+    fetch('http://localhost:3001/selectComparador/Sudeste')
+      .then(response => response.json())
+      .then(data => {
+        const precoOleoVirgem = parseFloat(data.preco_oleo_virgem);
+        const precoOleoUsado = parseFloat(data.preco_oleo_usado);
+        const valorMedio = parseFloat(data.valor_medio);
+        const valorCreditoGreenneat = 10;
+
+        setInputValueVirgem(`R$${precoOleoVirgem}`);
+        setInputValueFritura(`R$${precoOleoUsado}`);
+        setInputValueMedio(`R$${valorMedio}`);
+        setInputValueCreditoGreenneat(`R$${10}`)
+        valores = [precoOleoVirgem, precoOleoUsado, valorCreditoGreenneat];
+        Grafico()
+      })
+      .catch(error => {
+        console.error("Erro ao buscar valores:", error);
+      });
   };
   const botaoNordesteClick = () => {
-    //===ALTERA VALOR DOS CAMPOS DE PREÇOS==============
-    setInputValueVirgem("R$5,40")
-    setInputValueFritura("R$2,20")
-    setInputValueCreditoGreenneat("$3.50")
-    setInputValueMedio("R$6,45")
-    setLabelRegiao("NORDESTE")
-    //===== ALTERA OS VALORES DO GRÁFICO DE BARRAS =====
-    valores = [5.40, 2.20, 3.50]
-    Grafico()
-    //=====FIM ALTERA VALORES DO GRÁFICO DE BARRAS======
+    fetch('http://localhost:3001/selectComparador/Nordeste')
+      .then(response => response.json())
+      .then(data => {
+        const precoOleoVirgem = parseFloat(data.preco_oleo_virgem);
+        const precoOleoUsado = parseFloat(data.preco_oleo_usado);
+        const valorMedio = parseFloat(data.valor_medio);
+        const valorCreditoGreenneat = 10;
+
+        setInputValueVirgem(`R$${precoOleoVirgem}`);
+        setInputValueFritura(`R$${precoOleoUsado}`);
+        setInputValueMedio(`R$${valorMedio}`);
+        setInputValueCreditoGreenneat(`R$${10}`)
+        valores = [precoOleoVirgem, precoOleoUsado, valorCreditoGreenneat];
+        Grafico()
+      })
+      .catch(error => {
+        console.error("Erro ao buscar valores:", error);
+      });
   };
   const botaoCentroOesteClick = () => {
-    //===ALTERA VALOR DOS CAMPOS DE PREÇOS==============
-    setInputValueVirgem("R$9,35")
-    setInputValueFritura("R$4,50")
-    setInputValueCreditoGreenneat("$3.17")
-    setInputValueMedio("R$4,89")
-    setLabelRegiao("CENTRO OESTE")
-    //===== ALTERA OS VALORES DO GRÁFICO DE BARRAS =====
-    valores = [9.35, 4.50, 3.17]
-    Grafico()
-    //=====FIM ALTERA VALORES DO GRÁFICO DE BARRAS======
+    fetch('http://localhost:3001/selectComparador/Centro-Oeste')
+      .then(response => response.json())
+      .then(data => {
+        const precoOleoVirgem = parseFloat(data.preco_oleo_virgem);
+        const precoOleoUsado = parseFloat(data.preco_oleo_usado);
+        const valorMedio = parseFloat(data.valor_medio);
+        const valorCreditoGreenneat = 10;
+  
+        setInputValueVirgem(`R$${precoOleoVirgem}`);
+        setInputValueFritura(`R$${precoOleoUsado}`);
+        setInputValueMedio(`R$${valorMedio}`);
+        setInputValueCreditoGreenneat(`R$${10}`)
+        valores = [precoOleoVirgem, precoOleoUsado, valorCreditoGreenneat];
+        Grafico()
+        
+      })
+      .catch(error => {
+        console.error("Erro ao buscar valores:", error);
+      });
   };
 
   //===========================FIM DO GRUPO DE BOTÕES DE REGIÕES DO BRASIL===============================================

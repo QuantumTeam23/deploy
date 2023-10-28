@@ -1314,7 +1314,7 @@ async function editarPreco(req, res) {
     }
 }
 
-async function listParceirosMaisGastaram (req, res) {
+async function listParceirosMaisGastaram(req, res) {
     try {
         const SQL = `
                 SELECT
@@ -1335,7 +1335,7 @@ async function listParceirosMaisGastaram (req, res) {
     }
 }
 
-async function listEstabelecimentoMaisGastaram (req, res) {
+async function listEstabelecimentoMaisGastaram(req, res) {
     try {
         const SQL = `
             SELECT
@@ -1357,7 +1357,7 @@ async function listEstabelecimentoMaisGastaram (req, res) {
     }
 }
 
-async function listRegioesParceirosMaisGastaram (req, res) {
+async function listRegioesParceirosMaisGastaram(req, res) {
     try {
         const SQL = `
             SELECT
@@ -1419,8 +1419,8 @@ async function listRegioesEstabMaisOleoDescarte(req, res) {
 }
 
 async function selectComparador(req, res) {
-    console.log ("Requisição comparador recebida");
-    const {regiao} = req.params;
+    console.log("Requisição comparador recebida");
+    const { regiao } = req.params;
     try {
         const SQL = `
             SELECT
@@ -1436,10 +1436,11 @@ async function selectComparador(req, res) {
 
 
         const valorMedio = (precoOleoVirgem + precoOleoUsado + 10) / 3;
+        const valorMedioFormatado = valorMedio.toFixed(2); // Formata o valor para ter 3 casas decimais
         const response = {
             preco_oleo_virgem: precoOleoVirgem,
             preco_oleo_usado: precoOleoUsado,
-            valor_medio: valorMedio
+            valor_medio: parseFloat(valorMedioFormatado) // Converte o valor formatado de volta para float
         };
 
         res.send(response);
