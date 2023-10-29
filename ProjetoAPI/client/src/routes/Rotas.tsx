@@ -17,6 +17,7 @@ import {
 import Usuario from "../componentes/Cadastros&Logins/Usuario";
 import EditarSenha from "../componentes/Cadastros&Logins/EditarSenha";
 import PainelAdminControlUser from "../componentes/PainelAdmin/PainelAdminControlUser";
+import Requisicoes from "../componentes/PainelAdmin/TabelaRequisicoes"
 import HistoricoTransacoes from "../componentes/PainelAdmin/PainelAdminHistTransacoes";
 import PainelParceiroCarteiraEstab from "../componentes/PainelParceiro/PainelCarteiraEstab";
 import PainelParceiroColetas from "../componentes/PainelParceiro/PainelColetas";
@@ -26,11 +27,10 @@ import PainelEstabelecimentoExtrato from "../componentes/PainelEstabelecimento/P
 import PainelParceiroSaldoCredito from "../componentes/PainelParceiro/PainelSaldoCredito";
 import TransacaoCompraCredito from "../componentes/Transacoes/TransacaoCompraCredito";
 import TransacaoDoacao from "../componentes/Transacoes/TransacaoDoacao";
-
 import ComparadorPrecos from "../componentes/PainelAdmin/ComparadorDePreco";
-
 import PainelPrecoPorRegiao from "../componentes/PainelAdmin/PainelPrecoRegiao";
 import DashboardRanking from "../componentes/PainelAdmin/DashboardRanking";
+import PainelRequisicoes from "../componentes/PainelAdmin/PainelRequisicoes";
 
 export const Rotas = () => {
   return (
@@ -72,6 +72,16 @@ export const Rotas = () => {
           element={
             <PrivateRouteAdmin>
               <DashboardRanking />
+            </PrivateRouteAdmin>
+          }
+        />
+
+        {/* ROTA ADM */}
+        <Route
+          path="/painel-administrador-requisicoes"
+          element={
+            <PrivateRouteAdmin>
+              <PainelRequisicoes />
             </PrivateRouteAdmin>
           }
         />
