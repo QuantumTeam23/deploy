@@ -75,7 +75,9 @@ function NavbarAdministrador() {
                         <li className="nav-item">
                             <a className="nav-link text-white" href="/painel-administrador-usuario">Controle de Usuários</a>
                         </li>
-
+                        <li className="nav-item">
+                            <a className="nav-link text-white" href="/painel-administrador-requisicoes">Requisições</a>
+                        </li>
 
                         <li className="nav-item">
                             <a className="nav-link text-white" href="/painel-administrador-dashboard-ranking">Dashboard Ranking</a>
