@@ -146,9 +146,9 @@ export default function TabelaRequisicoes() {
   };
 
 
-  const [user, setUser] = useState([]);
+  const [requisicoes , setRequisicoes] = useState([]);
   useEffect(() => {
-    fetch("http://localhost:3001/listarusuarios", {
+    fetch("http://localhost:3001/getRequisicoes", {
       method: "GET",
        headers: {
         'Content-Type': 'application/json',
@@ -156,7 +156,7 @@ export default function TabelaRequisicoes() {
     })
       .then((response) => response.json())
       .then((data) => {
-        setUser(data)
+        setRequisicoes(data)
       })
       .catch((error) => console.log(error));
   }, []);
@@ -164,7 +164,7 @@ export default function TabelaRequisicoes() {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
 
-  const currentData = user.slice(startIndex, endIndex);
+  const currentData = requisicoes.slice(startIndex, endIndex);
 
   const handlePrevPage = () => {
     if (currentPage > 1) {
@@ -173,7 +173,7 @@ export default function TabelaRequisicoes() {
   };
 
   const handleNextPage = () => {
-    if (endIndex < user.length) {
+    if (endIndex < requisicoes.length) {
       setCurrentPage(currentPage + 1);
     }
   };
@@ -191,8 +191,8 @@ export default function TabelaRequisicoes() {
         <tbody>
           {currentData.map((item: any, index: any) => (
             <tr key={index}>
-              <td>{item.nome}</td>
-              <td>{item.tipo}</td>
+              <td>{item.parceiro_razao_social}</td>
+              <td>{item.valor_comprado}</td>
               <td>
                 <div style={{ textAlign: 'center' }}>
                   <Button
@@ -234,11 +234,11 @@ export default function TabelaRequisicoes() {
               </Button>
               <Button
                 endIcon={<KeyboardArrowRightIcon />}
-                disabled={endIndex >= user.length}
+                disabled={endIndex >= requisicoes.length}
                 onClick={handleNextPage}
                 style={{
-                  color: endIndex < user.length ? 'lightblue' : 'lightgray',
-                  fontWeight: endIndex < user.length ? 'bold' : 'normal',
+                  color: endIndex < requisicoes.length ? 'lightblue' : 'lightgray',
+                  fontWeight: endIndex < requisicoes.length ? 'bold' : 'normal',
                 }}
               >
                 Próxima

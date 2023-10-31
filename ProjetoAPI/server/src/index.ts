@@ -63,6 +63,7 @@ app.put('/editar-preco/:idPreco', editarPreco);
 app.post('/vincular', vincularCarteira)
 app.post('/insertAcaoTransacoes', insertAcaoTransacoes)
 app.get('/admTransacoes', getAllTransAdm);
+app.get('/getRequisicoes', getRequisicoes);
 
 // DASHBOARD
 app.get('/parceirosMaisCreditosDoados', listParceirosMaisGastaram)
@@ -1046,14 +1047,13 @@ async function transacaoGreenneatParc(req, res) {
         const novaData = new Date(dateBR);
         const formattedDate = novaData.toISOString();
 
-        console.log(typeof (valorCreditos))
-        console.log(valorCreditos)
 
-        const updateParceirosQuery = "UPDATE Parceiros SET parceiro_saldo = parceiro_saldo + " + valorCreditos + " WHERE parceiro_id = '" + idParceiro + "'";
+        //const updateParceirosQuery = "UPDATE Parceiros SET parceiro_saldo = parceiro_saldo + " + valorCreditos + " WHERE parceiro_id = '" + idParceiro + "'";
         const insertTransacoesQuery = `
-        INSERT INTO AcaoTransacaoCompra ("valor_comprado", "acao_compra_data", "id_parceiro") 
-        VALUES ('${valorCreditos}', '${formattedDate}','${idParceiro}')  
+        INSERT INTO AcaoTransacaoCompra ("valor_comprado", "acao_compra_data", "id_parceiro", "aprovado") 
+        VALUES ('${valorCreditos}', '${formattedDate}','${idParceiro}', NULL)  
         `
+        /*
         await DB.query(updateParceirosQuery, (err, _) => {
             if (err) {
                 console.log(err);
@@ -1061,6 +1061,7 @@ async function transacaoGreenneatParc(req, res) {
                 console.log('Editado Parceiro!');
             }
         });
+        */
         await DB.query(insertTransacoesQuery, (err, _) => {
             if (err) {
                 console.log(err);
@@ -1160,6 +1161,24 @@ async function insertAcaoTransacoes(req, res) {
     } catch (error) {
         console.error(error);
     }
+}
+
+async function getRequisicoes(req, res) {
+    try {
+        const SQL = `
+        SELECT * FROM AcaoTransacaoCompra a
+        JOIN Parceiros p
+        ON a.id_parceiro = p.parceiro_id
+        WHERE aprovado IS NULL ;
+        `
+
+        const result = await connectionDB.query(SQL);
+        res.send(result.rows);
+    } catch (error) {
+        console.error("Erro ao listar requisições", error);
+        res.status(500).send({ msg: "Erro ao listar requisições." });
+    }
+    
 }
 
 async function getAllTransAdm(req, res) {
