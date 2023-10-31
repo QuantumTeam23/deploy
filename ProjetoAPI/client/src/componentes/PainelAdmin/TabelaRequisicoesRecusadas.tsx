@@ -1,17 +1,20 @@
-import React, { useEffect, useState } from 'react';
 import Button from '@mui/material/Button';
-import styles from '../styles/TabelaCarteiraEstab.module.css';
+import CheckIcon from '@mui/icons-material/Check';
+import CloseIcon from '@mui/icons-material/Close';
+import styles from '../styles/TabelaRequisicoes.module.css';
+import { useEffect, useState } from 'react';
+import { EditarUsuarioAdminPopup, EditarUsuarioPopup } from './AcoesUsuarioPopup';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
+import Swal from 'sweetalert2';
 
-export default function TabelaCarteiraEstab() {
+export default function TabelaRequisicoes() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 9;
-  const id = localStorage.getItem('idParceiro');
-  const [estabData, setEstabData] = useState([]);
 
+  const [requisicoes , setRequisicoes] = useState([]);
   useEffect(() => {
-    fetch(`http://localhost:3001/listCarteira/${id}`, {
+    fetch("http://localhost:3001/getRequisicoesRecusadas", {
       method: "GET",
        headers: {
         'Content-Type': 'application/json',
@@ -19,16 +22,16 @@ export default function TabelaCarteiraEstab() {
     })
       .then((response) => response.json())
       .then((data) => {
-        setEstabData(data)
+        setRequisicoes(data)
       })
       .catch((error) => console.log(error));
   }, []);
-
+  
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
 
-  const currentData = estabData.slice(startIndex, endIndex);
+  const currentData = requisicoes.slice(startIndex, endIndex);
 
   const handlePrevPage = () => {
     if (currentPage > 1) {
@@ -37,34 +40,32 @@ export default function TabelaCarteiraEstab() {
   };
 
   const handleNextPage = () => {
-    if (endIndex < estabData.length) {
+    if (endIndex < requisicoes.length) {
       setCurrentPage(currentPage + 1);
     }
   };
 
+ 
   return (
     <>
       <table className={styles.table}>
         <thead>
           <tr>
             <th>Nome</th>
-            <th>Contato</th>
-            <th>Endereço</th>
+            <th>Créditos</th>
           </tr>
         </thead>
         <tbody>
           {currentData.map((item: any, index: any) => (
             <tr key={index}>
-              <td>{item.estabelecimento_razao_social}</td>
-              <td>{item.estabelecimento_telefone}</td>
-              <td>{item.estabelecimento_cidade}</td>
-
+              <td>{item.parceiro_razao_social}</td>
+              <td>{item.valor_comprado}</td>
             </tr>
           ))}
         </tbody>
         <tfoot>
           <tr>
-            <td colSpan={3} style={{ textAlign: 'center' }}>
+            <td colSpan={2} style={{ textAlign: 'center' }}>
               <Button
                 startIcon={<KeyboardArrowLeftIcon />}
                 disabled={currentPage === 1}
@@ -78,11 +79,11 @@ export default function TabelaCarteiraEstab() {
               </Button>
               <Button
                 endIcon={<KeyboardArrowRightIcon />}
-                disabled={endIndex >= estabData.length}
+                disabled={endIndex >= requisicoes.length}
                 onClick={handleNextPage}
                 style={{
-                  color: endIndex < estabData.length ? 'lightblue' : 'lightgray',
-                  fontWeight: endIndex < estabData.length ? 'bold' : 'normal',
+                  color: endIndex < requisicoes.length ? 'lightblue' : 'lightgray',
+                  fontWeight: endIndex < requisicoes.length ? 'bold' : 'normal',
                 }}
               >
                 Próxima
@@ -95,6 +96,7 @@ export default function TabelaCarteiraEstab() {
       <p>ㅤ</p>
       <p>ㅤ</p>
       <p>ㅤ</p>
+      
     </>
   );
 }

@@ -55,7 +55,7 @@ export default function PainelParceiroSaldoCredito() {
           </h1>
         </div>
         <div className={styles.topContent}>
-          <h2>Crédito Contratado</h2>
+          <h2>Requisições de Crédito GreenNeat</h2>
           <div className={styles.headerActions}>
           <div style={{alignContent:"center"}}>
               <a href="../transacao-compra-credito">

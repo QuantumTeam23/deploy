@@ -75,6 +75,7 @@ CREATE TABLE AcaoTransacaoCompra (
 	valor_comprado DESC100 NULL,
 	acao_compra_data TIMESTAMP DEFAULT CURRENT_TIMESTAMP NULL,
 	id_parceiro UUID NOT NULL,
+	aprovado BOOLEAN NULL,
 	FOREIGN KEY (id_parceiro) REFERENCES Parceiros(parceiro_id)
 );
 

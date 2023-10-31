@@ -46,6 +46,18 @@ export function TabelaCreditoContratado() {
     }
   };
 
+  const formatarStatus = (x: boolean) => {
+    if(x === true ){
+      return("Aprovado")
+    }
+    else if(x === false){
+      return("Recusado")
+    }
+    else{
+      return("Aguardando Aprovação")
+    }
+  }
+
   return (
     <>
       <table className={styles.table}>
@@ -53,6 +65,7 @@ export function TabelaCreditoContratado() {
           <tr>
             <th>Quantidade de Créditos</th>
             <th>Data / Hora</th>
+            <th>Status</th>
           </tr>
         </thead>
         <tbody>
@@ -60,12 +73,13 @@ export function TabelaCreditoContratado() {
             <tr key={index}>
               <td>{item.valor_comprado}</td>
               <td>{formatarData(item.acao_compra_data)}</td>
+              <td>{formatarStatus(item.aprovado)}</td>
             </tr>
           ))}
         </tbody>
         <tfoot>
           <tr>
-            <td colSpan={2} style={{ textAlign: 'center' }}>
+            <td colSpan={3} style={{ textAlign: 'center' }}>
               <Button
                 startIcon={<KeyboardArrowLeftIcon />}
                 disabled={currentPage === 1}

@@ -15,7 +15,7 @@ function TransacaoCompraCredito() {
     Swal.fire({
       title: "Sucesso",
       icon: 'success',
-      text: 'Transação concluida',
+      text: 'Solicitação Enviada',
       confirmButtonColor: '#de940a'
     })
   }
@@ -31,8 +31,8 @@ function TransacaoCompraCredito() {
   
     // Exibir uma janela de confirmação usando Swal
     Swal.fire({
-      title: "Confirmar Transação",
-      text: `Você está comprando ${valorCreditos} Créditos Greennneat.`,
+      title: "Confirmar Requisição",
+      text: `Você está solicitando ${valorCreditos} Créditos Greennneat.`,
       icon: "warning",
       showCancelButton: true,
       confirmButtonText: "Sim, Confirmar",
@@ -43,7 +43,7 @@ function TransacaoCompraCredito() {
       if (result.isConfirmed) {
         // O usuário confirmou, execute a função fetch
         fetch(`http://localhost:3001/transacaoGreenneatParc/${idParceiro}`, {
-          method: "PUT",
+          method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
@@ -73,7 +73,7 @@ function TransacaoCompraCredito() {
       <div className="container" style={{ marginTop: "5%", width: "60%" }}>
         <div className="campo-inserir-valor">
           <div style={{ marginBottom: "3%" }}>
-            <h3>Informe a quantidade de Créditos Greenneat que deseja comprar:</h3>
+            <h3>Informe a quantidade de Créditos Greenneat que deseja adquirir:</h3>
           </div>
           <Form.Group
             controlId="campo-valor"
