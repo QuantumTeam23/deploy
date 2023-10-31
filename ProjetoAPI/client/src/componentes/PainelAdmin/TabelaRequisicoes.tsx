@@ -14,118 +14,81 @@ export default function TabelaRequisicoes() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 9;
 
-  const handleEditarUsuarioClick = (item: any) => {
-
-      const razaoSocial = item.nome
-      const tipo = item.tipo
-      localStorage.setItem('nomeEdit', razaoSocial)
-      localStorage.setItem('tipoEdit', tipo)
-
-      if (tipo === 'Parceiro') {
-
-        fetch(`http://localhost:3001/read-by-id-to-edit-admin/${razaoSocial}/${tipo}`)
-        .then(response => {
-          if (!response.ok) {
-            throw new Error(`Erro na solicitação: ${response.status}`);
-          }
-          return response.json();
-        })
-        .then(data => {
-          localStorage.setItem('ParceiroData', JSON.stringify(data));
-          setTimeout(() => {
-            setEditarUsuarioPopupOpen(true);
-        }, 500);
+  const [requisicoes , setRequisicoes] = useState([]);
+  useEffect(() => {
+    fetch("http://localhost:3001/getRequisicoesAprovar", {
+      method: "GET",
+       headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setRequisicoes(data)
+      })
+      .catch((error) => console.log(error));
+  }, []);
   
-        })
-        .catch(error => {
-          console.error('Erro ao buscar dados do estabelecimento:', error);
-        });
-      } else if (tipo === 'Estabelecimento') {
 
-        fetch(`http://localhost:3001/read-by-id-to-edit-admin/${razaoSocial}/${tipo}`)
-        .then(response => {
-          if (!response.ok) {
-            throw new Error(`Erro na solicitação: ${response.status}`);
-          }
-          return response.json();
-        })
-        .then(data => {
-          localStorage.setItem('EstabelecimentoData', JSON.stringify(data));
-          setTimeout(() => {
-            setEditarUsuarioPopupOpen(true);
-        }, 500);
-  
-        })
-        .catch(error => {
-          console.error('Erro ao buscar dados do estabelecimento:', error);
-        });
-      } else if (tipo === 'Administrador') {
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
 
-        fetch(`http://localhost:3001/read-by-id-to-edit-admin/${razaoSocial}/${tipo}`)
-        .then(response => {
-          if (!response.ok) {
-            throw new Error(`Erro na solicitação: ${response.status}`);
-          }
-          return response.json();
-        })
-        .then(data => {
-          localStorage.setItem('AdministradorData', JSON.stringify(data));
-          setTimeout(() => {
-            setEditarUsuarioAdminPopupOpen(true);
-        }, 500);
-  
-        })
-        .catch(error => {
-          console.error('Erro ao buscar dados do estabelecimento:', error);
-        });
-      }
+  const currentData = requisicoes.slice(startIndex, endIndex);
+
+  const handlePrevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
   };
-  
-      const msgSucessoPost = () => {
-        Swal.fire({
-          title: "Sucesso",
-          html: "Exclusão realizada com sucesso.",
-          icon: "success",
-          showConfirmButton: true,
-          confirmButtonColor: '#de940a',
-          customClass: {
-          container: 'swal-container',
-          },
-        }).then((result) => {
-          if (result.isConfirmed) {
-            window.location.reload();
-          }
-        });
-      }
 
-  const handleRemoverUsuarioClick = (item: any) => {
-    const razaoSocial = item.nome;
-    const tipoUsuario = item.tipo;
-    
-    // Exibir um SweetAlert para confirmar a exclusão do usuário
-    Swal.fire({
-      title: 'Confirmar Exclusão',
-      text: `Deseja mesmo excluir o usuário ${razaoSocial}?`,
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Sim, Excluir',
-      cancelButtonText: 'Cancelar',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        fetch(`http://localhost:3001/deletar-users/${razaoSocial}/${tipoUsuario}`, {
-          method: 'DELETE'
-        })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log(data.message);
-        })
-        .catch((error) =>
-          console.error('Erro ao excluir o produto:', error)
-        );
-        msgSucessoPost()
-      }
-    });
+  const handleNextPage = () => {
+    if (endIndex < requisicoes.length) {
+      setCurrentPage(currentPage + 1);
+    }
   };
+
+  const handleAprovarClick = (item: any) => {
+    const idAcao = item.acao_transacao_compra_id ;
+    const idParceiro = item.id_parceiro ;
+    const valor = item.valor_comprado ;
+
+    fetch(`http://localhost:3001/aprovado/${idAcao}/${idParceiro}/${valor}` ,{
+      method: 'PUT',
+      headers: {
+          'Content-Type': 'application/json',
+      }})
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`Erro na solicitação: ${response.status}`);
+          }
+          return response.json();
+        })
+        .catch(error => {
+          console.error('Erro ao buscar dados do estabelecimento:', error);
+        });
+        window.location.reload();
+  }
+
+
+
+  const handleRecusarClick = (item: any) => {
+    const idAcao = item.acao_transacao_compra_id ;
+    fetch(`http://localhost:3001/recusado/${idAcao}`, {
+      method: 'PUT',
+      headers: {
+          'Content-Type': 'application/json',
+      }})
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`Erro na solicitação: ${response.status}`);
+          }
+          return response.json();
+        })
+        .catch(error => {
+          console.error('Erro ao buscar dados do estabelecimento:', error);
+        });
+        window.location.reload();
+  }
 
   const handleCloseEditarUsuarioPopup = () => {
     localStorage.removeItem('EstabelecimentoData')
@@ -142,42 +105,6 @@ export default function TabelaRequisicoes() {
     setEditarUsuarioAdminPopupOpen(false);
   };
 
-  const handleCloseRemoverUsuarioPopup = () => {
-  };
-
-
-  const [user, setUser] = useState([]);
-  useEffect(() => {
-    fetch("http://localhost:3001/listarusuarios", {
-      method: "GET",
-       headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setUser(data)
-      })
-      .catch((error) => console.log(error));
-  }, []);
-
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-
-  const currentData = user.slice(startIndex, endIndex);
-
-  const handlePrevPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    }
-  };
-
-  const handleNextPage = () => {
-    if (endIndex < user.length) {
-      setCurrentPage(currentPage + 1);
-    }
-  };
-
   return (
     <>
       <table className={styles.table}>
@@ -191,17 +118,15 @@ export default function TabelaRequisicoes() {
         <tbody>
           {currentData.map((item: any, index: any) => (
             <tr key={index}>
-              <td>{item.nome}</td>
-              <td>{item.tipo}</td>
+              <td>{item.parceiro_razao_social}</td>
+              <td>{item.valor_comprado}</td>
               <td>
                 <div style={{ textAlign: 'center' }}>
                   <Button
                     variant="contained"
                     color="primary"
                     startIcon={<CheckIcon style={{ fontSize: 28 }} />}
-                    onClick={() => {
-                      handleEditarUsuarioClick(item)
-                    }}
+                    onClick={() => handleAprovarClick(item)}
                   />
                 </div>
               </td>
@@ -211,7 +136,7 @@ export default function TabelaRequisicoes() {
                     variant="contained"
                     color="secondary"
                     startIcon={<CloseIcon style={{ fontSize: 28 }} />}
-                    onClick={() => handleRemoverUsuarioClick(item)}
+                    onClick={() => handleRecusarClick(item)}
                   />
                 </div>
               </td>
@@ -234,11 +159,11 @@ export default function TabelaRequisicoes() {
               </Button>
               <Button
                 endIcon={<KeyboardArrowRightIcon />}
-                disabled={endIndex >= user.length}
+                disabled={endIndex >= requisicoes.length}
                 onClick={handleNextPage}
                 style={{
-                  color: endIndex < user.length ? 'lightblue' : 'lightgray',
-                  fontWeight: endIndex < user.length ? 'bold' : 'normal',
+                  color: endIndex < requisicoes.length ? 'lightblue' : 'lightgray',
+                  fontWeight: endIndex < requisicoes.length ? 'bold' : 'normal',
                 }}
               >
                 Próxima
@@ -251,9 +176,10 @@ export default function TabelaRequisicoes() {
       <p>ㅤ</p>
       <p>ㅤ</p>
       <p>ㅤ</p>
-
+      
       <EditarUsuarioPopup open={editarUsuarioPopupOpen} onClose={handleCloseEditarUsuarioPopup}/>
       <EditarUsuarioAdminPopup open={editarUsuarioAdminPopupOpen} onClose={handleCloseEditarUsuarioAdminPopup}/>
+      
     </>
   );
 }

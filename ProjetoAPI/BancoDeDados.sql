@@ -16,7 +16,7 @@ CREATE TABLE Parceiros (
 	parceiro_regiao DESC100 NULL,
 	parceiro_telefone VARCHAR (20) NULL,
     parceiro_cidades_atende DESC100 NULL,
-	parceiro_saldo DECIMAL(8,2) DEFAULT 0.00,
+	parceiro_saldo   DEFAULT 0.00,
 	parceiro_volume_coleta_mes DECIMAL(8,1) DEFAULT 0.0,
 	parceiro_email DESC100 NULL,
 	parceiro_senha DESC100 NULL,
@@ -75,6 +75,7 @@ CREATE TABLE AcaoTransacaoCompra (
 	valor_comprado DESC100 NULL,
 	acao_compra_data TIMESTAMP DEFAULT CURRENT_TIMESTAMP NULL,
 	id_parceiro UUID NOT NULL,
+	aprovado BOOLEAN NULL,
 	FOREIGN KEY (id_parceiro) REFERENCES Parceiros(parceiro_id)
 );
 

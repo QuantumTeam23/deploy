@@ -53,7 +53,7 @@ app.post('/VerificarToken', verificarToken);
 app.get('/read-by-id-to-edit/:id/:tipo', SelectToEdit);
 app.put('/editSenhaRec/:idUser/:tipo', editarSenhaRec);
 app.put('/transacaoParceiroEstab/:idParceiro', transacaoParceiroEstab);
-app.put('/transacaoGreenneatParc/:idParceiro', transacaoGreenneatParc);
+app.post('/transacaoGreenneatParc/:idParceiro', transacaoGreenneatParc);
 app.post('/login', login2)
 
 //Listar Precos
@@ -63,6 +63,10 @@ app.put('/editar-preco/:idPreco', editarPreco);
 app.post('/vincular', vincularCarteira)
 app.post('/insertAcaoTransacoes', insertAcaoTransacoes)
 app.get('/admTransacoes', getAllTransAdm);
+app.get('/getRequisicoesAprovar', getRequisicoes);
+app.get('/getRequisicoesRecusadas', getRequisicoesRecusadas)
+app.put('/aprovado/:idAcao/:idParceiro/:valor', aprovarRequisicao);
+app.put('/recusado/:idAcao', recusarRequisicao);
 
 // DASHBOARD
 app.get('/parceirosMaisCreditosDoados', listParceirosMaisGastaram)
@@ -1046,21 +1050,11 @@ async function transacaoGreenneatParc(req, res) {
         const novaData = new Date(dateBR);
         const formattedDate = novaData.toISOString();
 
-        console.log(typeof (valorCreditos))
-        console.log(valorCreditos)
 
-        const updateParceirosQuery = "UPDATE Parceiros SET parceiro_saldo = parceiro_saldo + " + valorCreditos + " WHERE parceiro_id = '" + idParceiro + "'";
         const insertTransacoesQuery = `
-        INSERT INTO AcaoTransacaoCompra ("valor_comprado", "acao_compra_data", "id_parceiro") 
-        VALUES ('${valorCreditos}', '${formattedDate}','${idParceiro}')  
+        INSERT INTO AcaoTransacaoCompra ("valor_comprado", "acao_compra_data", "id_parceiro", "aprovado") 
+        VALUES ('${valorCreditos}', '${formattedDate}','${idParceiro}', NULL)  
         `
-        await DB.query(updateParceirosQuery, (err, _) => {
-            if (err) {
-                console.log(err);
-            } else {
-                console.log('Editado Parceiro!');
-            }
-        });
         await DB.query(insertTransacoesQuery, (err, _) => {
             if (err) {
                 console.log(err);
@@ -1162,6 +1156,42 @@ async function insertAcaoTransacoes(req, res) {
     }
 }
 
+async function getRequisicoes(req, res) {
+    try {
+        const SQL = `
+        SELECT * FROM AcaoTransacaoCompra a
+        JOIN Parceiros p
+        ON a.id_parceiro = p.parceiro_id
+        WHERE aprovado IS NULL ;
+        `
+
+        const result = await connectionDB.query(SQL);
+        res.send(result.rows);
+    } catch (error) {
+        console.error("Erro ao listar requisições", error);
+        res.status(500).send({ msg: "Erro ao listar requisições." });
+    }
+    
+}
+
+async function getRequisicoesRecusadas(req, res) {
+    try {
+        const SQL = `
+        SELECT * FROM AcaoTransacaoCompra a
+        JOIN Parceiros p
+        ON a.id_parceiro = p.parceiro_id
+        WHERE aprovado = FALSE ;
+        `
+
+        const result = await connectionDB.query(SQL);
+        res.send(result.rows);
+    } catch (error) {
+        console.error("Erro ao listar requisições", error);
+        res.status(500).send({ msg: "Erro ao listar requisições." });
+    }
+    
+}
+
 async function getAllTransAdm(req, res) {
     try {
         const SQL1 = `
@@ -1187,6 +1217,8 @@ async function getAllTransAdm(req, res) {
         Parceiros p
     ON 
         c.id_parceiro = p.parceiro_id
+    WHERE
+        aprovado = TRUE
     `
         const coletas = await connectionDB.query(SQL1);
         const comprasCreditos = await connectionDB.query(SQL2);
@@ -1447,5 +1479,59 @@ async function selectComparador(req, res) {
     } catch (error) {
         console.error("Erro ao buscar valores:", error);
         res.status(500).send({ msg: "Erro ao buscar valores." });
+    }
+}
+
+//app.put('/aprovado/:idAcao/:idParceiro/:valor', aprovarRequisicao);
+async function aprovarRequisicao(req, res) {
+    console.log("requisição de créditos")
+    const idAcao = req.params.idAcao;
+    const idParceiro = req.params.idParceiro;
+    const valor = req.params.valor;
+    try {
+        const SQL1 = `
+            UPDATE 
+                AcaoTransacaoCompra 
+            SET
+                aprovado = TRUE 
+            WHERE
+                acao_transacao_compra_id = '${idAcao}'
+            `;
+        const SQL2 = `
+            UPDATE
+                Parceiros
+            SET
+                parceiro_saldo = parceiro_saldo + '${valor}' 
+            WHERE
+                parceiro_id = '${idParceiro}' 
+        `;
+        const aprovacao = await connectionDB.query(SQL1);
+        const atualizaSaldo = await connectionDB.query(SQL2);
+        console.log("Requisição de créditos aprovada");
+        res.send({ msg: "sucesso!" });
+    } catch (error) {
+        console.error("Erro ao editar preço:", error);
+        res.status(500).send({ msg: "Erro ao editar preço." });
+    }
+}
+
+async function recusarRequisicao(req, res) {
+    console.log("requisição de créditos")
+    const idAcao = req.params.idAcao;
+    try {
+        const SQL = `
+            UPDATE 
+                AcaoTransacaoCompra 
+            SET
+                aprovado = FALSE 
+            WHERE
+                acao_transacao_compra_id = '${idAcao}'
+            `;
+        const reprovado = await connectionDB.query(SQL);
+        console.log("Requisição de créditos recusada");
+        res.status(200).send({ msg: "sucesso!" });
+    } catch (error) {
+        console.error("Erro ao editar preço:", error);
+        res.status(500).send({ msg: "Erro ao editar preço." });
     }
 }
