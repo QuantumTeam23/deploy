@@ -117,10 +117,10 @@ export default function TabelaPrecopreco_regiao() {
       <table className={styles.table}>
         <thead>
           <tr>
-            <th>Região</th>
-            <th>Óleo Virgem</th>
-            <th>Óleo Usado</th>
-            <th>Ação</th>
+            <th style={{width: '17%'}}>Região</th>
+            <th style={{width: '17%'}}>Óleo Virgem</th>
+            <th style={{width: '17%'}}>Óleo Usado</th>
+            <th style={{width: '5%'}}>Ação</th>
           </tr>
         </thead>
         <tbody>
