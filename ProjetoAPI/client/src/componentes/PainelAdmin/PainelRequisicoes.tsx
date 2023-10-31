@@ -12,7 +12,7 @@ export default function PainelRequisicoes() {
     <NavbarAdministrador />
     <div className={styles.containerConteudo}>
       <div className={styles.topContent}>
-        <h2>Requisiões</h2>
+        <h2>Requisições</h2>
       </div>
       <TabelaRequisicoes />
     </div>
