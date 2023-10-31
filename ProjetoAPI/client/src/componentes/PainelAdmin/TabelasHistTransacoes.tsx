@@ -52,11 +52,11 @@ export default function TabelasHistTransacoes() {
       <table className={styles.table}>
         <thead>
           <tr>
-            <th>Tipo</th>
-            <th>Data / Hora</th>
-            <th>Créditos</th>
-            <th>Parceiro</th>
-            <th>Estabelecimento</th>
+            <th style={{width: '5%'}}>Tipo</th>
+            <th style={{width: '3%'}}>Data / Hora</th>
+            <th style={{width: '3%'}}>Créditos</th>
+            <th style={{width: '5%'}}>Parceiro</th>
+            <th style={{width: '5%'}}>Estabelecimento</th>
           </tr>
         </thead>
         <tbody>

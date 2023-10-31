@@ -183,9 +183,9 @@ export default function TabelasControlUser() {
       <table className={styles.table}>
         <thead>
           <tr>
-            <th>Nome</th>
-            <th>Tipo</th>
-            <th colSpan={2}><center>Ações</center></th>
+            <th style={{width: '5%'}}>Nome</th>
+            <th style={{width: '5%'}}>Tipo</th>
+            <th colSpan={2} style={{width: '5%'}}><center>Ações</center></th>
           </tr>
         </thead>
         <tbody>
