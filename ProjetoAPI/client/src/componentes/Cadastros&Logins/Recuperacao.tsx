@@ -59,7 +59,7 @@ function Recuperacao() {
 
             if (response.status === 200) {
                 const responseData = await response.json();
-                const { token } = responseData; 
+                const { token } = responseData;
                 console.log('Token enviado com sucesso!', token);
 
                 localStorage.setItem('email', email);
@@ -68,7 +68,7 @@ function Recuperacao() {
                     enviado: true,
                 }));
 
-                
+
                 setTimeout(() => {
                     window.location.href = "/token";
                 }, 100);
@@ -85,14 +85,12 @@ function Recuperacao() {
         <div className='container-geral-recuperacao'>
             <div className="container-janela-recuperacao">
                 <div className='container-esquerda-recuperacao'>
-                    <span className='logo-recuperacao'><img src="logo-greenneat.png" alt="" /></span>
+                    <img className='logo-recuperacao' src="logo-greenneat.png" alt="" />
                 </div>
                 <div className='container-direita-recuperacao'>
-                    <div>
-                        <span className='titulo-recuperacao'>
-                            <h1>E-mail de recuperação</h1>
-                        </span>
-                    </div>
+                    <span className='titulo-recuperacao'>
+                        <h1>Recuperação de senha</h1>
+                    </span>
                     <Container>
                         {showEmptyFieldsAlert && (
                             <Alert variant="danger">Preencha o campo do formulário.</Alert>
@@ -103,7 +101,7 @@ function Recuperacao() {
                         <div className='campo-recuperacao'>
                             <Form onSubmit={handleSubmit}>
                                 <Form.Group controlId='email'>
-                                    <Form.Label>Insira um e-mail para recuperação</Form.Label>
+                                    <Form.Label>E-mail</Form.Label>
                                     <InputGroup>
                                         <FormControl
                                             type='email'
@@ -117,17 +115,17 @@ function Recuperacao() {
                                             onChange={(event: ChangeEvent<HTMLInputElement>) => handleInputChange(event)}
                                         />
                                     </InputGroup>
+                                    <h3>Enviaremos um código de verificação a este e-mail se corresponder a uma conta da Greenneat.</h3>
                                 </Form.Group>
-                                <span className='botao-recuperacao'>
-                                    <Button type="submit" variant="success">Confirmar</Button>
-
-                                </span>
+                                <div className='volta-login-recuperacao'>
+                                    <span className='botao-recuperacao'>
+                                        <Button type="submit" variant="success">Confirmar</Button>
+                                    </span>
+                                    <p>Voltar para a página de <a href="/login">Login</a></p>
+                                </div>
                             </Form>
                         </div>
                     </Container>
-                    <div className='volta-login-recuperacao'>
-                        <p>Voltar para a página de <a href="/login">Login</a></p>
-                    </div>
                 </div>
             </div>
         </div>
