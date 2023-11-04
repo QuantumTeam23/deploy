@@ -462,7 +462,7 @@ function CadastroEstabelecimento() {
               <option value='Centro-Oeste'>Centro-Oeste</option>
               <option value='Sudeste'>Sudeste</option>
               <option value='Sul'>Sul</option>
-              </Form.Control>
+            </Form.Control>
           </Form.Group>
         );
       } else {
@@ -494,9 +494,7 @@ function CadastroEstabelecimento() {
     <div className='container-geral-cadastro-estabelecimento'>
       <div className='container-janela-cadastro-estabelecimento'>
         <div className='container-esquerda-cadastro-estabelecimento'>
-          <span className='logo-cadastro-estabelecimento'>
-            <img src='logo-greenneat.png' alt='' />
-          </span>
+          <img className='logo-cadastro-estabelecimento' src='logo-greenneat.png' alt='' />
         </div>
         <div className='container-direita-cadastro-estabelecimento'>
           {emptyFields.length > 0 && (
