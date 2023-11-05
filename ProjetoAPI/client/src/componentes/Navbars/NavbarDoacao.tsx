@@ -3,7 +3,6 @@ import MenuLateralParceiro from './NavbarTransacaoMenuLateral';
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 
-
 function NavbarParceiro() {
     const navigate = useNavigate();
 

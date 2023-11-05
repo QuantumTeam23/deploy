@@ -5,7 +5,30 @@ import { useNavigate } from "react-router-dom";
 
 
 function NavbarCompraCredito() {
-  
+
+    const navigate = useNavigate();
+
+    const handleSair = () => {
+        Swal.fire({
+          title: 'Você tem certeza que deseja sair?',
+          text: 'Isso irá desconectar você da sua conta.',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#FFD700',
+          cancelButtonColor: 'red',
+          confirmButtonText: '<span style="color: white;">Sair</span>', // Estilizando o texto do botão Sair
+          cancelButtonText: '<span style="color: white;">Cancelar</span>', // Estilizando o texto do botão Cancelar
+          customClass: {
+            confirmButton: 'custom-confirm-button',
+            cancelButton: 'custom-cancel-button',
+          },
+        }).then((result) => {
+          if (result.isConfirmed) {
+            localStorage.clear()
+            navigate('/login')
+          }
+        });
+      }
 
     return (
         <nav className="navbar navbar-expand-lg navbar-light" style={{ backgroundColor: '#136935' }}>
@@ -30,7 +53,7 @@ function NavbarCompraCredito() {
                  
                         <li className="nav-item">
                             <a href="#">
-                                <img src={require('../Imagens/icone-sair.png')} alt="Imagem" className="img-fluid" style={{ maxWidth: '36px', maxHeight: '36px' }} />
+                                <img src={require('../Imagens/icone-sair.png')} alt="Imagem" className="img-fluid" style={{ maxWidth: '36px', maxHeight: '36px' }} onClick={handleSair}/>
                             </a>
                         </li>
                     </ul>
