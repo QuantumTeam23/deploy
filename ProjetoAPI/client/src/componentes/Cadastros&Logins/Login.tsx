@@ -54,7 +54,7 @@ function Login() {
                     confirmButtonColor: '#de940a'
                 })
                 setTimeout(() => {
-                    navigate('/painel-parceiro-historico-compra');
+                    navigate('/painel-parceiro-carteira-estabelecimento');
                 }, 1100);
                 localStorage.setItem('tipo', 'ComumParceiro')
                 localStorage.setItem('idParceiro', data.idParceiro)
