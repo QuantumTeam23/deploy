@@ -510,7 +510,9 @@ function CadastroParceiro() {
     <div className='container-geral-cadastro-parceiro'>
       <div className='container-janela-cadastro-parceiro'>
         <div className='container-esquerda-cadastro-parceiro'>
-          <img className='logo-cadastro-parceiro' src='logo-greenneat.png' alt='' />
+          <span className='logo-cadastro-parceiro'>
+            <img src='logo-greenneat.png' alt='' />
+          </span>
         </div>
         <div className='container-direita-cadastro-parceiro'>
           {emptyFields.length > 0 && (
