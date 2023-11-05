@@ -9,26 +9,19 @@ import Swal from "sweetalert2";
 
 function Login() {
     const [email, setEmail] = useState("" as any);
-    const navigate = useNavigate()
-
     const [password, setPassword] = useState("" as any);
     const [showPassword, setShowPassword] = useState(false);
-    const passwordInputType = showPassword ? "text" : "password";
-    const passwordIconSrc = showPassword ? eyeIconOpen : eyeIconClose;
-
-    const showPasswordHandler = () => {
-        setShowPassword(!showPassword);
-    };
+    const navigate = useNavigate()
 
     const validaCampos = () => {
         let vazio = false
-
+    
         if (email === "" || password === "") {
-            vazio = true
-            return vazio
+          vazio = true
+          return vazio
         }
     }
-
+    
     function msgValidaCampos() {
         Swal.fire({
             title: 'Alerta',
@@ -37,6 +30,7 @@ function Login() {
             confirmButtonColor: '#de940a'
         })
     }
+    
 
     const handleSubmit = async (event: any) => {
         event.preventDefault()
@@ -101,7 +95,7 @@ function Login() {
                 })
                 setTimeout(() => {
                     navigate('/login');
-                }, 1100);
+                }, 1100); 
             } else {
                 Swal.fire({
                     title: "Erro",
@@ -115,17 +109,30 @@ function Login() {
         }
     }
 
+
+    const showPasswordHandler = () => {
+        setShowPassword(!showPassword);
+      };
+    
+    const passwordInputType = showPassword ? "text" : "password";
+    const passwordIconSrc = showPassword ? eyeIconOpen : eyeIconClose;
+
+
+
     return (
         <div className='container-geral-login'>
             <div className="container-janela-login">
                 <div className='container-esquerda-login'>
-                    <img className='logo-login' src="logo-greenneat.png" alt="" />
+                    <span className='logo-login'><img src="logo-greenneat.png" alt="" /></span>
                 </div>
                 <div className='container-direita-login'>
                     <div>
                         <span className='titulo-login'>
                             <h1>Acesse a Plataforma</h1>
                         </span>
+                    </div>
+                    <div className='subtitulo-login'>
+                        <h3>Faça login ou registre-se para acessar <p>nossa plataforma</p></h3>
                     </div>
                     <Container>
                         <div className='campo-login-1'>
@@ -161,16 +168,16 @@ function Login() {
                                         value={password}
                                         onChange={(event) => setPassword(event.target.value)}
                                     />
-                                    <img src={passwordIconSrc} alt="eye icon" className='eyeIcon' onClick={showPasswordHandler} />
+                                    <img src={passwordIconSrc} alt="eye icon" className='eyeIcon' onClick={showPasswordHandler}/>
                                 </InputGroup>
                             </Form.Group>
                         </div>
-                        <div className='esqueceu-senha-login'>
-                            <a href="/recuperacao">Esqueceu a senha?</a>
-                        </div>
                     </Container>
+                    <div className='esqueceu-senha-login'>
+                        <a href="/recuperacao">Esqueceu a senha?</a>
+                    </div>
                     <span className='botao-login'>
-                        <Button variant="success" onClick={handleSubmit}>Entrar</Button>{' '}
+                    <Button variant="success" onClick={handleSubmit}>Entrar</Button>{' '}
                     </span>
                     <div className='registro-login'>
                         <p>Ainda não tem conta? <a href="/usuario">Registre-se</a></p>
