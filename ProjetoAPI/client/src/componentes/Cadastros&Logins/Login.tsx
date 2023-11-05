@@ -68,7 +68,7 @@ function Login() {
                     confirmButtonColor: '#de940a'
                 })
                 setTimeout(() => {
-                    navigate('/painel-estabelecimento-historico-compras');
+                    navigate('/painel-estabelecimento-extrato');
                 }, 1100);
                 localStorage.setItem('tipo', 'ComumEstabelecimento')
                 localStorage.setItem('idEstabelecimento', data.idEstabelecimento)
