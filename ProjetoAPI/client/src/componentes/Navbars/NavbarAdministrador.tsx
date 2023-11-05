@@ -66,29 +66,29 @@ function NavbarAdministrador() {
                         </li>
                     </ul>
                     <ul className="navbar-nav ms-auto" style={{ alignItems: 'center'}}>
-                        <li className="nav-item">
+                        <li className="nav-item-adm">
                             <a className="nav-link text-white" href="/painel-administrador-preco-regiao">Preço por Região</a>
                         </li>
-                        <li className="nav-item">
+                        <li className="nav-item-adm">
                             <a className="nav-link text-white" href="/painel-administrador-transacoes">Transações</a>
                         </li>
-                        <li className="nav-item">
+                        <li className="nav-item-adm">
                             <a className="nav-link text-white" href="/painel-administrador-usuario">Controle de Usuários</a>
                         </li>
-                        <li className="nav-item">
+                        <li className="nav-item-adm">
                             <a className="nav-link text-white" href="/painel-administrador-requisicoes">Requisições</a>
                         </li>
 
-                        <li className="nav-item">
+                        <li className="nav-item-adm">
                             <a className="nav-link text-white" href="/painel-administrador-dashboard-ranking">Dashboard Ranking</a>
                         </li>
                         <li className="nav-item">
                             <a className="nav-link text-white" href="/painel-administrador-comparador-precos">Comparador de Preços</a>
                         </li>
-                        <li className="nav-img">
+                        <li className="nav-img-adm">
                             <img src={require('../Imagens/user.png')} alt="Imagem" className="img-fluid"/> 
                         </li>
-                        <li className="nav-img">
+                        <li className="nav-img-adm">
                             <a href="#">
                                 <img src={require('../Imagens/icone-sair.png')} alt="Imagem" className="img-fluid" onClick={handleSair}/>
                             </a>
