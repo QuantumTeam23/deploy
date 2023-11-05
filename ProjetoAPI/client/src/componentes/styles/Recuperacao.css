@@ -1,17 +1,9 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
     font-family: Montserrat, sans-serif, Arial;
 }
 
-h3 {
-    font-size: 0.9em;
-    text-align: justify;
-    margin-top: 4%;
-}
-
 .container-geral-recuperacao {
+    background-color: #ebebeb;
     width: 100vw;
     height: 100vh;
     display: flex;
@@ -20,12 +12,10 @@ h3 {
 }
 
 .container-janela-recuperacao {
-    width: 98%;
+    width: 100vw;
     max-width: 1200px;
     display: flex;
-    border-radius: 80px 0 80px 0;
-    box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.138);
-    overflow: hidden;
+    justify-content: space-between;
 }
 
 .container-esquerda-recuperacao {
@@ -39,11 +29,12 @@ h3 {
 .container-direita-recuperacao {
     background: white;
     flex: 1;
-    padding: 1.4vw;
+    padding: 20px;
 }
 
-.logo-recuperacao {
-    max-width: 80%;
+.logo-recuperacao img {
+    max-width: 100%;
+    height: auto;
 }
 
 .form-control-recuperacao {
@@ -62,7 +53,6 @@ h3 {
     height: 50px;
     width: 140px;
     font-size: 22px;
-    margin-top: 10%;
 }
 
 .titulo-recuperacao h1 {
@@ -70,13 +60,13 @@ h3 {
     text-align: center;
     font-size: 2.8em;
     font-weight: 555;
-    margin: 8% 0 8% 0;
 }
 
 .campo-recuperacao {
     text-align: left;
     margin-top: 15%;
     width: 100%;
+    max-width: 50vw;
 }
 
 .form-control-recuperacao {
@@ -97,10 +87,4 @@ h3 {
 .volta-login-recuperacao p {
     color: black;
     font-weight: 400;
-}
-
-@media (max-width: 700px) {
-    .container-esquerda-recuperacao {
-        display: none;
-    }
 }
