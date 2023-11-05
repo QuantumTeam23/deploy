@@ -7,12 +7,17 @@ function Usuario() {
         <div className='container-geral-user'>
             <div className="container-janela-user">
                 <div className='container-esquerda-user'>
-                    <img className='logo-user' src="logo-greenneat.png" alt="" />
+                    <span className='logo-user'><img src="logo-greenneat.png" alt="" /></span>
                 </div>
                 <div className='container-direita-user'>
-                    <span className='titulo-user'>
-                        <h1>Selecione o tipo de usuário</h1>
-                    </span>
+                    <div>
+                        <span className='titulo-user'>
+                            <h1>Usuário</h1>
+                        </span>
+                    </div>
+                    <div className='subtitulo-user'>
+                        <h3>Selecione o tipo de usuário</h3>
+                    </div>
                     <span className='botao-usuario-user-1'>
                         <Link to="/cadastro-parceiro">
                             <Button variant="success">Parceiro Greenneat</Button>

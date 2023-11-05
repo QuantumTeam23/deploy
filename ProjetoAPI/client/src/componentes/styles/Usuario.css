@@ -1,11 +1,9 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
     font-family: Montserrat, sans-serif, Arial;
 }
 
 .container-geral-user {
+    background-color: #ebebeb;
     width: 100vw;
     height: 100vh;
     display: flex;
@@ -14,12 +12,10 @@
 }
 
 .container-janela-user {
-    width: 98%;
+    width: 100vw;
     max-width: 1200px;
     display: flex;
-    border-radius: 80px 0 80px 0;
-    box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.138);
-    overflow: hidden;
+    justify-content: space-between;
 }
 
 .container-esquerda-user {
@@ -33,26 +29,32 @@
 .container-direita-user {
     background: white;
     flex: 1;
-    padding: 1.4vw;
+    padding: 20px;
 }
 
-.logo-user {
-    max-width: 80%;
+.logo-user img {
+    max-width: 100%;
+    height: auto;
 }
 
-.botao-usuario-user-1,
-.botao-usuario-user-2 {
+.botao-usuario-user-1, .botao-usuario-user-2 {
     display: flex;
     justify-content: center;
-    margin-top: 7%;
+    margin-top: 10%;
 }
 
-.botao-usuario-user-1 button,
-.botao-usuario-user-2 button {
+.botao-usuario-user-1 button, .botao-usuario-user-2 button {
     background-color: #136935;
     height: 55px;
     width: 300px;
     font-size: 22px;
+}
+
+.titulo-user {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
 }
 
 .titulo-user h1 {
@@ -60,7 +62,13 @@
     font-size: 2.8em;
     font-weight: 555;
     text-align: center;
-    margin: 7% 0 8% 0;
+}
+
+.subtitulo-user h3 {
+    color: #136935;
+    margin-top: -3%;
+    text-align: center;
+    font-weight: 400;
 }
 
 .subtitulo-user p {
@@ -70,7 +78,7 @@
 
 .volta-login-user {
     text-align: center;
-    margin-top: 10%;
+    margin-top: 8%;
 }
 
 .volta-login-user a {
@@ -81,10 +89,4 @@
 .volta-login-user p {
     color: black;
     font-weight: 400;
-}
-
-@media (max-width: 700px) {
-    .container-esquerda-user {
-        display: none;
-    }
 }
