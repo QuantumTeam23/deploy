@@ -8,7 +8,7 @@ export default function TabelaSaldoCreditoExtrato() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 9;
   const id = localStorage.getItem('idEstabelecimento');
-  const [transacoes , setTransacoes] = useState([]);
+  const [transacoes, setTransacoes] = useState([]);
   const index = [1, 2, 3, 4];
   /*
   const data = Array.from({ length: 18 }, (_, index) => ({
@@ -21,7 +21,7 @@ export default function TabelaSaldoCreditoExtrato() {
   useEffect(() => {
     fetch(`http://localhost:3001/transacoes-estabelecimento/${id}`, {
       method: "GET",
-       headers: {
+      headers: {
         'Content-Type': 'application/json',
       },
     })
@@ -59,10 +59,10 @@ export default function TabelaSaldoCreditoExtrato() {
       <table className={styles.table}>
         <thead>
           <tr>
-            <th>Movimentação</th>
-            <th>Créditos Recebidos</th>
-            <th>Data / Hora</th>
-            <th>Litros de óleo</th>
+            <th style={{ width: '20%' }}>Movimentação</th>
+            <th style={{ width: '10%' }}>Créditos Recebidos</th>
+            <th style={{ width: '10%' }}>Data / Hora</th>
+            <th style={{ width: '10%' }}>Litros de óleo</th>
           </tr>
         </thead>
         <tbody>

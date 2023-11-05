@@ -68,9 +68,6 @@ function NavbarParceiro() {
                     </ul>
                     <ul className="navbar-nav ms-auto">
 
-                        <li className="nav-item">
-                            <a className="nav-link text-white" href="/painel-parceiro-historico-compra" style={{ marginRight: '0.5vw'}}>Histórico </a>
-                        </li>
                         <li className="nav-item" style={{ marginRight: '0.5vw' }}>
                             <a className="nav-link text-white" href="/painel-parceiro-carteira-estabelecimento">Carteira</a>
                         </li>

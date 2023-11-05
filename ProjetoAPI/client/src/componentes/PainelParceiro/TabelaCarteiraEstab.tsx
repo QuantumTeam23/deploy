@@ -47,9 +47,9 @@ export default function TabelaCarteiraEstab() {
       <table className={styles.table}>
         <thead>
           <tr>
-            <th>Nome</th>
-            <th>Contato</th>
-            <th>Endereço</th>
+            <th style={{width: '25%'}}>Nome</th>
+            <th style={{width: '25%'}}>Contato</th>
+            <th style={{width: '25%'}}>Endereço</th>
           </tr>
         </thead>
         <tbody>

@@ -53,10 +53,10 @@ export default function TabelaColeta() {
       <table className={styles.table}>
         <thead>
           <tr>
-            <th>Estabelecimento</th>
-            <th>Data</th>
-            <th>Endereço</th>
-            <th>Volume</th>
+            <th style={{width: '25%'}}>Estabelecimento</th>
+            <th style={{width: '20%'}}>Data</th>
+            <th style={{width: '25%'}}>Endereço</th>
+            <th style={{width: '20%'}}>Volume</th>
           </tr>
         </thead>
         <tbody>

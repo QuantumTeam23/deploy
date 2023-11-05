@@ -111,9 +111,6 @@ const MenuLateralParceiro: React.FC = () => {
             <ListItemButton onClick={fecharMenu} component={Link} to="/painel-parceiro-coleta">
               <ListItemText primary="Coletas" />
             </ListItemButton>
-            <ListItemButton onClick={fecharMenu} component={Link} to="/painel-parceiro-historico-compra">
-              <ListItemText primary="Histórico de Compra" />
-            </ListItemButton>
             <ListItemButton onClick={fecharMenu} component={Link} to="/painel-parceiro-saldo-credito">
               <ListItemText primary="Saldo de Crédito" />
             </ListItemButton>

@@ -63,9 +63,9 @@ export function TabelaCreditoContratado() {
       <table className={styles.table}>
         <thead>
           <tr>
-            <th>Quantidade de Créditos</th>
-            <th>Data / Hora</th>
-            <th>Status</th>
+            <th style={{width: '25%'}}>Quantidade de Créditos</th>
+            <th style={{width: '25%'}}>Data / Hora</th>
+            <th style={{width: '25%'}}>Status</th>
           </tr>
         </thead>
         <tbody>
@@ -166,10 +166,10 @@ export function TabelaCreditoCedido() {
       <table className={styles.table}>
         <thead>
           <tr>
-            <th>Descrição</th>
-            <th>Créditos</th>
-            <th>Óleo (Litros)</th>
-            <th>Data / Hora</th>
+            <th style={{width: '25%'}}>Descrição</th>
+            <th style={{width: '20%'}}>Créditos</th>
+            <th style={{width: '20%'}}>Óleo (Litros)</th>
+            <th style={{width: '20%'}}>Data / Hora</th>
           </tr>
         </thead>
         <tbody>
