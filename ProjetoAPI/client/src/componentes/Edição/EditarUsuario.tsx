@@ -59,12 +59,12 @@ function EditarUsuario() {
 
         if (localStorage.getItem('idParceiro') !== null) {
             setTimeout(() => {
-                navigate('/painel-parceiro-historico-compra');
+                navigate('/painel-parceiro-carteira-estabelecimento');
             }, 500);
             localStorage.removeItem('parceiroData')
         } else {
             setTimeout(() => {
-                navigate('/painel-estabelecimento-historico-compras');
+                navigate('/painel-estabelecimento-extrato');
             }, 50);
             localStorage.removeItem('estabelecimentoData')
         }
