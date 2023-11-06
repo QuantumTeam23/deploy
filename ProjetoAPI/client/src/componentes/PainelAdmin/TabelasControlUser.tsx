@@ -101,7 +101,8 @@ export default function TabelasControlUser() {
   const handleRemoverUsuarioClick = (item: any) => {
     const razaoSocial = item.nome;
     const tipoUsuario = item.tipo;
-    
+    const id = item.id;
+
     // Exibir um SweetAlert para confirmar a exclusão do usuário
     Swal.fire({
       title: 'Confirmar Exclusão',
@@ -112,7 +113,7 @@ export default function TabelasControlUser() {
       cancelButtonText: 'Cancelar',
     }).then((result) => {
       if (result.isConfirmed) {
-        fetch(`http://localhost:3001/deletar-users/${razaoSocial}/${tipoUsuario}`, {
+        fetch(`http://localhost:3001/deletar-users/${tipoUsuario}/${id}`, {
           method: 'DELETE'
         })
         .then((response) => response.json())
@@ -140,9 +141,6 @@ export default function TabelasControlUser() {
     localStorage.removeItem('nomeEdit')
     localStorage.removeItem('tipoEdit')
     setEditarUsuarioAdminPopupOpen(false);
-  };
-
-  const handleCloseRemoverUsuarioPopup = () => {
   };
 
 

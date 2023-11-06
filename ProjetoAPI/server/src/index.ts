@@ -41,7 +41,7 @@ app.get('/listAdministrador', listAllAdministrador);
 app.get('/read-by-id-to-edit-admin/:razaoSocial/:tipo', SelectToEditAdmin)
 app.put('/editar-usuario-comum-parceiro-by-admin/:razaoSocial/:tipoUsuario', editarAdmin)
 app.get('/verifica-email/:emailEDIT', verificaEmail)
-app.delete('/deletar-users/:razaoSocial/:tipoUsuario', DeletarUsers)
+app.delete('/deletar-users/:tipoUsuario/:id', DeletarUsers)
 //addAdmin é pra ser usado apenas internamente, não terá conexão com front
 app.post('/addAdmin', addAdmin)
 //LISTAR USUARIOS (nome, tipo e id)
@@ -296,29 +296,66 @@ async function cadastrarEstabelecimento(req, res) {
 }
 
 async function DeletarUsers(req, res) {
-    const razaoSocial = req.params.razaoSocial
     const tipoUsuario = req.params.tipoUsuario
+    const id = req.params.id;
 
     if (tipoUsuario === 'Parceiro') {
-        let SQL = `DELETE FROM Parceiros WHERE parceiro_razao_social = '${razaoSocial}'`;
-        DB.query(SQL, (err, result) => {
+        let SQL = `DELETE FROM Parceiros WHERE parceiro_id = '${id}'`;
+        let SQL2 = `DELETE FROM ParceiroCarteira WHERE id_parceiro = '${id}'`;
+        let SQL3 = `DELETE FROM AcaoTransacoes WHERE id_parceiro = '${id}'`;
+        let SQL4 = `DELETE FROM AcaoTransacaoCompra WHERE id_parceiro = '${id}'`
+
+        DB.query(SQL4, (err, result) => {
             if (err) {
                 console.log(err)
             } else {
-                console.log('Deletado')
+                DB.query(SQL3, (err, result) => {
+                    if (err) {
+                        console.log(err)
+                    } else {
+                        DB.query(SQL2, (err, result) => {
+                            if (err) {
+                                console.log(err)
+                            } else {
+                                DB.query(SQL, (err, result) => {
+                                    if (err) {
+                                        console.log(err)
+                                    } else {
+                                        console.log('Deletado')
+                                    }
+                                })
+                            }
+                        })
+                    }
+                })
             }
         })
     } else if (tipoUsuario === 'Estabelecimento') {
-        let SQL = `DELETE FROM Estabelecimentos WHERE estabelecimento_razao_social = '${razaoSocial}'`;
-        DB.query(SQL, (err, result) => {
+        let SQL = `DELETE FROM Estabelecimentos WHERE estabelecimento_id = '${id}'`;
+        let SQL2 = `DELETE FROM ParceiroCarteira WHERE id_estabelecimento = '${id}'`;
+        let SQL3 = `DELETE FROM AcaoTransacoes WHERE id_estabelecimento = '${id}'`;
+
+        DB.query(SQL3, (err, result) => {
             if (err) {
                 console.log(err)
             } else {
-                console.log('Deletado')
+                DB.query(SQL2, (err, result) => {
+                    if (err) {
+                        console.log(err)
+                    } else {
+                        DB.query(SQL, (err, result) => {
+                            if (err) {
+                                console.log(err)
+                            } else {
+                                console.log('Deletado')
+                            }
+                        })
+                    }
+                })
             }
         })
     } else if (tipoUsuario === 'Administrador') {
-        let SQL = `DELETE FROM Administradores WHERE administrador_nome = '${razaoSocial}'`;
+        let SQL = `DELETE FROM Administradores WHERE administrador_id = '${id}'`;
         DB.query(SQL, (err, result) => {
             if (err) {
                 console.log(err)
@@ -328,7 +365,6 @@ async function DeletarUsers(req, res) {
         })
     }
 }
-
 
 async function editarEstabelecimento(req, res) {
     const idEstabelecimento = req.params.idEstabelecimento;
