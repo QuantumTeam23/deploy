@@ -1,9 +1,11 @@
 * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
     font-family: Montserrat, sans-serif, Arial;
 }
 
-.container-geral-login{
-    background-color: #ebebeb;
+.container-geral-login {
     width: 100%;
     height: 100vh;
     display: flex;
@@ -11,14 +13,16 @@
     justify-content: center;
 }
 
-.container-janela-login{
-    width: 100%;
+.container-janela-login {
+    width: 98%;
     max-width: 1200px;
     display: flex;
-    justify-content: space-between;
+    border-radius: 80px 0 80px 0;
+    box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.138);
+    overflow: hidden;
 }
 
-.container-esquerda-login{
+.container-esquerda-login {
     background: #136935;
     flex: 1;
     display: flex;
@@ -26,26 +30,25 @@
     justify-content: center;
 }
 
-.container-direita-login{
+.container-direita-login {
     background: white;
     flex: 1;
-    padding: 20px;
+    padding: 1.4vw;
 }
 
-.logo-login img {
-    max-width: 100%;
-    height: auto;
+.logo-login {
+    max-width: 80%;
 }
 
-.form-control-login-1{
+.form-control-login-1 {
     height: 100%;
     background-color: rgb(221, 255, 218) !important;
 }
 
-.botao-login{
+.botao-login {
     display: flex;
     justify-content: center;
-    margin-top: 3%;
+    margin-top: 8%;
 }
 
 .botao-login button {
@@ -55,45 +58,35 @@
     font-size: 22px;
 }
 
-.titulo-login h1{
+.titulo-login h1 {
     color: #136935;
     text-align: center;
     font-size: 2.8em;
     font-weight: 555;
+    margin: 8% 0 8% 0;
 }
 
-.subtitulo-login h3{
-    color: #136935;
-    text-align: center;
-    font-weight: 400;
-}
-
-.subtitulo-login p{
-    margin: 0;
-    text-align: center;
-}
-
-.esqueceu-senha-login{
+.esqueceu-senha-login {
     text-align: right;
-    margin-top: 1%;
+    margin: 1% 2% 0 0;
 }
 
-.esqueceu-senha-login a{
+.esqueceu-senha-login a {
     text-decoration: none;
     color: #136935;
 }
 
-.registro-login{
+.registro-login {
     text-align: center;
     margin-top: 1%;
 }
 
-.registro-login a{
+.registro-login a {
     text-decoration: none;
     color: #136935;
 }
 
-.registro-login p{
+.registro-login p {
     color: black;
     font-weight: 400;
 }
@@ -106,6 +99,7 @@
 .campo-login {
     position: relative;
     height: 41px;
+    margin-bottom: 2%;
 }
 
 .eyeIcon {
@@ -116,4 +110,10 @@
     top: 50%;
     transform: translateY(-50%);
     cursor: pointer;
+}
+
+@media (max-width: 700px) {
+    .container-esquerda-login {
+        display: none;
+    }
 }
