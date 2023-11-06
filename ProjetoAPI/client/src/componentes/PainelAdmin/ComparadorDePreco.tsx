@@ -217,7 +217,7 @@ function ComparadorPrecos() {
                 id="BotaoRegiaoSuldeste"
                 onClick={botaoSuldesteClick}
               >
-                Suldeste
+                Sudeste
               </Button>
               <Button
                 size="lg"
