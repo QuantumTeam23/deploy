@@ -120,7 +120,7 @@ export default function TabelaPrecopreco_regiao() {
             <th style={{width: '17%'}}>Região</th>
             <th style={{width: '17%'}}>Óleo Virgem</th>
             <th style={{width: '17%'}}>Óleo Usado</th>
-            <th style={{width: '5%'}}>Ação</th>
+            <th style={{width: '5%'}}>Editar</th>
           </tr>
         </thead>
         <tbody>
