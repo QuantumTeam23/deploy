@@ -84,11 +84,11 @@ function EditarUsuario() {
     }
 
     const backEdit = () => {
-        navigate('/painel-parceiro-historico-compra')
+        navigate('/painel-parceiro-carteira-estabelecimento')
     }
 
     const backEditEstab = () => {
-        navigate('/painel-estabelecimento-historico-compras')
+        navigate('/painel-estabelecimento-extrato')
     }
 
     const handleEdit = () => {
