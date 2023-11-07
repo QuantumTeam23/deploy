@@ -12,9 +12,7 @@ export default function PainelEstabelecimentoHistorico() {
 
     <div className={styles.containerConteudo}>
       <div className={styles.topContent}>
-      <h2>Histórico de Compras</h2>
         <div className={styles.headerActions}>
-          <MesAno />
         </div>
       </div>
       <TabelaHistoricoCompra />

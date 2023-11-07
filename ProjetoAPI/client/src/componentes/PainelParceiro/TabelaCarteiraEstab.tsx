@@ -5,6 +5,7 @@ import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 
 export default function TabelaCarteiraEstab() {
+  const [searchQuery, setSearchQuery] = useState(''); // Variável de estado para armazenar a consulta de pesquisa
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 9;
   const id = localStorage.getItem('idParceiro');
@@ -23,6 +24,10 @@ export default function TabelaCarteiraEstab() {
       })
       .catch((error) => console.log(error));
   }, []);
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+  };
 
 
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -44,6 +49,14 @@ export default function TabelaCarteiraEstab() {
 
   return (
     <>
+      <div>
+        <input
+          type="text"
+          placeholder="Pesquisar..."
+          onChange={handleSearchChange}
+          value={searchQuery}
+        />
+      </div>
       <table className={styles.table}>
         <thead>
           <tr>

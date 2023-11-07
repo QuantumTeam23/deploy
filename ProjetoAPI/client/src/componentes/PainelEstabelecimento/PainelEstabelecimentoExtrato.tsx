@@ -76,12 +76,7 @@ export default function PainelEstabelecimentoExtrato() {
             <span className={styles.saldoAtual}>{totalOleoDoado}</span> litros
           </h1>
         </div>
-        <div className={styles.topContent}>
-          <h2>Extrato</h2>
-          <div className={styles.headerActions}>
-            <MesAno />
-          </div>
-        </div>
+        <br />
         <TabelaSaldoCreditoExtrato />
       </div>
       <Footer />

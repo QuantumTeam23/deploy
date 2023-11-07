@@ -8,6 +8,26 @@ import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 export default function TabelaHistoricoCompra() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 9;
+  const [mesAno, setMesAno] = useState('');
+
+  const handleChange2 = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setMesAno(event.target.value);
+  };
+  
+  const mesesAnosDisponiveis = [
+    'Janeiro/2023',
+    'Fevereiro/2023',
+    'Março/2023',
+    'Abril/2023',
+    'Maio/2023',
+    'Junho/2023',
+    'Julho/2023',
+    'Agosto/2023',
+    'Setembro/2023',
+    'Outubro/2023',
+    'Novembro/2023',
+    'Dezembro/2023',
+  ];
 
   const data = Array.from({ length: 18 }, (_, index) => ({
     item: `Item ${index + 1}`,
@@ -35,6 +55,19 @@ export default function TabelaHistoricoCompra() {
 
   return (
     <>
+    <h2>Histórico de Compras</h2>
+    <div className={styles.searchContainer}>
+      <select
+        onChange={handleChange2}
+      >
+        <option value="">Selecione um Mês/Ano</option>
+        {mesesAnosDisponiveis.map((mesAno, index) => (
+          <option key={index} value={mesAno}>
+            {mesAno}
+          </option>
+        ))}
+      </select>
+    </div>
       <table className={styles.table}>
         <thead>
           <tr>

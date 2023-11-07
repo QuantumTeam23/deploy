@@ -3,6 +3,8 @@ import styles from '../styles/TabelaColetas.module.css';
 import { useEffect, useState } from 'react';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
+import EventIcon from '@mui/icons-material/Event';
+import InputAdornment from '@mui/material/InputAdornment';
 
 export default function TabelaColeta() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -10,6 +12,9 @@ export default function TabelaColeta() {
   const id = localStorage.getItem('idParceiro');
   const [transacoes , setTransacoes] = useState([]);
   const index = [1, 2, 3, 4];
+  const [searchQuery, setSearchQuery] = useState(''); // Variável de estado para armazenar a consulta de pesquisa
+  const [searchQueryDataInicio, setSearchQueryDataInicio] = useState(''); // Variável de estado para armazenar a consulta de pesquisa
+  const [searchQueryDataFim, setSearchQueryDataFim] = useState(''); // Variável de estado para armazenar a consulta de pesquisa
 
   useEffect(() => {
     fetch(`http://localhost:3001/transacoes-parceiro/${id}`, {
@@ -48,8 +53,55 @@ export default function TabelaColeta() {
     }
   };
 
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const handleSearchChange2 = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQueryDataInicio(e.target.value);
+  };
+
+  const handleSearchChange3 = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQueryDataFim(e.target.value);
+  };
+
+
+
+
+
   return (
-    <>
+    <>      
+      <h2>Coletas</h2>
+      <div className={styles.searchContainer}>
+        <input
+          type="text"
+          placeholder="Pesquisar..."
+          onChange={handleSearchChange}
+          value={searchQuery}
+        />
+
+        <div className={styles.dateFilters}>
+          Data de:
+          <div>
+            <input
+              type="date"
+              placeholder="Data Início..."
+              onChange={handleSearchChange2}
+              value={searchQueryDataInicio}
+            />
+          </div>
+          Até
+          <div>
+           <input
+              type="date"
+              placeholder="Data Final..."
+              onChange={handleSearchChange3}
+              value={searchQueryDataFim}
+            />
+          </div>
+        </div>
+      </div>
+   
       <table className={styles.table}>
         <thead>
           <tr>
