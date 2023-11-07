@@ -5,24 +5,49 @@ import { useEffect, useState } from 'react'; // Importe useState
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 
+interface Data {
+  estabelecimento: string;
+  parceiro: string;
+  tipo: string;
+}
+
 export default function TabelasHistTransacoes() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 9;
   const [transacoes, setTransacoes] = useState([]);
+  const [searchQuery, setSearchQuery] = useState(''); // Variável de estado para armazenar a consulta de pesquisa
+  const [filteredData, setFilteredData] = useState([]); // Variável de estado para armazenar os dados filtrados
+
 
   useEffect(() => {
     fetch("http://localhost:3001/admTransacoes", {
       method: "GET",
-       headers: {
+      headers: {
         'Content-Type': 'application/json',
       },
     })
       .then((response) => response.json())
       .then((data) => {
-        setTransacoes(data)
+        // Filtrar os dados com base na consulta de pesquisa antes de atualizar a variável de estado
+        const filteredData = data.filter((item: Data) => {
+          const lowerCaseTipo = item.tipo.toLowerCase();
+          const lowerCaseEstab = item.estabelecimento.toLowerCase();
+          const lowerCaseParc = item.parceiro.toLowerCase();
+          const lowerCaseSearchQuery = searchQuery.toLowerCase();
+          return (
+            item.tipo.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            lowerCaseTipo.includes(lowerCaseSearchQuery) ||
+            lowerCaseEstab.includes(lowerCaseSearchQuery) ||
+            lowerCaseParc.includes(lowerCaseSearchQuery)
+          );
+        });
+        
+        setFilteredData(filteredData);
+        setTransacoes(data);
       })
       .catch((error) => console.log(error));
-  }, []);
+  }, [searchQuery]); // Adicione a variável de dependência searchQuery
+  
 
   const formatarData = (date: string) => {
     const dataformat = new Date(date).toLocaleString('pt-BR');
@@ -33,7 +58,7 @@ export default function TabelasHistTransacoes() {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
 
-  const currentData = transacoes.slice(startIndex, endIndex);
+  const currentData = filteredData.slice(startIndex, endIndex); // Use filteredData em vez de user
 
   const handlePrevPage = () => {
     if (currentPage > 1) {
@@ -47,8 +72,20 @@ export default function TabelasHistTransacoes() {
     }
   };
 
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+  };
+
   return (
     <>
+      <div>
+        <input
+          type="text"
+          placeholder="Pesquisar..."
+          onChange={handleSearchChange}
+          value={searchQuery}
+        />
+      </div>
       <table className={styles.table}>
         <thead>
           <tr>

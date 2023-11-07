@@ -8,7 +8,16 @@ import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import Swal from 'sweetalert2';
 
+interface UserData {
+  nome: string;
+  tipo: string;
+  // Add other properties as needed
+}
+
+
 export default function TabelasControlUser() {
+  const [searchQuery, setSearchQuery] = useState(''); // Variável de estado para armazenar a consulta de pesquisa
+  const [filteredData, setFilteredData] = useState([]); // Variável de estado para armazenar os dados filtrados
   const [editarUsuarioPopupOpen, setEditarUsuarioPopupOpen] = useState(false);
   const [editarUsuarioAdminPopupOpen, setEditarUsuarioAdminPopupOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -148,21 +157,32 @@ export default function TabelasControlUser() {
   useEffect(() => {
     fetch("http://localhost:3001/listarusuarios", {
       method: "GET",
-       headers: {
+      headers: {
         'Content-Type': 'application/json',
       },
     })
       .then((response) => response.json())
       .then((data) => {
-        setUser(data)
+        // Filtrar os dados com base na consulta de pesquisa antes de atualizar a variável de estado
+        const filteredData = data.filter((item: UserData) => {
+          const lowerCaseNome = item.nome.toLowerCase();
+          const lowerCaseSearchQuery = searchQuery.toLowerCase();
+          return (
+            item.tipo.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            lowerCaseNome.includes(lowerCaseSearchQuery)
+          );
+        });
+        setFilteredData(filteredData);
+        setUser(data);
       })
       .catch((error) => console.log(error));
-  }, []);
+  }, [searchQuery]);
+  
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
 
-  const currentData = user.slice(startIndex, endIndex);
+  const currentData = filteredData.slice(startIndex, endIndex); // Use filteredData em vez de user
 
   const handlePrevPage = () => {
     if (currentPage > 1) {
@@ -176,8 +196,20 @@ export default function TabelasControlUser() {
     }
   };
 
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+  };
+
   return (
     <>
+      <div>
+        <input
+          type="text"
+          placeholder="Pesquisar..."
+          onChange={handleSearchChange}
+          value={searchQuery}
+        />
+      </div>
       <table className={styles.table}>
         <thead>
           <tr>

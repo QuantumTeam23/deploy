@@ -26,7 +26,6 @@ export default function PainelAdminControlUser() {
         <h2>Controle de usuário</h2>
         <div className={styles.headerActions}>
           <AdicionarUsuario onClick={handleOpenPopup} />
-          <BarraPesquisa />
         </div>
       </div>
       <TabelasControlUser />

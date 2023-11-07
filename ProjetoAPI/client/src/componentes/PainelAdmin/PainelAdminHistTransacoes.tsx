@@ -16,7 +16,6 @@ function HistoricoTransacoes() {
       <div className={styles.topContent}>
         <h2>Histórico de Transações</h2>
         <div className={styles.headerActions}>
-          <BarraPesquisa />
         </div>
       </div>
       <Tabelas2 />
