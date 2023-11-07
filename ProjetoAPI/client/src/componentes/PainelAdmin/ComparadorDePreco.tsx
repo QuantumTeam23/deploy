@@ -47,6 +47,7 @@ function Grafico() {
   );
 }
 
+
 function ComparadorPrecos() {
 
 
@@ -75,10 +76,13 @@ function ComparadorPrecos() {
         const valorMedio = parseFloat(data.valor_medio);
         const valorCreditoGreenneat = 10;
 
-        setInputValueVirgem(`R$${precoOleoVirgem}`);
-        setInputValueFritura(`R$${precoOleoUsado}`);
-        setInputValueMedio(`R$${valorMedio}`);
-        setInputValueCreditoGreenneat(`R$${10}`)
+        ;
+        setInputValueVirgem(`${precoOleoVirgem.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}`);
+        setInputValueFritura(`${precoOleoUsado.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}`);
+        setInputValueMedio(`${valorMedio.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}`);
+        setInputValueCreditoGreenneat(`$${10}`)
+        setLabelRegiao("Norte");
+       
         valores = [precoOleoVirgem, precoOleoUsado, valorCreditoGreenneat];
         Grafico()
       })
@@ -96,10 +100,11 @@ function ComparadorPrecos() {
         const valorMedio = parseFloat(data.valor_medio);
         const valorCreditoGreenneat = 10;
 
-        setInputValueVirgem(`R$${precoOleoVirgem}`);
-        setInputValueFritura(`R$${precoOleoUsado}`);
-        setInputValueMedio(`R$${valorMedio}`);
-        setInputValueCreditoGreenneat(`R$${10}`)
+        setInputValueVirgem(`${precoOleoVirgem.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}`);
+        setInputValueFritura(`${precoOleoUsado.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}`);
+        setInputValueMedio(`${valorMedio.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}`);
+        setInputValueCreditoGreenneat(`$${10}`)
+        setLabelRegiao("Sul");
         valores = [precoOleoVirgem, precoOleoUsado, valorCreditoGreenneat];
         Grafico()
       })
@@ -116,10 +121,12 @@ function ComparadorPrecos() {
         const valorMedio = parseFloat(data.valor_medio);
         const valorCreditoGreenneat = 10;
 
-        setInputValueVirgem(`R$${precoOleoVirgem}`);
-        setInputValueFritura(`R$${precoOleoUsado}`);
-        setInputValueMedio(`R$${valorMedio}`);
-        setInputValueCreditoGreenneat(`R$${10}`)
+        setInputValueVirgem(`${precoOleoVirgem.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}`);
+        setInputValueFritura(`${precoOleoUsado.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}`);
+        setInputValueMedio(`${valorMedio.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}`);
+        setInputValueCreditoGreenneat(`$${10}`);
+        setLabelRegiao("Sudeste");
+      
         valores = [precoOleoVirgem, precoOleoUsado, valorCreditoGreenneat];
         Grafico()
       })
@@ -136,10 +143,11 @@ function ComparadorPrecos() {
         const valorMedio = parseFloat(data.valor_medio);
         const valorCreditoGreenneat = 10;
 
-        setInputValueVirgem(`R$${precoOleoVirgem}`);
-        setInputValueFritura(`R$${precoOleoUsado}`);
-        setInputValueMedio(`R$${valorMedio}`);
-        setInputValueCreditoGreenneat(`R$${10}`)
+        setInputValueVirgem(`${precoOleoVirgem.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}`);
+        setInputValueFritura(`${precoOleoUsado.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}`);
+        setInputValueMedio(`${valorMedio.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}`);
+        setInputValueCreditoGreenneat(`$${10}`)
+        setLabelRegiao("Nordeste");
         valores = [precoOleoVirgem, precoOleoUsado, valorCreditoGreenneat];
         Grafico()
       })
@@ -156,10 +164,11 @@ function ComparadorPrecos() {
         const valorMedio = parseFloat(data.valor_medio);
         const valorCreditoGreenneat = 10;
   
-        setInputValueVirgem(`R$${precoOleoVirgem}`);
-        setInputValueFritura(`R$${precoOleoUsado}`);
-        setInputValueMedio(`R$${valorMedio}`);
-        setInputValueCreditoGreenneat(`R$${10}`)
+        setInputValueVirgem(`${precoOleoVirgem.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}`);
+        setInputValueFritura(`${precoOleoUsado.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}`);
+        setInputValueMedio(`${valorMedio.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}`);
+        setInputValueCreditoGreenneat(`$${10}`)
+        setLabelRegiao("Centro-Oeste");
         valores = [precoOleoVirgem, precoOleoUsado, valorCreditoGreenneat];
         Grafico()
         
@@ -197,6 +206,7 @@ function ComparadorPrecos() {
                 style={{ width: "100%", marginBottom: "2%", marginLeft: "1%" }}
                 className="botao"
                 id="BotaoRegiaoNorte"
+                value="Norte"
                 onClick={botaoNorteClick}
               >
                 Norte
