@@ -10,6 +10,7 @@ export default function TabelaCarteiraEstab() {
   const itemsPerPage = 9;
   const id = localStorage.getItem('idParceiro');
   const [estabData, setEstabData] = useState([]);
+  
 
   useEffect(() => {
     fetch(`http://localhost:3001/listCarteira/${id}`, {
@@ -29,11 +30,16 @@ export default function TabelaCarteiraEstab() {
     setSearchQuery(e.target.value);
   };
 
+  const filteredData = estabData.filter((item: any) => {
+    return item.estabelecimento_razao_social.toLowerCase().includes(searchQuery.toLowerCase());
+  });
+  
+
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
 
-  const currentData = estabData.slice(startIndex, endIndex);
+  const currentData = filteredData.slice(startIndex, endIndex);
 
   const handlePrevPage = () => {
     if (currentPage > 1) {
