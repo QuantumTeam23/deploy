@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import styles from '../styles/PainelParceiro.module.css';
-import MesAno from './MesAno';
 import { TabelaCreditoCedido, TabelaCreditoContratado } from './TabelaSaldoCredito';
 import Footer from '../Footer/Footer';
 import NavbarParceiro from '../Navbars/NavbarParceiro';
@@ -11,12 +10,13 @@ export default function PainelParceiroSaldoCredito() {
   const [saldoVisivel, setSaldoVisivel] = useState(false);
   const [saldoValor, setSaldoValor] = useState(0);
   const id = localStorage.getItem('idParceiro');
+ 
 
   //buscar dados do parceiro logado e setar o valor do saldo
   useEffect(() => {
     fetch(`http://localhost:3001/Parceiro/${id}`, {
       method: "GET",
-       headers: {
+      headers: {
         'Content-Type': 'application/json',
       },
     })
@@ -50,63 +50,15 @@ export default function PainelParceiroSaldoCredito() {
               ) : (
                 <VisibilityIcon onClick={toggleSaldoVisivel} style={{ cursor: 'pointer' }} />
               )}
-              
+
             </span>
           </h1>
         </div>
-        <div className={styles.topContent}>
-          <h2>Requisições de Crédito GreenNeat</h2>
-          <div className={styles.headerActions}>
-          <div style={{alignContent:"center"}}>
-              <a href="../transacao-compra-credito">
-                <img
-                  src={require("../Imagens/icone-moedas.png")}
-                  alt="Editar"
-                  className="img-fluid"
-                  style={{
-                    width: "40px",
-                    height: "40px",
-                    maxWidth: "40px",
-                    maxHeight: "40px",
-                    marginRight: "10px",
-                    marginTop:"20%"
-                  }}
+        <h2>Requisições de Crédito GreenNeat</h2>
 
-                  
-                />
-              </a>
-            </div>
-
-            <MesAno />
-          </div>
-        </div>
         <TabelaCreditoContratado />
-        <div className={styles.topContent}>
-          <h2>Crédito Cedido</h2>
-          <div className={styles.headerActions}>
-          <div style={{alignContent:"center"}}>
-              <a href="../transacao-doacao">
-                <img
-                  src={require("../Imagens/icone-ceder-credito.png")}
-                  alt="Editar"
-                  className="img-fluid"
-                  style={{
-                    width: "40px",
-                    height: "40px",
-                    maxWidth: "40px",
-                    maxHeight: "40px",
-                    marginRight: "10px",
-                    marginTop:"20%"
-                  }}
-
-                  
-                />
-              </a>
-            </div>
-
-            <MesAno />
-          </div>
-        </div>
+        <br /><br /><br />
+        <h2>Créditos Cedidos</h2>
         <TabelaCreditoCedido />
       </div>
       <Footer />

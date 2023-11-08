@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import styles from '../styles/PainelEstabelecimento.module.css';
-import MesAno from './MesAno';
 import TabelaSaldoCreditoExtrato from './TabelaSaldoCreditoExtrato';
 import Footer from '../Footer/Footer';
 import NavbarEstabelecimento from '../Navbars/NavbarEstabelecimento';
