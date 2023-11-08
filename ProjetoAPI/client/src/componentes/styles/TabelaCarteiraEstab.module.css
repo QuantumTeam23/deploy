@@ -50,3 +50,8 @@ th:nth-child(5), td:nth-child(5) {
 th:nth-child(6), td:nth-child(6) {
   width: 10%;
 }
+
+.MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation24 MuiDialog-paper MuiDialog-paperScrollPaper MuiDialog-paperWidthMd MuiDialog-paperFullWidth css-rnmm7m-MuiPaper-root-MuiDialog-paper {
+  margin: none !important;
+  width: none !important;
+}
