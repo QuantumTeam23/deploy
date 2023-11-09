@@ -9,8 +9,8 @@ import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import Swal from 'sweetalert2';
 
 export default function TabelaRequisicoes() {
-      const [editarUsuarioPopupOpen, setEditarUsuarioPopupOpen] = useState(false);
-      const [editarUsuarioAdminPopupOpen, setEditarUsuarioAdminPopupOpen] = useState(false);
+  const [editarUsuarioPopupOpen, setEditarUsuarioPopupOpen] = useState(false);
+  const [editarUsuarioAdminPopupOpen, setEditarUsuarioAdminPopupOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 9;
 
@@ -29,7 +29,6 @@ export default function TabelaRequisicoes() {
       .catch((error) => console.log(error));
   }, []);
   
-
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
 
@@ -124,7 +123,7 @@ export default function TabelaRequisicoes() {
                 <div style={{ textAlign: 'center' }}>
                   <Button
                     variant="contained"
-                    color="primary"
+                    color="success"
                     startIcon={<CheckIcon style={{ fontSize: 28 }} />}
                     onClick={() => handleAprovarClick(item)}
                   />
@@ -134,7 +133,7 @@ export default function TabelaRequisicoes() {
                 <div style={{ textAlign: 'center' }}>
                   <Button
                     variant="contained"
-                    color="secondary"
+                    color="error"
                     startIcon={<CloseIcon style={{ fontSize: 28 }} />}
                     onClick={() => handleRecusarClick(item)}
                   />

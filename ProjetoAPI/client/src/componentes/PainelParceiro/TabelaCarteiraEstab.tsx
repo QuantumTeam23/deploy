@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Button from '@mui/material/Button';
-import styles from '../styles/TabelaCarteiraEstab.module.css';
+import styles from '../styles/TabelasGeralParceiro.module.css';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 

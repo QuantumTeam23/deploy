@@ -14,7 +14,6 @@ interface UserData {
   // Add other properties as needed
 }
 
-
 export default function TabelasControlUser() {
   const [searchQuery, setSearchQuery] = useState(''); // Variável de estado para armazenar a consulta de pesquisa
   const [filteredData, setFilteredData] = useState([]); // Variável de estado para armazenar os dados filtrados
@@ -239,7 +238,7 @@ export default function TabelasControlUser() {
                 <div style={{ textAlign: 'center' }}>
                   <Button
                     variant="contained"
-                    color="secondary"
+                    color="error"
                     startIcon={<DeleteIcon style={{ fontSize: 28 }} />}
                     onClick={() => handleRemoverUsuarioClick(item)}
                   />

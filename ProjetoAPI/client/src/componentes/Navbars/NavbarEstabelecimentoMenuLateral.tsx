@@ -30,8 +30,8 @@ const MenuLateralEstabelecimento: React.FC = () => {
       text: 'Isso irá desconectar você da sua conta.',
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#FFD700',
-      cancelButtonColor: 'red',
+      confirmButtonColor: 'red',
+      cancelButtonColor: '#999999',
       confirmButtonText: '<span style="color: white;">Sair</span>', // Estilizando o texto do botão Sair
       cancelButtonText: '<span style="color: white;">Cancelar</span>', // Estilizando o texto do botão Cancelar
       customClass: {
