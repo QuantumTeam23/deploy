@@ -3,7 +3,7 @@ import IconButton from '@mui/material/IconButton';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import styles from '../styles/PainelAdmin.module.css';
+import styles from '../styles/PainelLayoutGeral.module.css';
 
 interface IconProps {
   onClick: () => void; 

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Footer from '../Footer/Footer';
 import { TabelaRegiaoParceiros, TabelaRegiaoEstabelecimento, TabelaMelhorPerformanceDescarte, TabelaEstabMaiorVolDescartado, TabelaParceirosMaisDoamCreditos } from './TabelasRankingRegiao';
 import stylesTable from '../styles/TabsTabelaRaking.module.css';
-import styles from '../styles/PainelParceiro.module.css';
+import styles from '../styles/PainelLayoutGeral.module.css';
 import NavbarAdministrador from '../Navbars/NavbarAdministrador';
 import { Pie } from 'react-chartjs-2';
 import 'chart.js/auto';

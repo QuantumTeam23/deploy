@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import styles from '../styles/PainelParceiro.module.css';
+import styles from '../styles/PainelLayoutGeral.module.css';
 import { TabelaCreditoCedido, TabelaCreditoContratado } from './TabelaSaldoCredito';
 import Footer from '../Footer/Footer';
 import NavbarParceiro from '../Navbars/NavbarParceiro';

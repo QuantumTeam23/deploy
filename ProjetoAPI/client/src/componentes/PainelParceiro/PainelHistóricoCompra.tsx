@@ -1,4 +1,4 @@
-import styles from '../styles/PainelParceiro.module.css';
+import styles from '../styles/PainelLayoutGeral.module.css';
 import TabelaHistoricoCompra from './TabelaHistoricoCompra';
 import Footer from '../Footer/Footer';
 import NavbarParceiro from '../Navbars/NavbarParceiro';
