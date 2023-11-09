@@ -1,12 +1,9 @@
 import Button from '@mui/material/Button';
 import CheckIcon from '@mui/icons-material/Check';
-import CloseIcon from '@mui/icons-material/Close';
-import styles from '../styles/TabelaRequisicoes.module.css';
+import styles from '../styles/TabelasLayoutGeral.module.css'; 
 import { useEffect, useState } from 'react';
-import { EditarUsuarioAdminPopup, EditarUsuarioPopup } from './AcoesUsuarioPopup';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
-import Swal from 'sweetalert2';
 
 export default function TabelaRequisicoes() {
   const [currentPage, setCurrentPage] = useState(1);

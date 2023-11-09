@@ -1,5 +1,5 @@
 import Button from '@mui/material/Button';
-import styles from '../styles/TabelaColetas.module.css';
+import styles from '../styles/ParceiroTabelaColetas.module.css';
 import { useEffect, useState } from 'react';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';

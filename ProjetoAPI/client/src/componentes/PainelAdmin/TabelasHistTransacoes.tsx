@@ -1,5 +1,4 @@
-import styles from '../styles/TabelaHistTransacoes.module.css';
-import DeleteIcon from '@mui/icons-material/Delete'; // Importe o ícone que deseja usar
+import styles from '../styles/TabelasLayoutGeral.module.css'; 
 import Button from '@mui/material/Button';
 import { useEffect, useState } from 'react'; // Importe useState
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';

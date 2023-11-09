@@ -1,7 +1,7 @@
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import Button from '@mui/material/Button';
-import styles from '../styles/TabelaControlUser.module.css';
+import styles from '../styles/TabelasLayoutGeral.module.css'; 
 import { useEffect, useState } from 'react';
 import { EditarUsuarioAdminPopup, EditarUsuarioPopup } from './AcoesUsuarioPopup';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';

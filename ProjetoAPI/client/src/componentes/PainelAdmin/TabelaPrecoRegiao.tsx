@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import EditIcon from '@mui/icons-material/Edit';
 import Swal from 'sweetalert2';
 import Button from '@mui/material/Button';
-import styles from '../styles/TabelasEstabelecimento.module.css';
+import styles from '../styles/TabelasLayoutGeral.module.css'; 
 
 type RegionType = 'Norte' | 'Nordeste' | 'Centro-Oeste' | 'Sudeste' | 'Sul';
 

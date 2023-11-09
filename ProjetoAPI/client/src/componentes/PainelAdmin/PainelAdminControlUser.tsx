@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import styles from '../styles/PainelAdmin.module.css';
-import BarraPesquisa from './BarraPesquisa';
+import styles from '../styles/PainelLayoutGeral.module.css';
 import AdicionarUsuarioPopup from './AcoesUsuarioPopup'; // Atualize a importação para corresponder ao nome correto
 import NavbarAdministrador from '../Navbars/NavbarAdministrador';
 import Footer from '../Footer/Footer';

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Button from '@mui/material/Button';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
-import styles from '../styles/TabelasRaking.module.css';
+import styles from '../styles/TabelasLayoutGeral.module.css'; 
 
 export const TabelaRegiaoParceiros: React.FC = () => {
 

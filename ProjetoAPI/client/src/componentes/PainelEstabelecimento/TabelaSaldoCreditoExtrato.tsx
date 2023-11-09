@@ -1,5 +1,5 @@
 import Button from '@mui/material/Button';
-import styles from '../styles/TabelasEstabelecimento.module.css'; // Corrija o caminho do estilo se necessário
+import styles from '../styles/TabelasLayoutGeral.module.css'; 
 import { useEffect, useState } from 'react';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';

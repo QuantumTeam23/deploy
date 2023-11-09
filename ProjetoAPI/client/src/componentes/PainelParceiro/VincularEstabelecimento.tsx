@@ -1,7 +1,7 @@
 import React from 'react';
 import IconButton from '@mui/material/IconButton';
 import AddBusinessIcon from '@mui/icons-material/AddBusiness';
-import styles from '../styles/PainelEstabelecimento.module.css';
+import styles from '../styles/PainelParceiro.module.css';
 
 interface AdicionarEstabelecimentoProps {
   onClick: () => void;
