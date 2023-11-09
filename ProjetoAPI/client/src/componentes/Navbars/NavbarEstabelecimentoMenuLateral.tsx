@@ -47,8 +47,9 @@ const MenuLateralEstabelecimento: React.FC = () => {
   }
 
   const handleClick = () => {
-    const id = localStorage.getItem('idEstabelecimento'); 
-    fetch(`http://localhost:3001/read-by-id-to-edit/${id}`)
+    const id = localStorage.getItem('idEstabelecimento');
+    const tipo = localStorage.getItem('tipo')
+    fetch(`http://localhost:3001/read-by-id-to-edit/${id}/${tipo}`)
       .then(response => {
         if (!response.ok) {
           throw new Error(`Erro na solicitação: ${response.status}`);
@@ -58,7 +59,7 @@ const MenuLateralEstabelecimento: React.FC = () => {
       .then(data => {
         setTimeout(() => {
           navigate('/editar-usuario');
-      }, 1100);
+        }, 100);
         localStorage.setItem('estabelecimentoData', JSON.stringify(data));
 
       })
@@ -66,6 +67,7 @@ const MenuLateralEstabelecimento: React.FC = () => {
         console.error('Erro ao buscar dados do estabelecimento:', error);
       });
   };
+
   return (
     <>
       <IconButton
@@ -90,8 +92,8 @@ const MenuLateralEstabelecimento: React.FC = () => {
             <AccountCircleIcon style={{ fontSize: '64px' }} />
           </div>
           <List>
-            <ListItemButton onClick={handleClick} component={Link} to="#">
-              <ListItemText primary="Editar Perfil" />
+            <ListItemButton component={Link} to="#">
+              <ListItemText onClick={handleClick} primary="Editar Perfil" />
             </ListItemButton>
             <ListItemButton onClick={handleSair} component={Link} to="#">
               <ListItemText primary="Sair da conta" />
@@ -102,9 +104,6 @@ const MenuLateralEstabelecimento: React.FC = () => {
             <h2>Menu</h2>
           </div>
           <List>
-            <ListItemButton onClick={fecharMenu} component={Link} to="/painel-estabelecimento-historico-compras">
-              <ListItemText primary="Histórico de Compras" />
-            </ListItemButton>
             <ListItemButton onClick={fecharMenu} component={Link} to="/painel-estabelecimento-extrato">
               <ListItemText primary="Extrato" />
             </ListItemButton>

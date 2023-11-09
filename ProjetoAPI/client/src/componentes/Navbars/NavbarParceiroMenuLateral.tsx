@@ -48,8 +48,9 @@ const MenuLateralParceiro: React.FC = () => {
   }
 
   const handleClick = () => {
-    const id = localStorage.getItem('idParceiro'); // Substitua pelo ID correto do parceiro
-    fetch(`http://localhost:3001/read-by-id-to-edit/${id}`)
+    const id = localStorage.getItem('idParceiro');
+    const tipo = localStorage.getItem('tipo')
+    fetch(`http://localhost:3001/read-by-id-to-edit/${id}/${tipo}`)
       .then(response => {
         if (!response.ok) {
           throw new Error(`Erro na solicitação: ${response.status}`);
@@ -59,7 +60,7 @@ const MenuLateralParceiro: React.FC = () => {
       .then(data => {
         setTimeout(() => {
           navigate('/editar-usuario');
-      }, 1100);
+      }, 100);
         localStorage.setItem('parceiroData', JSON.stringify(data));
 
       })
