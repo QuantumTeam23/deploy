@@ -46,27 +46,6 @@ const MenuLateralAdministrador: React.FC = () => {
     });
   }
 
-  const handleClick = () => {
-    const id = localStorage.getItem('idAdministrador'); 
-    fetch(`http://localhost:3001/read-by-id-to-edit/${id}`)
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`Erro na solicitação: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then(data => {
-        setTimeout(() => {
-          navigate('/editar-usuario');
-      }, 1100);
-        localStorage.setItem('administradorData', JSON.stringify(data));
-
-      })
-      .catch(error => {
-        console.error('Erro ao buscar dados do administrador:', error);
-      });
-  };
-
   return (
     <>
       <IconButton
@@ -91,9 +70,6 @@ const MenuLateralAdministrador: React.FC = () => {
             <AccountCircleIcon style={{ fontSize: '64px' }} />
           </div>
           <List>
-            <ListItemButton onClick={handleClick} component={Link} to="#">
-              <ListItemText primary="Editar Perfil" />
-            </ListItemButton>
             <ListItemButton onClick={handleSair} component={Link} to="#">
               <ListItemText primary="Sair da conta" />
             </ListItemButton>
@@ -120,9 +96,6 @@ const MenuLateralAdministrador: React.FC = () => {
             </ListItemButton>
             <ListItemButton onClick={fecharMenu} component={Link} to="/painel-administrador-comparador-precos">
               <ListItemText primary="Comparador de Preços" />
-            </ListItemButton>
-            <ListItemButton onClick={handleSair} component={Link} to="#">
-              <ListItemText primary="Sair" />
             </ListItemButton>
           </List>
         </div>
