@@ -114,18 +114,18 @@ export default function VincularEstabelecimento({ open, onClose }: { open: boole
   };
 
   return (
-    <Dialog open={open} onClose={handleClose} fullWidth maxWidth="md">
-      <DialogTitle>Vincular Estabelecimento</DialogTitle>
+    <Dialog open={open} onClose={handleClose} fullWidth maxWidth="xl">
+      <DialogTitle style={{fontSize: '30px', textAlign: 'center'}}>Vincular Estabelecimento</DialogTitle>
       <DialogContent>
         <table className={styles.table}>
           <thead>
-            <tr>
-              <th>Nome</th>
-              <th>Tipo</th>
-              <th>Bairro</th>
-              <th>Cidade</th>
-              <th>Estado</th>
-              <th>Vincular</th>
+            <tr style={{height: '40%'}}>
+              <th style={{width: '20vw'}}>Nome</th>
+              <th style={{width: '20vw'}}>Tipo</th>
+              <th style={{width: '15vw'}}>Bairro</th>
+              <th style={{width: '15vw'}}>Cidade</th>
+              <th style={{width: '15vw'}}>Estado</th>
+              <th style={{width: '5vw'}}>Vincular</th>
             </tr>
           </thead>
           <tbody>
@@ -137,7 +137,7 @@ export default function VincularEstabelecimento({ open, onClose }: { open: boole
                   <td>{item.estabelecimento_bairro}</td>
                   <td>{item.estabelecimento_cidade}</td>
                   <td>{item.estabelecimento_estado}</td>
-                  <td style={{ verticalAlign: 'middle', textAlign: 'center' }}>
+                  <td style={{ padding: '0', fontSize: '30px', verticalAlign: 'middle', textAlign: 'center' }}>
                     <IconButton onClick={() => handleAdicionarEstabelecimento(item.estabelecimento_id, item.estabelecimento_razao_social)}>
                       <AddIcon />
                     </IconButton>
