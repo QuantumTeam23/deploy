@@ -3,15 +3,12 @@ import styles from '../styles/ParceiroTabelaColetas.module.css';
 import { useEffect, useState } from 'react';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
-import EventIcon from '@mui/icons-material/Event';
-import InputAdornment from '@mui/material/InputAdornment';
 
 export default function TabelaColeta() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 9;
   const id = localStorage.getItem('idParceiro');
   const [transacoes , setTransacoes] = useState([]);
-  const index = [1, 2, 3, 4];
   const [searchQuery, setSearchQuery] = useState(''); // Variável de estado para armazenar a consulta de pesquisa
   const [searchQueryDataInicio, setSearchQueryDataInicio] = useState(''); // Variável de estado para armazenar a consulta de pesquisa
   const [searchQueryDataFim, setSearchQueryDataFim] = useState(''); // Variável de estado para armazenar a consulta de pesquisa
@@ -105,25 +102,25 @@ export default function TabelaColeta() {
       <table className={styles.table}>
         <thead>
           <tr>
-            <th style={{width: '25%'}}>Estabelecimento</th>
-            <th style={{width: '20%'}}>Data</th>
-            <th style={{width: '25%'}}>Endereço</th>
-            <th style={{width: '20%'}}>Volume</th>
+            <th style={{width: '28%'}}>Estabelecimento</th>
+            <th style={{width: '28%'}}>Endereço</th>
+            <th style={{width: '15%'}}>Volume (Litros)</th>
+            <th style={{width: '16%'}}>Data</th>
           </tr>
         </thead>
         <tbody>
           {currentData.map((item: any, index: any) => (
             <tr key={index}>
               <td>{item.estabelecimento_razao_social}</td>
-              <td>{formatarData(item.acao_data)}</td>
               <td>{item.estabelecimento_cidade}</td>
-              <td>{item.quantidade_oleo_coletado} litros</td>
+              <td>{item.quantidade_oleo_coletado} </td>
+              <td>{formatarData(item.acao_data)}</td>
             </tr>
           ))}
         </tbody>
         <tfoot>
           <tr>
-            <td colSpan={4} style={{ textAlign: 'center' }}>
+            <td colSpan={4} style={{ textAlign: 'center', padding: '3px 0'  }}>
               <Button
                 startIcon={<KeyboardArrowLeftIcon />}
                 disabled={currentPage === 1}

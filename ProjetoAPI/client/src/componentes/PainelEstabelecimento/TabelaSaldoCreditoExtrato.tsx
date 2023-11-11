@@ -121,10 +121,10 @@ const mesesAnosDisponiveisFormatados = [
       <table className={styles.table}>
         <thead>
           <tr>
-            <th style={{ width: '20%' }}>Movimentação</th>
-            <th style={{ width: '10%' }}>Créditos Recebidos</th>
+            <th style={{ width: '25%' }}>Movimentação</th>
+            <th style={{ width: '12%' }}>Créditos Recebidos</th>
+            <th style={{ width: '8%' }}>Litros de óleo</th>
             <th style={{ width: '10%' }}>Data / Hora</th>
-            <th style={{ width: '10%' }}>Litros de óleo</th>
           </tr>
         </thead>
         <tbody>
@@ -132,14 +132,14 @@ const mesesAnosDisponiveisFormatados = [
             <tr key={index}>
               <td>Coleta de óleo com crédito recebido do Parceiro Greenneat</td>
               <td>{item.quantidade_moedas}</td>
-              <td>{formatarData(item.acao_data)}</td>
               <td>{item.quantidade_oleo_coletado}</td>
+              <td>{formatarData(item.acao_data)}</td>
             </tr>
           ))}
         </tbody>
         <tfoot>
           <tr>
-            <td colSpan={4} style={{ textAlign: 'center' }}>
+            <td colSpan={4} style={{ textAlign: 'center', padding: '3px 0' }}>
               <Button
                 startIcon={<KeyboardArrowLeftIcon />}
                 disabled={currentPage === 1}

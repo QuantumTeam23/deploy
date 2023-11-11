@@ -113,23 +113,23 @@ export function TabelaCreditoContratado() {
       <table className={styles.table}>
         <thead>
           <tr>
-            <th style={{ width: '25%' }}>Quantidade de Créditos</th>
-            <th style={{ width: '25%' }}>Data / Hora</th>
-            <th style={{ width: '25%' }}>Status</th>
+            <th style={{ width: '20%' }}>Quantidade de Créditos</th>
+            <th style={{ width: '44%' }}>Status</th>
+            <th style={{ width: '16%' }}>Data / Hora</th>
           </tr>
         </thead>
         <tbody>
           {currentData.map((item: any, index: any) => (
             <tr key={index}>
               <td>{item.valor_comprado}</td>
-              <td>{formatarData(item.acao_compra_data)}</td>
               <td>{formatarStatus(item.aprovado)}</td>
+              <td>{formatarData(item.acao_compra_data)}</td>
             </tr>
           ))}
         </tbody>
         <tfoot>
           <tr>
-            <td colSpan={3} style={{ textAlign: 'center' }}>
+            <td colSpan={3} style={{ textAlign: 'center', padding: '3px 0'  }}>
               <Button
                 startIcon={<KeyboardArrowLeftIcon />}
                 disabled={currentPage === 1}
@@ -266,9 +266,9 @@ export function TabelaCreditoCedido() {
         <thead>
           <tr>
             <th style={{ width: '25%' }}>Descrição</th>
-            <th style={{ width: '20%' }}>Créditos</th>
-            <th style={{ width: '20%' }}>Óleo (Litros)</th>
-            <th style={{ width: '20%' }}>Data / Hora</th>
+            <th style={{ width: '10%' }}>Créditos</th>
+            <th style={{ width: '10%' }}>Óleo (Litros)</th>
+            <th style={{ width: '13%' }}>Data / Hora</th>
           </tr>
         </thead>
         <tbody>
@@ -283,7 +283,7 @@ export function TabelaCreditoCedido() {
         </tbody>
         <tfoot>
           <tr>
-            <td colSpan={4} style={{ textAlign: 'center' }}>
+            <td colSpan={4} style={{ textAlign: 'center', padding: '3px 0'  }}>
               <Button
                 startIcon={<KeyboardArrowLeftIcon />}
                 disabled={currentPage === 1}

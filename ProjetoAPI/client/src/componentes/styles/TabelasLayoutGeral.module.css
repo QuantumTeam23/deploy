@@ -7,9 +7,9 @@ thead tr th {
   background: darkgreen;
   border: 1px solid darkgreen;
   color: white;
-  padding: 5px 1vw;
+  padding: 8px 1vw;
   width: 30%;
-
+  text-align: center;
 }
 
 tbody tr:nth-child(odd) {
@@ -18,7 +18,7 @@ tbody tr:nth-child(odd) {
 
 tbody tr td {
   border: 1px solid darkgreen;
-  padding: 5px 0.5vw;
+  padding: 8px 0.5vw;
 }
 
 tfoot tr td {

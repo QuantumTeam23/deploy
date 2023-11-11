@@ -57,6 +57,7 @@ export default function VincularEstabelecimento({ open, onClose }: { open: boole
       icon: 'question',
       showCancelButton: true,
       confirmButtonText: 'Sim',
+      confirmButtonColor: 'primary',
       cancelButtonText: 'Cancelar',
       customClass: {
         popup: 'z-index-high',
@@ -89,6 +90,7 @@ export default function VincularEstabelecimento({ open, onClose }: { open: boole
       window.location.reload();
       }
     });
+    
   }
 
       /*

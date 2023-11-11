@@ -89,27 +89,27 @@ export default function TabelasHistTransacoes() {
         <thead>
           <tr>
             <th style={{width: '5%'}}>Tipo</th>
-            <th style={{width: '3%'}}>Data / Hora</th>
             <th style={{width: '3%'}}>Créditos</th>
             <th style={{width: '5%'}}>Parceiro</th>
             <th style={{width: '5%'}}>Estabelecimento</th>
+            <th style={{width: '3%'}}>Data / Hora</th>
           </tr>
         </thead>
         <tbody>
           {currentData.map((item: any, index: number) => (
             <tr key={index}>
               <td>{item.tipo}</td>
-              <td>{formatarData(item.data)}</td>
               <td>{item.creditos}</td>
               <td>{item.parceiro}</td>
               <td>{item.estabelecimento}</td>
+              <td>{formatarData(item.data)}</td>
             </tr>
           ))}
         </tbody>
         <tfoot>
           <tr>
             <td colSpan={5}>
-              <div style={{ textAlign: 'center' }}>
+              <div style={{ textAlign: 'center', padding: '3px 0'  }}>
                 <Button
                   startIcon={<KeyboardArrowLeftIcon />}
                   disabled={currentPage === 1}

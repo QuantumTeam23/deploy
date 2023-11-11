@@ -186,3 +186,7 @@ select + label {
   font-size: 14px;
   color: #333;
 }
+
+div:where(.swal2-container) button:where(.swal2-styled).swal2-confirm{
+  background-color: green !important;
+}

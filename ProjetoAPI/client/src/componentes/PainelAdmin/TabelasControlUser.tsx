@@ -220,27 +220,30 @@ export default function TabelasControlUser() {
         <tbody>
           {currentData.map((item: any, index: any) => (
             <tr key={index}>
-              <td>{item.nome}</td>
-              <td>{item.tipo}</td>
-              <td>
+              <td style={{width: '70%', padding: '3px 0.5vw'}}>{item.nome}</td>
+              <td style={{width: '30%', padding: '3px 0.5vw'}}>{item.tipo}</td>
+              <td style={{width: '0.1%', padding: '3px 0.5vw'}}>
                 <div style={{ textAlign: 'center' }}>
                   <Button
                     variant="contained"
                     color="primary"
-                    startIcon={<EditIcon style={{ fontSize: 28 }} />}
+                    startIcon={<EditIcon style={{ fontSize: 24, marginLeft: '10px' }} />}
                     onClick={() => {
                       handleEditarUsuarioClick(item)
                     }}
+                    style={{maxWidth: '40px', maxHeight: '40px', minWidth: '36px', minHeight: '36px'}}
                   />
                 </div>
               </td>
-              <td>
+              <td style={{width: '0.1%', padding: '3px 0.5vw'}}>
                 <div style={{ textAlign: 'center' }}>
                   <Button
                     variant="contained"
                     color="error"
-                    startIcon={<DeleteIcon style={{ fontSize: 28 }} />}
+                    startIcon={<DeleteIcon style={{ fontSize: 24, marginLeft: '10px' }} />}
                     onClick={() => handleRemoverUsuarioClick(item)}
+                    style={{maxWidth: '40px', maxHeight: '40px', minWidth: '36px', minHeight: '36px'}}
+
                   />
                 </div>
               </td>
@@ -249,7 +252,7 @@ export default function TabelasControlUser() {
         </tbody>
         <tfoot>
           <tr>
-            <td colSpan={4} style={{ textAlign: 'center' }}>
+            <td colSpan={4} style={{ textAlign: 'center', padding: '3px 0' }}>
               <Button
                 startIcon={<KeyboardArrowLeftIcon />}
                 disabled={currentPage === 1}

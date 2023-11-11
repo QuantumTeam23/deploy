@@ -49,7 +49,7 @@ export default function TabelaRequisicoes() {
         <thead>
           <tr>
             <th>Nome</th>
-            <th>Créditos</th>
+            <th style={{width: '4%'}}>Créditos</th>
           </tr>
         </thead>
         <tbody>
@@ -62,7 +62,7 @@ export default function TabelaRequisicoes() {
         </tbody>
         <tfoot>
           <tr>
-            <td colSpan={2} style={{ textAlign: 'center' }}>
+            <td colSpan={2} style={{ textAlign: 'center', padding: '3px 0' }}>
               <Button
                 startIcon={<KeyboardArrowLeftIcon />}
                 disabled={currentPage === 1}

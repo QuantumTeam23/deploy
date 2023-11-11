@@ -66,9 +66,9 @@ export default function TabelaCarteiraEstab() {
       <table className={styles.table}>
         <thead>
           <tr>
-            <th style={{width: '25%'}}>Nome</th>
-            <th style={{width: '25%'}}>Contato</th>
-            <th style={{width: '25%'}}>Endereço</th>
+            <th style={{width: '42%'}}>Nome</th>
+            <th style={{width: '17%'}}>Contato</th>
+            <th style={{width: '42%'}}>Endereço</th>
           </tr>
         </thead>
         <tbody>
@@ -83,7 +83,7 @@ export default function TabelaCarteiraEstab() {
         </tbody>
         <tfoot>
           <tr>
-            <td colSpan={3} style={{ textAlign: 'center' }}>
+            <td colSpan={3} style={{ textAlign: 'center', padding: '3px 0' }}>
               <Button
                 startIcon={<KeyboardArrowLeftIcon />}
                 disabled={currentPage === 1}

@@ -117,39 +117,27 @@ export default function TabelaPrecopreco_regiao() {
       <table className={styles.table}>
         <thead>
           <tr>
-            <th style={{width: '17%'}}>Região</th>
-            <th style={{width: '17%'}}>Óleo Virgem</th>
-            <th style={{width: '17%'}}>Óleo Usado</th>
-            <th style={{width: '5%'}}>Editar</th>
+            <th style={{width: '33%'}}>Região</th>
+            <th style={{width: '33%'}}>Óleo Virgem</th>
+            <th style={{width: '33%'}}>Óleo Usado</th>
+            <th style={{width: '0.1'}}>Editar</th>
           </tr>
         </thead>
         <tbody>
           {currentData.map((item: any, index: any) => (
             <tr key={index}>
-              <td>{item.preco_regiao}</td>
-              <td>{item.preco_oleo_virgem}</td>
-              <td>{item.preco_oleo_usado}</td>
-              <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
+              <td style={{width: '50%', padding: '3px 0.5vw'}}>{item.preco_regiao}</td>
+              <td style={{width: '25%', padding: '3px 0.5vw'}}>{item.preco_oleo_virgem}</td>
+              <td style={{width: '25%', padding: '3px 0.5vw'}}>{item.preco_oleo_usado}</td>
+              <td style={{ width:'0.1%', padding: '3px 0.5vw'}}>
                 <center>
                   <Button
-                    variant="outlined"
+                    variant="contained"
                     color="primary"
                     onClick={() => handleEdit(item)}
-                    style={{
-                      textTransform: 'none', // Remover transformação do texto
-                      width: '50px', // Largura do botão
-                      height: '30px', // Altura do botão
-                      minWidth: 'auto', // Mínima largura automática para acomodar o ícone
-                      paddingRight: '3px', // Espaçamento à direita
-                      paddingLeft: '15px', // Espaçamento à esquerda
-                      display: 'flex', // Usar display flex para alinhar ícone verticalmente
-                      justifyContent: 'center', // Centralizar horizontalmente
-                      alignItems: 'center', // Centralizar verticalmente
-                      backgroundColor: '#1976D2', // Cor de fundo azul escuro
-                      color: 'white', // Cor do texto branco
-                      verticalAlign: 'middle', // Centralizar verticalmente
-                    }}
-                    startIcon={<EditIcon style={{ fontSize: 30, color: 'white' }} />} // Ajustar o tamanho e cor do ícone
+                    style={{maxWidth: '40px', maxHeight: '40px', minWidth: '36px', minHeight: '36px'}}
+                    startIcon={<EditIcon style={{ fontSize: 24, marginLeft: '10px' }} />}
+                  
                   />
                 </center>
               </td>
@@ -158,7 +146,7 @@ export default function TabelaPrecopreco_regiao() {
         </tbody>
         <tfoot>
           <tr>
-            <td colSpan={4}>
+            <td colSpan={4} style={{ padding: '8px 0.5vw'}}>
               <Button></Button>
             </td>
           </tr>

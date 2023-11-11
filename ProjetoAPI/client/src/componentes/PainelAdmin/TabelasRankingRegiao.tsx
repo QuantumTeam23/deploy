@@ -60,7 +60,7 @@ export const TabelaRegiaoParceiros: React.FC = () => {
       <table className={styles.table}>
         <thead>
           <tr>
-            <th>Nº</th>
+            <th style={{width: '1%'}} >Nº</th>
             <th>Região</th>
             <th>Créditos Cedidos</th>
           </tr>
@@ -68,15 +68,15 @@ export const TabelaRegiaoParceiros: React.FC = () => {
         <tbody>
           {currentData.map((item, index) => (
             <tr key={index}>
-              <td>{item.numRanking}</td>
-              <td>{item.regiao}</td>
-              <td>{item.total_creditos_doados}</td>
+              <td >{item.numRanking}</td>
+              <td >{item.regiao}</td>
+              <td >{item.total_creditos_doados}</td>
             </tr>
           ))}
         </tbody>
         <tfoot>
           <tr>
-            <td colSpan={3} style={{ textAlign: 'center' }}>
+            <td colSpan={3} style={{ textAlign: 'center', padding: '3px 0' }}>
               <Button
                 startIcon={<KeyboardArrowLeftIcon />}
                 disabled={currentPage === 1}
@@ -164,7 +164,7 @@ export const TabelaRegiaoEstabelecimento: React.FC = () => {
       <table className={styles.table}>
         <thead>
           <tr>
-            <th>Nº</th>
+            <th style={{width: '1%'}}>Nº</th>
             <th>Região</th>
             <th>Créditos Recebidos</th>
           </tr>
@@ -180,7 +180,7 @@ export const TabelaRegiaoEstabelecimento: React.FC = () => {
         </tbody>
         <tfoot>
           <tr>
-            <td colSpan={3} style={{ textAlign: 'center' }}>
+            <td colSpan={3} style={{ textAlign: 'center', padding: '3px 0' }}>
               <Button
                 startIcon={<KeyboardArrowLeftIcon />}
                 disabled={currentPage === 1}
@@ -269,7 +269,7 @@ export const TabelaMelhorPerformanceDescarte: React.FC = () => {
       <table className={styles.table}>
         <thead>
           <tr>
-            <th>Nº</th>
+            <th style={{width: '1%'}}>Nº</th>
             <th>Região</th>
             <th>Óleo (Em Litros)</th>
           </tr>
@@ -285,7 +285,7 @@ export const TabelaMelhorPerformanceDescarte: React.FC = () => {
         </tbody>
         <tfoot>
           <tr>
-            <td colSpan={3} style={{ textAlign: 'center' }}>
+            <td colSpan={3} style={{ textAlign: 'center', padding: '3px 0' }}>
               <Button
                 startIcon={<KeyboardArrowLeftIcon />}
                 disabled={currentPage === 1}
@@ -376,9 +376,9 @@ export const TabelaParceirosMaisDoamCreditos: React.FC = () => {
       <table className={styles.table}>
         <thead>
           <tr>
-            <th>Nº</th>
-            <th>Parceiro</th>
-            <th>Créditos</th>
+            <th style={{width: '0.1%'}}>Nº</th>
+            <th style={{width: '75%'}}>Parceiro</th>
+            <th style={{width: '15%'}}>Créditos</th>
           </tr>
         </thead>
         <tbody>
@@ -392,7 +392,7 @@ export const TabelaParceirosMaisDoamCreditos: React.FC = () => {
         </tbody>
         <tfoot>
           <tr>
-            <td colSpan={3} style={{ textAlign: 'center' }}>
+            <td colSpan={3} style={{ textAlign: 'center', padding: '3px 0' }}>
               <Button
                 startIcon={<KeyboardArrowLeftIcon />}
                 disabled={currentPage === 1}
@@ -481,9 +481,9 @@ export const TabelaEstabMaiorVolDescartado: React.FC = () => {
       <table className={styles.table}>
         <thead>
           <tr>
-            <th>Nº</th>
-            <th>Estabelecimento</th>
-            <th>Volume (Em Litros)</th>
+            <th style={{width: '1%'}}>Nº</th>
+            <th style={{width: '75%'}}>Estabelecimento</th>
+            <th style={{width: '19%'}}>Volume (Litros)</th>
           </tr>
         </thead>
         <tbody>
@@ -497,7 +497,7 @@ export const TabelaEstabMaiorVolDescartado: React.FC = () => {
         </tbody>
         <tfoot>
           <tr>
-            <td colSpan={3} style={{ textAlign: 'center' }}>
+            <td colSpan={3} style={{ textAlign: 'center', padding: '3px 0' }}>
               <Button
                 startIcon={<KeyboardArrowLeftIcon />}
                 disabled={currentPage === 1}

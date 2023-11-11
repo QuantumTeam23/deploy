@@ -55,7 +55,7 @@ export default function TabelaHistoricoCompra() {
         </tbody>
         <tfoot>
           <tr>
-            <td colSpan={4} style={{ textAlign: 'center' }}>
+            <td colSpan={4} style={{ textAlign: 'center', padding: '3px 0'  }}>
               <Button
                 startIcon={<KeyboardArrowLeftIcon />}
                 disabled={currentPage === 1}

@@ -108,8 +108,8 @@ export default function TabelaRequisicoes() {
       <table className={styles.table}>
         <thead>
           <tr>
-            <th style={{width: '5%'}}>Nome</th>
-            <th style={{width: '5%'}}>Créditos</th>
+            <th>Nome</th>
+            <th style={{width: '4%'}}>Créditos</th>
             <th colSpan={2} style={{width: '5%'}}><center>Ações</center></th>
           </tr>
         </thead>
@@ -118,23 +118,25 @@ export default function TabelaRequisicoes() {
             <tr key={index}>
               <td>{item.parceiro_razao_social}</td>
               <td>{item.valor_comprado}</td>
-              <td>
+              <td style={{padding: '3px 0.5vw'}}>
                 <div style={{ textAlign: 'center' }}>
                   <Button
                     variant="contained"
                     color="success"
-                    startIcon={<CheckIcon style={{ fontSize: 28 }} />}
+                    startIcon={<CheckIcon style={{ fontSize: 24, marginLeft: '10px' }} />}
                     onClick={() => handleAprovarClick(item)}
+                    style={{maxWidth: '40px', maxHeight: '40px', minWidth: '36px', minHeight: '36px'}}
                   />
                 </div>
               </td>
-              <td>
+              <td style={{padding: '3px 0.5vw'}}>
                 <div style={{ textAlign: 'center' }}>
                   <Button
                     variant="contained"
                     color="error"
-                    startIcon={<CloseIcon style={{ fontSize: 28 }} />}
+                    startIcon={<CloseIcon style={{ fontSize: 24, marginLeft: '10px' }} />}
                     onClick={() => handleRecusarClick(item)}
+                    style={{maxWidth: '40px', maxHeight: '40px', minWidth: '36px', minHeight: '36px'}}
                   />
                 </div>
               </td>
@@ -143,7 +145,7 @@ export default function TabelaRequisicoes() {
         </tbody>
         <tfoot>
           <tr>
-            <td colSpan={4} style={{ textAlign: 'center' }}>
+            <td colSpan={4} style={{ textAlign: 'center', padding: '3px 0'}}>
               <Button
                 startIcon={<KeyboardArrowLeftIcon />}
                 disabled={currentPage === 1}
