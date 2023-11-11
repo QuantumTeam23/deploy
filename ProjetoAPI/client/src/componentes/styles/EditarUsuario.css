@@ -106,14 +106,27 @@
     color: white;
 }
 
-.botoes-editar-usuario button:nth-child(2) {
-    margin-left: 10px;
+
+.botoes-editar-usuario button:nth-child(1) {
     background-color: #136935;
 }
 
-.botoes-editar-usuario button:nth-child(1) {
-    background-color: #FF0000;
+.botoes-editar-usuario button:nth-child(1):active {
+    background-color: #094722;
 }
+
+.botoes-editar-usuario button:nth-child(2) {
+    margin-left: 10px;
+    background-color: #505050;
+    border-color: #505050;
+}
+
+.botoes-editar-usuario button:nth-child(2):active {
+    background-color: #242424;
+    border-color: #505050;
+}
+
+
 
 .campo-senha {
     position: relative;

@@ -394,8 +394,8 @@ function EditarUsuario() {
                         )}
                     </div>
                     <div className='botoes-editar-usuario'>
-                        <Button variant="danger" onClick={handleBack}>Cancelar</Button>
                         <Button variant="success" onClick={handleEdit}>Editar</Button>
+                        <Button variant="danger" onClick={handleBack}>Cancelar</Button>
                     </div>
                 </div>
             </div>
