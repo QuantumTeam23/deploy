@@ -43,14 +43,6 @@ const mesesAnosDisponiveisFormatados = [
 ];
 
   
-  /*
-  const data = Array.from({ length: 18 }, (_, index) => ({
-    movimentacao: `Movimentação ${index + 1}`,
-    valor: `Valor ${index + 1}`,
-    data: `Data ${index + 1}`,
-    descricao: `Descrição ${index + 1}`,
-  }));
-  */
   useEffect(() => {
     fetch(`http://localhost:3001/transacoes-estabelecimento/${id}`, {
       method: "GET",

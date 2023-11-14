@@ -45,10 +45,29 @@ export function TabelaCreditoContratado() {
     return dataformat;
   }
 
+  const converterParaFormatoDados = (mesAnoFormatado: string) => {
+    const meses = [
+      'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+      'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro',
+    ];
+    const [mes, ano] = mesAnoFormatado.split('/');
+    const mesNumerico = meses.indexOf(mes) + 1;
+    return `${mesNumerico < 10 ? '0' : ''}${mesNumerico}/${ano}`;
+  };
+
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
 
-  const currentData = contratacoes.slice(startIndex, endIndex);
+  const filteredData = mesAno
+    ? contratacoes.filter((item: any) => {
+        // Converte o valor do dropdown para o formato dos dados
+        const mesAnoFormatado = converterParaFormatoDados(mesAno);
+        return formatarData(item.acao_compra_data).includes(mesAnoFormatado);
+      })
+    : contratacoes;
+
+
+  const currentData = filteredData.slice(startIndex, endIndex);
 
   const handlePrevPage = () => {
     if (currentPage > 1) {
@@ -182,14 +201,17 @@ export function TabelaCreditoCedido() {
     'Novembro/2023',
     'Dezembro/2023',
   ];
-  /*
-  const data = Array.from({ length: 18 }, (_, index) => ({
-    item: `Item ${index + 1}`,
-    valor: `Valor ${index + 1}`,
-    quantidade: `Quantidade ${index + 1}`,
-    data: `0${index + 1}/09/2023`,
-  }));
-  */
+
+  const converterParaFormatoDados = (mesAnoFormatado: string) => {
+    const meses = [
+      'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+      'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro',
+    ];
+    const [mes, ano] = mesAnoFormatado.split('/');
+    const mesNumerico = meses.indexOf(mes) + 1;
+    return `${mesNumerico < 10 ? '0' : ''}${mesNumerico}/${ano}`;
+  };
+
   useEffect(() => {
     fetch(`http://localhost:3001/transacoes-parceiro/${id}`, {
       method: "GET",
@@ -212,7 +234,16 @@ export function TabelaCreditoCedido() {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
 
-  const currentData = transacoes.slice(startIndex, endIndex);
+  const filteredData = mesAno
+    ? transacoes.filter((item: any) => {
+        // Converte o valor do dropdown para o formato dos dados
+        const mesAnoFormatado = converterParaFormatoDados(mesAno);
+        return formatarData(item.acao_data).includes(mesAnoFormatado);
+      })
+    : transacoes;
+
+  // Atualiza a variável currentData com os dados filtrados
+  const currentData = filteredData.slice(startIndex, endIndex);
 
   const handlePrevPage = () => {
     if (currentPage > 1) {
