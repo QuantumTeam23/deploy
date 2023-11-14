@@ -5,13 +5,15 @@ import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 
 export default function TabelaColeta() {
+  const currentDate = new Date();
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 9;
   const id = localStorage.getItem('idParceiro');
   const [transacoes , setTransacoes] = useState([]);
   const [searchQuery, setSearchQuery] = useState(''); // Variável de estado para armazenar a consulta de pesquisa
   const [searchQueryDataInicio, setSearchQueryDataInicio] = useState(''); // Variável de estado para armazenar a consulta de pesquisa
-  const [searchQueryDataFim, setSearchQueryDataFim] = useState(''); // Variável de estado para armazenar a consulta de pesquisa
+  const [searchQueryDataFim, setSearchQueryDataFim] = useState(currentDate.toISOString().split('T')[0]); // Variável de estado para armazenar a consulta de pesquisa
+
 
   useEffect(() => {
     fetch(`http://localhost:3001/transacoes-parceiro/${id}`, {
@@ -36,7 +38,14 @@ export default function TabelaColeta() {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
 
-  const currentData = transacoes.slice(startIndex, endIndex);
+  const filteredData = transacoes.filter((item: any) => {
+    const dataSemHora = item.acao_data.split('T')[0];
+    const porData = dataSemHora >= searchQueryDataInicio && dataSemHora <= searchQueryDataFim;
+    const porNome = item.estabelecimento_razao_social.toLowerCase().includes(searchQuery.toLowerCase());
+    return (porData && porNome);
+  });
+
+  const currentData = filteredData.slice(startIndex, endIndex);
 
   const handlePrevPage = () => {
     if (currentPage > 1) {
