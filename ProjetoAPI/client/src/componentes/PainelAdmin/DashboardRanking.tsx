@@ -1,6 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Footer from '../Footer/Footer';
-import { TabelaRegiaoParceiros, TabelaRegiaoEstabelecimento, TabelaMelhorPerformanceDescarte, TabelaEstabMaiorVolDescartado, TabelaParceirosMaisDoamCreditos } from './TabelasRankingRegiao';
+import {
+  TabelaRegiaoParceiros,
+  TabelaRegiaoEstabelecimento,
+  TabelaMelhorPerformanceDescarte,
+  TabelaEstabMaiorVolDescartado,
+  TabelaParceirosMaisDoamCreditos
+} from './TabelasRankingRegiao';
 import stylesTable from '../styles/TabsTabelaRaking.module.css';
 import styles from '../styles/PainelLayoutGeral.module.css';
 import NavbarAdministrador from '../Navbars/NavbarAdministrador';
@@ -28,31 +34,46 @@ type DataMapeada = {
   quantidade: number;
 };
 
+interface PieChartProps {
+  chartData: DataMapeada[];
+}
+
+const PieChart: React.FC<PieChartProps> = ({ chartData }) => {
+  const data = {
+    labels: chartData.map((item) => item.regiao),
+    datasets: [
+      {
+        data: chartData.map((item) => item.quantidade),
+        backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#FF5733', '#4BC0C0'],
+        hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#FF5733', '#4BC0C0'],
+      },
+    ],
+  };
+
+  return <Pie data={data} />;
+};
+
 export default function DashboardRanking() {
-  const [activeTab, setActiveTab] = useState('parceiro');
-  
+  const [activeTab, setActiveTab] = useState('regiao-parceiro');  // Estado inicial alterado para 'regiao-parceiro'
+  const [activeTab2, setActiveTab2] = useState('parceiros-mais-utilizam-creditos');  // Estado inicial alterado para 'parceiros-mais-utilizam-creditos'
+  const [chartData, setChartData] = useState<DataMapeada[]>([]);
+
+  useEffect(() => {
+    // Fetch data when component mounts or activeTab changes
+    fetchChartData();
+  }, [activeTab]);
 
   const handleTabClick = (tab: string) => {
     setActiveTab(tab);
-
-    if (tab === 'regiao-parceiro') {
-      fetchChartData('regiaoParceiroMaisCedido');
-    } else if (tab === 'regiao-estabelecimento') {
-      fetchChartData('regiaoEstabMaisRecebeu');
-    } else if (tab === 'melhor-performance-descarte') {
-      fetchChartData('regiaoEstabMaisOleoDescarte');
-    } 
   };
 
-  //evento para os botões "Parceiros que mais doas os créditos" e "Estabelecimentos com maiores volumes descartados" 
-  const [activeTab2, setActiveTab2] = useState('parceiro2');
   const handleTabClick2 = (tab2: string) => {
     setActiveTab2(tab2);
   };
 
-
-  const fetchChartData = async (route: string) => {
+  const fetchChartData = async () => {
     try {
+      const route = getRouteBasedOnActiveTab();
       const response = await fetch(`http://localhost:3001/${route}`, {
         method: 'GET',
         headers: {
@@ -63,6 +84,7 @@ export default function DashboardRanking() {
       if (response.ok) {
         const data = await response.json();
         const mappedData = mapData(data);
+        console.log("Fetched data:", mappedData);
         setChartData(mappedData);
       } else {
         console.error('Erro ao buscar dados do servidor.');
@@ -72,28 +94,16 @@ export default function DashboardRanking() {
     }
   };
 
+  const getRouteBasedOnActiveTab = () => {
+    if (activeTab === 'regiao-parceiro') {
+      return 'regiaoParceiroMaisCedido';
+    } else if (activeTab === 'regiao-estabelecimento') {
+      return 'regiaoEstabMaisRecebeu';
+    } else if (activeTab === 'melhor-performance-descarte') {
+      return 'regiaoEstabMaisOleoDescarte';
+    }
 
-
-  const initialData: DataMapeada[] = []
-
-
-  const [chartData, setChartData] = useState<DataMapeada[]>(initialData.sort((a, b) => b.quantidade - a.quantidade));
-
-
-
-  const PieChart: React.FC = () => {
-    const data = {
-      labels: chartData.map((item) => item.regiao),
-      datasets: [
-        {
-          data: chartData.map((item) => item.quantidade),
-          backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#FF5733', '#4BC0C0'],
-          hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#FF5733', '#4BC0C0'],
-        },
-      ],
-    };
-
-    return <Pie data={data} />;
+    return '';
   };
 
   return (
@@ -101,12 +111,10 @@ export default function DashboardRanking() {
       <NavbarAdministrador />
       <Container style={{ marginTop: "5%", marginBottom: "10%" }}>
         <div className={styles.topContent}>
-          <h1>
-            Dashboard Ranking
-          </h1>
+          <h1>Dashboard Ranking</h1>
         </div>
         <Row>
-          <Col sm={9} >
+          <Col sm={9}>
             <Row className={stylesTable.tabsContainer}>
               <div style={{ justifyContent: "center" }}>
                 <button
@@ -134,7 +142,6 @@ export default function DashboardRanking() {
                   Melhor Performance de Descarte
                 </button>
               </div>
-              {/* Adicione mais botões de aba conforme necessário */}
             </Row>
             <Row sm={8} className='TabelasRankingRegiao' style={{ marginBottom: "5%" }}>
               {activeTab === 'regiao-parceiro' && <TabelaRegiaoParceiros />}
@@ -143,37 +150,35 @@ export default function DashboardRanking() {
             </Row>
           </Col>
           <Col sm={3} style={{ display: "flex", textAlign: "center", paddingTop: "5%", maxHeight: "367px", minHeight: "367px" }}>
-            <PieChart />
+            <PieChart chartData={chartData} />
           </Col>
-          <Row className={stylesTable.tabsContainer}>
-            <div style={{ justifyContent: "center" }}>
-              <button
-                className={
-                  activeTab === 'parceiros-mais-utilizam-creditos' ? `${styles.activeTabButton} ${stylesTable.enabledButton}` : styles.tabButton
-                }
-                onClick={() => handleTabClick2('parceiros-mais-utilizam-creditos')}
-              >
-                Parceiros que mais doam os créditos
-              </button>
-              <button
-                className={
-                  activeTab === 'estabelecimentos-maiores-volumes-descartados' ? `${styles.activeTabButton} ${stylesTable.enabledButton}` : styles.tabButton
-                }
-                onClick={() => handleTabClick2('estabelecimentos-maiores-volumes-descartados')}
-              >
-                Estabelecimentos com maiores volumes descartados
-              </button>
-            </div>
-          </Row>
-          <Row sm={8} className='TabelasRankingRegiao' style={{ marginBottom: "5%" }}>
-            {activeTab2 === 'parceiros-mais-utilizam-creditos' && <TabelaParceirosMaisDoamCreditos />}
-            {activeTab2 === 'estabelecimentos-maiores-volumes-descartados' && <TabelaEstabMaiorVolDescartado />}
-          </Row>
-
+        </Row>
+        <Row className={stylesTable.tabsContainer}>
+          <div style={{ justifyContent: "center" }}>
+            <button
+              className={
+                activeTab2 === 'parceiros-mais-utilizam-creditos' ? `${styles.activeTabButton} ${stylesTable.enabledButton}` : styles.tabButton
+              }
+              onClick={() => handleTabClick2('parceiros-mais-utilizam-creditos')}
+            >
+              Parceiros que mais doam os créditos
+            </button>
+            <button
+              className={
+                activeTab2 === 'estabelecimentos-maiores-volumes-descartados' ? `${styles.activeTabButton} ${stylesTable.enabledButton}` : styles.tabButton
+              }
+              onClick={() => handleTabClick2('estabelecimentos-maiores-volumes-descartados')}
+            >
+              Estabelecimentos com maiores volumes descartados
+            </button>
+          </div>
+        </Row>
+        <Row sm={8} className='TabelasRankingRegiao' style={{ marginBottom: "5%" }}>
+          {activeTab2 === 'parceiros-mais-utilizam-creditos' && <TabelaParceirosMaisDoamCreditos />}
+          {activeTab2 === 'estabelecimentos-maiores-volumes-descartados' && <TabelaEstabMaiorVolDescartado />}
         </Row>
       </Container>
       <Footer />
-
     </>
   );
 }
