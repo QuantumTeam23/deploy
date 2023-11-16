@@ -1,4 +1,5 @@
 import { BrowserRouter, Navigate, Routes, Route } from "react-router-dom";
+import TelaInicial from "../componentes/Inicio/TelaInicial";
 import Login from "../componentes/Cadastros&Logins/Login";
 import EditarUsuario from "../componentes/Edição/EditarUsuario";
 import CadastroEstabelecimento from "../componentes/Cadastros&Logins/CadastroEstabelecimento";
@@ -206,6 +207,7 @@ export const Rotas = () => {
           }
         />
 
+        <Route path="/tela-inicial" element={<TelaInicial />} />
         <Route path="/login" element={<Login />} />
         <Route path="/usuario" element={<Usuario />} />
         <Route path="/cadastro-parceiro" element={<CadastroParceiro />} />
@@ -215,7 +217,7 @@ export const Rotas = () => {
         />
         <Route path="/recuperacao" element={<Recuperacao />} />
 
-        <Route path="/" element={<Navigate to={"/login"} />} />
+        <Route path="/" element={<Navigate to={"/tela-inicial"} />} />
         <Route path="*" element={<h1>PÁGINA NÃO ENCONTRADA</h1>} />
       </Routes>
     </BrowserRouter>
