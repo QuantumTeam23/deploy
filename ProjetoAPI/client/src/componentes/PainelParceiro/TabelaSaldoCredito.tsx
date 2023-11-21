@@ -27,7 +27,7 @@ export function TabelaCreditoContratado() {
   ];
 
   useEffect(() => {
-    fetch(`http://localhost:3001/creditos-contratados/${id}`, {
+    fetch(`https://server-pi-blue.vercel.app/creditos-contratados/${id}`, {
       method: "GET",
       headers: {
         'Content-Type': 'application/json',
@@ -213,7 +213,7 @@ export function TabelaCreditoCedido() {
   };
 
   useEffect(() => {
-    fetch(`http://localhost:3001/transacoes-parceiro/${id}`, {
+    fetch(`https://server-pi-blue.vercel.app/transacoes-parceiro/${id}`, {
       method: "GET",
       headers: {
         'Content-Type': 'application/json',

@@ -16,7 +16,7 @@ export const TabelaRegiaoParceiros: React.FC = () => {
   const itemsPerPage: number = 9;
 
   useEffect(() => {
-    fetch("http://localhost:3001/regiaoParceiroMaisCedido", {
+    fetch("https://server-pi-blue.vercel.app/regiaoParceiroMaisCedido", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -117,7 +117,7 @@ export const TabelaRegiaoEstabelecimento: React.FC = () => {
   };
 
   useEffect(() => {
-    fetch("http://localhost:3001/regiaoEstabMaisRecebeu", {
+    fetch("https://server-pi-blue.vercel.app/regiaoEstabMaisRecebeu", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -224,7 +224,7 @@ export const TabelaMelhorPerformanceDescarte: React.FC = () => {
   };
 
   useEffect(() => {
-    fetch("http://localhost:3001/regiaoEstabMaisOleoDescarte", {
+    fetch("https://server-pi-blue.vercel.app/regiaoEstabMaisOleoDescarte", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -332,7 +332,7 @@ export const TabelaParceirosMaisDoamCreditos: React.FC = () => {
   const itemsPerPage: number = 9;
 
   useEffect(() => {
-    fetch("http://localhost:3001/parceirosMaisCreditosDoados", { 
+    fetch("https://server-pi-blue.vercel.app/parceirosMaisCreditosDoados", { 
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -437,7 +437,7 @@ export const TabelaEstabMaiorVolDescartado: React.FC = () => {
   const itemsPerPage: number = 9;
 
   useEffect(() => {
-    fetch("http://localhost:3001/estabelecimentosMaisCreditosDoados", {
+    fetch("https://server-pi-blue.vercel.app/estabelecimentosMaisCreditosDoados", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

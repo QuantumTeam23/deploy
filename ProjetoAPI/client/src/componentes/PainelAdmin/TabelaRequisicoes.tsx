@@ -15,7 +15,7 @@ export default function TabelaRequisicoes() {
 
   const [requisicoes , setRequisicoes] = useState([]);
   useEffect(() => {
-    fetch("http://localhost:3001/getRequisicoesAprovar", {
+    fetch("https://server-pi-blue.vercel.app/getRequisicoesAprovar", {
       method: "GET",
        headers: {
         'Content-Type': 'application/json',
@@ -50,7 +50,7 @@ export default function TabelaRequisicoes() {
     const idParceiro = item.id_parceiro ;
     const valor = item.valor_comprado ;
 
-    fetch(`http://localhost:3001/aprovado/${idAcao}/${idParceiro}/${valor}` ,{
+    fetch(`https://server-pi-blue.vercel.app/aprovado/${idAcao}/${idParceiro}/${valor}` ,{
       method: 'PUT',
       headers: {
           'Content-Type': 'application/json',
@@ -71,7 +71,7 @@ export default function TabelaRequisicoes() {
 
   const handleRecusarClick = (item: any) => {
     const idAcao = item.acao_transacao_compra_id ;
-    fetch(`http://localhost:3001/recusado/${idAcao}`, {
+    fetch(`https://server-pi-blue.vercel.app/recusado/${idAcao}`, {
       method: 'PUT',
       headers: {
           'Content-Type': 'application/json',

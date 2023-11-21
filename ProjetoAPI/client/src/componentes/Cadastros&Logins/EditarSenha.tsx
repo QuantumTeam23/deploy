@@ -86,7 +86,7 @@ function EditarSenha() {
             return;
         }
 
-        fetch(`http://localhost:3001/editSenhaRec/${idUser}/${tipo}`, {
+        fetch(`https://server-pi-blue.vercel.app/editSenhaRec/${idUser}/${tipo}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',

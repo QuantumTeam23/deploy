@@ -27,7 +27,7 @@ function Token() {
     const handleReenviarToken = async () => {
         try {
             const email = localStorage.getItem('email')
-            const response = await fetch('http://localhost:3001/enviarToken', {
+            const response = await fetch('https://server-pi-blue.vercel.app/enviarToken', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -56,7 +56,7 @@ function Token() {
 
             const emailEDIT = localStorage.getItem('email')
 
-            fetch(`http://localhost:3001/verifica-email/${emailEDIT}`)
+            fetch(`https://server-pi-blue.vercel.app/verifica-email/${emailEDIT}`)
             .then(response => {
               if (!response.ok) {
                 throw new Error(`Erro na solicitação: ${response.status}`);
@@ -77,7 +77,7 @@ function Token() {
             });
 
             try {
-                const response = await fetch('http://localhost:3001/VerificarToken', {
+                const response = await fetch('https://server-pi-blue.vercel.app/VerificarToken', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

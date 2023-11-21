@@ -44,7 +44,7 @@ const mesesAnosDisponiveisFormatados = [
 
   
   useEffect(() => {
-    fetch(`http://localhost:3001/transacoes-estabelecimento/${id}`, {
+    fetch(`https://server-pi-blue.vercel.app/transacoes-estabelecimento/${id}`, {
       method: "GET",
       headers: {
         'Content-Type': 'application/json',

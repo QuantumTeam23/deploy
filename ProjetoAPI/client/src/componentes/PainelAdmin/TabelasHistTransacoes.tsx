@@ -19,7 +19,7 @@ export default function TabelasHistTransacoes() {
 
 
   useEffect(() => {
-    fetch("http://localhost:3001/admTransacoes", {
+    fetch("https://server-pi-blue.vercel.app/admTransacoes", {
       method: "GET",
       headers: {
         'Content-Type': 'application/json',

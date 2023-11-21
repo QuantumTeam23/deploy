@@ -74,7 +74,7 @@ export default function DashboardRanking() {
   const fetchChartData = async () => {
     try {
       const route = getRouteBasedOnActiveTab();
-      const response = await fetch(`http://localhost:3001/${route}`, {
+      const response = await fetch(`https://server-pi-blue.vercel.app/${route}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

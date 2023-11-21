@@ -170,7 +170,7 @@ function CadastroParceiro() {
     }
 
 
-    const emailCheckResponse = await fetch('http://localhost:3001/checkEmailParceiro', {
+    const emailCheckResponse = await fetch('https://server-pi-blue.vercel.app/checkEmailParceiro', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -190,7 +190,7 @@ function CadastroParceiro() {
     }
 
     try {
-      const response = await fetch('http://localhost:3001/addParceiro', {
+      const response = await fetch('https://server-pi-blue.vercel.app/addParceiro', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -31,7 +31,7 @@ export default function TabelasControlUser() {
 
       if (tipo === 'Parceiro') {
 
-        fetch(`http://localhost:3001/read-by-id-to-edit-admin/${razaoSocial}/${tipo}`)
+        fetch(`https://server-pi-blue.vercel.app/read-by-id-to-edit-admin/${razaoSocial}/${tipo}`)
         .then(response => {
           if (!response.ok) {
             throw new Error(`Erro na solicitação: ${response.status}`);
@@ -50,7 +50,7 @@ export default function TabelasControlUser() {
         });
       } else if (tipo === 'Estabelecimento') {
 
-        fetch(`http://localhost:3001/read-by-id-to-edit-admin/${razaoSocial}/${tipo}`)
+        fetch(`https://server-pi-blue.vercel.app/read-by-id-to-edit-admin/${razaoSocial}/${tipo}`)
         .then(response => {
           if (!response.ok) {
             throw new Error(`Erro na solicitação: ${response.status}`);
@@ -69,7 +69,7 @@ export default function TabelasControlUser() {
         });
       } else if (tipo === 'Administrador') {
 
-        fetch(`http://localhost:3001/read-by-id-to-edit-admin/${razaoSocial}/${tipo}`)
+        fetch(`https://server-pi-blue.vercel.app/read-by-id-to-edit-admin/${razaoSocial}/${tipo}`)
         .then(response => {
           if (!response.ok) {
             throw new Error(`Erro na solicitação: ${response.status}`);
@@ -121,7 +121,7 @@ export default function TabelasControlUser() {
       cancelButtonText: 'Cancelar',
     }).then((result) => {
       if (result.isConfirmed) {
-        fetch(`http://localhost:3001/deletar-users/${tipoUsuario}/${id}`, {
+        fetch(`https://server-pi-blue.vercel.app/deletar-users/${tipoUsuario}/${id}`, {
           method: 'DELETE'
         })
         .then((response) => response.json())
@@ -154,7 +154,7 @@ export default function TabelasControlUser() {
 
   const [user, setUser] = useState([]);
   useEffect(() => {
-    fetch("http://localhost:3001/listarusuarios", {
+    fetch("https://server-pi-blue.vercel.app/listarusuarios", {
       method: "GET",
       headers: {
         'Content-Type': 'application/json',

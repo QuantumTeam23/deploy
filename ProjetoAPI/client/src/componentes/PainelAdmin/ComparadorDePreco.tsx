@@ -68,7 +68,7 @@ function ComparadorPrecos() {
 
   //=====================GRUPO DE BOTÕES DO MENU LATERAL ESQUERDO COM NOMES DE REGIÕES DO BRASIL==========================
   const botaoNorteClick = () => {
-    fetch('http://localhost:3001/selectComparador/Norte')
+    fetch('https://server-pi-blue.vercel.app/selectComparador/Norte')
       .then(response => response.json())
       .then(data => {
         const precoOleoVirgem = parseFloat(data.preco_oleo_virgem);
@@ -92,7 +92,7 @@ function ComparadorPrecos() {
   }
   const botaoSulClick = () => {
 
-    fetch('http://localhost:3001/selectComparador/Sul')
+    fetch('https://server-pi-blue.vercel.app/selectComparador/Sul')
       .then(response => response.json())
       .then(data => {
         const precoOleoVirgem = parseFloat(data.preco_oleo_virgem);
@@ -113,7 +113,7 @@ function ComparadorPrecos() {
       });
   };
   const botaoSuldesteClick = () => {
-    fetch('http://localhost:3001/selectComparador/Sudeste')
+    fetch('https://server-pi-blue.vercel.app/selectComparador/Sudeste')
       .then(response => response.json())
       .then(data => {
         const precoOleoVirgem = parseFloat(data.preco_oleo_virgem);
@@ -135,7 +135,7 @@ function ComparadorPrecos() {
       });
   };
   const botaoNordesteClick = () => {
-    fetch('http://localhost:3001/selectComparador/Nordeste')
+    fetch('https://server-pi-blue.vercel.app/selectComparador/Nordeste')
       .then(response => response.json())
       .then(data => {
         const precoOleoVirgem = parseFloat(data.preco_oleo_virgem);
@@ -156,7 +156,7 @@ function ComparadorPrecos() {
       });
   };
   const botaoCentroOesteClick = () => {
-    fetch('http://localhost:3001/selectComparador/Centro-Oeste')
+    fetch('https://server-pi-blue.vercel.app/selectComparador/Centro-Oeste')
       .then(response => response.json())
       .then(data => {
         const precoOleoVirgem = parseFloat(data.preco_oleo_virgem);

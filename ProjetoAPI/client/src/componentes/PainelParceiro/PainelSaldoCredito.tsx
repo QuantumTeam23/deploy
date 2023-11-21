@@ -14,7 +14,7 @@ export default function PainelParceiroSaldoCredito() {
 
   //buscar dados do parceiro logado e setar o valor do saldo
   useEffect(() => {
-    fetch(`http://localhost:3001/Parceiro/${id}`, {
+    fetch(`https://server-pi-blue.vercel.app/Parceiro/${id}`, {
       method: "GET",
       headers: {
         'Content-Type': 'application/json',

@@ -13,7 +13,7 @@ export default function TabelaCarteiraEstab() {
   
 
   useEffect(() => {
-    fetch(`http://localhost:3001/listCarteira/${id}`, {
+    fetch(`https://server-pi-blue.vercel.app/listCarteira/${id}`, {
       method: "GET",
        headers: {
         'Content-Type': 'application/json',

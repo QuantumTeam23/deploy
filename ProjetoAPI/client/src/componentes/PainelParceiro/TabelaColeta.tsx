@@ -16,7 +16,7 @@ export default function TabelaColeta() {
 
 
   useEffect(() => {
-    fetch(`http://localhost:3001/transacoes-parceiro/${id}`, {
+    fetch(`https://server-pi-blue.vercel.app/transacoes-parceiro/${id}`, {
       method: "GET",
        headers: {
         'Content-Type': 'application/json',

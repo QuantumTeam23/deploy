@@ -24,7 +24,7 @@ export default function TabelaPrecopreco_regiao() {
   ]);
 
   useEffect(() => {
-    fetch(`http://localhost:3001/listPreco`, {
+    fetch(`https://server-pi-blue.vercel.app/listPreco`, {
       method: "GET",
       headers: {
         'Content-Type': 'application/json',
@@ -80,7 +80,7 @@ export default function TabelaPrecopreco_regiao() {
 
           setData(updatedData);
 
-          fetch(`http://localhost:3001/editar-preco/${item.preco_id}`, {
+          fetch(`https://server-pi-blue.vercel.app/editar-preco/${item.preco_id}`, {
             method: 'PUT',
             headers: {
               'Content-Type': 'application/json',

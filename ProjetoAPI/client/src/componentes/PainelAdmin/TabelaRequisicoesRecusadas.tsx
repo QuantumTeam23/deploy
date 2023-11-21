@@ -11,7 +11,7 @@ export default function TabelaRequisicoes() {
 
   const [requisicoes , setRequisicoes] = useState([]);
   useEffect(() => {
-    fetch("http://localhost:3001/getRequisicoesRecusadas", {
+    fetch("https://server-pi-blue.vercel.app/getRequisicoesRecusadas", {
       method: "GET",
        headers: {
         'Content-Type': 'application/json',
