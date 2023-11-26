@@ -32,6 +32,7 @@ export default function TelaInicial() {
             <h3 className='conteudo-secundario-informacoes-titulo'>Por que Participar</h3>
             <p className='conteudo-secundario-informacoes-paragrafo'>-<strong>Impacto Ambiental Positivo:</strong> Ao participar, você contribui diretamente para reduzir o descarte inadequado de óleo, promovendo a sustentabilidade.</p>
             <p className='conteudo-secundario-informacoes-paragrafo'>-<strong>Benefícios para Seu Estabelecimento:</strong> Além de ajudar o meio ambiente, você ganha créditos para investir em produtos sustentáveis.</p>
+            <p>‎</p>
           </div>
         </section>
       </main>
