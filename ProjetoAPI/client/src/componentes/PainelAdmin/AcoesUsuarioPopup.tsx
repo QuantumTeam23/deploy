@@ -13,8 +13,8 @@ import eyeIconOpen from '../Imagens/close.png';
 import eyeIconClose from '../Imagens/open.png';
 import Swal from "sweetalert2";
 import 'sweetalert2/dist/sweetalert2.css';
-
-
+ 
+ 
 interface FormDataUserParc {
   parceiro_razao_social: string;
   parceiro_nome_fantasia: string;
@@ -35,7 +35,7 @@ interface FormDataUserParc {
   cadastradoParc: boolean;
   cnpjEmUsoParc: boolean;
 }
-
+ 
 interface FormDataUserEstab {
   estabelecimento_razao_social: string;
   estabelecimento_nome_fantasia: string;
@@ -55,7 +55,7 @@ interface FormDataUserEstab {
   cadastradoEstab: boolean;
   cnpjEmUsoEstab: boolean;
 }
-
+ 
 export default function AdicionarUsuarioPopup({ open, onClose }: { open: boolean, onClose: () => void }) {
   const [tabValue, setTabValue] = useState(0);
   const [emailInUse, setEmailInUse] = useState(false);
@@ -98,12 +98,12 @@ export default function AdicionarUsuarioPopup({ open, onClose }: { open: boolean
     cadastradoParc: false,
     cnpjEmUsoParc: false,
   });
-
+ 
   const handleInputChangeEstab = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormDataUserEstab((prevState) => ({ ...prevState, [name]: value }));
   };
-
+ 
   const handleInputChangeParc = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormDataUserParc((prevState) => ({ ...prevState, [name]: value }));
@@ -116,7 +116,7 @@ export default function AdicionarUsuarioPopup({ open, onClose }: { open: boolean
     const { name, value } = e.target;
     setFormDataUserEstab((prevState) => ({ ...prevState, [name]: value }));
   };
-
+ 
   const msgSucessoPost = () => {
     Swal.fire({
       title: "Sucesso",
@@ -133,7 +133,7 @@ export default function AdicionarUsuarioPopup({ open, onClose }: { open: boolean
       }
     });
   }
-
+ 
   const handleSubmitParc = async () => {
     if (isFormValidParc(formDataUserParc)) {
       setFormDataUserParc({ ...formDataUserParc, showEmptyFieldsAlertParc: true });
@@ -149,7 +149,7 @@ export default function AdicionarUsuarioPopup({ open, onClose }: { open: boolean
         email,
       }),
     });
-
+ 
     if (emailCheckResponse.status === 409) {
       console.log('Email já está em uso.');
       setEmailInUse(true);
@@ -158,7 +158,7 @@ export default function AdicionarUsuarioPopup({ open, onClose }: { open: boolean
       }, 5000);
       return;
     }
-
+ 
     else {
       try {
         const response = await fetch('https://server-pi-blue.vercel.app/addParceiro', {
@@ -184,7 +184,7 @@ export default function AdicionarUsuarioPopup({ open, onClose }: { open: boolean
             cidadesAtende: formDataUserParc.parceiro_cidades_atende,
           }),
         });
-
+ 
         if (response.status === 200) {
           handleClose()
           msgSucessoPost()
@@ -205,18 +205,18 @@ export default function AdicionarUsuarioPopup({ open, onClose }: { open: boolean
         console.error('Erro ao cadastrar parceiro:', error);
       }
     }
-
-
+ 
+ 
     console.log('Formulário enviado:', formDataUserParc);
   };
-
-
+ 
+ 
   const handleSubmitEstab = async () => {
     if (isFormValidEstab(formDataUserEstab)) {
       setFormDataUserEstab({ ...formDataUserEstab, showEmptyFieldsAlertEstab: true });
       return
     }
-
+ 
     const email = formDataUserEstab.estabelecimento_email
     const emailCheckResponse = await fetch('https://server-pi-blue.vercel.app/checkEmailEstabelecimento', {
       method: 'POST',
@@ -227,7 +227,7 @@ export default function AdicionarUsuarioPopup({ open, onClose }: { open: boolean
         email,
       }),
     });
-
+ 
     if (emailCheckResponse.status === 409) {
       console.log('Email já está em uso.');
       setEmailInUse(true);
@@ -236,7 +236,7 @@ export default function AdicionarUsuarioPopup({ open, onClose }: { open: boolean
       }, 5000);
       return;
     }
-
+ 
     try {
       const response = await fetch('https://server-pi-blue.vercel.app/addEstabelecimento', {
         method: 'POST',
@@ -260,7 +260,7 @@ export default function AdicionarUsuarioPopup({ open, onClose }: { open: boolean
           tipo: formDataUserEstab.estabelecimento_tipo,
         }),
       });
-
+ 
       if (response.status === 200) {
         handleClose()
         msgSucessoPost()
@@ -280,10 +280,10 @@ export default function AdicionarUsuarioPopup({ open, onClose }: { open: boolean
     } catch (error) {
       console.error('Erro ao cadastrar estabelecimento:', error);
     }
-
+ 
     console.log('Formulário enviado:', formDataUserEstab);
   };
-
+ 
   const handleSubmit = () => {
     if (tabValue === 0) {
       handleSubmitParc();
@@ -291,7 +291,7 @@ export default function AdicionarUsuarioPopup({ open, onClose }: { open: boolean
       handleSubmitEstab();
     }
   };
-
+ 
   const isFormValidParc = (formData: FormDataUserParc) => {
     const {
       parceiro_razao_social,
@@ -332,8 +332,8 @@ export default function AdicionarUsuarioPopup({ open, onClose }: { open: boolean
       return false
     }
   };
-
-
+ 
+ 
   const isFormValidEstab = (formData: FormDataUserEstab) => {
     const {
       estabelecimento_razao_social,
@@ -372,17 +372,17 @@ export default function AdicionarUsuarioPopup({ open, onClose }: { open: boolean
       return false
     }
   };
-
-
-
+ 
+ 
+ 
   const handleChangeTab = (event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
   };
-
+ 
   const handleClose = () => {
     onClose();
   };
-
+ 
   return (
     <Dialog
       open={open}
@@ -464,7 +464,7 @@ export default function AdicionarUsuarioPopup({ open, onClose }: { open: boolean
                 onChange={handleInputChangeParc}
               />
             </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between',height:"40px", marginBottom:'30px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', height: "40px", marginBottom: '30px' }}>
               <div style={{ flex: '1' }}>
                 <label>Logradouro:</label>
                 <input type="text" id="parceiro_logradouro"
@@ -482,7 +482,7 @@ export default function AdicionarUsuarioPopup({ open, onClose }: { open: boolean
                 />
               </div>
             </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', height:"40px", marginBottom:'30px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', height: "40px", marginBottom: '30px' }}>
               <div style={{ flex: '60%' }}> {/* Bairro ocupando 60% da largura */}
                 <label>Bairro:</label>
                 <input type="text" id="parceiro_bairro"
@@ -507,33 +507,34 @@ export default function AdicionarUsuarioPopup({ open, onClose }: { open: boolean
                   value={formDataUserParc.parceiro_estado}
                   onChange={handleSelectChangeParc}
                 >
-                  <option value="AC">AC</option>
-                  <option value="AL">AL</option>
-                  <option value="AP">AP</option>
-                  <option value="AM">AM</option>
-                  <option value="BA">BA</option>
-                  <option value="CE">CE</option>
-                  <option value="DF">DF</option>
-                  <option value="ES">ES</option>
-                  <option value="GO">GO</option>
-                  <option value="MA">MA</option>
-                  <option value="MT">MT</option>
-                  <option value="MS">MS</option>
-                  <option value="MG">MG</option>
-                  <option value="PA">PA</option>
-                  <option value="PB">PB</option>
-                  <option value="PR">PR</option>
-                  <option value="PE">PE</option>
-                  <option value="PI">PI</option>
-                  <option value="RJ">RJ</option>
-                  <option value="RN">RN</option>
-                  <option value="RS">RS</option>
-                  <option value="RO">RO</option>
-                  <option value="RR">RR</option>
-                  <option value="SC">SC</option>
-                  <option value="SP">SP</option>
-                  <option value="SE">SE</option>
-                  <option value="TO">TO</option>
+                  <option value=''>Selecione o estado</option>
+                  <option value='Acre'>Acre</option>
+                  <option value='Alagoas'>Alagoas</option>
+                  <option value='Amapá'>Amapá</option>
+                  <option value='Amazonas'>Amazonas</option>
+                  <option value='Bahia'>Bahia</option>
+                  <option value='Ceará'>Ceará</option>
+                  <option value='Distrito Federal'>Distrito Federal</option>
+                  <option value='Espírito Santo'>Espírito Santo</option>
+                  <option value='Goiás'>Goiás</option>
+                  <option value='Maranhão'>Maranhão</option>
+                  <option value='Mato Grosso'>Mato Grosso</option>
+                  <option value='Mato Grosso do Sul'>Mato Grosso do Sul</option>
+                  <option value='Minas Gerais'>Minas Gerais</option>
+                  <option value='Pará'>Pará</option>
+                  <option value='Paraíba'>Paraíba</option>
+                  <option value='Paraná'>Paraná</option>
+                  <option value='Pernambuco'>Pernambuco</option>
+                  <option value='Piauí'>Piauí</option>
+                  <option value='Rio de Janeiro'>Rio de Janeiro</option>
+                  <option value='Rio Grande do Norte'>Rio Grande do Norte</option>
+                  <option value='Rio Grande do Sul'>Rio Grande do Sul</option>
+                  <option value='Rondônia'>Rondônia</option>
+                  <option value='Roraima'>Roraima</option>
+                  <option value='Santa Catarina'>Santa Catarina</option>
+                  <option value='São Paulo'>São Paulo</option>
+                  <option value='Sergipe'>Sergipe</option>
+                  <option value='Tocantins'>Tocantins</option>
                 </select>
               </div>
               <div style={{ flex: '20%', marginLeft: '20px' }}>
@@ -559,7 +560,7 @@ export default function AdicionarUsuarioPopup({ open, onClose }: { open: boolean
                 onChange={handleInputChangeParc}
               />
             </div>
-
+ 
             <div>
               <label>Cidades em que Atende:</label>
               <input type="text" id="parceiro_cidades_atende"
@@ -568,7 +569,7 @@ export default function AdicionarUsuarioPopup({ open, onClose }: { open: boolean
                 onChange={handleInputChangeParc}
               />
             </div>
-
+ 
             <div>
               <label>Tipos de parceiros:</label>
               <select id="parceiro_tipo"
@@ -584,7 +585,7 @@ export default function AdicionarUsuarioPopup({ open, onClose }: { open: boolean
                 <option>Outros</option>
               </select>
             </div>
-
+ 
           </form>
         )}
         {tabValue === 1 && (
@@ -610,7 +611,7 @@ export default function AdicionarUsuarioPopup({ open, onClose }: { open: boolean
                 value={formDataUserEstab.estabelecimento_razao_social}
                 onChange={handleInputChangeEstab}
               />
-
+ 
             </div>
             <div>
               <label>Nome Fantasia:</label>
@@ -651,7 +652,7 @@ export default function AdicionarUsuarioPopup({ open, onClose }: { open: boolean
                 onChange={handleInputChangeEstab}
               />
             </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', height:"40px", marginBottom:'30px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', height: "40px", marginBottom: '30px' }}>
               <div style={{ flex: '1' }}>
                 <label>Logradouro:</label>
                 <input type="text" id="estabelecimento_logradouro"
@@ -666,11 +667,11 @@ export default function AdicionarUsuarioPopup({ open, onClose }: { open: boolean
                   name="estabelecimento_logradouroNumero" // Correção do nome do campo
                   value={formDataUserEstab.estabelecimento_logradouroNumero}
                   onChange={handleInputChangeEstab}
-
+ 
                 />
               </div>
             </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', height:"40px", marginBottom:'30px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', height: "40px", marginBottom: '30px' }}>
               <div style={{ flex: '60%' }}> {/* Bairro ocupando 60% da largura */}
                 <label>Bairro:</label>
                 <input type="text" id="estabelecimento_bairro"
@@ -694,33 +695,34 @@ export default function AdicionarUsuarioPopup({ open, onClose }: { open: boolean
                   value={formDataUserEstab.estabelecimento_estado}
                   onChange={handleSelectChangeEstab}
                 >
-                  <option value="AC">AC</option>
-                  <option value="AL">AL</option>
-                  <option value="AP">AP</option>
-                  <option value="AM">AM</option>
-                  <option value="BA">BA</option>
-                  <option value="CE">CE</option>
-                  <option value="DF">DF</option>
-                  <option value="ES">ES</option>
-                  <option value="GO">GO</option>
-                  <option value="MA">MA</option>
-                  <option value="MT">MT</option>
-                  <option value="MS">MS</option>
-                  <option value="MG">MG</option>
-                  <option value="PA">PA</option>
-                  <option value="PB">PB</option>
-                  <option value="PR">PR</option>
-                  <option value="PE">PE</option>
-                  <option value="PI">PI</option>
-                  <option value="RJ">RJ</option>
-                  <option value="RN">RN</option>
-                  <option value="RS">RS</option>
-                  <option value="RO">RO</option>
-                  <option value="RR">RR</option>
-                  <option value="SC">SC</option>
-                  <option value="SP">SP</option>
-                  <option value="SE">SE</option>
-                  <option value="TO">TO</option>
+                  <option value=''>Selecione o estado</option>
+                  <option value='Acre'>Acre</option>
+                  <option value='Alagoas'>Alagoas</option>
+                  <option value='Amapá'>Amapá</option>
+                  <option value='Amazonas'>Amazonas</option>
+                  <option value='Bahia'>Bahia</option>
+                  <option value='Ceará'>Ceará</option>
+                  <option value='Distrito Federal'>Distrito Federal</option>
+                  <option value='Espírito Santo'>Espírito Santo</option>
+                  <option value='Goiás'>Goiás</option>
+                  <option value='Maranhão'>Maranhão</option>
+                  <option value='Mato Grosso'>Mato Grosso</option>
+                  <option value='Mato Grosso do Sul'>Mato Grosso do Sul</option>
+                  <option value='Minas Gerais'>Minas Gerais</option>
+                  <option value='Pará'>Pará</option>
+                  <option value='Paraíba'>Paraíba</option>
+                  <option value='Paraná'>Paraná</option>
+                  <option value='Pernambuco'>Pernambuco</option>
+                  <option value='Piauí'>Piauí</option>
+                  <option value='Rio de Janeiro'>Rio de Janeiro</option>
+                  <option value='Rio Grande do Norte'>Rio Grande do Norte</option>
+                  <option value='Rio Grande do Sul'>Rio Grande do Sul</option>
+                  <option value='Rondônia'>Rondônia</option>
+                  <option value='Roraima'>Roraima</option>
+                  <option value='Santa Catarina'>Santa Catarina</option>
+                  <option value='São Paulo'>São Paulo</option>
+                  <option value='Sergipe'>Sergipe</option>
+                  <option value='Tocantins'>Tocantins</option>
                 </select>
               </div>
               <div style={{ flex: '20%', marginLeft: '20px' }}>
@@ -746,7 +748,7 @@ export default function AdicionarUsuarioPopup({ open, onClose }: { open: boolean
                 onChange={handleInputChangeEstab}
               />
             </div>
-
+ 
             <div>
               <label>Tipo de estabelecimento:</label>
               <select id="estabelecimento_tipo"
@@ -778,7 +780,7 @@ export default function AdicionarUsuarioPopup({ open, onClose }: { open: boolean
     </Dialog>
   );
 }
-
+ 
 export function EditarUsuarioPopup({ open, onClose }: { open: boolean, onClose: () => void }) {
   const [dadosOriginais, setDadosOriginais] = useState({});
   const [usuarioDados, setUsuarioDados] = useState({
@@ -796,7 +798,7 @@ export function EditarUsuarioPopup({ open, onClose }: { open: boolean, onClose: 
   const handleClose = () => {
     onClose();
   };
-
+ 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
     setUsuarioDados((prevData) => ({
@@ -804,7 +806,7 @@ export function EditarUsuarioPopup({ open, onClose }: { open: boolean, onClose: 
       [id]: value,
     }));
   };
-
+ 
   const msgSucessoPost = () => {
     Swal.fire({
       title: "Sucesso",
@@ -817,11 +819,11 @@ export function EditarUsuarioPopup({ open, onClose }: { open: boolean, onClose: 
       },
     })
   }
-
+ 
   const handleCloseEdit = () => {
     onClose();
   };
-
+ 
   useEffect(() => {
     if (open) {
       const DadosParceiro = localStorage.getItem('ParceiroData');
@@ -845,7 +847,7 @@ export function EditarUsuarioPopup({ open, onClose }: { open: boolean, onClose: 
       }
     }
   }, [open]);
-
+ 
   useEffect(() => {
     if (!open) {
       setUsuarioDados({
@@ -862,15 +864,15 @@ export function EditarUsuarioPopup({ open, onClose }: { open: boolean, onClose: 
       });
     }
   }, [open]);
-
-
+ 
+ 
   const handleEdit = () => {
     const tipoUsuario = localStorage.getItem('tipoEdit')
     const razaoSocial = localStorage.getItem('nomeEdit')
-
+ 
     const dadosEditados = usuarioDados;
     const dadosMudaram = JSON.stringify(dadosEditados) !== JSON.stringify(dadosOriginais);
-
+ 
     if (dadosMudaram) {
       if (tipoUsuario === "Parceiro") {
         fetch(`https://server-pi-blue.vercel.app/editar-usuario-comum-parceiro-by-admin/${razaoSocial}/${tipoUsuario}`, {
@@ -892,8 +894,8 @@ export function EditarUsuarioPopup({ open, onClose }: { open: boolean, onClose: 
           .catch(error => {
             console.error('Erro ao editar dados:', error);
           });
-          handleCloseEdit()
-          msgSucessoPost()
+        handleCloseEdit()
+        msgSucessoPost()
       } else if (tipoUsuario === 'Estabelecimento') {
         fetch(`https://server-pi-blue.vercel.app/editar-usuario-comum-parceiro-by-admin/${razaoSocial}/${tipoUsuario}`, {
           method: 'PUT',
@@ -914,8 +916,8 @@ export function EditarUsuarioPopup({ open, onClose }: { open: boolean, onClose: 
           .catch(error => {
             console.error('Erro ao editar dados:', error);
           });
-          handleCloseEdit()
-          msgSucessoPost()
+        handleCloseEdit()
+        msgSucessoPost()
       }
     } else {
       Swal.fire({
@@ -926,12 +928,22 @@ export function EditarUsuarioPopup({ open, onClose }: { open: boolean, onClose: 
       })
       onClose();
     }
-
-
+ 
+ 
   };
-
+ 
   const userType = localStorage.getItem('tipoEdit');
-
+  const [selectedEstado, setSelectedEstado] = useState(usuarioDados.estado);
+ 
+ 
+  const handleEstadoChange = (e: React.ChangeEvent<{ value: unknown }>) => {
+    setSelectedEstado(e.target.value as string);
+    setUsuarioDados((prevData) => ({
+      ...prevData,
+      estado: e.target.value as string,
+    }));
+  };
+ 
   return (
     <Dialog
       open={open}
@@ -966,9 +978,39 @@ export function EditarUsuarioPopup({ open, onClose }: { open: boolean, onClose: 
           <input type="text" id="cidade" defaultValue={usuarioDados.cidade} onChange={handleInputChange} />
         </div>
         <div>
-          <label>Estado:</label>
-          <input type="text" id="estado" defaultValue={usuarioDados.estado} onChange={handleInputChange} />
+          <label>Estado: {usuarioDados.estado}</label>
+          <select id="estado" value={usuarioDados.estado} onChange={handleEstadoChange}>
+          <option value=''>Selecione o estado</option>
+              <option value='Acre'>Acre</option>
+              <option value='Alagoas'>Alagoas</option>
+              <option value='Amapá'>Amapá</option>
+              <option value='Amazonas'>Amazonas</option>
+              <option value='Bahia'>Bahia</option>
+              <option value='Ceará'>Ceará</option>
+              <option value='Distrito Federal'>Distrito Federal</option>
+              <option value='Espírito Santo'>Espírito Santo</option>
+              <option value='Goiás'>Goiás</option>
+              <option value='Maranhão'>Maranhão</option>
+              <option value='Mato Grosso'>Mato Grosso</option>
+              <option value='Mato Grosso do Sul'>Mato Grosso do Sul</option>
+              <option value='Minas Gerais'>Minas Gerais</option>
+              <option value='Pará'>Pará</option>
+              <option value='Paraíba'>Paraíba</option>
+              <option value='Paraná'>Paraná</option>
+              <option value='Pernambuco'>Pernambuco</option>
+              <option value='Piauí'>Piauí</option>
+              <option value='Rio de Janeiro'>Rio de Janeiro</option>
+              <option value='Rio Grande do Norte'>Rio Grande do Norte</option>
+              <option value='Rio Grande do Sul'>Rio Grande do Sul</option>
+              <option value='Rondônia'>Rondônia</option>
+              <option value='Roraima'>Roraima</option>
+              <option value='Santa Catarina'>Santa Catarina</option>
+              <option value='São Paulo'>São Paulo</option>
+              <option value='Sergipe'>Sergipe</option>
+              <option value='Tocantins'>Tocantins</option>
+          </select>
         </div>
+ 
         <div>
           <label>CEP:</label>
           <input type="text" id="cep" defaultValue={usuarioDados.cep} onChange={handleInputChange} />
@@ -991,7 +1033,7 @@ export function EditarUsuarioPopup({ open, onClose }: { open: boolean, onClose: 
     </Dialog>
   );
 }
-
+ 
 export function EditarUsuarioAdminPopup({ open, onClose }: { open: boolean, onClose: () => void }) {
   const [dadosOriginais, setDadosOriginais] = useState({})
   const [usuarioDados, setUsuarioDados] = useState({
@@ -1001,7 +1043,7 @@ export function EditarUsuarioAdminPopup({ open, onClose }: { open: boolean, onCl
   const handleClose = () => {
     onClose();
   };
-
+ 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
     setUsuarioDados((prevData) => ({
@@ -1009,11 +1051,11 @@ export function EditarUsuarioAdminPopup({ open, onClose }: { open: boolean, onCl
       [id]: value,
     }));
   };
-
+ 
   useEffect(() => {
     if (open) {
       const DadosAdministrador = localStorage.getItem('AdministradorData');
-
+ 
       if (DadosAdministrador) {
         try {
           const parsedData = JSON.parse(DadosAdministrador);
@@ -1025,7 +1067,7 @@ export function EditarUsuarioAdminPopup({ open, onClose }: { open: boolean, onCl
       }
     }
   }, [open]);
-
+ 
   useEffect(() => {
     if (!open) {
       setUsuarioDados({
@@ -1034,7 +1076,7 @@ export function EditarUsuarioAdminPopup({ open, onClose }: { open: boolean, onCl
       });
     }
   }, [open]);
-
+ 
   const msgSucessoPost = () => {
     Swal.fire({
       title: "Sucesso",
@@ -1047,15 +1089,15 @@ export function EditarUsuarioAdminPopup({ open, onClose }: { open: boolean, onCl
       },
     })
   }
-
-
+ 
+ 
   const handleEdit = () => {
     const tipoUsuario = localStorage.getItem('tipoEdit')
     const razaoSocial = localStorage.getItem('nomeEdit')
-
+ 
     const dadosEditados = usuarioDados;
     const dadosMudaram = JSON.stringify(dadosEditados) !== JSON.stringify(dadosOriginais);
-
+ 
     if (dadosMudaram) {
       if (tipoUsuario === "Administrador") {
         fetch(`https://server-pi-blue.vercel.app/editar-usuario-comum-parceiro-by-admin/${razaoSocial}/${tipoUsuario}`, {
@@ -1077,8 +1119,8 @@ export function EditarUsuarioAdminPopup({ open, onClose }: { open: boolean, onCl
           .catch(error => {
             console.error('Erro ao editar dados:', error);
           });
-          msgSucessoPost()
-          onClose();
+        msgSucessoPost()
+        onClose();
       }
     } else {
       Swal.fire({
@@ -1090,7 +1132,7 @@ export function EditarUsuarioAdminPopup({ open, onClose }: { open: boolean, onCl
       onClose();
     }
   };
-
+ 
   return (
     <Dialog
       open={open}
