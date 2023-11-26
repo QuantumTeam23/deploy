@@ -1,4 +1,5 @@
 import styles from '../styles/TabelasLayoutGeral.module.css'; 
+import styles2 from '../styles/PainelLayoutGeral.module.css';
 import Button from '@mui/material/Button';
 import { useEffect, useState } from 'react'; // Importe useState
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
@@ -77,14 +78,17 @@ export default function TabelasHistTransacoes() {
 
   return (
     <>
-      <div>
-        <input
-          type="text"
-          placeholder="Pesquisar..."
-          onChange={handleSearchChange}
-          value={searchQuery}
-        />
+      <div className={styles2.containerConteudoEspecifico2}>
+        <div>
+          <input
+            type="text"
+            placeholder="Pesquisar..."
+            onChange={handleSearchChange}
+            value={searchQuery}
+          />
+        </div>
       </div>
+      <div className={styles2.containerConteudoEspecifico}>
       <table className={styles.table}>
         <thead>
           <tr>
@@ -141,6 +145,7 @@ export default function TabelasHistTransacoes() {
       <p>ㅤ</p>
       <p>ㅤ</p>
       <p>ㅤ</p>
+      </div>
     </>
   );
 }

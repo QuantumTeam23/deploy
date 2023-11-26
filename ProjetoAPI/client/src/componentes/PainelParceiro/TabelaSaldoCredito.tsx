@@ -1,5 +1,6 @@
 import Button from '@mui/material/Button';
 import styles from '../styles/TabelasLayoutGeral.module.css';
+import styles2 from '../styles/PainelLayoutGeral.module.css';
 import { useState, useEffect } from 'react';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
@@ -60,10 +61,10 @@ export function TabelaCreditoContratado() {
 
   const filteredData = mesAno
     ? contratacoes.filter((item: any) => {
-        // Converte o valor do dropdown para o formato dos dados
-        const mesAnoFormatado = converterParaFormatoDados(mesAno);
-        return formatarData(item.acao_compra_data).includes(mesAnoFormatado);
-      })
+      // Converte o valor do dropdown para o formato dos dados
+      const mesAnoFormatado = converterParaFormatoDados(mesAno);
+      return formatarData(item.acao_compra_data).includes(mesAnoFormatado);
+    })
     : contratacoes;
 
 
@@ -99,8 +100,8 @@ export function TabelaCreditoContratado() {
 
   return (
     <>
-      <div className={styles.topContent} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <div style={{ display: 'flex', alignItems: 'center' }}>
+      <div className={styles2.containerConteudoEspecifico2}>
+        <div style={{ display: 'flex' }}>
           <a href="../transacao-compra-credito">
             <img
               src={require("../Imagens/icone-moedas.png")}
@@ -115,10 +116,8 @@ export function TabelaCreditoContratado() {
               }}
             />
           </a>
-        </div>
 
-        <div className={styles.searchContainer}>
-          <select onChange={handleChangeFiltroDataReq}>
+          <select onChange={handleChangeFiltroDataReq} style={{ width: '160px' }}>
             <option value="">Mês/Ano</option>
             {mesesAnosDisponiveis.map((mesAno, index) => (
               <option key={index} value={mesAno}>
@@ -128,53 +127,55 @@ export function TabelaCreditoContratado() {
           </select>
         </div>
       </div>
-
-      <table className={styles.table}>
-        <thead>
-          <tr>
-            <th style={{ width: '20%' }}>Quantidade de Créditos</th>
-            <th style={{ width: '44%' }}>Status</th>
-            <th style={{ width: '16%' }}>Data / Hora</th>
-          </tr>
-        </thead>
-        <tbody>
-          {currentData.map((item: any, index: any) => (
-            <tr key={index}>
-              <td>{item.valor_comprado}</td>
-              <td>{formatarStatus(item.aprovado)}</td>
-              <td>{formatarData(item.acao_compra_data)}</td>
+      <div className={styles2.containerConteudoEspecifico}>
+        <table className={styles.table}>
+          <thead>
+            <tr>
+              <th style={{ width: '20%' }}>Quantidade de Créditos</th>
+              <th style={{ width: '44%' }}>Status</th>
+              <th style={{ width: '16%' }}>Data / Hora</th>
             </tr>
-          ))}
-        </tbody>
-        <tfoot>
-          <tr>
-            <td colSpan={3} style={{ textAlign: 'center', padding: '3px 0'  }}>
-              <Button
-                startIcon={<KeyboardArrowLeftIcon />}
-                disabled={currentPage === 1}
-                onClick={handlePrevPage}
-                style={{
-                  color: currentPage !== 1 ? 'lightblue' : 'lightgray',
-                  fontWeight: currentPage !== 1 ? 'bold' : 'normal',
-                }}
-              >
-                Anterior
-              </Button>
-              <Button
-                endIcon={<KeyboardArrowRightIcon />}
-                disabled={endIndex >= contratacoes.length}
-                onClick={handleNextPage}
-                style={{
-                  color: endIndex < contratacoes.length ? 'lightblue' : 'lightgray',
-                  fontWeight: endIndex < contratacoes.length ? 'bold' : 'normal',
-                }}
-              >
-                Próxima
-              </Button>
-            </td>
-          </tr>
-        </tfoot>
-      </table>
+          </thead>
+          <tbody>
+            {currentData.map((item: any, index: any) => (
+              <tr key={index}>
+                <td>{item.valor_comprado}</td>
+                <td>{formatarStatus(item.aprovado)}</td>
+                <td>{formatarData(item.acao_compra_data)}</td>
+              </tr>
+            ))}
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colSpan={3} style={{ textAlign: 'center', padding: '3px 0' }}>
+                <Button
+                  startIcon={<KeyboardArrowLeftIcon />}
+                  disabled={currentPage === 1}
+                  onClick={handlePrevPage}
+                  style={{
+                    color: currentPage !== 1 ? 'lightblue' : 'lightgray',
+                    fontWeight: currentPage !== 1 ? 'bold' : 'normal',
+                  }}
+                >
+                  Anterior
+                </Button>
+                <Button
+                  endIcon={<KeyboardArrowRightIcon />}
+                  disabled={endIndex >= contratacoes.length}
+                  onClick={handleNextPage}
+                  style={{
+                    color: endIndex < contratacoes.length ? 'lightblue' : 'lightgray',
+                    fontWeight: endIndex < contratacoes.length ? 'bold' : 'normal',
+                  }}
+                >
+                  Próxima
+                </Button>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+
     </>
   );
 }
@@ -236,10 +237,10 @@ export function TabelaCreditoCedido() {
 
   const filteredData = mesAno
     ? transacoes.filter((item: any) => {
-        // Converte o valor do dropdown para o formato dos dados
-        const mesAnoFormatado = converterParaFormatoDados(mesAno);
-        return formatarData(item.acao_data).includes(mesAnoFormatado);
-      })
+      // Converte o valor do dropdown para o formato dos dados
+      const mesAnoFormatado = converterParaFormatoDados(mesAno);
+      return formatarData(item.acao_data).includes(mesAnoFormatado);
+    })
     : transacoes;
 
   // Atualiza a variável currentData com os dados filtrados
@@ -263,8 +264,8 @@ export function TabelaCreditoCedido() {
 
   return (
     <>
-      <div className={styles.topContent} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <div style={{ display: 'flex', alignItems: 'center' }}>
+      <div className={styles2.containerConteudoEspecifico2}>
+        <div style={{ display: 'flex' }}>
           <a href="../transacao-doacao">
             <img
               src={require("../Imagens/icone-ceder-credito.png")}
@@ -280,9 +281,7 @@ export function TabelaCreditoCedido() {
 
             />
           </a>
-        </div>
-        <div className={styles.searchContainer}>
-          <select onChange={handleChangeFiltroDataCredCedidos} >
+          <select onChange={handleChangeFiltroDataCredCedidos} style={{ width: '160px' }} >
             <option value="">Mês/Ano</option>
             {mesesAnosDisponiveis.map((mesAno, index) => (
               <option key={index} value={mesAno}>
@@ -292,55 +291,56 @@ export function TabelaCreditoCedido() {
           </select>
         </div>
       </div>
-
-      <table className={styles.table}>
-        <thead>
-          <tr>
-            <th style={{ width: '25%' }}>Descrição</th>
-            <th style={{ width: '10%' }}>Créditos</th>
-            <th style={{ width: '10%' }}>Óleo (Litros)</th>
-            <th style={{ width: '13%' }}>Data / Hora</th>
-          </tr>
-        </thead>
-        <tbody>
-          {currentData.map((item: any, index: any) => (
-            <tr key={index}>
-              <td>Coleta: {item.estabelecimento_razao_social}</td>
-              <td>{item.quantidade_moedas}</td>
-              <td>{item.quantidade_oleo_coletado}</td>
-              <td>{formatarData(item.acao_data)}</td>
+      <div className={styles2.containerConteudoEspecifico}>
+        <table className={styles.table}>
+          <thead>
+            <tr>
+              <th style={{ width: '25%' }}>Descrição</th>
+              <th style={{ width: '10%' }}>Créditos</th>
+              <th style={{ width: '10%' }}>Óleo (Litros)</th>
+              <th style={{ width: '13%' }}>Data / Hora</th>
             </tr>
-          ))}
-        </tbody>
-        <tfoot>
-          <tr>
-            <td colSpan={4} style={{ textAlign: 'center', padding: '3px 0'  }}>
-              <Button
-                startIcon={<KeyboardArrowLeftIcon />}
-                disabled={currentPage === 1}
-                onClick={handlePrevPage}
-                style={{
-                  color: currentPage !== 1 ? 'lightblue' : 'lightgray',
-                  fontWeight: currentPage !== 1 ? 'bold' : 'normal',
-                }}
-              >
-                Anterior
-              </Button>
-              <Button
-                endIcon={<KeyboardArrowRightIcon />}
-                disabled={endIndex >= transacoes.length}
-                onClick={handleNextPage}
-                style={{
-                  color: endIndex < transacoes.length ? 'lightblue' : 'lightgray',
-                  fontWeight: endIndex < transacoes.length ? 'bold' : 'normal',
-                }}
-              >
-                Próxima
-              </Button>
-            </td>
-          </tr>
-        </tfoot>
-      </table>
+          </thead>
+          <tbody>
+            {currentData.map((item: any, index: any) => (
+              <tr key={index}>
+                <td>Coleta: {item.estabelecimento_razao_social}</td>
+                <td>{item.quantidade_moedas}</td>
+                <td>{item.quantidade_oleo_coletado}</td>
+                <td>{formatarData(item.acao_data)}</td>
+              </tr>
+            ))}
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colSpan={4} style={{ textAlign: 'center', padding: '3px 0' }}>
+                <Button
+                  startIcon={<KeyboardArrowLeftIcon />}
+                  disabled={currentPage === 1}
+                  onClick={handlePrevPage}
+                  style={{
+                    color: currentPage !== 1 ? 'lightblue' : 'lightgray',
+                    fontWeight: currentPage !== 1 ? 'bold' : 'normal',
+                  }}
+                >
+                  Anterior
+                </Button>
+                <Button
+                  endIcon={<KeyboardArrowRightIcon />}
+                  disabled={endIndex >= transacoes.length}
+                  onClick={handleNextPage}
+                  style={{
+                    color: endIndex < transacoes.length ? 'lightblue' : 'lightgray',
+                    fontWeight: endIndex < transacoes.length ? 'bold' : 'normal',
+                  }}
+                >
+                  Próxima
+                </Button>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
       <p>ㅤ</p>
       <p>ㅤ</p>
       <p>ㅤ</p>

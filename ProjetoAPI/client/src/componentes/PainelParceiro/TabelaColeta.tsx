@@ -1,5 +1,6 @@
 import Button from '@mui/material/Button';
 import styles from '../styles/ParceiroTabelaColetas.module.css';
+import styles2 from '../styles/PainelLayoutGeral.module.css';
 import { useEffect, useState } from 'react';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
@@ -9,7 +10,7 @@ export default function TabelaColeta() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 9;
   const id = localStorage.getItem('idParceiro');
-  const [transacoes , setTransacoes] = useState([]);
+  const [transacoes, setTransacoes] = useState([]);
   const [searchQuery, setSearchQuery] = useState(''); // Variável de estado para armazenar a consulta de pesquisa
   const [searchQueryDataInicio, setSearchQueryDataInicio] = useState(''); // Variável de estado para armazenar a consulta de pesquisa
   const [searchQueryDataFim, setSearchQueryDataFim] = useState(currentDate.toISOString().split('T')[0]); // Variável de estado para armazenar a consulta de pesquisa
@@ -18,7 +19,7 @@ export default function TabelaColeta() {
   useEffect(() => {
     fetch(`https://server-pi-blue.vercel.app/transacoes-parceiro/${id}`, {
       method: "GET",
-       headers: {
+      headers: {
         'Content-Type': 'application/json',
       },
     })
@@ -76,45 +77,49 @@ export default function TabelaColeta() {
 
 
   return (
-    <>      
-      <h2>Coletas</h2>
-      <div className={styles.searchContainer}>
-        <input
-          type="text"
-          placeholder="Pesquisar..."
-          onChange={handleSearchChange}
-          value={searchQuery}
-        />
+    <>
+      <div className={styles2.containerConteudoEspecifico2}>
 
-        <div className={styles.dateFilters}>
-          Data de:
-          <div>
-            <input
-              type="date"
-              placeholder="Data Início..."
-              onChange={handleSearchChange2}
-              value={searchQueryDataInicio}
-            />
+        <div className={styles.searchContainer}>
+
+          <input
+            type="text"
+            placeholder="Pesquisar..."
+            onChange={handleSearchChange}
+            value={searchQuery}
+          />
+
+          <div className={styles.dateFilters}>
+            Data de:
+            <div>
+              <input
+                type="date"
+                placeholder="Data Início..."
+                onChange={handleSearchChange2}
+                value={searchQueryDataInicio}
+              />
+            </div>
+            Até
+            <div>
+              <input
+                type="date"
+                placeholder="Data Final..."
+                onChange={handleSearchChange3}
+                value={searchQueryDataFim}
+              />
+            </div>
           </div>
-          Até
-          <div>
-           <input
-              type="date"
-              placeholder="Data Final..."
-              onChange={handleSearchChange3}
-              value={searchQueryDataFim}
-            />
-          </div>
+
         </div>
       </div>
-   
+      <div className={styles2.containerConteudo}>
       <table className={styles.table}>
         <thead>
           <tr>
-            <th style={{width: '28%'}}>Estabelecimento</th>
-            <th style={{width: '28%'}}>Endereço</th>
-            <th style={{width: '15%'}}>Volume (Litros)</th>
-            <th style={{width: '16%'}}>Data</th>
+            <th style={{ width: '28%' }}>Estabelecimento</th>
+            <th style={{ width: '28%' }}>Endereço</th>
+            <th style={{ width: '15%' }}>Volume (Litros)</th>
+            <th style={{ width: '16%' }}>Data</th>
           </tr>
         </thead>
         <tbody>
@@ -129,7 +134,7 @@ export default function TabelaColeta() {
         </tbody>
         <tfoot>
           <tr>
-            <td colSpan={4} style={{ textAlign: 'center', padding: '3px 0'  }}>
+            <td colSpan={4} style={{ textAlign: 'center', padding: '3px 0' }}>
               <Button
                 startIcon={<KeyboardArrowLeftIcon />}
                 disabled={currentPage === 1}
@@ -160,6 +165,7 @@ export default function TabelaColeta() {
       <p>ㅤ</p>
       <p>ㅤ</p>
       <p>ㅤ</p>
+      </div>
     </>
   );
 }

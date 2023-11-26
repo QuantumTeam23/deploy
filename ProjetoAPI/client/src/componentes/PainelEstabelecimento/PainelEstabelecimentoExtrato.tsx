@@ -51,7 +51,7 @@ export default function PainelEstabelecimentoExtrato() {
     <>
       <NavbarEstabelecimento />
 
-      <div className={styles.containerConteudo}>
+      <div className={styles.containerConteudoEspecifico}>
         <div className={styles.topContent}>
           <h1>
             Saldo de crédito: {' '}
@@ -76,8 +76,9 @@ export default function PainelEstabelecimentoExtrato() {
           </h1>
         </div>
         <br />
-        <TabelaSaldoCreditoExtrato />
+        <h2>Extrato</h2>
       </div>
+      <TabelaSaldoCreditoExtrato />
       <Footer />
     </>
   );

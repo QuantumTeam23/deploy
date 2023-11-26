@@ -25,7 +25,7 @@ export default function PainelParceiroColetas() {
   return (
     <>
       <NavbarParceiro />
-      <div className={styles.containerConteudo}>
+      <div className={styles.containerConteudoEspecifico}>
         <div className={styles.topContent}>
           <h1>
             Total de óleo coletado: {' '} 
@@ -34,8 +34,10 @@ export default function PainelParceiroColetas() {
         </div>
         <div className={styles.headerActions}>
         </div>
+        <h2>Coletas</h2>
+
+        </div>
         <TabelaColeta />
-      </div>
       <Footer />
     </>
   );

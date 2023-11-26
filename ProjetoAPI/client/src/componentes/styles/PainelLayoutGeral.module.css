@@ -33,6 +33,25 @@ h1, h2{
   justify-content: flex-start;
 }
 
+.containerConteudoEspecifico {
+  width: 95vw;
+  margin: 0 auto;
+  padding: 0;
+  background-color: #ffffff;
+  font-family: 'Montserrat', Arial, Helvetica;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.containerConteudoEspecifico2 {
+  width: 97vw;
+  display: flex;
+  justify-content: flex-end; /* Align items to the right */
+}
+
+
 input[type="text"],
 select{
   width: 100%;

@@ -19,18 +19,21 @@ export default function PainelAdminControlUser() {
 
   return (
     <>
-    <NavbarAdministrador />
-    <div className={styles.containerConteudo}>
-      <div className={styles.topContent}>
-        <h2>Controle de usuário</h2>
-        <div className={styles.headerActions}>
-          <AdicionarUsuario onClick={handleOpenPopup} />
+      <NavbarAdministrador />
+      <div className={styles.containerConteudoEspecifico}>
+        <div className={styles.topContent}>
+          <h2>Controle de usuário</h2>
+          <div className={styles.headerActions}>
+            <AdicionarUsuario onClick={handleOpenPopup} />
+          </div>
         </div>
       </div>
+
       <TabelasControlUser />
-      {popupOpen && <AdicionarUsuarioPopup open={popupOpen} onClose={handleClosePopup} />}
-    </div>
-    <Footer />
+      <div className={styles.containerConteudo}>
+        {popupOpen && <AdicionarUsuarioPopup open={popupOpen} onClose={handleClosePopup} />}
+      </div>
+      <Footer />
     </>
   );
 }

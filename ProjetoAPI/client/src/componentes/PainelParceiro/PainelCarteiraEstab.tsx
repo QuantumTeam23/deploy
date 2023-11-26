@@ -21,7 +21,7 @@ export default function PainelParceiroCarteiraEstab() {
   return (
     <>
       <NavbarParceiro />
-      <div className={styles.containerConteudo}>
+      <div className={styles.containerConteudoEspecifico}>
         <div className={styles.topContent}>
           <h2>Carteira de Estabelecimentos</h2>
           <div className={styles.headerActions}>
@@ -30,8 +30,8 @@ export default function PainelParceiroCarteiraEstab() {
             </IconButton>
           </div>
         </div>
+        </div>
         <TabelaSaldoCredito />
-      </div>
       <Footer />
       {popupOpen && (
         <VincularEstabelecimento open={popupOpen} onClose={handleClosePopup} />

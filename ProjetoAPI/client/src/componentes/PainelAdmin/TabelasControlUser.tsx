@@ -1,7 +1,8 @@
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import Button from '@mui/material/Button';
-import styles from '../styles/TabelasLayoutGeral.module.css'; 
+import styles from '../styles/TabelasLayoutGeral.module.css';
+import styles2 from '../styles/PainelLayoutGeral.module.css';
 import { useEffect, useState } from 'react';
 import { EditarUsuarioAdminPopup, EditarUsuarioPopup } from './AcoesUsuarioPopup';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
@@ -24,14 +25,14 @@ export default function TabelasControlUser() {
 
   const handleEditarUsuarioClick = (item: any) => {
 
-      const razaoSocial = item.nome
-      const tipo = item.tipo
-      localStorage.setItem('nomeEdit', razaoSocial)
-      localStorage.setItem('tipoEdit', tipo)
+    const razaoSocial = item.nome
+    const tipo = item.tipo
+    localStorage.setItem('nomeEdit', razaoSocial)
+    localStorage.setItem('tipoEdit', tipo)
 
-      if (tipo === 'Parceiro') {
+    if (tipo === 'Parceiro') {
 
-        fetch(`https://server-pi-blue.vercel.app/read-by-id-to-edit-admin/${razaoSocial}/${tipo}`)
+      fetch(`https://server-pi-blue.vercel.app/read-by-id-to-edit-admin/${razaoSocial}/${tipo}`)
         .then(response => {
           if (!response.ok) {
             throw new Error(`Erro na solicitação: ${response.status}`);
@@ -42,15 +43,15 @@ export default function TabelasControlUser() {
           localStorage.setItem('ParceiroData', JSON.stringify(data));
           setTimeout(() => {
             setEditarUsuarioPopupOpen(true);
-        }, 500);
-  
+          }, 500);
+
         })
         .catch(error => {
           console.error('Erro ao buscar dados do estabelecimento:', error);
         });
-      } else if (tipo === 'Estabelecimento') {
+    } else if (tipo === 'Estabelecimento') {
 
-        fetch(`https://server-pi-blue.vercel.app/read-by-id-to-edit-admin/${razaoSocial}/${tipo}`)
+      fetch(`https://server-pi-blue.vercel.app/read-by-id-to-edit-admin/${razaoSocial}/${tipo}`)
         .then(response => {
           if (!response.ok) {
             throw new Error(`Erro na solicitação: ${response.status}`);
@@ -61,15 +62,15 @@ export default function TabelasControlUser() {
           localStorage.setItem('EstabelecimentoData', JSON.stringify(data));
           setTimeout(() => {
             setEditarUsuarioPopupOpen(true);
-        }, 500);
-  
+          }, 500);
+
         })
         .catch(error => {
           console.error('Erro ao buscar dados do estabelecimento:', error);
         });
-      } else if (tipo === 'Administrador') {
+    } else if (tipo === 'Administrador') {
 
-        fetch(`https://server-pi-blue.vercel.app/read-by-id-to-edit-admin/${razaoSocial}/${tipo}`)
+      fetch(`https://server-pi-blue.vercel.app/read-by-id-to-edit-admin/${razaoSocial}/${tipo}`)
         .then(response => {
           if (!response.ok) {
             throw new Error(`Erro na solicitação: ${response.status}`);
@@ -80,31 +81,31 @@ export default function TabelasControlUser() {
           localStorage.setItem('AdministradorData', JSON.stringify(data));
           setTimeout(() => {
             setEditarUsuarioAdminPopupOpen(true);
-        }, 500);
-  
+          }, 500);
+
         })
         .catch(error => {
           console.error('Erro ao buscar dados do estabelecimento:', error);
         });
-      }
+    }
   };
-  
-      const msgSucessoPost = () => {
-        Swal.fire({
-          title: "Sucesso",
-          html: "Exclusão realizada com sucesso.",
-          icon: "success",
-          showConfirmButton: true,
-          confirmButtonColor: '#de940a',
-          customClass: {
-            container: 'swal-container',
-          },
-        }).then((result) => {
-          if (result.isConfirmed) {
-            window.location.reload();
-          }
-        });
+
+  const msgSucessoPost = () => {
+    Swal.fire({
+      title: "Sucesso",
+      html: "Exclusão realizada com sucesso.",
+      icon: "success",
+      showConfirmButton: true,
+      confirmButtonColor: '#de940a',
+      customClass: {
+        container: 'swal-container',
+      },
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.location.reload();
       }
+    });
+  }
 
   const handleRemoverUsuarioClick = (item: any) => {
     const razaoSocial = item.nome;
@@ -124,13 +125,13 @@ export default function TabelasControlUser() {
         fetch(`https://server-pi-blue.vercel.app/deletar-users/${tipoUsuario}/${id}`, {
           method: 'DELETE'
         })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log(data.message);
-        })
-        .catch((error) =>
-          console.error('Erro ao excluir o produto:', error)
-        );
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data.message);
+          })
+          .catch((error) =>
+            console.error('Erro ao excluir o produto:', error)
+          );
         msgSucessoPost()
       }
     });
@@ -176,7 +177,7 @@ export default function TabelasControlUser() {
       })
       .catch((error) => console.log(error));
   }, [searchQuery]);
-  
+
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
@@ -201,91 +202,96 @@ export default function TabelasControlUser() {
 
   return (
     <>
-      <div>
-        <input
-          type="text"
-          placeholder="Pesquisar..."
-          onChange={handleSearchChange}
-          value={searchQuery}
-        />
+      <div className={styles2.containerConteudoEspecifico2}>
+        <div>
+          <input
+            type="text"
+            placeholder="Pesquisar..."
+            onChange={handleSearchChange}
+            value={searchQuery}
+          />
+        </div>
       </div>
-      <table className={styles.table}>
-        <thead>
-          <tr>
-            <th style={{width: '5%'}}>Nome</th>
-            <th style={{width: '5%'}}>Tipo</th>
-            <th colSpan={2} style={{width: '5%'}}><center>Ações</center></th>
-          </tr>
-        </thead>
-        <tbody>
-          {currentData.map((item: any, index: any) => (
-            <tr key={index}>
-              <td style={{width: '70%', padding: '3px 0.5vw'}}>{item.nome}</td>
-              <td style={{width: '30%', padding: '3px 0.5vw'}}>{item.tipo}</td>
-              <td style={{width: '0.1%', padding: '3px 0.5vw'}}>
-                <div style={{ textAlign: 'center' }}>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    startIcon={<EditIcon style={{ fontSize: 24, marginLeft: '10px' }} />}
-                    onClick={() => {
-                      handleEditarUsuarioClick(item)
-                    }}
-                    style={{maxWidth: '40px', maxHeight: '40px', minWidth: '36px', minHeight: '36px'}}
-                  />
-                </div>
-              </td>
-              <td style={{width: '0.1%', padding: '3px 0.5vw'}}>
-                <div style={{ textAlign: 'center' }}>
-                  <Button
-                    variant="contained"
-                    color="error"
-                    startIcon={<DeleteIcon style={{ fontSize: 24, marginLeft: '10px' }} />}
-                    onClick={() => handleRemoverUsuarioClick(item)}
-                    style={{maxWidth: '40px', maxHeight: '40px', minWidth: '36px', minHeight: '36px'}}
+      <div className={styles2.containerConteudo}>
+        <table className={styles.table}>
+          <thead>
+            <tr>
+              <th style={{ width: '5%' }}>Nome</th>
+              <th style={{ width: '5%' }}>Tipo</th>
+              <th colSpan={2} style={{ width: '5%' }}><center>Ações</center></th>
+            </tr>
+          </thead>
+          <tbody>
+            {currentData.map((item: any, index: any) => (
+              <tr key={index}>
+                <td style={{ width: '70%', padding: '3px 0.5vw' }}>{item.nome}</td>
+                <td style={{ width: '30%', padding: '3px 0.5vw' }}>{item.tipo}</td>
+                <td style={{ width: '0.1%', padding: '3px 0.5vw' }}>
+                  <div style={{ textAlign: 'center' }}>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      startIcon={<EditIcon style={{ fontSize: 24, marginLeft: '10px' }} />}
+                      onClick={() => {
+                        handleEditarUsuarioClick(item)
+                      }}
+                      style={{ maxWidth: '40px', maxHeight: '40px', minWidth: '36px', minHeight: '36px' }}
+                    />
+                  </div>
+                </td>
+                <td style={{ width: '0.1%', padding: '3px 0.5vw' }}>
+                  <div style={{ textAlign: 'center' }}>
+                    <Button
+                      variant="contained"
+                      color="error"
+                      startIcon={<DeleteIcon style={{ fontSize: 24, marginLeft: '10px' }} />}
+                      onClick={() => handleRemoverUsuarioClick(item)}
+                      style={{ maxWidth: '40px', maxHeight: '40px', minWidth: '36px', minHeight: '36px' }}
 
-                  />
-                </div>
+                    />
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colSpan={4} style={{ textAlign: 'center', padding: '3px 0' }}>
+                <Button
+                  startIcon={<KeyboardArrowLeftIcon />}
+                  disabled={currentPage === 1}
+                  onClick={handlePrevPage}
+                  style={{
+                    color: currentPage !== 1 ? 'lightblue' : 'lightgray',
+                    fontWeight: currentPage !== 1 ? 'bold' : 'normal',
+                  }}
+                >
+                  Anterior
+                </Button>
+                <Button
+                  endIcon={<KeyboardArrowRightIcon />}
+                  disabled={endIndex >= user.length}
+                  onClick={handleNextPage}
+                  style={{
+                    color: endIndex < user.length ? 'lightblue' : 'lightgray',
+                    fontWeight: endIndex < user.length ? 'bold' : 'normal',
+                  }}
+                >
+                  Próxima
+                </Button>
               </td>
             </tr>
-          ))}
-        </tbody>
-        <tfoot>
-          <tr>
-            <td colSpan={4} style={{ textAlign: 'center', padding: '3px 0' }}>
-              <Button
-                startIcon={<KeyboardArrowLeftIcon />}
-                disabled={currentPage === 1}
-                onClick={handlePrevPage}
-                style={{
-                  color: currentPage !== 1 ? 'lightblue' : 'lightgray',
-                  fontWeight: currentPage !== 1 ? 'bold' : 'normal',
-                }}
-              >
-                Anterior
-              </Button>
-              <Button
-                endIcon={<KeyboardArrowRightIcon />}
-                disabled={endIndex >= user.length}
-                onClick={handleNextPage}
-                style={{
-                  color: endIndex < user.length ? 'lightblue' : 'lightgray',
-                  fontWeight: endIndex < user.length ? 'bold' : 'normal',
-                }}
-              >
-                Próxima
-              </Button>
-            </td>
-          </tr>
-        </tfoot>
-      </table>
-      <p>ㅤ</p>
-      <p>ㅤ</p>
-      <p>ㅤ</p>
-      <p>ㅤ</p>
+          </tfoot>
+        </table>
+        <p>ㅤ</p>
+        <p>ㅤ</p>
+        <p>ㅤ</p>
+        <p>ㅤ</p>
 
-      <EditarUsuarioPopup open={editarUsuarioPopupOpen} onClose={handleCloseEditarUsuarioPopup}/>
-      <EditarUsuarioAdminPopup open={editarUsuarioAdminPopupOpen} onClose={handleCloseEditarUsuarioAdminPopup}/>
+        <EditarUsuarioPopup open={editarUsuarioPopupOpen} onClose={handleCloseEditarUsuarioPopup} />
+        <EditarUsuarioAdminPopup open={editarUsuarioAdminPopupOpen} onClose={handleCloseEditarUsuarioAdminPopup} />
+      </div>
+
     </>
   );
 }

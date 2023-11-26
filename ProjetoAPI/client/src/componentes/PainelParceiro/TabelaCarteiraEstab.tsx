@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Button from '@mui/material/Button';
 import styles from '../styles/TabelasLayoutGeral.module.css';
+import styles2 from '../styles/PainelLayoutGeral.module.css';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 
@@ -10,12 +11,12 @@ export default function TabelaCarteiraEstab() {
   const itemsPerPage = 9;
   const id = localStorage.getItem('idParceiro');
   const [estabData, setEstabData] = useState([]);
-  
+
 
   useEffect(() => {
     fetch(`https://server-pi-blue.vercel.app/listCarteira/${id}`, {
       method: "GET",
-       headers: {
+      headers: {
         'Content-Type': 'application/json',
       },
     })
@@ -33,7 +34,7 @@ export default function TabelaCarteiraEstab() {
   const filteredData = estabData.filter((item: any) => {
     return item.estabelecimento_razao_social.toLowerCase().includes(searchQuery.toLowerCase());
   });
-  
+
 
 
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -55,65 +56,70 @@ export default function TabelaCarteiraEstab() {
 
   return (
     <>
-      <div>
-        <input
-          type="text"
-          placeholder="Pesquisar..."
-          onChange={handleSearchChange}
-          value={searchQuery}
-        />
-      </div>
-      <table className={styles.table}>
-        <thead>
-          <tr>
-            <th style={{width: '42%'}}>Nome</th>
-            <th style={{width: '17%'}}>Contato</th>
-            <th style={{width: '42%'}}>Endereço</th>
-          </tr>
-        </thead>
-        <tbody>
-          {currentData.map((item: any, index: any) => (
-            <tr key={index}>
-              <td>{item.estabelecimento_razao_social}</td>
-              <td>{item.estabelecimento_telefone}</td>
-              <td>{item.estabelecimento_cidade}</td>
+      <div className={styles2.containerConteudoEspecifico2}>
 
+        <div>
+          <input
+            type="text"
+            placeholder="Pesquisar..."
+            onChange={handleSearchChange}
+            value={searchQuery}
+          />
+        </div>
+      </div>
+      <div className={styles2.containerConteudo}>
+        <table className={styles.table}>
+          <thead>
+            <tr>
+              <th style={{ width: '42%' }}>Nome</th>
+              <th style={{ width: '17%' }}>Contato</th>
+              <th style={{ width: '42%' }}>Endereço</th>
             </tr>
-          ))}
-        </tbody>
-        <tfoot>
-          <tr>
-            <td colSpan={3} style={{ textAlign: 'center', padding: '3px 0' }}>
-              <Button
-                startIcon={<KeyboardArrowLeftIcon />}
-                disabled={currentPage === 1}
-                onClick={handlePrevPage}
-                style={{
-                  color: currentPage !== 1 ? 'lightblue' : 'lightgray',
-                  fontWeight: currentPage !== 1 ? 'bold' : 'normal',
-                }}
-              >
-                Anterior
-              </Button>
-              <Button
-                endIcon={<KeyboardArrowRightIcon />}
-                disabled={endIndex >= estabData.length}
-                onClick={handleNextPage}
-                style={{
-                  color: endIndex < estabData.length ? 'lightblue' : 'lightgray',
-                  fontWeight: endIndex < estabData.length ? 'bold' : 'normal',
-                }}
-              >
-                Próxima
-              </Button>
-            </td>
-          </tr>
-        </tfoot>
-      </table>
-      <p>ㅤ</p>
-      <p>ㅤ</p>
-      <p>ㅤ</p>
-      <p>ㅤ</p>
+          </thead>
+          <tbody>
+            {currentData.map((item: any, index: any) => (
+              <tr key={index}>
+                <td>{item.estabelecimento_razao_social}</td>
+                <td>{item.estabelecimento_telefone}</td>
+                <td>{item.estabelecimento_cidade}</td>
+
+              </tr>
+            ))}
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colSpan={3} style={{ textAlign: 'center', padding: '3px 0' }}>
+                <Button
+                  startIcon={<KeyboardArrowLeftIcon />}
+                  disabled={currentPage === 1}
+                  onClick={handlePrevPage}
+                  style={{
+                    color: currentPage !== 1 ? 'lightblue' : 'lightgray',
+                    fontWeight: currentPage !== 1 ? 'bold' : 'normal',
+                  }}
+                >
+                  Anterior
+                </Button>
+                <Button
+                  endIcon={<KeyboardArrowRightIcon />}
+                  disabled={endIndex >= estabData.length}
+                  onClick={handleNextPage}
+                  style={{
+                    color: endIndex < estabData.length ? 'lightblue' : 'lightgray',
+                    fontWeight: endIndex < estabData.length ? 'bold' : 'normal',
+                  }}
+                >
+                  Próxima
+                </Button>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+        <p>ㅤ</p>
+        <p>ㅤ</p>
+        <p>ㅤ</p>
+        <p>ㅤ</p>
+      </div>
     </>
   );
 }

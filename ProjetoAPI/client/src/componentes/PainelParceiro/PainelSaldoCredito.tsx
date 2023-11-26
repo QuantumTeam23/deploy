@@ -10,7 +10,7 @@ export default function PainelParceiroSaldoCredito() {
   const [saldoVisivel, setSaldoVisivel] = useState(false);
   const [saldoValor, setSaldoValor] = useState(0);
   const id = localStorage.getItem('idParceiro');
- 
+
 
   //buscar dados do parceiro logado e setar o valor do saldo
   useEffect(() => {
@@ -35,7 +35,7 @@ export default function PainelParceiroSaldoCredito() {
   return (
     <>
       <NavbarParceiro />
-      <div className={styles.containerConteudo}>
+      <div className={styles.containerConteudoEspecifico}>
         <div className={styles.topContent}>
           <h1>
             Saldo de crédito: {' '}
@@ -55,12 +55,13 @@ export default function PainelParceiroSaldoCredito() {
           </h1>
         </div>
         <h2>Requisições de Crédito GreenNeat</h2>
-
-        <TabelaCreditoContratado />
-        <br /><br /><br />
-        <h2>Créditos Cedidos</h2>
-        <TabelaCreditoCedido />
       </div>
+        <TabelaCreditoContratado />
+        <div className={styles.containerConteudoEspecifico}>
+          <br /><br /><br />
+          <h2>Créditos Cedidos</h2>
+        </div>
+        <TabelaCreditoCedido />
       <Footer />
     </>
   );

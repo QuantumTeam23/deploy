@@ -10,16 +10,16 @@ function HistoricoTransacoes() {
 
   return (
     <>
-    <NavbarAdministrador />
-    <div className={styles.containerConteudo}>
-      <div className={styles.topContent}>
-        <h2>Histórico de Transações</h2>
-        <div className={styles.headerActions}>
+      <NavbarAdministrador />
+      <div className={styles.containerConteudoEspecifico}>
+        <div className={styles.topContent}>
+          <h2>Histórico de Transações</h2>
+          <div className={styles.headerActions}>
+          </div>
         </div>
       </div>
       <Tabelas2 />
-    </div>
-    <Footer/>
+      <Footer />
     </>
   );
 }
