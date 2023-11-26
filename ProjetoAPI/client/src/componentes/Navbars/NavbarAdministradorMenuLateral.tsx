@@ -41,7 +41,7 @@ const MenuLateralAdministrador: React.FC = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         localStorage.clear()
-        navigate('/login')
+        navigate('/')
       }
     });
   }
